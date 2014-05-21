@@ -1,0 +1,43 @@
+# Mac
+.DS_Store
+
+# AppWarp
+AppWarp/
+!AppWarp/AppWarp_readme.txt
+
+# DirectXTK
+DirectXTK/
+!DirectXTK/DirectXTK_readme.txt
+
+# libpng
+libpng/
+!libpng/Android.mk
+!libpng/libpng_readme.txt
+
+# rapidjson
+rapidjson/
+!rapidjson/rapidjson_readme.txt
+
+# Eclipse
+bin/
+gen/
+*.class
+*.dex
+*.apk
+*.ap_
+obj/
+armeabi/
+armeabi-v7a/
+mips/
+x86/
+
+# Xcode
+*.xcuserdatad/
+xcshareddata/
+
+# Visual Studio
+*.user
+*.*sdf
+*.suo
+ARM/
+Debug/
