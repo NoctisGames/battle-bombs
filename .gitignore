@@ -2,20 +2,20 @@
 .DS_Store
 
 # AppWarp
-AppWarp/
+AppWarp/*
 !AppWarp/AppWarp_readme.txt
 
 # DirectXTK
-DirectXTK/
+DirectXTK/*
 !DirectXTK/DirectXTK_readme.txt
 
 # libpng
-libpng/
+libpng/*
 !libpng/Android.mk
 !libpng/libpng_readme.txt
 
 # rapidjson
-rapidjson/
+rapidjson/*
 !rapidjson/rapidjson_readme.txt
 
 # Eclipse
