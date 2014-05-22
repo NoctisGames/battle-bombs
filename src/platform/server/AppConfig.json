@@ -1,0 +1,8 @@
+{
+	"TickTime" : 33,
+	"LogLevel" : "DEBUG",
+	"AdminUsername" : "admin",
+	"AdminPassword" : "password",
+	"HSQLDBFile" : "HSQLDBFile",
+	"LICENSE_KEY" : ""
+}

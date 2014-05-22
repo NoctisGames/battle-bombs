@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  bomber-party
+
+  Created by Stephen Gowen on 3/1/14.
+  Copyright (c) 2014 Techne Games. All rights reserved.
+*/
+
+// Chat Log Messages
+"you_have_connected" = "You have connected";
+
+// Dialogs
+"welcome_title" = "Welcome To Bomber Party!";
+"username_hint" = "Enter a Username...";
+"connect" = "Connect";
+
+"join_message" = "Join?";
+"join" = "Join";
+"cancel" = "Cancel";
