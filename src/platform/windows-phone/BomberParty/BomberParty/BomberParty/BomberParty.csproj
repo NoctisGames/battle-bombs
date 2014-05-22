@@ -187,7 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AppWarpS2WP">
-      <HintPath>..\..\..\..\..\3rdparty\AppWarpS2WP.dll</HintPath>
+      <HintPath>..\..\..\..\..\3rdparty\AppWarp\AppWarpS2WP.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
