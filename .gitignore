@@ -41,3 +41,8 @@ xcshareddata/
 *.suo
 ARM/
 Debug/
+/src/platform/server/build/
+
+# NetBeans
+*.log
+*.dll

@@ -17,7 +17,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 {
     static
     {
-        System.load("C:\\Users\\sgowen\\Documents\\bomber-party\\src\\platform\\server\\bp-native\\dist\\libBpNative.dll");
+        System.load("C:\\Users\\sgowen\\Documents\\GitHub\\bomber-party\\src\\platform\\server\\bp-native\\dist\\libBpNative.dll");
     }
 
     private static final String GAME_BEGIN_LOG = "~~~~~~~~~~~~~~~~~~~ GAME BEGIN ~~~~~~~~~~~~~~~~~~~";

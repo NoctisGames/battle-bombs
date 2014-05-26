@@ -92,9 +92,9 @@
           <standard>8</standard>
           <commandlineTool>g++</commandlineTool>
           <incDir>
-            <pElem>../../../../../../../../Program Files/Java/jdk1.7.0_51/include</pElem>
+            <pElem>../../../../../../../../../Program Files/Java/jdk1.7.0_51/include</pElem>
             <pElem>../../../core</pElem>
-            <pElem>../../../../../../../../Program Files/Java/jdk1.7.0_51/include/win32</pElem>
+            <pElem>../../../../../../../../../Program Files/Java/jdk1.7.0_51/include/win32</pElem>
             <pElem>../../../3rdparty</pElem>
           </incDir>
           <commandLine>-shared</commandLine>
