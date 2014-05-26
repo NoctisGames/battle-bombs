@@ -46,3 +46,4 @@ Debug/
 # NetBeans
 *.log
 *.dll
+*.properties
