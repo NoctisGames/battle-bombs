@@ -46,4 +46,8 @@ Debug/
 # NetBeans
 *.log
 *.dll
-*.properties
+HSQLDBFile*
+*.mf
+*.script
+build.xml
+*.lck
