@@ -47,6 +47,7 @@ Debug/
 dist/
 build/
 private/
+Logs/
 !private/project.xml
 !private/project.properties
 *.log
