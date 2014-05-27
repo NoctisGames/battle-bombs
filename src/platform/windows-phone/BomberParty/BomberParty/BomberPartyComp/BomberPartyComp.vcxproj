@@ -162,8 +162,6 @@
     <ClInclude Include="..\..\..\..\..\core\ActiveButton.h" />
     <ClInclude Include="..\..\..\..\..\core\Assets.h" />
     <ClInclude Include="..\..\..\..\..\core\BombGameObject.h" />
-    <ClInclude Include="..\..\..\..\..\core\BorderBlock.h" />
-    <ClInclude Include="..\..\..\..\..\core\BorderBlockType.h" />
     <ClInclude Include="..\..\..\..\..\core\BreakableBlock.h" />
     <ClInclude Include="..\..\..\..\..\core\Color.h" />
     <ClInclude Include="..\..\..\..\..\core\DPadControl.h" />
@@ -213,7 +211,6 @@
     <ClCompile Include="..\..\..\..\..\core\ActiveButton.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Assets.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BombGameObject.cpp" />
-    <ClCompile Include="..\..\..\..\..\core\BorderBlock.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BreakableBlock.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DPadControl.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DynamicGameObject.cpp" />

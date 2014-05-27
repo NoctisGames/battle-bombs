@@ -20,7 +20,6 @@
 #include "ActiveButton.h"
 #include "PlayerDynamicGameObject.h"
 #include "InsideBlock.h"
-#include "BorderBlock.h"
 #include "BreakableBlock.h"
 #include "BombGameObject.h"
 #include "Explosion.h"
