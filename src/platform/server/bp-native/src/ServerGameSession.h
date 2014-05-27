@@ -20,18 +20,18 @@ public:
     virtual void handleServerUpdate(const char *message);
 
     void update(float deltaTime);
-    
+
     int getNumBreakableBlocks();
-    
+
     int getBreakableBlockGridX(short breakableBlockIndex);
-    
+
     int getBreakableBlockGridY(short breakableBlockIndex);
-    
+
     int getBreakableBlockPowerUpFlag(short breakableBlockIndex);
 
 private:
     virtual void updateRunning(float deltaTime);
-    
+
     virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex, bool isBeginGame);
 };
 

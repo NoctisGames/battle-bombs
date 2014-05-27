@@ -13,8 +13,8 @@ CND_BUILDDIR=build
 CND_DLIB_EXT=dll
 NBTMPDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbp-native.${CND_DLIB_EXT}
-OUTPUT_BASENAME=libbp-native.${CND_DLIB_EXT}
+OUTPUT_PATH=dist/libBpNative.dll
+OUTPUT_BASENAME=libBpNative.dll
 PACKAGE_TOP_DIR=libbp-native.dll/
 
 # Functions

@@ -54,3 +54,4 @@ private/
 HSQLDBFile*.*
 *.mf
 *.lck
+.dep.inc

@@ -14,8 +14,6 @@
 #include "Rectangle.h"
 #include "Assets.h"
 #include "OverlapTester.h"
-#include "BorderBlock.h"
-#include "BorderBlockType.h"
 #include "GameEvent.h"
 #include "BombGameObject.h"
 #include "Explosion.h"
