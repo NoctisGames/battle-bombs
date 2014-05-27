@@ -44,10 +44,13 @@ Debug/
 /src/platform/server/build/
 
 # NetBeans
+dist/
+build/
+private/
+!private/project.xml
+!private/project.properties
 *.log
 *.dll
-HSQLDBFile*
+HSQLDBFile*.*
 *.mf
-*.script
-build.xml
 *.lck
