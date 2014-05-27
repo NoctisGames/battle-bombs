@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>src/ServerGameSession.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -13,7 +14,6 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>src/ServerGameSession.cpp</itemPath>
-      <itemPath>src/ServerGameSession.h</itemPath>
       <itemPath>src/bp_room_adaptor.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
