@@ -41,3 +41,18 @@ xcshareddata/
 *.suo
 ARM/
 Debug/
+/src/platform/server/build/
+
+# NetBeans
+dist/
+build/
+private/
+Logs/
+!private/project.xml
+!private/project.properties
+*.log
+*.dll
+HSQLDBFile*.*
+*.mf
+*.lck
+.dep.inc

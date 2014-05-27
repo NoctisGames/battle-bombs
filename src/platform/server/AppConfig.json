@@ -1,5 +1,5 @@
 {
-	"TickTime" : 33,
+	"TickTime" : 16,
 	"LogLevel" : "DEBUG",
 	"AdminUsername" : "admin",
 	"AdminPassword" : "password",

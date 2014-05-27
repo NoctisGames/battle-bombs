@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#define APPWARP_API_KEY         @"49885e49-b64e-47ba-b"
-#define APPWARP_SECRET_KEY      @"139f6094-4e04-4041-9"
+#define APPWARP_API_KEY         @"b9d7c098-5fb8-4182-8"
 #define APPWARP_HOST_ADDRESS    @"191.234.48.70"
 
 #import <AppWarp_iOS_SDK/AppWarp_iOS_SDK.h>
