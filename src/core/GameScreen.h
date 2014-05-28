@@ -107,6 +107,8 @@ private:
     
     void beginSpectate(rapidjson::Document &d);
     
+    bool beginCommon(rapidjson::Document &d, bool isBeginGame);
+    
     void handleBreakableBlocksArrayInDocument(rapidjson::Document &d);
     
     virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex, bool isBeginGame);

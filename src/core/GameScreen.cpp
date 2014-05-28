@@ -412,33 +412,35 @@ void GameScreen::processServerMessages()
 
 void GameScreen::beginGame(rapidjson::Document &d)
 {
-    static const char *numPlayersKey = "numPlayers";
-    
-    if(d.HasMember(numPlayersKey))
+    if(beginCommon(d, true))
     {
-        init();
-        
-        int numPlayers = d[numPlayersKey].GetInt();
-        for(int i = 0; i < numPlayers; i++)
+        if(m_sPlayerIndex != -1)
         {
-            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(0, 0)));
+            m_player = m_players.at(m_sPlayerIndex).get();
+            
+            m_gameState = RUNNING;
         }
-        
-        clientUpdate(d, true);
-        
-        handleBreakableBlocksArrayInDocument(d);
-        
-        Assets::getInstance()->setMusicId(MUSIC_PLAY);
-        
-        m_gameState = RUNNING;
     }
 }
 
 void GameScreen::beginSpectate(rapidjson::Document &d)
 {
+    if(beginCommon(d, false))
+    {
+        m_sPlayerIndex = 0;
+        m_player = m_players.at(m_sPlayerIndex).get();
+        
+        m_gameState = SPECTATING;
+    }
+}
+
+bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
+{
     static const char *numPlayersKey = "numPlayers";
     
-    if(d.HasMember(numPlayersKey))
+    const bool hasNumPlayersKey = d.HasMember(numPlayersKey);
+    
+    if(hasNumPlayersKey)
     {
         init();
         
@@ -448,17 +450,14 @@ void GameScreen::beginSpectate(rapidjson::Document &d)
             m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(0, 0)));
         }
         
-        clientUpdate(d, false);
+        clientUpdate(d, isBeginGame);
         
         handleBreakableBlocksArrayInDocument(d);
         
         Assets::getInstance()->setMusicId(MUSIC_PLAY);
-        
-        m_sPlayerIndex = 0;
-        m_player = m_players.at(m_sPlayerIndex).get();
-        
-        m_gameState = SPECTATING;
     }
+    
+    return hasNumPlayersKey;
 }
 
 void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)
@@ -495,7 +494,6 @@ void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *
         if (std::strcmp(username, m_username) == 0)
         {
             // Now we know which player index the user is
-            m_player = m_players.at(playerIndex).get();
             m_sPlayerIndex = playerIndex;
         }
     }
