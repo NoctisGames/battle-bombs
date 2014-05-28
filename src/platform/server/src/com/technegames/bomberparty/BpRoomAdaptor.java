@@ -157,7 +157,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                     {
                         updateRoomWithMessage(beginGameCommand);
                     }
-                    
+
                     logRoom();
                 }
             }
@@ -203,8 +203,6 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 
             if (_stateTime > 10)
             {
-                init(_room.getId());
-
                 // We are re-initialzing the list, starting from 0,
                 // so that we don't end up with a game with only 2 players
                 // that indexed at 3 and 7 or something weird like that.
@@ -234,6 +232,8 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 
                     i++;
                 }
+                
+                init(_room.getId(), _inGameUserSessionDataMap.size());
 
                 String beginGameCommand = getGameStateCommand(BEGIN_GAME);
                 if (beginGameCommand != null)
@@ -387,7 +387,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 
     private static native void start(String roomId);
 
-    private static native void init(String roomId);
+    private static native void init(String roomId, int numHumanPlayers);
 
     private static native void handle_server_update(String roomId, String message);
 

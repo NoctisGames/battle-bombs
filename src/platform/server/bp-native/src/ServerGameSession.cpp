@@ -27,14 +27,10 @@ ServerGameSession::ServerGameSession()
     init();
 }
 
-void ServerGameSession::init()
+void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
 {
-    m_breakableBlocks.clear();
-    m_players.clear();
-    m_bombs.clear();
-    m_explosions.clear();
-    m_powerUps.clear();
-
+    init();
+    
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM, DIRECTION_RIGHT)));
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, DIRECTION_LEFT)));
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, DIRECTION_RIGHT)));
@@ -99,6 +95,15 @@ void ServerGameSession::init()
             }
         }
     }
+}
+
+void ServerGameSession::init()
+{
+    m_breakableBlocks.clear();
+    m_players.clear();
+    m_bombs.clear();
+    m_explosions.clear();
+    m_powerUps.clear();
 }
 
 void ServerGameSession::handleServerUpdate(const char *message)

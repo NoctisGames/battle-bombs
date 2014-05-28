@@ -17,7 +17,7 @@ extern "C"
 {
     JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_start(JNIEnv* env, jclass cls, jstring room_id);
 
-    JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_init(JNIEnv* env, jclass cls, jstring room_id);
+    JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_init(JNIEnv* env, jclass cls, jstring room_id, jint num_human_players);
 
     JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_handle_1server_1update(JNIEnv* env, jclass cls, jstring room_id, jstring message);
 
@@ -51,13 +51,12 @@ std::vector<RoomIdGameSessionPair> roomIdGameSessionPairs;
 ServerGameSession *getGameSessionForRoomId(JNIEnv* env, jstring room_id)
 {
     const char *nativeString = (env)->GetStringUTFChars(room_id, NULL);
-    for (int i = 0; i < roomIdGameSessionPairs.size(); i++)
+    for (std::vector<RoomIdGameSessionPair>::iterator itr = roomIdGameSessionPairs.begin(); itr != roomIdGameSessionPairs.end(); itr++)
     {
-        if (std::strcmp(roomIdGameSessionPairs[i].room_id, nativeString) == 0)
+        if (std::strcmp((*itr).room_id, nativeString) == 0)
         {
             // We know which session we are working with now.
-            ServerGameSession *game_session = roomIdGameSessionPairs[i].game_session;
-            return game_session;
+            return (*itr).game_session;
         }
     }
 
@@ -69,12 +68,25 @@ JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_start(JNIE
     UNUSED(env);
     UNUSED(cls);
 
-    const char *str = env->GetStringUTFChars(room_id, NULL);
-    RoomIdGameSessionPair newRoomIdGameSessionPair = {str, new ServerGameSession()};
+    const char *nativeString = env->GetStringUTFChars(room_id, NULL);
+    for (std::vector<RoomIdGameSessionPair> ::iterator itr = roomIdGameSessionPairs.begin(); itr != roomIdGameSessionPairs.end();)
+    {
+        if (std::strcmp((*itr).room_id, nativeString) == 0)
+        {
+            itr = roomIdGameSessionPairs.erase(itr);
+            break;
+        }
+        else
+        {
+            itr++;
+        }
+    }
+    
+    RoomIdGameSessionPair newRoomIdGameSessionPair = {nativeString, new ServerGameSession()};
     roomIdGameSessionPairs.push_back(newRoomIdGameSessionPair);
 }
 
-JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_init(JNIEnv* env, jclass cls, jstring room_id)
+JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_init(JNIEnv* env, jclass cls, jstring room_id, jint num_human_players)
 {
     UNUSED(env);
     UNUSED(cls);
@@ -82,7 +94,7 @@ JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_init(JNIEn
     ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
     if (gameSession != nullptr)
     {
-        gameSession->init();
+        gameSession->initWithNumHumanPlayers(num_human_players);
     }
 }
 

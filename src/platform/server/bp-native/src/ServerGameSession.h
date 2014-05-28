@@ -11,9 +11,12 @@
 
 #include "GameSession.h"
 
-class ServerGameSession : public GameSession {
+class ServerGameSession : public GameSession
+{
 public:
     ServerGameSession();
+    
+    void initWithNumHumanPlayers(int numHumanPlayers);
 
     virtual void init();
 
