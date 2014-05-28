@@ -467,76 +467,19 @@ void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)
     
     if(d.HasMember(numBreakableBlocksKey))
     {
-        int numBreakableBlocks = d[numBreakableBlocksKey].GetInt();
-        
         static const char *breakableBlockXValuesKey = "breakableBlockXValues";
         static const char *breakableBlockYValuesKey = "breakableBlockYValues";
         static const char *breakableBlockPowerUpFlagsKey = "breakableBlockPowerUpFlags";
         
-        std::vector<int> breakableBlockXValues;
-        std::vector<int> breakableBlockYValues;
-        std::vector<int> breakableBlockPowerUpFlags;
+        std::vector<short> breakableBlockXValues;
+        std::vector<short> breakableBlockYValues;
+        std::vector<short> breakableBlockPowerUpFlags;
         
-        if (d.HasMember(breakableBlockXValuesKey))
-        {
-            const char *breakableBlockXValuesArray = d[breakableBlockXValuesKey].GetString();
-            
-            char *copy = strdup(breakableBlockXValuesArray);
-            
-            char *breakableBlockXValue = std::strtok(copy, ",");
-            
-            while (breakableBlockXValue != NULL)
-            {
-                int breakableBlockXValueInt = atoi(breakableBlockXValue);
-                breakableBlockXValues.push_back(breakableBlockXValueInt);
-                
-                breakableBlockXValue = strtok(NULL, ","); // Get next breakable block X Value
-            }
-            
-            free(copy);
-            free(breakableBlockXValue);
-        }
+        handleShortArrayInDocument(d, breakableBlockXValuesKey, breakableBlockXValues, -1);
+        handleShortArrayInDocument(d, breakableBlockYValuesKey, breakableBlockYValues, -1);
+        handleShortArrayInDocument(d, breakableBlockPowerUpFlagsKey, breakableBlockPowerUpFlags, -1);
         
-        if (d.HasMember(breakableBlockYValuesKey))
-        {
-            const char *breakableBlockYValuesArray = d[breakableBlockYValuesKey].GetString();
-            
-            char *copy = strdup(breakableBlockYValuesArray);
-            
-            char *breakableBlockYValue = std::strtok(copy, ",");
-            
-            while (breakableBlockYValue != NULL)
-            {
-                int breakableBlockYValueInt = atoi(breakableBlockYValue);
-                breakableBlockYValues.push_back(breakableBlockYValueInt);
-                
-                breakableBlockYValue = strtok(NULL, ","); // Get next breakable block Y Value
-            }
-            
-            free(copy);
-            free(breakableBlockYValue);
-        }
-        
-        if (d.HasMember(breakableBlockPowerUpFlagsKey))
-        {
-            const char *breakableBlockPowerUpFlagsArray = d[breakableBlockPowerUpFlagsKey].GetString();
-            
-            char *copy = strdup(breakableBlockPowerUpFlagsArray);
-            
-            char *breakableBlockPowerUpFlag = std::strtok(copy, ",");
-            
-            while (breakableBlockPowerUpFlag != NULL)
-            {
-                int breakableBlockPowerUpFlagInt = atoi(breakableBlockPowerUpFlag);
-                breakableBlockPowerUpFlags.push_back(breakableBlockPowerUpFlagInt);
-                
-                breakableBlockPowerUpFlag = strtok(NULL, ","); // Get next breakable block Power Up Flag
-            }
-            
-            free(copy);
-            free(breakableBlockPowerUpFlag);
-        }
-        
+        int numBreakableBlocks = d[numBreakableBlocksKey].GetInt();
         for(int i = 0; i < numBreakableBlocks; i++)
         {
             m_breakableBlocks.push_back(std::unique_ptr<BreakableBlock>(new BreakableBlock(breakableBlockXValues.at(i), breakableBlockYValues.at(i), breakableBlockPowerUpFlags.at(i))));

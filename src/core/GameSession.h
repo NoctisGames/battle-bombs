@@ -63,6 +63,8 @@ protected:
     void handlePositionAndDirectionUpdate(rapidjson::Document &d, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex);
 
     void handleClientEventsArrayInDocument(rapidjson::Document &d);
+    
+    void handleShortArrayInDocument(rapidjson::Document &d, const char *shortArrayKey, std::vector<short> &shortArray, short sentinelValue);
 
     void handlePlayerEvent(short event);
 

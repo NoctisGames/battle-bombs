@@ -121,28 +121,33 @@ void GameSession::handlePositionAndDirectionUpdate(rapidjson::Document& d, const
 void GameSession::handleClientEventsArrayInDocument(rapidjson::Document &d)
 {
     static const char *eventsKey = "events";
+    
+    handleShortArrayInDocument(d, eventsKey, m_sEventIds, 0);
+}
 
-    if (d.HasMember(eventsKey))
+void GameSession::handleShortArrayInDocument(rapidjson::Document &d, const char *shortArrayKey, std::vector<short> &shortArray, short sentinelValue)
+{
+    if (d.HasMember(shortArrayKey))
     {
-        const char *eventsArray = d[eventsKey].GetString();
-
-        char *copy = strdup(eventsArray);
-
-        char *event = std::strtok(copy, ",");
-
-        while (event != NULL)
+        const char *charArray = d[shortArrayKey].GetString();
+        
+        char *copy = strdup(charArray);
+        
+        char *value = std::strtok(copy, ",");
+        
+        while (value != NULL)
         {
-            short eventShort = atoi(event);
-            if (eventShort > 0)
+            short shortValue = atoi(value);
+            if (shortValue != sentinelValue)
             {
-                m_sEventIds.push_back(eventShort);
+                shortArray.push_back(shortValue);
             }
-
-            event = strtok(NULL, ","); // Get next event
+            
+            value = strtok(NULL, ","); // Get next event
         }
-
+        
         free(copy);
-        free(event);
+        free(value);
     }
 }
 
