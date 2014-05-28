@@ -18,7 +18,7 @@
 #include "BombGameObject.h"
 #include "Explosion.h"
 #include "PowerUp.h"
-#include "SoundListener.h"
+#include "GameListener.h"
 
 GameScreen::GameScreen(const char *username) : GameSession()
 {
@@ -35,7 +35,7 @@ GameScreen::GameScreen(const char *username) : GameSession()
     
     m_dPad = std::unique_ptr<DPadControl>(new DPadControl(2.15f, 2.15f, 4.3f, 4.3f));
     
-    m_soundListener = std::unique_ptr<SoundListener>(new SoundListener());
+    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
     
     init();
 }
@@ -450,7 +450,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         int numPlayers = d[numPlayersKey].GetInt();
         for(int i = 0; i < numPlayers; i++)
         {
-            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(0, 0, m_soundListener.get())));
+            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(0, 0, m_gameListener.get())));
         }
         
         clientUpdate(d, isBeginGame);

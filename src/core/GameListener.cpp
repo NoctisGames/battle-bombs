@@ -1,20 +1,20 @@
 //
-//  SoundListener.cpp
+//  GameListener.cpp
 //  bomberparty
 //
 //  Created by Stephen Gowen on 5/28/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#include "SoundListener.h"
+#include "GameListener.h"
 #include "Assets.h"
 
-SoundListener::SoundListener()
+GameListener::GameListener()
 {
     // No setup required
 }
 
-void SoundListener::playSound(short soundId)
+void GameListener::playSound(short soundId)
 {
     Assets::getInstance()->addSoundIdToPlayQueue(soundId);
 }

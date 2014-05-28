@@ -13,7 +13,7 @@
 #include "DPadControl.h"
 #include "ActiveButton.h"
 
-class SoundListener;
+class GameListener;
 class TouchEvent;
 class Vector2D;
 class Rectangle;
@@ -79,7 +79,7 @@ protected:
 	int m_iScreenState;
 
 private:
-    std::unique_ptr<SoundListener> m_soundListener;
+    std::unique_ptr<GameListener> m_gameListener;
 	std::vector<const char *> m_serverMessages;
     std::vector<const char *> m_serverMessagesBuffer;
 	std::vector<short> m_sLocalEventIds;

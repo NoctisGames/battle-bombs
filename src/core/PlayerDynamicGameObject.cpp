@@ -17,9 +17,9 @@
 #include "Explosion.h"
 #include "PowerUp.h"
 #include "ResourceConstants.h"
-#include "SoundListener.h"
+#include "GameListener.h"
 
-PlayerDynamicGameObject::PlayerDynamicGameObject(float x, float y, SoundListener *soundListener, int direction, float width, float height) : DynamicGameObject(x, y, width, height, 0)
+PlayerDynamicGameObject::PlayerDynamicGameObject(float x, float y, GameListener *gameListener, int direction, float width, float height) : DynamicGameObject(x, y, width, height, 0)
 {
     m_bounds->getLowerLeft().set(x - width / 4, y - height / 2);
     m_bounds->setWidth(width / 2);
@@ -35,7 +35,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(float x, float y, SoundListener
     m_iMaxBombCount = 1;
     m_iCurrentBombCount = 0;
     
-    m_soundListener = soundListener;
+    m_gameListener = gameListener;
 
     m_playerState = ALIVE;
 }
@@ -185,14 +185,14 @@ void PlayerDynamicGameObject::onBombDropped()
 {
     m_iCurrentBombCount++;
     
-    m_soundListener->playSound(SOUND_PLANT_BOMB);
+    m_gameListener->playSound(SOUND_PLANT_BOMB);
 }
 
 void PlayerDynamicGameObject::onBombExploded()
 {
     m_iCurrentBombCount--;
     
-    m_soundListener->playSound(SOUND_EXPLOSION);
+    m_gameListener->playSound(SOUND_EXPLOSION);
 }
 
 bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explosion >> &explosions)
@@ -216,7 +216,7 @@ void PlayerDynamicGameObject::onDeath()
     m_playerState = DYING;
     m_fStateTime = 0;
     
-    m_soundListener->playSound(SOUND_DEATH);
+    m_gameListener->playSound(SOUND_DEATH);
 }
 
 bool PlayerDynamicGameObject::isAbleToDropAdditionalBomb()
