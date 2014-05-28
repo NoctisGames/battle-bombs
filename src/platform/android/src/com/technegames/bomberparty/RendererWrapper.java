@@ -25,7 +25,7 @@ public final class RendererWrapper implements Renderer
 	private static final String DIRECTION = "Direction";
 	private static final short CLIENT_UPDATE = 1338;
 
-	// Definitions from src/core/Assets.h
+	// Definitions from src/core/ResourceConstants.h
 	private static final short MUSIC_STOP = 1;
 	private static final short MUSIC_PLAY = 2;
 	private static final short SOUND_PLANT_BOMB = 1;

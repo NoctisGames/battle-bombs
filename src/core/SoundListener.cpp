@@ -11,7 +11,7 @@
 
 SoundListener::SoundListener()
 {
-    
+    // No setup required
 }
 
 void SoundListener::playSound(short soundId)

@@ -15,10 +15,11 @@
 #include "OverlapTester.h"
 #include "BombGameObject.h"
 #include "Explosion.h"
-#include "Assets.h"
 #include "PowerUp.h"
+#include "ResourceConstants.h"
+#include "SoundListener.h"
 
-PlayerDynamicGameObject::PlayerDynamicGameObject(float x, float y, int direction, float width, float height) : DynamicGameObject(x, y, width, height, 0)
+PlayerDynamicGameObject::PlayerDynamicGameObject(float x, float y, SoundListener *soundListener, int direction, float width, float height) : DynamicGameObject(x, y, width, height, 0)
 {
     m_bounds->getLowerLeft().set(x - width / 4, y - height / 2);
     m_bounds->setWidth(width / 2);
@@ -33,6 +34,8 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(float x, float y, int direction
 
     m_iMaxBombCount = 1;
     m_iCurrentBombCount = 0;
+    
+    m_soundListener = soundListener;
 
     m_playerState = ALIVE;
 }
@@ -181,15 +184,15 @@ bool PlayerDynamicGameObject::isMoving()
 void PlayerDynamicGameObject::onBombDropped()
 {
     m_iCurrentBombCount++;
-
-    Assets::getInstance()->addSoundIdToPlayQueue(SOUND_PLANT_BOMB);
+    
+    m_soundListener->playSound(SOUND_PLANT_BOMB);
 }
 
 void PlayerDynamicGameObject::onBombExploded()
 {
     m_iCurrentBombCount--;
-
-    Assets::getInstance()->addSoundIdToPlayQueue(SOUND_EXPLOSION);
+    
+    m_soundListener->playSound(SOUND_EXPLOSION);
 }
 
 bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explosion >> &explosions)
@@ -212,8 +215,8 @@ void PlayerDynamicGameObject::onDeath()
 {
     m_playerState = DYING;
     m_fStateTime = 0;
-
-    Assets::getInstance()->addSoundIdToPlayQueue(SOUND_DEATH);
+    
+    m_soundListener->playSound(SOUND_DEATH);
 }
 
 bool PlayerDynamicGameObject::isAbleToDropAdditionalBomb()

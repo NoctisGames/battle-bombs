@@ -12,7 +12,7 @@
 #import "Sound.h"
 
 #include "game.h"
-#include "Assets.h"
+#include "ResourceConstants.h"
 
 @interface OfflineGameViewController ()
 {

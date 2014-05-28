@@ -26,7 +26,7 @@ class SoundListener;
 class PlayerDynamicGameObject : public DynamicGameObject
 {
 public:
-    PlayerDynamicGameObject(float x, float y, SoundListener *soundListener = nullptr, int direction = DIRECTION_RIGHT, float width = PLAYER_WIDTH, float height = PLAYER_HEIGHT);
+    PlayerDynamicGameObject(float x, float y, SoundListener *soundListener, int direction = DIRECTION_RIGHT, float width = PLAYER_WIDTH, float height = PLAYER_HEIGHT);
     
     virtual void update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps);
     
@@ -70,6 +70,7 @@ protected:
     bool m_hasActivePowerUp;
     int m_activePowerUpIndex;
     Power_Up_Type m_activePowerUp;
+    SoundListener *m_soundListener;
 };
 
 #endif /* defined(__bomberparty__PlayerDynamicGameObject__) */

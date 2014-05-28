@@ -18,6 +18,7 @@
 #include "BombGameObject.h"
 #include "Explosion.h"
 #include "PowerUp.h"
+#include "SoundListener.h"
 
 GameScreen::GameScreen(const char *username) : GameSession()
 {
@@ -51,6 +52,7 @@ void GameScreen::handleServerUpdate(const char *message)
 
 void GameScreen::init()
 {
+    m_soundListener = std::unique_ptr<SoundListener>(new SoundListener());
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
     
     m_player = nullptr;
@@ -447,7 +449,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         int numPlayers = d[numPlayersKey].GetInt();
         for(int i = 0; i < numPlayers; i++)
         {
-            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(0, 0)));
+            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(0, 0, m_soundListener.get())));
         }
         
         clientUpdate(d, isBeginGame);

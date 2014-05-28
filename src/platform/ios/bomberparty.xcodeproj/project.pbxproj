@@ -241,6 +241,7 @@
 		BB98977B1922C40400AFF579 /* GameConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConstants.h; sourceTree = "<group>"; };
 		BB9948E019366E2900A8E599 /* SoundListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundListener.cpp; sourceTree = "<group>"; };
 		BB9948E119366E2900A8E599 /* SoundListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundListener.h; sourceTree = "<group>"; };
+		BB9948E31936736600A8E599 /* ResourceConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceConstants.h; sourceTree = "<group>"; };
 		BB9D09AB19155C9E002CBFD3 /* bg_game.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = bg_game.aifc; sourceTree = "<group>"; };
 		BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PowerUp.cpp; sourceTree = "<group>"; };
 		BB9D93BD191FB4EC00AD9CCE /* PowerUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerUp.h; sourceTree = "<group>"; };
@@ -345,6 +346,9 @@
 				BB96EEC318B99A6900F7C356 /* Rectangle.h */,
 				BB96EEC418B99A6900F7C356 /* Renderer.cpp */,
 				BB96EEC518B99A6900F7C356 /* Renderer.h */,
+				BB9948E31936736600A8E599 /* ResourceConstants.h */,
+				BB9948E019366E2900A8E599 /* SoundListener.cpp */,
+				BB9948E119366E2900A8E599 /* SoundListener.h */,
 				BB96EEC618B99A6900F7C356 /* TextureRegion.cpp */,
 				BB96EEC718B99A6900F7C356 /* TextureRegion.h */,
 				BB96EEC818B99A6900F7C356 /* TouchEvent.cpp */,
@@ -353,8 +357,6 @@
 				BB96EECB18B99A6900F7C356 /* Triangle.h */,
 				BB96EECC18B99A6900F7C356 /* Vector2D.cpp */,
 				BB96EECD18B99A6900F7C356 /* Vector2D.h */,
-				BB9948E019366E2900A8E599 /* SoundListener.cpp */,
-				BB9948E119366E2900A8E599 /* SoundListener.h */,
 			);
 			name = core;
 			path = ../../core;
