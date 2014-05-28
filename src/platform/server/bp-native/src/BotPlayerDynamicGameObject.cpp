@@ -7,13 +7,14 @@
 //
 
 #include "pch.h"
-#include "PlayerDynamicGameObject.h"
+#include "BotPlayerDynamicGameObject.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
+#include "SoundListener.h"
 
-BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(float x, float y, int direction, float width, float height) : PlayerDynamicGameObject(x, y, direction, width, height)
+BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(float x, float y, SoundListener *soundListener, int direction, float width, float height) : PlayerDynamicGameObject(x, y, soundListener, direction, width, height)
 {
     // No further setup yet
 }

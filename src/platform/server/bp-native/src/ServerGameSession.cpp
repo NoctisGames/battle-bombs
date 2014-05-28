@@ -17,6 +17,7 @@
 #include "GameEvent.h"
 #include "BombGameObject.h"
 #include "Explosion.h"
+#include "SoundListener.h"
 
 //For RNG purposes
 #include <stdlib.h>
@@ -24,6 +25,8 @@
 
 ServerGameSession::ServerGameSession()
 {
+    m_soundListener = std::unique_ptr<SoundListener>(new SoundListener());
+
     init();
 }
 
@@ -31,14 +34,14 @@ void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
 {
     init();
 
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM, DIRECTION_RIGHT)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, DIRECTION_LEFT)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, DIRECTION_RIGHT)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP, DIRECTION_LEFT)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM, DIRECTION_UP)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, DIRECTION_UP)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, DIRECTION_DOWN)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP, DIRECTION_DOWN)));
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM, m_soundListener.get(), DIRECTION_RIGHT)));
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, m_soundListener.get(), DIRECTION_LEFT)));
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, m_soundListener.get(), DIRECTION_RIGHT)));
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP, m_soundListener.get(), DIRECTION_LEFT)));
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM, m_soundListener.get(), DIRECTION_UP)));
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, m_soundListener.get(), DIRECTION_UP)));
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, m_soundListener.get(), DIRECTION_DOWN)));
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP, m_soundListener.get(), DIRECTION_DOWN)));
 
     srand(time(NULL));
 

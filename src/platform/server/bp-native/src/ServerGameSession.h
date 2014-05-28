@@ -11,6 +11,8 @@
 
 #include "GameSession.h"
 
+class SoundListener;
+
 class ServerGameSession : public GameSession
 {
 public:
@@ -33,6 +35,8 @@ public:
     int getBreakableBlockPowerUpFlag(short breakableBlockIndex);
 
 private:
+    std::unique_ptr<SoundListener> m_soundListener;
+    
     virtual void updateRunning(float deltaTime);
 
     virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex, bool isBeginGame);

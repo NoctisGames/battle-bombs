@@ -35,7 +35,6 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/32229614/Assets.o \
 	${OBJECTDIR}/_ext/32229614/BombGameObject.o \
 	${OBJECTDIR}/_ext/32229614/BreakableBlock.o \
 	${OBJECTDIR}/_ext/32229614/DynamicGameObject.o \
@@ -50,11 +49,11 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/32229614/PlayerDynamicGameObject.o \
 	${OBJECTDIR}/_ext/32229614/PowerUp.o \
 	${OBJECTDIR}/_ext/32229614/Rectangle.o \
-	${OBJECTDIR}/_ext/32229614/TextureRegion.o \
 	${OBJECTDIR}/_ext/32229614/Triangle.o \
 	${OBJECTDIR}/_ext/32229614/Vector2D.o \
 	${OBJECTDIR}/src/BotPlayerDynamicGameObject.o \
 	${OBJECTDIR}/src/ServerGameSession.o \
+	${OBJECTDIR}/src/SoundListener.o \
 	${OBJECTDIR}/src/bp_room_adaptor.o
 
 
@@ -81,11 +80,6 @@ LDLIBSOPTIONS=
 dist/libBpNative.dll: ${OBJECTFILES}
 	${MKDIR} -p dist
 	${LINK.cc} -o dist/libBpNative.dll ${OBJECTFILES} ${LDLIBSOPTIONS} -shared
-
-${OBJECTDIR}/_ext/32229614/Assets.o: ../../../core/Assets.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/Assets.o ../../../core/Assets.cpp
 
 ${OBJECTDIR}/_ext/32229614/BombGameObject.o: ../../../core/BombGameObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
@@ -157,11 +151,6 @@ ${OBJECTDIR}/_ext/32229614/Rectangle.o: ../../../core/Rectangle.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/Rectangle.o ../../../core/Rectangle.cpp
 
-${OBJECTDIR}/_ext/32229614/TextureRegion.o: ../../../core/TextureRegion.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/TextureRegion.o ../../../core/TextureRegion.cpp
-
 ${OBJECTDIR}/_ext/32229614/Triangle.o: ../../../core/Triangle.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
 	${RM} "$@.d"
@@ -181,6 +170,11 @@ ${OBJECTDIR}/src/ServerGameSession.o: src/ServerGameSession.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ServerGameSession.o src/ServerGameSession.cpp
+
+${OBJECTDIR}/src/SoundListener.o: src/SoundListener.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SoundListener.o src/SoundListener.cpp
 
 ${OBJECTDIR}/src/bp_room_adaptor.o: src/bp_room_adaptor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

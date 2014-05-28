@@ -4,7 +4,6 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>../../../core/Assets.h</itemPath>
       <itemPath>../../../core/BombGameObject.h</itemPath>
       <itemPath>src/BotPlayerDynamicGameObject.h</itemPath>
       <itemPath>../../../core/BreakableBlock.h</itemPath>
@@ -27,8 +26,9 @@
       <itemPath>../../../core/PowerUpType.h</itemPath>
       <itemPath>../../../core/Rectangle.h</itemPath>
       <itemPath>../../../core/Renderer.h</itemPath>
+      <itemPath>../../../core/ResourceConstants.h</itemPath>
       <itemPath>src/ServerGameSession.h</itemPath>
-      <itemPath>../../../core/TextureRegion.h</itemPath>
+      <itemPath>../../../core/SoundListener.h</itemPath>
       <itemPath>../../../core/Triangle.h</itemPath>
       <itemPath>../../../core/Vector2D.h</itemPath>
       <itemPath>../../../core/macros.h</itemPath>
@@ -41,7 +41,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>../../../core/Assets.cpp</itemPath>
       <itemPath>../../../core/BombGameObject.cpp</itemPath>
       <itemPath>src/BotPlayerDynamicGameObject.cpp</itemPath>
       <itemPath>../../../core/BreakableBlock.cpp</itemPath>
@@ -58,7 +57,7 @@
       <itemPath>../../../core/PowerUp.cpp</itemPath>
       <itemPath>../../../core/Rectangle.cpp</itemPath>
       <itemPath>src/ServerGameSession.cpp</itemPath>
-      <itemPath>../../../core/TextureRegion.cpp</itemPath>
+      <itemPath>src/SoundListener.cpp</itemPath>
       <itemPath>../../../core/Triangle.cpp</itemPath>
       <itemPath>../../../core/Vector2D.cpp</itemPath>
       <itemPath>src/bp_room_adaptor.cpp</itemPath>
@@ -103,10 +102,6 @@
           <output>dist/libBpNative.dll</output>
         </linkerTool>
       </compileType>
-      <item path="../../../core/Assets.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/Assets.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../../../core/BombGameObject.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/BombGameObject.h" ex="false" tool="3" flavor2="0">
@@ -192,9 +187,9 @@
       </item>
       <item path="../../../core/Renderer.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/TextureRegion.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/ResourceConstants.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/TextureRegion.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/SoundListener.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/Triangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -215,6 +210,8 @@
       <item path="src/ServerGameSession.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ServerGameSession.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/SoundListener.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/bp_room_adaptor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -254,10 +251,6 @@
           <output>dist/libBpNative.dll</output>
         </linkerTool>
       </compileType>
-      <item path="../../../core/Assets.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/Assets.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../../../core/BombGameObject.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/BombGameObject.h" ex="false" tool="3" flavor2="0">
@@ -343,9 +336,9 @@
       </item>
       <item path="../../../core/Renderer.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/TextureRegion.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/ResourceConstants.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/TextureRegion.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/SoundListener.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/Triangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -366,6 +359,8 @@
       <item path="src/ServerGameSession.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ServerGameSession.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/SoundListener.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/bp_room_adaptor.cpp" ex="false" tool="1" flavor2="0">
       </item>
