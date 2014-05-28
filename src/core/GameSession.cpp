@@ -55,6 +55,71 @@ bool GameSession::isPlayerAliveAtIndex(short playerIndex)
     return m_players.at(playerIndex).get()->getPlayerState() == Player_State::ALIVE;
 }
 
+void GameSession::updateCommon(float deltaTime)
+{
+    for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = m_bombs.begin(); itr != m_bombs.end(); )
+    {
+		(**itr).update(deltaTime, m_explosions, m_insideBlocks, m_breakableBlocks);
+        
+        if((**itr).isExploding())
+        {
+            itr = m_bombs.erase(itr);
+        }
+        else
+        {
+            itr++;
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<BreakableBlock>>::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end(); )
+    {
+        if((**itr).isDestroyed())
+        {
+			if((**itr).hasPowerUp())
+			{
+				m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp((**itr).getX(), (**itr).getY(), (**itr).getPowerUpFlag())));
+			}
+            
+            itr = m_breakableBlocks.erase(itr);
+        }
+        else
+        {
+            itr++;
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<Explosion>>::iterator itr = m_explosions.begin(); itr != m_explosions.end(); )
+    {
+		(**itr).update(deltaTime);
+        
+        if((**itr).isComplete())
+        {
+            itr = m_explosions.erase(itr);
+        }
+        else
+        {
+            itr++;
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+		(**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks, m_powerUps);
+    }
+    
+	for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = m_powerUps.begin(); itr != m_powerUps.end(); )
+	{
+		if((**itr).isPickedUp())
+		{
+			itr = m_powerUps.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
+	}
+}
+
 void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
 {
     static const char *playerIndex0Key = "playerIndex0";

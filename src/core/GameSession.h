@@ -57,6 +57,8 @@ protected:
     virtual void updateRunning(float deltaTime) = 0;
 
     virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex, bool isBeginGame) = 0;
+    
+    void updateCommon(float deltaTime);
 
     void clientUpdate(rapidjson::Document &d, bool isBeginGame);
 
