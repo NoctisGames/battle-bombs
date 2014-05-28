@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>../../../core/Assets.h</itemPath>
       <itemPath>../../../core/BombGameObject.h</itemPath>
+      <itemPath>src/BotPlayerDynamicGameObject.h</itemPath>
       <itemPath>../../../core/BreakableBlock.h</itemPath>
       <itemPath>../../../core/DynamicGameObject.h</itemPath>
       <itemPath>../../../core/DynamicGridGameObject.h</itemPath>
@@ -42,6 +43,7 @@
                    projectFiles="true">
       <itemPath>../../../core/Assets.cpp</itemPath>
       <itemPath>../../../core/BombGameObject.cpp</itemPath>
+      <itemPath>src/BotPlayerDynamicGameObject.cpp</itemPath>
       <itemPath>../../../core/BreakableBlock.cpp</itemPath>
       <itemPath>../../../core/DynamicGameObject.cpp</itemPath>
       <itemPath>../../../core/DynamicGridGameObject.cpp</itemPath>
@@ -206,6 +208,10 @@
       </item>
       <item path="../../../core/pch.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/BotPlayerDynamicGameObject.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/BotPlayerDynamicGameObject.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ServerGameSession.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ServerGameSession.h" ex="false" tool="3" flavor2="0">
@@ -352,6 +358,10 @@
       <item path="../../../core/macros.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/pch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/BotPlayerDynamicGameObject.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/BotPlayerDynamicGameObject.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ServerGameSession.cpp" ex="false" tool="1" flavor2="0">
       </item>
