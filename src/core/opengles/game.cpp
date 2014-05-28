@@ -147,9 +147,7 @@ short get_current_sound_id()
 
 short get_oldest_event_id()
 {
-    short latestEventId = gameScreen->getFirstEventId();
-    gameScreen->eraseFirstEventId();
-    return latestEventId;
+    return gameScreen->popOldestEventId();
 }
 
 bool is_time_to_send_keep_alive()

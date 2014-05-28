@@ -135,14 +135,9 @@ int GameScreen::getPlayerDirection()
     return getPlayerDirectionAtIndex(m_sPlayerIndex);
 }
 
-short GameScreen::getFirstEventId()
+short GameScreen::popOldestEventId()
 {
-    return m_gameListener->getFirstEventId();
-}
-
-void GameScreen::eraseFirstEventId()
-{
-    m_gameListener->eraseFirstEventId();
+    return m_gameListener->popOldestEventId();
 }
 
 bool GameScreen::isTimeToSendKeepAlive()
@@ -161,7 +156,7 @@ void GameScreen::updateRunning(float deltaTime)
 {
     if(m_player->isHitByExplosion(m_explosions))
     {
-        m_gameListener->addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
+        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
     }
     
     std::vector<short> localConsumedEventIds = m_gameListener->freeLocalEventIds();
@@ -207,7 +202,7 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
                 {
                     if(m_player->isAbleToDropAdditionalBomb())
                     {
-                        m_gameListener->addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+                        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
                     }
                 }
 				/*else if(m_activeButton->isPointInBounds(*m_touchPoint))
@@ -230,7 +225,7 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
                 {
                     if(m_player->getPlayerState() == ALIVE)
                     {
-                        m_gameListener->addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
+                        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
                     }
                 }
                 return;
@@ -358,7 +353,7 @@ void GameScreen::updatePlayerDirection()
         
         if(m_player->getDirection() != directionInput || !m_player->isMoving())
         {
-            m_gameListener->addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + directionInput + 1);
+            m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + directionInput + 1);
         }
     }
 }

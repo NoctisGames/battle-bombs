@@ -14,27 +14,23 @@ GameListener::GameListener()
     // No setup required
 }
 
-void GameListener::addEvent(short eventId)
+void GameListener::addLocalEvent(short eventId)
 {
     m_sLocalEventIds.push_back(eventId);
 }
 
-short GameListener::getFirstEventId()
+short GameListener::popOldestEventId()
 {
     if(m_sLocalConsumedEventIds.size() > 0)
     {
-		return m_sLocalConsumedEventIds.front();
+		short oldestEvent = m_sLocalConsumedEventIds.front();
+        
+        m_sLocalConsumedEventIds.erase(m_sLocalConsumedEventIds.begin());
+        
+        return oldestEvent;
     }
     
     return 0;
-}
-
-void GameListener::eraseFirstEventId()
-{
-    if(m_sLocalConsumedEventIds.size() > 0)
-    {
-        m_sLocalConsumedEventIds.erase(m_sLocalConsumedEventIds.begin());
-    }
 }
 
 void GameListener::addServerMessage(const char *serverMessage)

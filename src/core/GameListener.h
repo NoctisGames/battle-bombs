@@ -20,11 +20,9 @@ class GameListener
 public:
     GameListener();
     
-    void addEvent(short eventId);
+    void addLocalEvent(short eventId);
     
-    short getFirstEventId();
-    
-    void eraseFirstEventId();
+    short popOldestEventId();
     
     void addServerMessage(const char *serverMessage);
     

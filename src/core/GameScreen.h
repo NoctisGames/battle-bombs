@@ -57,9 +57,7 @@ public:
     
     int getPlayerDirection();
     
-    short getFirstEventId();
-    
-    void eraseFirstEventId();
+    short popOldestEventId();
     
     bool isTimeToSendKeepAlive();
 
