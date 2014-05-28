@@ -19,13 +19,13 @@
 #include "rapidjson/document.h"
 
 #include "GameState.h"
-#include "PlayerDynamicGameObject.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "PowerUp.h"
 
 class BombGameObject;
 class Explosion;
+class PlayerDynamicGameObject;
 
 class GameSession
 {

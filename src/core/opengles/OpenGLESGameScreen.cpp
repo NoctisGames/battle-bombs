@@ -16,6 +16,7 @@
 #include "Rectangle.h"
 #include "GameButton.h"
 #include "OpenGLESRenderer.h"
+#include "GameConstants.h"
 
 extern "C"
 {

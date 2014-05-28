@@ -87,8 +87,6 @@ private:
     
     void updateInputSpectating(std::vector<TouchEvent> &touchEvents);
     
-    void updateCommon(float deltaTime);
-    
     void spectateNextLivePlayer();
     
     void updatePlayerDirection();

@@ -18,6 +18,7 @@
 #include "BombGameObject.h"
 #include "Explosion.h"
 #include "PowerUp.h"
+#include "PlayerDynamicGameObject.h"
 #include "GameListener.h"
 
 GameScreen::GameScreen(const char *username) : GameSession()

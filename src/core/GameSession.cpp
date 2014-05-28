@@ -20,6 +20,7 @@
 #include "BombGameObject.h"
 #include "Explosion.h"
 #include "PowerUp.h"
+#include "PlayerDynamicGameObject.h"
 
 GameSession::GameSession()
 {
