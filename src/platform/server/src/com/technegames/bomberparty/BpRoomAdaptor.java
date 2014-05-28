@@ -6,6 +6,8 @@ import com.shephertz.app42.server.idomain.IRoom;
 import com.shephertz.app42.server.idomain.IUser;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -167,6 +169,34 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
         {
             update(_room.getId(), deltaTime);
 
+            short eventId = get_oldest_event_id(_room.getId());
+
+            if (eventId > 0)
+            {
+                String eventsMessage = eventId + ",";
+                while ((eventId = get_oldest_event_id(_room.getId())) > 0)
+                {
+                    eventsMessage += eventId + ",";
+                }
+
+                eventsMessage += "0"; // Terminate with 0
+
+                try
+                {
+                    JSONObject tobeSent = new JSONObject();
+                    tobeSent.put(EVENT_TYPE, CLIENT_UPDATE);
+                    tobeSent.put(EVENTS, eventsMessage);
+
+                    appendBotData(tobeSent);
+
+                    _room.BroadcastChat(SERVER, tobeSent.toString());
+                }
+                catch (JSONException e)
+                {
+                    System.err.println(e.toString());
+                }
+            }
+
             if (_inGameUserSessionDataMap.isEmpty())
             {
                 _isGameRunning = false;
@@ -176,18 +206,16 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
             {
                 // In the future, don't check the map, check
                 // the number of active players (this includes bots).
-                short i = 0;
-                for (Map.Entry entry : _inGameUserSessionDataMap.entrySet())
+                short numAlive = 0;
+                for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
                 {
-                    UserSessionData userSessionData = (UserSessionData) entry.getValue();
-
-                    if (is_player_alive(_room.getId(), userSessionData._playerIndex))
+                    if (is_player_alive(_room.getId(), playerIndex))
                     {
-                        i++;
+                        numAlive++;
                     }
                 }
 
-                if (i <= 1)
+                if (numAlive <= 1)
                 {
                     // Game has ended
                     // TODO, send out a player won event
@@ -214,8 +242,6 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 
                 _inGameUserSessionDataMap.clear();
 
-                // In the future, we would send 8 for "numPlayers" regardless,
-                // because we pad the rest of the game with bots until the next round
                 short i = 0;
                 for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
                 {
@@ -232,7 +258,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 
                     i++;
                 }
-                
+
                 init(_room.getId(), _inGameUserSessionDataMap.size());
 
                 String beginGameCommand = getGameStateCommand(BEGIN_GAME);
@@ -260,8 +286,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
         {
             JSONObject tobeSent = new JSONObject();
             tobeSent.put(EVENT_TYPE, eventType);
-            // TODO, read this value from the C++ side, since there could be bots in play
-            tobeSent.put(NUM_PLAYERS, _inGameUserSessionDataMap.size());
+            tobeSent.put(NUM_PLAYERS, get_num_players(_room.getId()));
 
             for (Map.Entry entry : _inGameUserSessionDataMap.entrySet())
             {
@@ -275,6 +300,8 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                 tobeSent.put("playerIndex" + playerIndex + "Y", get_player_y(_room.getId(), playerIndex));
                 tobeSent.put("playerIndex" + playerIndex + "Direction", get_player_direction(_room.getId(), playerIndex));
             }
+
+            appendBotData(tobeSent);
 
             int numBreakableBlocks = get_num_breakable_blocks(_room.getId());
             final StringBuilder breakableBlockXValuesStringBuilder = new StringBuilder();
@@ -307,6 +334,20 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
         }
 
         return null;
+    }
+
+    private void appendBotData(JSONObject tobeSent) throws JSONException
+    {
+        for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
+        {
+            if (is_player_bot(_room.getId(), playerIndex))
+            {
+                tobeSent.put("playerIndex" + playerIndex, "Bot " + playerIndex);
+                tobeSent.put("playerIndex" + playerIndex + "X", get_player_x(_room.getId(), playerIndex));
+                tobeSent.put("playerIndex" + playerIndex + "Y", get_player_y(_room.getId(), playerIndex));
+                tobeSent.put("playerIndex" + playerIndex + "Direction", get_player_direction(_room.getId(), playerIndex));
+            }
+        }
     }
 
     private void updateRoomWithMessage(final String message)
@@ -393,6 +434,10 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 
     private static native void update(String roomId, float deltaTime);
 
+    private static native int get_num_players(String roomId);
+
+    private static native boolean is_player_bot(String roomId, short playerIndex);
+
     private static native float get_player_x(String roomId, short playerIndex);
 
     private static native float get_player_y(String roomId, short playerIndex);
@@ -408,4 +453,6 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     private static native int get_breakable_block_grid_y(String roomId, int breakable_block_index);
 
     private static native int get_breakable_block_power_up_flag(String roomId, int breakable_block_index);
+
+    private static native short get_oldest_event_id(String roomId);
 }

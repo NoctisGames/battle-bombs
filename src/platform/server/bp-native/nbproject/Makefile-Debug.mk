@@ -52,8 +52,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/32229614/Triangle.o \
 	${OBJECTDIR}/_ext/32229614/Vector2D.o \
 	${OBJECTDIR}/src/BotPlayerDynamicGameObject.o \
+	${OBJECTDIR}/src/GameListener.o \
 	${OBJECTDIR}/src/ServerGameSession.o \
-	${OBJECTDIR}/src/SoundListener.o \
 	${OBJECTDIR}/src/bp_room_adaptor.o
 
 
@@ -166,15 +166,15 @@ ${OBJECTDIR}/src/BotPlayerDynamicGameObject.o: src/BotPlayerDynamicGameObject.cp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/BotPlayerDynamicGameObject.o src/BotPlayerDynamicGameObject.cpp
 
+${OBJECTDIR}/src/GameListener.o: src/GameListener.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/GameListener.o src/GameListener.cpp
+
 ${OBJECTDIR}/src/ServerGameSession.o: src/ServerGameSession.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ServerGameSession.o src/ServerGameSession.cpp
-
-${OBJECTDIR}/src/SoundListener.o: src/SoundListener.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SoundListener.o src/SoundListener.cpp
 
 ${OBJECTDIR}/src/bp_room_adaptor.o: src/bp_room_adaptor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

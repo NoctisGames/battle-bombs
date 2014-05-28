@@ -12,16 +12,30 @@
 #include "Rectangle.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
-#include "SoundListener.h"
+#include "GameListener.h"
+#include "GameEvent.h"
 
-BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(float x, float y, SoundListener *soundListener, int direction, float width, float height) : PlayerDynamicGameObject(x, y, soundListener, direction, width, height)
+// For Random Event Generation
+#include <stdlib.h>
+#include <time.h>
+
+BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction, float width, float height) : PlayerDynamicGameObject(playerIndex, x, y, gameListener, direction, true, width, height)
 {
-    // No further setup yet
+    // No further setup required
 }
 
 void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps)
 {
     PlayerDynamicGameObject::update(deltaTime, insideBlocks, breakableBlocks, powerUps);
 
-    // TODO
+    if (m_fStateTime > 1)
+    {
+        m_fStateTime = 0;
+
+        srand(time(NULL));
+
+        short randomEvent = rand() % 5 + 1;
+
+        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + randomEvent);
+    }
 }

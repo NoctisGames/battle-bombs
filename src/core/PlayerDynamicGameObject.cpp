@@ -19,7 +19,7 @@
 #include "ResourceConstants.h"
 #include "GameListener.h"
 
-PlayerDynamicGameObject::PlayerDynamicGameObject(float x, float y, GameListener *gameListener, int direction, float width, float height) : DynamicGameObject(x, y, width, height, 0)
+PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction, bool isBot, float width, float height) : DynamicGameObject(x, y, width, height, 0)
 {
     m_bounds->getLowerLeft().set(x - width / 4, y - height / 2);
     m_bounds->setWidth(width / 2);
@@ -34,7 +34,10 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(float x, float y, GameListener 
 
     m_iMaxBombCount = 1;
     m_iCurrentBombCount = 0;
-    
+
+    m_sPlayerIndex = playerIndex;
+    m_isBot = isBot;
+
     m_gameListener = gameListener;
 
     m_playerState = ALIVE;
@@ -184,14 +187,14 @@ bool PlayerDynamicGameObject::isMoving()
 void PlayerDynamicGameObject::onBombDropped()
 {
     m_iCurrentBombCount++;
-    
+
     m_gameListener->playSound(SOUND_PLANT_BOMB);
 }
 
 void PlayerDynamicGameObject::onBombExploded()
 {
     m_iCurrentBombCount--;
-    
+
     m_gameListener->playSound(SOUND_EXPLOSION);
 }
 
@@ -215,7 +218,7 @@ void PlayerDynamicGameObject::onDeath()
 {
     m_playerState = DYING;
     m_fStateTime = 0;
-    
+
     m_gameListener->playSound(SOUND_DEATH);
 }
 
@@ -232,4 +235,19 @@ short PlayerDynamicGameObject::getFirePower()
 Player_State PlayerDynamicGameObject::getPlayerState()
 {
     return m_playerState;
+}
+
+Power_Up_Type PlayerDynamicGameObject::getActivePowerUp()
+{
+    return m_activePowerUp;
+}
+
+short PlayerDynamicGameObject::getPlayerIndex()
+{
+    return m_sPlayerIndex;
+}
+
+bool PlayerDynamicGameObject::isBot()
+{
+    return m_isBot;
 }

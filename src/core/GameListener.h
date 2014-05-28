@@ -19,23 +19,23 @@ class GameListener
 {
 public:
     GameListener();
-    
+
     void addLocalEvent(short eventId);
-    
+
     short popOldestEventId();
-    
+
     void addServerMessage(const char *serverMessage);
-    
+
     std::vector<short> & freeLocalEventIds();
-    
+
     std::vector<const char *> & freeServerMessages();
-    
+
     void playSound(short soundId);
 
 private:
     std::vector<const char *> m_serverMessages;
     std::vector<const char *> m_serverMessagesBuffer;
-	std::vector<short> m_sLocalEventIds;
+    std::vector<short> m_sLocalEventIds;
     std::vector<short> m_sLocalConsumedEventIds;
 };
 

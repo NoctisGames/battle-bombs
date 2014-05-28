@@ -35,6 +35,10 @@ public:
     virtual void init() = 0;
 
     virtual void handleServerUpdate(const char *message) = 0;
+    
+    int getNumPlayers();
+    
+    bool isPlayerBotAtIndex(short playerIndex);
 
     float getPlayerXAtIndex(short playerIndex);
 

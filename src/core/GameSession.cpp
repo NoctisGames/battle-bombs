@@ -36,6 +36,16 @@ GameSession::GameSession()
     m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(NUM_GRID_CELLS_PER_ROW - 1, PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP + 1)));
 }
 
+int GameSession::getNumPlayers()
+{
+    return m_players.size();
+}
+
+bool GameSession::isPlayerBotAtIndex(short playerIndex)
+{
+    return m_players.at(playerIndex).get()->isBot();
+}
+
 float GameSession::getPlayerXAtIndex(short playerIndex)
 {
     return m_players.at(playerIndex).get()->getPosition().getX();
@@ -58,11 +68,11 @@ bool GameSession::isPlayerAliveAtIndex(short playerIndex)
 
 void GameSession::updateCommon(float deltaTime)
 {
-    for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = m_bombs.begin(); itr != m_bombs.end(); )
+    for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = m_bombs.begin(); itr != m_bombs.end();)
     {
-		(**itr).update(deltaTime, m_explosions, m_insideBlocks, m_breakableBlocks);
-        
-        if((**itr).isExploding())
+        (**itr).update(deltaTime, m_explosions, m_insideBlocks, m_breakableBlocks);
+
+        if ((**itr).isExploding())
         {
             itr = m_bombs.erase(itr);
         }
@@ -71,16 +81,16 @@ void GameSession::updateCommon(float deltaTime)
             itr++;
         }
     }
-    
-    for (std::vector<std::unique_ptr<BreakableBlock>>::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end(); )
+
+    for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end();)
     {
-        if((**itr).isDestroyed())
+        if ((**itr).isDestroyed())
         {
-			if((**itr).hasPowerUp())
-			{
-				m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp((**itr).getX(), (**itr).getY(), (**itr).getPowerUpFlag())));
-			}
-            
+            if ((**itr).hasPowerUp())
+            {
+                m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp((**itr).getX(), (**itr).getY(), (**itr).getPowerUpFlag())));
+            }
+
             itr = m_breakableBlocks.erase(itr);
         }
         else
@@ -88,12 +98,12 @@ void GameSession::updateCommon(float deltaTime)
             itr++;
         }
     }
-    
-    for (std::vector<std::unique_ptr<Explosion>>::iterator itr = m_explosions.begin(); itr != m_explosions.end(); )
+
+    for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = m_explosions.begin(); itr != m_explosions.end();)
     {
-		(**itr).update(deltaTime);
-        
-        if((**itr).isComplete())
+        (**itr).update(deltaTime);
+
+        if ((**itr).isComplete())
         {
             itr = m_explosions.erase(itr);
         }
@@ -102,23 +112,23 @@ void GameSession::updateCommon(float deltaTime)
             itr++;
         }
     }
-    
-    for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
     {
-		(**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks, m_powerUps);
+        (**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks, m_powerUps);
     }
-    
-	for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = m_powerUps.begin(); itr != m_powerUps.end(); )
-	{
-		if((**itr).isPickedUp())
-		{
-			itr = m_powerUps.erase(itr);
-		}
-		else
-		{
-			itr++;
-		}
-	}
+
+    for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end();)
+    {
+        if ((**itr).isPickedUp())
+        {
+            itr = m_powerUps.erase(itr);
+        }
+        else
+        {
+            itr++;
+        }
+    }
 }
 
 void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
@@ -175,10 +185,10 @@ void GameSession::handlePositionAndDirectionUpdate(rapidjson::Document& d, const
     {
         float playerX = d[keyX].GetDouble();
         m_players.at(playerIndex).get()->getPosition().setX(playerX);
-        
+
         float playerY = d[keyY].GetDouble();
         m_players.at(playerIndex).get()->getPosition().setY(playerY);
-        
+
         int playerDirection = d[keyDirection].GetInt();
         m_players.at(playerIndex).get()->setDirection(playerDirection);
     }
@@ -187,7 +197,7 @@ void GameSession::handlePositionAndDirectionUpdate(rapidjson::Document& d, const
 void GameSession::handleClientEventsArrayInDocument(rapidjson::Document &d)
 {
     static const char *eventsKey = "events";
-    
+
     handleShortArrayInDocument(d, eventsKey, m_sEventIds, 0);
 }
 
@@ -196,11 +206,11 @@ void GameSession::handleShortArrayInDocument(rapidjson::Document &d, const char 
     if (d.HasMember(shortArrayKey))
     {
         const char *charArray = d[shortArrayKey].GetString();
-        
+
         char *copy = strdup(charArray);
-        
+
         char *value = std::strtok(copy, ",");
-        
+
         while (value != NULL)
         {
             short shortValue = atoi(value);
@@ -208,10 +218,10 @@ void GameSession::handleShortArrayInDocument(rapidjson::Document &d, const char 
             {
                 shortArray.push_back(shortValue);
             }
-            
+
             value = strtok(NULL, ","); // Get next event
         }
-        
+
         free(copy);
         free(value);
     }

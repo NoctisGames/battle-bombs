@@ -23,12 +23,16 @@ extern "C"
 
     JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_update(JNIEnv* env, jclass cls, jstring room_id, jfloat delta_time);
 
+    JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1num_1players(JNIEnv* env, jclass cls, jstring room_id);
+
+    JNIEXPORT bool JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_is_1player_1bot(JNIEnv* env, jclass cls, jstring room_id, jshort player_index);
+
     JNIEXPORT float JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1player_1x(JNIEnv* env, jclass cls, jstring room_id, jshort player_index);
 
     JNIEXPORT float JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1player_1y(JNIEnv* env, jclass cls, jstring room_id, jshort player_index);
 
     JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1player_1direction(JNIEnv* env, jclass cls, jstring room_id, jshort player_index);
-    
+
     JNIEXPORT bool JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_is_1player_1alive(JNIEnv* env, jclass cls, jstring room_id, jshort player_index);
 
     JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1num_1breakable_1blocks(JNIEnv* env, jclass cls, jstring room_id);
@@ -38,6 +42,8 @@ extern "C"
     JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1breakable_1block_1grid_1y(JNIEnv* env, jclass cls, jstring room_id, jshort breakable_block_index);
 
     JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1breakable_1block_1power_1up_1flag(JNIEnv* env, jclass cls, jstring room_id, jshort breakable_block_index);
+
+    JNIEXPORT short JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1oldest_1event_1id(JNIEnv* env, jclass cls, jstring room_id);
 };
 
 struct RoomIdGameSessionPair
@@ -81,7 +87,7 @@ JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_start(JNIE
             itr++;
         }
     }
-    
+
     RoomIdGameSessionPair newRoomIdGameSessionPair = {nativeString, new ServerGameSession()};
     roomIdGameSessionPairs.push_back(newRoomIdGameSessionPair);
 }
@@ -121,6 +127,34 @@ JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_update(JNI
     {
         gameSession->update(delta_time);
     }
+}
+
+JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1num_1players(JNIEnv* env, jclass cls, jstring room_id)
+{
+    UNUSED(env);
+    UNUSED(cls);
+
+    ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
+    if (gameSession != nullptr)
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
+JNIEXPORT bool JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_is_1player_1bot(JNIEnv* env, jclass cls, jstring room_id, jshort player_index)
+{
+    UNUSED(env);
+    UNUSED(cls);
+
+    ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
+    if (gameSession != nullptr)
+    {
+        return false;
+    }
+
+    return false;
 }
 
 JNIEXPORT float JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1player_1x(JNIEnv* env, jclass cls, jstring room_id, jshort player_index)
@@ -175,7 +209,7 @@ JNIEXPORT bool JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_is_1player
     {
         return gameSession->isPlayerAliveAtIndex(player_index);
     }
-    
+
     return false;
 }
 
@@ -189,7 +223,7 @@ JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1num_1b
     {
         return gameSession->getNumBreakableBlocks();
     }
-    
+
     return 0;
 }
 
@@ -203,7 +237,7 @@ JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1breaka
     {
         return gameSession->getBreakableBlockGridX(breakable_block_index);
     }
-    
+
     return 0;
 }
 
@@ -217,7 +251,7 @@ JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1breaka
     {
         return gameSession->getBreakableBlockGridY(breakable_block_index);
     }
-    
+
     return 0;
 }
 
@@ -231,6 +265,20 @@ JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1breaka
     {
         return gameSession->getBreakableBlockPowerUpFlag(breakable_block_index);
     }
-    
+
+    return 0;
+}
+
+JNIEXPORT short JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1oldest_1event_1id(JNIEnv* env, jclass cls, jstring room_id)
+{
+    UNUSED(env);
+    UNUSED(cls);
+
+    ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
+    if (gameSession != nullptr)
+    {
+        return gameSession->popOldestEventId();
+    }
+
     return 0;
 }

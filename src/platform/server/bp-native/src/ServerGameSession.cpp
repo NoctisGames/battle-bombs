@@ -17,7 +17,9 @@
 #include "GameEvent.h"
 #include "BombGameObject.h"
 #include "Explosion.h"
-#include "SoundListener.h"
+#include "GameListener.h"
+#include "PlayerDynamicGameObject.h"
+#include "BotPlayerDynamicGameObject.h"
 
 //For RNG purposes
 #include <stdlib.h>
@@ -25,7 +27,7 @@
 
 ServerGameSession::ServerGameSession()
 {
-    m_soundListener = std::unique_ptr<SoundListener>(new SoundListener());
+    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
 
     init();
 }
@@ -34,14 +36,37 @@ void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
 {
     init();
 
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM, m_soundListener.get(), DIRECTION_RIGHT)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, m_soundListener.get(), DIRECTION_LEFT)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, m_soundListener.get(), DIRECTION_RIGHT)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP, m_soundListener.get(), DIRECTION_LEFT)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM, m_soundListener.get(), DIRECTION_UP)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, m_soundListener.get(), DIRECTION_UP)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, m_soundListener.get(), DIRECTION_DOWN)));
-    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP, m_soundListener.get(), DIRECTION_DOWN)));
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 1 ?
+            new PlayerDynamicGameObject(0, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM, m_gameListener.get(), DIRECTION_RIGHT) :
+            new BotPlayerDynamicGameObject(0, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM, m_gameListener.get(), DIRECTION_RIGHT)));
+
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 2 ?
+            new PlayerDynamicGameObject(1, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, m_gameListener.get(), DIRECTION_LEFT) :
+            new BotPlayerDynamicGameObject(1, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, m_gameListener.get(), DIRECTION_LEFT)));
+
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 3 ?
+            new PlayerDynamicGameObject(2, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, m_gameListener.get(), DIRECTION_RIGHT) :
+            new BotPlayerDynamicGameObject(2, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, m_gameListener.get(), DIRECTION_RIGHT)));
+
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 4 ?
+            new PlayerDynamicGameObject(3, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP, m_gameListener.get(), DIRECTION_LEFT) :
+            new BotPlayerDynamicGameObject(3, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP, m_gameListener.get(), DIRECTION_LEFT)));
+
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 5 ?
+            new PlayerDynamicGameObject(4, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM, m_gameListener.get(), DIRECTION_UP) :
+            new BotPlayerDynamicGameObject(4, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM, m_gameListener.get(), DIRECTION_UP)));
+
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 6 ?
+            new PlayerDynamicGameObject(5, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, m_gameListener.get(), DIRECTION_UP) :
+            new BotPlayerDynamicGameObject(5, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, m_gameListener.get(), DIRECTION_UP)));
+
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 7 ?
+            new PlayerDynamicGameObject(6, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, m_gameListener.get(), DIRECTION_DOWN) :
+            new BotPlayerDynamicGameObject(6, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, m_gameListener.get(), DIRECTION_DOWN)));
+
+    m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 8 ?
+            new PlayerDynamicGameObject(7, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP, m_gameListener.get(), DIRECTION_DOWN) :
+            new BotPlayerDynamicGameObject(7, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP, m_gameListener.get(), DIRECTION_DOWN)));
 
     srand(time(NULL));
 
@@ -111,24 +136,34 @@ void ServerGameSession::init()
 
 void ServerGameSession::handleServerUpdate(const char *message)
 {
-    rapidjson::Document d;
-    d.Parse<0>(message);
-
-    int eventType = d["eventType"].GetInt();
-
-    if (eventType == CLIENT_UPDATE)
-    {
-        clientUpdate(d, false);
-    }
-    else if (eventType == BEGIN_GAME)
-    {
-        // TODO, create 8 - numPlayers bots and activate them
-        m_gameState = RUNNING;
-    }
+    m_gameListener->addServerMessage(message);
 }
 
 void ServerGameSession::update(float deltaTime)
 {
+    std::vector<const char *> serverMessages = m_gameListener->freeServerMessages();
+
+    for (std::vector<const char *>::iterator itr = serverMessages.begin(); itr != serverMessages.end(); itr++)
+    {
+        static const char *eventTypeKey = "eventType";
+
+        rapidjson::Document d;
+        d.Parse<0>(*itr);
+        if (d.HasMember(eventTypeKey))
+        {
+            int eventType = d[eventTypeKey].GetInt();
+
+            if (eventType == CLIENT_UPDATE)
+            {
+                clientUpdate(d, false);
+            }
+            else if (eventType == BEGIN_GAME)
+            {
+                m_gameState = RUNNING;
+            }
+        }
+    }
+
     switch (m_gameState)
     {
         case RUNNING:
@@ -159,8 +194,30 @@ int ServerGameSession::getBreakableBlockPowerUpFlag(short breakableBlockIndex)
     return m_breakableBlocks.at(breakableBlockIndex).get()->getPowerUpFlag();
 }
 
+short ServerGameSession::popOldestEventId()
+{
+    return m_gameListener->popOldestEventId();
+}
+
+// Private Methods
+
 void ServerGameSession::updateRunning(float deltaTime)
 {
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        if ((**itr).isBot() && (**itr).isHitByExplosion(m_explosions))
+        {
+            m_gameListener->addLocalEvent((**itr).getPlayerIndex() * PLAYER_EVENT_BASE + PLAYER_DEATH);
+        }
+    }
+
+    std::vector<short> localConsumedEventIds = m_gameListener->freeLocalEventIds();
+
+    for (std::vector<short>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)
+    {
+        handlePlayerEvent((*itr));
+    }
+
     for (std::vector<short>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
     {
         handlePlayerEvent((*itr));
@@ -168,66 +225,7 @@ void ServerGameSession::updateRunning(float deltaTime)
 
     m_sEventIds.clear();
 
-    for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = m_bombs.begin(); itr != m_bombs.end();)
-    {
-        (**itr).update(deltaTime, m_explosions, m_insideBlocks, m_breakableBlocks);
-
-        if ((**itr).isExploding())
-        {
-            itr = m_bombs.erase(itr);
-        }
-        else
-        {
-            itr++;
-        }
-    }
-
-    for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end();)
-    {
-        if ((**itr).isDestroyed())
-        {
-            if ((**itr).hasPowerUp())
-            {
-                m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp((**itr).getX(), (**itr).getY(), (**itr).getPowerUpFlag())));
-            }
-            itr = m_breakableBlocks.erase(itr);
-        }
-        else
-        {
-            itr++;
-        }
-    }
-
-    for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = m_explosions.begin(); itr != m_explosions.end();)
-    {
-        (**itr).update(deltaTime);
-
-        if ((**itr).isComplete())
-        {
-            itr = m_explosions.erase(itr);
-        }
-        else
-        {
-            itr++;
-        }
-    }
-
-    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-    {
-        (**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks, m_powerUps);
-    }
-
-    for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end();)
-    {
-        if ((**itr).isPickedUp())
-        {
-            itr = m_powerUps.erase(itr);
-        }
-        else
-        {
-            itr++;
-        }
-    }
+    updateCommon(deltaTime);
 }
 
 void ServerGameSession::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex, bool isBeginGame)

@@ -13,6 +13,7 @@
       <itemPath>../../../core/ExplosionType.h</itemPath>
       <itemPath>../../../core/GameConstants.h</itemPath>
       <itemPath>../../../core/GameEvent.h</itemPath>
+      <itemPath>../../../core/GameListener.h</itemPath>
       <itemPath>../../../core/GameObject.h</itemPath>
       <itemPath>../../../core/GameSession.h</itemPath>
       <itemPath>../../../core/GameState.h</itemPath>
@@ -28,7 +29,6 @@
       <itemPath>../../../core/Renderer.h</itemPath>
       <itemPath>../../../core/ResourceConstants.h</itemPath>
       <itemPath>src/ServerGameSession.h</itemPath>
-      <itemPath>../../../core/SoundListener.h</itemPath>
       <itemPath>../../../core/Triangle.h</itemPath>
       <itemPath>../../../core/Vector2D.h</itemPath>
       <itemPath>../../../core/macros.h</itemPath>
@@ -47,6 +47,7 @@
       <itemPath>../../../core/DynamicGameObject.cpp</itemPath>
       <itemPath>../../../core/DynamicGridGameObject.cpp</itemPath>
       <itemPath>../../../core/Explosion.cpp</itemPath>
+      <itemPath>src/GameListener.cpp</itemPath>
       <itemPath>../../../core/GameObject.cpp</itemPath>
       <itemPath>../../../core/GameSession.cpp</itemPath>
       <itemPath>../../../core/GridGameObject.cpp</itemPath>
@@ -57,7 +58,6 @@
       <itemPath>../../../core/PowerUp.cpp</itemPath>
       <itemPath>../../../core/Rectangle.cpp</itemPath>
       <itemPath>src/ServerGameSession.cpp</itemPath>
-      <itemPath>src/SoundListener.cpp</itemPath>
       <itemPath>../../../core/Triangle.cpp</itemPath>
       <itemPath>../../../core/Vector2D.cpp</itemPath>
       <itemPath>src/bp_room_adaptor.cpp</itemPath>
@@ -137,6 +137,8 @@
       </item>
       <item path="../../../core/GameEvent.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/GameListener.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/GameObject.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/GameObject.h" ex="false" tool="3" flavor2="0">
@@ -189,8 +191,6 @@
       </item>
       <item path="../../../core/ResourceConstants.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/SoundListener.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../../../core/Triangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/Triangle.h" ex="false" tool="3" flavor2="0">
@@ -207,11 +207,11 @@
       </item>
       <item path="src/BotPlayerDynamicGameObject.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/GameListener.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/ServerGameSession.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ServerGameSession.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/SoundListener.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/bp_room_adaptor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -286,6 +286,8 @@
       </item>
       <item path="../../../core/GameEvent.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/GameListener.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/GameObject.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/GameObject.h" ex="false" tool="3" flavor2="0">
@@ -338,8 +340,6 @@
       </item>
       <item path="../../../core/ResourceConstants.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/SoundListener.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../../../core/Triangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/Triangle.h" ex="false" tool="3" flavor2="0">
@@ -356,11 +356,11 @@
       </item>
       <item path="src/BotPlayerDynamicGameObject.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/GameListener.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/ServerGameSession.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ServerGameSession.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/SoundListener.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/bp_room_adaptor.cpp" ex="false" tool="1" flavor2="0">
       </item>

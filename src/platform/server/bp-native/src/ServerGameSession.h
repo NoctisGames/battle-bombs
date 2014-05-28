@@ -11,7 +11,8 @@
 
 #include "GameSession.h"
 
-class SoundListener;
+class GameListener;
+class BotPlayerDynamicGameObject;
 
 class ServerGameSession : public GameSession
 {
@@ -33,9 +34,12 @@ public:
     int getBreakableBlockGridY(short breakableBlockIndex);
 
     int getBreakableBlockPowerUpFlag(short breakableBlockIndex);
+    
+    short popOldestEventId();
 
 private:
-    std::unique_ptr<SoundListener> m_soundListener;
+    std::unique_ptr<GameListener> m_gameListener;
+    std::vector<std::unique_ptr<BotPlayerDynamicGameObject >> m_bots;
     
     virtual void updateRunning(float deltaTime);
 
