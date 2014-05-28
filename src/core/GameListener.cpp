@@ -14,6 +14,53 @@ GameListener::GameListener()
     // No setup required
 }
 
+void GameListener::addEvent(short eventId)
+{
+    m_sLocalEventIds.push_back(eventId);
+}
+
+short GameListener::getFirstEventId()
+{
+    if(m_sLocalConsumedEventIds.size() > 0)
+    {
+		return m_sLocalConsumedEventIds.front();
+    }
+    
+    return 0;
+}
+
+void GameListener::eraseFirstEventId()
+{
+    if(m_sLocalConsumedEventIds.size() > 0)
+    {
+        m_sLocalConsumedEventIds.erase(m_sLocalConsumedEventIds.begin());
+    }
+}
+
+void GameListener::addServerMessage(const char *serverMessage)
+{
+    char *copy = strdup(serverMessage);
+	m_serverMessagesBuffer.push_back(copy);
+}
+
+std::vector<short> & GameListener::freeLocalEventIds()
+{
+    m_sLocalConsumedEventIds.clear();
+	m_sLocalConsumedEventIds.swap(m_sLocalEventIds);
+	m_sLocalEventIds.clear();
+    
+    return m_sLocalConsumedEventIds;
+}
+
+std::vector<const char *> & GameListener::freeServerMessages()
+{
+    m_serverMessages.clear();
+	m_serverMessages.swap(m_serverMessagesBuffer);
+	m_serverMessagesBuffer.clear();
+    
+    return m_serverMessages;
+}
+
 void GameListener::playSound(short soundId)
 {
     Assets::getInstance()->addSoundIdToPlayQueue(soundId);

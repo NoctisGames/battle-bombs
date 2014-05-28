@@ -48,8 +48,7 @@ GameScreen::~GameScreen()
 
 void GameScreen::handleServerUpdate(const char *message)
 {
-	char *copy = strdup(message);
-	m_serverMessagesBuffer.push_back(copy);
+    m_gameListener->addServerMessage(message);
 }
 
 void GameScreen::init()
@@ -138,20 +137,12 @@ int GameScreen::getPlayerDirection()
 
 short GameScreen::getFirstEventId()
 {
-    if(m_sLocalConsumedEventIds.size() > 0)
-    {
-		return m_sLocalConsumedEventIds.front();
-    }
-    
-    return 0;
+    return m_gameListener->getFirstEventId();
 }
 
 void GameScreen::eraseFirstEventId()
 {
-    if(m_sLocalConsumedEventIds.size() > 0)
-    {
-        m_sLocalConsumedEventIds.erase(m_sLocalConsumedEventIds.begin());
-    }
+    m_gameListener->eraseFirstEventId();
 }
 
 bool GameScreen::isTimeToSendKeepAlive()
@@ -170,17 +161,15 @@ void GameScreen::updateRunning(float deltaTime)
 {
     if(m_player->isHitByExplosion(m_explosions))
     {
-        addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
+        m_gameListener->addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
     }
     
-    for (std::vector<short>::iterator itr = m_sLocalEventIds.begin(); itr != m_sLocalEventIds.end(); itr++)
+    std::vector<short> localConsumedEventIds = m_gameListener->freeLocalEventIds();
+    
+    for (std::vector<short>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)
 	{
         handlePlayerEvent((*itr));
-        
-        m_sLocalConsumedEventIds.push_back(*itr);
 	}
-	
-    m_sLocalEventIds.clear();
     
     for (std::vector<short>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
     {
@@ -218,7 +207,7 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
                 {
                     if(m_player->isAbleToDropAdditionalBomb())
                     {
-                        addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+                        m_gameListener->addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
                     }
                 }
 				/*else if(m_activeButton->isPointInBounds(*m_touchPoint))
@@ -241,7 +230,7 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
                 {
                     if(m_player->getPlayerState() == ALIVE)
                     {
-                        addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
+                        m_gameListener->addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
                     }
                 }
                 return;
@@ -369,25 +358,18 @@ void GameScreen::updatePlayerDirection()
         
         if(m_player->getDirection() != directionInput || !m_player->isMoving())
         {
-            addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + directionInput + 1);
+            m_gameListener->addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + directionInput + 1);
         }
     }
-}
-
-void GameScreen::addEvent(short eventId)
-{
-    m_sLocalEventIds.push_back(eventId);
 }
 
 // Server Stuff
 
 void GameScreen::processServerMessages()
 {
-    m_serverMessages.clear();
-	m_serverMessages.swap(m_serverMessagesBuffer);
-	m_serverMessagesBuffer.clear();
+    std::vector<const char *> serverMessages = m_gameListener->freeServerMessages();
     
-	for (std::vector<const char *>::iterator itr = m_serverMessages.begin(); itr != m_serverMessages.end(); itr++)
+	for (std::vector<const char *>::iterator itr = serverMessages.begin(); itr != serverMessages.end(); itr++)
 	{
 		static const char *eventTypeKey = "eventType";
         

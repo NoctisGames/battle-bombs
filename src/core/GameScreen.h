@@ -80,10 +80,6 @@ protected:
 
 private:
     std::unique_ptr<GameListener> m_gameListener;
-	std::vector<const char *> m_serverMessages;
-    std::vector<const char *> m_serverMessagesBuffer;
-	std::vector<short> m_sLocalEventIds;
-    std::vector<short> m_sLocalConsumedEventIds;
     
     virtual void updateRunning(float deltaTime);
     
@@ -98,8 +94,6 @@ private:
     void spectateNextLivePlayer();
     
     void updatePlayerDirection();
-    
-    void addEvent(short eventId);
     
     // Server Stuff
     
