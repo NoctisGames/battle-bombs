@@ -26,38 +26,38 @@ class PlayerDynamicGameObject : public DynamicGameObject
 {
 public:
     PlayerDynamicGameObject(float x, float y, int direction = DIRECTION_RIGHT, float width = PLAYER_WIDTH, float height = PLAYER_HEIGHT);
-    
-    void update(float deltaTime, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
-    
+
+    virtual void update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps);
+
     float getStateTime();
-    
+
     int getDirection();
 
-	short getFirePower();
-    
+    short getFirePower();
+
     void setDirection(int direction);
-    
+
     void moveInDirection(int direction);
-    
+
     bool isMoving();
-    
+
     void onBombDropped();
-    
+
     void onBombExploded();
-    
-    bool isHitByExplosion(std::vector<std::unique_ptr<Explosion>> &explosions);
-    
+
+    bool isHitByExplosion(std::vector<std::unique_ptr<Explosion >> &explosions);
+
     void onDeath();
-    
+
     bool isAbleToDropAdditionalBomb();
 
-	bool hasActivePowerUp();
-    
+    bool hasActivePowerUp();
+
     Player_State getPlayerState();
 
-	Power_Up_Type getActivePowerUp();
-    
-private:
+    Power_Up_Type getActivePowerUp();
+
+protected:
     Player_State m_playerState;
     float m_fStateTime;
     float m_fSpeed;
@@ -65,10 +65,10 @@ private:
     int m_iMaxBombCount;
     int m_iCurrentBombCount;
     bool m_isMoving;
-	short m_firePower;
-	bool m_hasActivePowerUp;
-	int m_activePowerUpIndex;
-	Power_Up_Type m_activePowerUp;
+    short m_firePower;
+    bool m_hasActivePowerUp;
+    int m_activePowerUpIndex;
+    Power_Up_Type m_activePowerUp;
 };
 
 #endif /* defined(__bomberparty__PlayerDynamicGameObject__) */

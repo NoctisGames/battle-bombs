@@ -53,6 +53,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/32229614/TextureRegion.o \
 	${OBJECTDIR}/_ext/32229614/Triangle.o \
 	${OBJECTDIR}/_ext/32229614/Vector2D.o \
+	${OBJECTDIR}/src/BotPlayerDynamicGameObject.o \
 	${OBJECTDIR}/src/ServerGameSession.o \
 	${OBJECTDIR}/src/bp_room_adaptor.o
 
@@ -170,6 +171,11 @@ ${OBJECTDIR}/_ext/32229614/Vector2D.o: ../../../core/Vector2D.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/Vector2D.o ../../../core/Vector2D.cpp
+
+${OBJECTDIR}/src/BotPlayerDynamicGameObject.o: src/BotPlayerDynamicGameObject.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/BotPlayerDynamicGameObject.o src/BotPlayerDynamicGameObject.cpp
 
 ${OBJECTDIR}/src/ServerGameSession.o: src/ServerGameSession.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
