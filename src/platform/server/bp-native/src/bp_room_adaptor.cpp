@@ -137,7 +137,7 @@ JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1num_1p
     ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
     if (gameSession != nullptr)
     {
-        return 1;
+        return gameSession->getNumPlayers();
     }
 
     return 0;
@@ -151,7 +151,7 @@ JNIEXPORT bool JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_is_1player
     ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
     if (gameSession != nullptr)
     {
-        return false;
+        return gameSession->isPlayerBotAtIndex(player_index);
     }
 
     return false;
