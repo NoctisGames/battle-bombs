@@ -35,6 +35,8 @@ GameScreen::GameScreen(const char *username) : GameSession()
     
     m_dPad = std::unique_ptr<DPadControl>(new DPadControl(2.15f, 2.15f, 4.3f, 4.3f));
     
+    m_soundListener = std::unique_ptr<SoundListener>(new SoundListener());
+    
     init();
 }
 
@@ -52,7 +54,6 @@ void GameScreen::handleServerUpdate(const char *message)
 
 void GameScreen::init()
 {
-    m_soundListener = std::unique_ptr<SoundListener>(new SoundListener());
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
     
     m_player = nullptr;
