@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
+#include "pch.h"
+#include "string.h"
 #include "GameListener.h"
 #include "Assets.h"
 
