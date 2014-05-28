@@ -30,7 +30,7 @@ ServerGameSession::ServerGameSession()
 void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
 {
     init();
-    
+
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM, DIRECTION_RIGHT)));
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, DIRECTION_LEFT)));
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, DIRECTION_RIGHT)));
@@ -229,20 +229,7 @@ void ServerGameSession::updateRunning(float deltaTime)
 
 void ServerGameSession::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex, bool isBeginGame)
 {
-    if (d.HasMember(keyX) && d.HasMember(keyY))
-    {
-        float playerX = d[keyX].GetDouble();
-        m_players.at(playerIndex).get()->getPosition().setX(playerX);
-
-        float playerY = d[keyY].GetDouble();
-        m_players.at(playerIndex).get()->getPosition().setY(playerY);
-    }
-
-    if (d.HasMember(keyDirection))
-    {
-        int playerDirection = d[keyDirection].GetInt();
-        m_players.at(playerIndex).get()->setDirection(playerDirection);
-    }
+    handlePositionAndDirectionUpdate(d, keyX, keyY, keyDirection, playerIndex);
 
     handleClientEventsArrayInDocument(d);
 }

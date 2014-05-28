@@ -41,29 +41,31 @@ public:
     float getPlayerYAtIndex(short playerIndex);
 
     int getPlayerDirectionAtIndex(short playerIndex);
-    
+
     bool isPlayerAliveAtIndex(short playerIndex);
 
 protected:
-    std::vector<std::unique_ptr<InsideBlock>> m_insideBlocks;
-    std::vector<std::unique_ptr<BreakableBlock>> m_breakableBlocks;
-    std::vector<std::unique_ptr<PlayerDynamicGameObject>> m_players;
-    std::vector<std::unique_ptr<BombGameObject>> m_bombs;
-    std::vector<std::unique_ptr<Explosion>> m_explosions;
-	std::vector<std::unique_ptr<PowerUp>> m_powerUps;
+    std::vector<std::unique_ptr<InsideBlock >> m_insideBlocks;
+    std::vector<std::unique_ptr<BreakableBlock >> m_breakableBlocks;
+    std::vector<std::unique_ptr<PlayerDynamicGameObject >> m_players;
+    std::vector<std::unique_ptr<BombGameObject >> m_bombs;
+    std::vector<std::unique_ptr<Explosion >> m_explosions;
+    std::vector<std::unique_ptr<PowerUp >> m_powerUps;
     std::vector<short> m_sEventIds;
     Game_State m_gameState;
 
     virtual void updateRunning(float deltaTime) = 0;
-    
+
     virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex, bool isBeginGame) = 0;
-    
+
     void clientUpdate(rapidjson::Document &d, bool isBeginGame);
+
+    void handlePositionAndDirectionUpdate(rapidjson::Document &d, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex);
 
     void handleClientEventsArrayInDocument(rapidjson::Document &d);
 
     void handlePlayerEvent(short event);
-    
+
 private:
     void layBombForPlayer(PlayerDynamicGameObject *player);
 };
