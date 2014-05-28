@@ -103,6 +103,21 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
     clientUpdateForPlayerIndex(d, playerIndex7Key, playerIndex7XKey, playerIndex7YKey, playerIndex7DirectionKey, 7, isBeginGame);
 }
 
+void GameSession::handlePositionAndDirectionUpdate(rapidjson::Document& d, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex)
+{
+    if (d.HasMember(keyX) && d.HasMember(keyY) && d.HasMember(keyDirection))
+    {
+        float playerX = d[keyX].GetDouble();
+        m_players.at(playerIndex).get()->getPosition().setX(playerX);
+        
+        float playerY = d[keyY].GetDouble();
+        m_players.at(playerIndex).get()->getPosition().setY(playerY);
+        
+        int playerDirection = d[keyDirection].GetInt();
+        m_players.at(playerIndex).get()->setDirection(playerDirection);
+    }
+}
+
 void GameSession::handleClientEventsArrayInDocument(rapidjson::Document &d)
 {
     static const char *eventsKey = "events";
@@ -128,21 +143,6 @@ void GameSession::handleClientEventsArrayInDocument(rapidjson::Document &d)
 
         free(copy);
         free(event);
-    }
-}
-
-void GameSession::handlePositionAndDirectionUpdate(rapidjson::Document& d, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex)
-{
-    if (d.HasMember(keyX) && d.HasMember(keyY) && d.HasMember(keyDirection))
-    {
-        float playerX = d[keyX].GetDouble();
-        m_players.at(playerIndex).get()->getPosition().setX(playerX);
-
-        float playerY = d[keyY].GetDouble();
-        m_players.at(playerIndex).get()->getPosition().setY(playerY);
-
-        int playerDirection = d[keyDirection].GetInt();
-        m_players.at(playerIndex).get()->setDirection(playerDirection);
     }
 }
 

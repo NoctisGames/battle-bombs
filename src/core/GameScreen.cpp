@@ -559,20 +559,7 @@ void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *
     
     if(isBeginGame || m_gameState == SPECTATING || playerIndex != m_sPlayerIndex)
     {
-        if(d.HasMember(keyX) && d.HasMember(keyY))
-        {
-            float playerX = d[keyX].GetDouble();
-            m_players.at(playerIndex).get()->getPosition().setX(playerX);
-            
-            float playerY = d[keyY].GetDouble();
-            m_players.at(playerIndex).get()->getPosition().setY(playerY);
-        }
-        
-        if(d.HasMember(keyDirection))
-        {
-            int playerDirection = d[keyDirection].GetInt();
-            m_players.at(playerIndex).get()->setDirection(playerDirection);
-        }
+        handlePositionAndDirectionUpdate(d, keyX, keyY, keyDirection, playerIndex);
     }
     
     handleClientEventsArrayInDocument(d);
