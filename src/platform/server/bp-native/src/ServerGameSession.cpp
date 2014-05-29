@@ -118,7 +118,6 @@ void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
                 }
 
                 // If these two blocks don't get caught, the flag remains 0 and no powerup will be created
-
                 m_breakableBlocks.push_back(std::unique_ptr<BreakableBlock>(new BreakableBlock(j, i, flag)));
             }
         }

@@ -28,7 +28,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 {
     PlayerDynamicGameObject::update(deltaTime, insideBlocks, breakableBlocks, powerUps);
 
-    if (m_fStateTime > 1)
+    if (m_playerState == ALIVE && m_fStateTime > 1)
     {
         m_fStateTime = 0;
 

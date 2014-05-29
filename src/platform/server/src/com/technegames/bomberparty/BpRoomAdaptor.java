@@ -135,6 +135,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     public void onTimerTick(long time)
     {
         float deltaTime = (time - _lastFrameTime) / 1000.0f;
+        _lastFrameTime = time;
 
         for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
         {
@@ -204,14 +205,17 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
             }
             else
             {
-                // In the future, don't check the map, check
-                // the number of active players (this includes bots).
                 short numAlive = 0;
                 for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
                 {
                     if (is_player_alive(_room.getId(), playerIndex))
                     {
+                        System.out.println("Player " + playerIndex + " is alive");
                         numAlive++;
+                    }
+                    else
+                    {
+                        System.out.println("Player " + playerIndex + " is NOT alive");
                     }
                 }
 
@@ -276,8 +280,6 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
         {
             _stateTime = 0;
         }
-
-        _lastFrameTime = time;
     }
 
     private String getGameStateCommand(short eventType)
