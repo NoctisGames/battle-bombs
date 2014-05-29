@@ -188,39 +188,36 @@ public final class RendererWrapper implements Renderer
 		{
 			try
 			{
-				if (is_time_to_send_keep_alive())
+				short eventId = get_oldest_event_id();
+
+				if (eventId > 0)
+				{
+					String eventsMessage = eventId + ",";
+					while ((eventId = get_oldest_event_id()) > 0)
+					{
+						eventsMessage += eventId + ",";
+					}
+
+					eventsMessage += "0"; // Terminate with 0
+
+					JSONObject tobeSent = new JSONObject();
+					tobeSent.put(EVENT_TYPE, CLIENT_UPDATE);
+					tobeSent.put(EVENTS, eventsMessage);
+					tobeSent.put(PLAYER_INDEX + get_player_index() + X, get_player_x());
+					tobeSent.put(PLAYER_INDEX + get_player_index() + Y, get_player_y());
+					tobeSent.put(PLAYER_INDEX + get_player_index() + DIRECTION, get_player_direction());
+
+					reset_time_since_last_client_event();
+
+					logger.debug("tobeSent.toString(): " + tobeSent.toString());
+
+					WarpClient.getInstance().sendChat(tobeSent.toString());
+				}
+				else if (is_time_to_send_keep_alive())
 				{
 					reset_time_since_last_client_event();
 
 					WarpClient.getInstance().sendChat(KEEP_ALIVE);
-				}
-				else
-				{
-					short eventId = get_oldest_event_id();
-
-					if (eventId > 0)
-					{
-						String eventsMessage = eventId + ",";
-						while ((eventId = get_oldest_event_id()) > 0)
-						{
-							eventsMessage += eventId + ",";
-						}
-
-						eventsMessage += "0"; // Terminate with 0
-
-						JSONObject tobeSent = new JSONObject();
-						tobeSent.put(EVENT_TYPE, CLIENT_UPDATE);
-						tobeSent.put(EVENTS, eventsMessage);
-						tobeSent.put(PLAYER_INDEX + get_player_index() + X, get_player_x());
-						tobeSent.put(PLAYER_INDEX + get_player_index() + Y, get_player_y());
-						tobeSent.put(PLAYER_INDEX + get_player_index() + DIRECTION, get_player_direction());
-
-						reset_time_since_last_client_event();
-
-						logger.debug("tobeSent.toString(): " + tobeSent.toString());
-
-						WarpClient.getInstance().sendChat(tobeSent.toString());
-					}
 				}
 			}
 			catch (Exception e)

@@ -446,32 +446,29 @@ static Logger *logger = nil;
 
 - (void)pushEvents
 {
-    if(is_time_to_send_keep_alive())
+    short eventId = get_oldest_event_id();
+    if(eventId > 0)
+    {
+        NSString *eventsMessage = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%hd,", EVENT_TYPE, CLIENT_UPDATE, EVENTS, eventId];
+        while ((eventId = get_oldest_event_id()) > 0)
+        {
+            eventsMessage = [eventsMessage stringByAppendingFormat:@"%hd,", eventId];
+        }
+        eventsMessage = [eventsMessage stringByAppendingFormat:@"%i\"", 0]; // Terminate with 0
+        
+        eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%f", PLAYER_INDEX, get_player_index(), X, get_player_x()];
+        eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%f", PLAYER_INDEX, get_player_index(), Y, get_player_y()];
+        eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%i}", PLAYER_INDEX, get_player_index(), DIRECTION, get_player_direction()];
+        
+        reset_time_since_last_client_event();
+        
+        [[WarpClient getInstance] sendChat:eventsMessage];
+    }
+    else if(is_time_to_send_keep_alive())
     {
         reset_time_since_last_client_event();
         
         [[WarpClient getInstance] sendChat:KEEP_ALIVE];
-    }
-    else
-    {
-        short eventId = get_oldest_event_id();
-        if(eventId > 0)
-        {
-            NSString *eventsMessage = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%hd,", EVENT_TYPE, CLIENT_UPDATE, EVENTS, eventId];
-            while ((eventId = get_oldest_event_id()) > 0)
-            {
-                eventsMessage = [eventsMessage stringByAppendingFormat:@"%hd,", eventId];
-            }
-            eventsMessage = [eventsMessage stringByAppendingFormat:@"%i\"", 0]; // Terminate with 0
-            
-            eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%f", PLAYER_INDEX, get_player_index(), X, get_player_x()];
-            eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%f", PLAYER_INDEX, get_player_index(), Y, get_player_y()];
-            eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%i}", PLAYER_INDEX, get_player_index(), DIRECTION, get_player_direction()];
-            
-            reset_time_since_last_client_event();
-            
-            [[WarpClient getInstance] sendChat:eventsMessage];
-        }
     }
 }
 
