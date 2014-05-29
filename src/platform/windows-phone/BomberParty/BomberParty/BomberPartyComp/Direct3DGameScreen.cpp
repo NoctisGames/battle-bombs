@@ -14,6 +14,7 @@
 #include "Direct3DAssets.h"
 #include "GameSound.h"
 #include "Assets.h"
+#include "GameConstants.h"
 
 Direct3DGameScreen::Direct3DGameScreen(const char *username, int deviceScreenWidth, int deviceScreenHeight) : GameScreen(username)
 {

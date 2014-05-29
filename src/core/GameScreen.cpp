@@ -364,7 +364,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         int numPlayers = d[numPlayersKey].GetInt();
         for(int i = 0; i < numPlayers; i++)
         {
-            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(0, 0, m_gameListener.get())));
+            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(i, 0, 0, m_gameListener.get())));
         }
         
         clientUpdate(d, isBeginGame);

@@ -157,54 +157,44 @@ namespace BomberPartyComp
 
 	void Direct3DInterop::pushEvents()
 	{
-		if (m_gameScreen->isTimeToSendKeepAlive())
+		short eventId = m_gameScreen->popOldestEventId();
+		if (eventId > 0)
+		{
+			Platform::String^ eventsMessage = eventId + ",";
+			while ((eventId = m_gameScreen->popOldestEventId()) > 0)
+			{
+				eventsMessage += eventId + ",";
+			}
+
+			eventsMessage += "0"; // Terminate with 0
+
+			static Platform::String^ EVENT_TYPE = "eventType";
+			static int CLIENT_UPDATE = 1338;
+			static Platform::String^ EVENTS = "events";
+
+			static Platform::String^ PLAYER_INDEX = "playerIndex";
+			static Platform::String^ X = "X";
+			static Platform::String^ Y = "Y";
+			static Platform::String^ DIRECTION = "Direction";
+
+			int playerIndex = m_gameScreen->getPlayerIndex();
+			Platform::String^ clientUpdate = "{";
+			clientUpdate += "\"" + EVENT_TYPE + "\":" + CLIENT_UPDATE;
+			clientUpdate += ",\"" + EVENTS + "\":\"" + eventsMessage + "\"";
+			clientUpdate += ",\"" + PLAYER_INDEX + playerIndex + X + "\":" + m_gameScreen->getPlayerX();
+			clientUpdate += ",\"" + PLAYER_INDEX + playerIndex + Y + "\":" + m_gameScreen->getPlayerY();
+			clientUpdate += ",\"" + PLAYER_INDEX + playerIndex + DIRECTION + "\":" + m_gameScreen->getPlayerDirection();
+			clientUpdate += "}";
+
+			m_gameScreen->resetTimeSinceLastClientEvent();
+
+			m_winRtCallback->Invoke("SEND_CHAT", clientUpdate);
+		}
+		else if (m_gameScreen->isTimeToSendKeepAlive())
 		{
 			m_gameScreen->resetTimeSinceLastClientEvent();
 
 			m_winRtCallback->Invoke("SEND_CHAT", "KEEP_ALIVE");
 		}
-		else
-		{
-			short eventId = getOldestEventId();
-			if (eventId > 0)
-			{
-				Platform::String^ eventsMessage = eventId + ",";
-				while ((eventId = getOldestEventId()) > 0)
-				{
-					eventsMessage += eventId + ",";
-				}
-
-				eventsMessage += "0"; // Terminate with 0
-
-				static Platform::String^ EVENT_TYPE = "eventType";
-				static int CLIENT_UPDATE = 1338;
-				static Platform::String^ EVENTS = "events";
-
-				static Platform::String^ PLAYER_INDEX = "playerIndex";
-				static Platform::String^ X = "X";
-				static Platform::String^ Y = "Y";
-				static Platform::String^ DIRECTION = "Direction";
-
-				int playerIndex = m_gameScreen->getPlayerIndex();
-				Platform::String^ clientUpdate = "{";
-				clientUpdate += "\"" + EVENT_TYPE + "\":" + CLIENT_UPDATE;
-				clientUpdate += ",\"" + EVENTS + "\":\"" + eventsMessage + "\"";
-				clientUpdate += ",\"" + PLAYER_INDEX + playerIndex + X + "\":" + m_gameScreen->getPlayerX();
-				clientUpdate += ",\"" + PLAYER_INDEX + playerIndex + Y + "\":" + m_gameScreen->getPlayerY();
-				clientUpdate += ",\"" + PLAYER_INDEX + playerIndex + DIRECTION + "\":" + m_gameScreen->getPlayerDirection();
-				clientUpdate += "}";
-
-				m_gameScreen->resetTimeSinceLastClientEvent();
-
-				m_winRtCallback->Invoke("SEND_CHAT", clientUpdate);
-			}
-		}
-	}
-
-	short Direct3DInterop::getOldestEventId()
-	{
-		short latestEventId = m_gameScreen->getFirstEventId();
-		m_gameScreen->eraseFirstEventId();
-		return latestEventId;
 	}
 }
