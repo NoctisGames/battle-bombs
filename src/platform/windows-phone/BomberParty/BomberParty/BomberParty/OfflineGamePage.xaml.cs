@@ -77,11 +77,6 @@ namespace BomberParty
         private void ProcessCallback(String command, String param)
         {
             Console.WriteLine("Incoming callback from C++ : " + command);
-
-            if (command.Equals("SEND_CHAT"))
-            {
-                WarpClient.GetInstance().SendChat(param);
-            }
         }
     }
 }
