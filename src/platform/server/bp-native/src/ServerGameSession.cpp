@@ -202,14 +202,6 @@ short ServerGameSession::popOldestEventId()
 
 void ServerGameSession::updateRunning(float deltaTime)
 {
-    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-    {
-        if ((**itr).isBot() && (**itr).isHitByExplosion(m_explosions))
-        {
-            m_gameListener->addLocalEvent((**itr).getPlayerIndex() * PLAYER_EVENT_BASE + PLAYER_DEATH);
-        }
-    }
-
     std::vector<short> localConsumedEventIds = m_gameListener->freeLocalEventIds();
 
     for (std::vector<short>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)

@@ -5,7 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>../../../core/BombGameObject.h</itemPath>
-      <itemPath>src/BotPlayerDynamicGameObject.h</itemPath>
+      <itemPath>../../../core/BotPlayerDynamicGameObject.h</itemPath>
       <itemPath>../../../core/BreakableBlock.h</itemPath>
       <itemPath>../../../core/DynamicGameObject.h</itemPath>
       <itemPath>../../../core/DynamicGridGameObject.h</itemPath>
@@ -42,7 +42,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>../../../core/BombGameObject.cpp</itemPath>
-      <itemPath>src/BotPlayerDynamicGameObject.cpp</itemPath>
+      <itemPath>../../../core/BotPlayerDynamicGameObject.cpp</itemPath>
       <itemPath>../../../core/BreakableBlock.cpp</itemPath>
       <itemPath>../../../core/DynamicGameObject.cpp</itemPath>
       <itemPath>../../../core/DynamicGridGameObject.cpp</itemPath>
@@ -106,6 +106,16 @@
       </item>
       <item path="../../../core/BombGameObject.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/BotPlayerDynamicGameObject.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/BotPlayerDynamicGameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../../../core/BreakableBlock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/BreakableBlock.h" ex="false" tool="3" flavor2="0">
@@ -202,10 +212,6 @@
       <item path="../../../core/macros.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/pch.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/BotPlayerDynamicGameObject.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/BotPlayerDynamicGameObject.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/GameListener.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -255,6 +261,16 @@
       </item>
       <item path="../../../core/BombGameObject.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/BotPlayerDynamicGameObject.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/BotPlayerDynamicGameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../../../core/BreakableBlock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/BreakableBlock.h" ex="false" tool="3" flavor2="0">
@@ -351,10 +367,6 @@
       <item path="../../../core/macros.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/pch.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/BotPlayerDynamicGameObject.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/BotPlayerDynamicGameObject.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/GameListener.cpp" ex="false" tool="1" flavor2="0">
       </item>

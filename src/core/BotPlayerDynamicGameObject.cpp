@@ -12,6 +12,7 @@
 #include "Rectangle.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
+#include "Explosion.h"
 #include "GameListener.h"
 #include "GameEvent.h"
 
@@ -24,9 +25,9 @@ BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, float 
     srand(time(NULL));
 }
 
-void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps)
+void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions)
 {
-    PlayerDynamicGameObject::update(deltaTime, insideBlocks, breakableBlocks, powerUps);
+    PlayerDynamicGameObject::update(deltaTime, insideBlocks, breakableBlocks, powerUps, explosions);
 
     if (m_playerState == ALIVE && m_fStateTime > 1)
     {
@@ -35,5 +36,10 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
         short randomEvent = rand() % 5 + 1;
 
         m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + randomEvent);
+    }
+
+    if (isHitByExplosion(explosions))
+    {
+        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
     }
 }
