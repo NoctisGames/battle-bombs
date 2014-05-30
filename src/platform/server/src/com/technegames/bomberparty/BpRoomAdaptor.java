@@ -6,8 +6,6 @@ import com.shephertz.app42.server.idomain.IRoom;
 import com.shephertz.app42.server.idomain.IUser;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
