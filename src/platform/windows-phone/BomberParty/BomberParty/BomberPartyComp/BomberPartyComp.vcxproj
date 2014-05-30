@@ -162,6 +162,7 @@
     <ClInclude Include="..\..\..\..\..\core\ActiveButton.h" />
     <ClInclude Include="..\..\..\..\..\core\Assets.h" />
     <ClInclude Include="..\..\..\..\..\core\BombGameObject.h" />
+    <ClInclude Include="..\..\..\..\..\core\BotPlayerDynamicGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\BreakableBlock.h" />
     <ClInclude Include="..\..\..\..\..\core\Color.h" />
     <ClInclude Include="..\..\..\..\..\core\DPadControl.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="..\..\..\..\..\core\ActiveButton.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Assets.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BombGameObject.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\BotPlayerDynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BreakableBlock.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DPadControl.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DynamicGameObject.cpp" />
