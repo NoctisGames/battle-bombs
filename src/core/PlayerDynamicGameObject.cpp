@@ -19,7 +19,7 @@
 #include "ResourceConstants.h"
 #include "GameListener.h"
 
-PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction, bool isBot, float width, float height) : DynamicGameObject(x, y, width, height, 0)
+PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction, float width, float height) : DynamicGameObject(x, y, width, height, 0)
 {
     m_bounds->getLowerLeft().set(x - width / 4, y - height / 2);
     m_bounds->setWidth(width / 2);
@@ -36,7 +36,6 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, float x, flo
     m_iCurrentBombCount = 0;
 
     m_sPlayerIndex = playerIndex;
-    m_isBot = isBot;
 
     m_gameListener = gameListener;
 
@@ -249,5 +248,5 @@ short PlayerDynamicGameObject::getPlayerIndex()
 
 bool PlayerDynamicGameObject::isBot()
 {
-    return m_isBot;
+    return false;
 }

@@ -16,6 +16,7 @@ LOCAL_SRC_FILES += renderer_wrapper.cpp
 LOCAL_SRC_FILES += $(CORE_RELATIVE_PATH)/ActiveButton.cpp
 LOCAL_SRC_FILES += $(CORE_RELATIVE_PATH)/Assets.cpp
 LOCAL_SRC_FILES += $(CORE_RELATIVE_PATH)/BombGameObject.cpp
+LOCAL_SRC_FILES += $(CORE_RELATIVE_PATH)/BotPlayerDynamicGameObject.cpp
 LOCAL_SRC_FILES += $(CORE_RELATIVE_PATH)/BreakableBlock.cpp
 LOCAL_SRC_FILES += $(CORE_RELATIVE_PATH)/DPadControl.cpp
 LOCAL_SRC_FILES += $(CORE_RELATIVE_PATH)/DynamicGameObject.cpp

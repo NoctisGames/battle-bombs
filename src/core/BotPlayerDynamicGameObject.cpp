@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction, float width, float height) : PlayerDynamicGameObject(playerIndex, x, y, gameListener, direction, true, width, height)
+BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction, float width, float height) : PlayerDynamicGameObject(playerIndex, x, y, gameListener, direction, width, height)
 {
     srand(time(NULL));
 }
@@ -42,4 +42,9 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
     {
         m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
     }
+}
+
+bool BotPlayerDynamicGameObject::isBot()
+{
+    return true;
 }

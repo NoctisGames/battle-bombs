@@ -19,6 +19,7 @@
 #include "Explosion.h"
 #include "PowerUp.h"
 #include "PlayerDynamicGameObject.h"
+#include "BotPlayerDynamicGameObject.h"
 #include "GameListener.h"
 
 GameScreen::GameScreen(const char *username) : GameSession()
@@ -354,6 +355,7 @@ void GameScreen::beginSpectate(rapidjson::Document &d)
 bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
 {
     static const char *numPlayersKey = "numPlayers";
+    static const char *numClientBotsKey = "numClientBots";
     
     const bool hasNumPlayersKey = d.HasMember(numPlayersKey);
     
@@ -365,6 +367,15 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         for(int i = 0; i < numPlayers; i++)
         {
             m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(i, 0, 0, m_gameListener.get())));
+        }
+        
+        if(d.HasMember(numClientBotsKey))
+        {
+            int numClientBots = d[numClientBotsKey].GetInt();
+            for(int i = 0; i < numClientBots; i++)
+            {
+                m_players.push_back(std::unique_ptr<BotPlayerDynamicGameObject>(new BotPlayerDynamicGameObject(i + numPlayers, 0, 0, m_gameListener.get())));
+            }
         }
         
         clientUpdate(d, isBeginGame);

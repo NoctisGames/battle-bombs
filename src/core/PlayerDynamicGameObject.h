@@ -26,7 +26,7 @@ class GameListener;
 class PlayerDynamicGameObject : public DynamicGameObject
 {
 public:
-    PlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction = DIRECTION_RIGHT, bool isBot = false, float width = PLAYER_WIDTH, float height = PLAYER_HEIGHT);
+    PlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction = DIRECTION_RIGHT, float width = PLAYER_WIDTH, float height = PLAYER_HEIGHT);
 
     virtual void update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions);
 
@@ -60,7 +60,7 @@ public:
 
     short getPlayerIndex();
     
-    bool isBot();
+    virtual bool isBot();
 
 protected:
     Player_State m_playerState;
@@ -75,7 +75,6 @@ protected:
     int m_activePowerUpIndex;
     Power_Up_Type m_activePowerUp;
     short m_sPlayerIndex;
-    bool m_isBot;
     GameListener *m_gameListener;
 };
 
