@@ -41,6 +41,8 @@ public:
     
     virtual void endFrame();
     
+    virtual void cleanUp();
+    
 private:
     std::unique_ptr<SpriteBatcher> m_spriteBatcher;
     GLuint m_gameTexture;

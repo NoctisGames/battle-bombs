@@ -142,6 +142,11 @@ void OpenGLESRenderer::endFrame()
     glDisable(GL_TEXTURE_2D);
 }
 
+void OpenGLESRenderer::cleanUp()
+{
+    // TODO
+}
+
 #pragma mark <Private>
 
 void OpenGLESRenderer::renderGameObject(GameObject &go, TextureRegion tr)
