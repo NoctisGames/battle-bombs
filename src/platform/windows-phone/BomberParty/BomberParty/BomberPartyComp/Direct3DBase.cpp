@@ -51,7 +51,7 @@ void Direct3DBase::CreateDeviceResources()
 	// Note the ordering should be preserved.
 	// Don't forget to declare your application's minimum required feature level in its
 	// description.  All applications are assumed to support 9.1 unless otherwise stated.
-	D3D_FEATURE_LEVEL featureLevels[] = 
+	D3D_FEATURE_LEVEL featureLevels[] =
 	{
 		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
@@ -65,17 +65,17 @@ void Direct3DBase::CreateDeviceResources()
 	ComPtr<ID3D11DeviceContext> context;
 	DX::ThrowIfFailed(
 		D3D11CreateDevice(
-			nullptr, // Specify nullptr to use the default adapter.
-			D3D_DRIVER_TYPE_HARDWARE,
-			nullptr,
-			creationFlags, // Set set debug and Direct2D compatibility flags.
-			featureLevels, // List of feature levels this app can support.
-			ARRAYSIZE(featureLevels),
-			D3D11_SDK_VERSION, // Always set this to D3D11_SDK_VERSION.
-			&device, // Returns the Direct3D device created.
-			&m_featureLevel, // Returns feature level of device created.
-			&context // Returns the device immediate context.
-			)
+		nullptr, // Specify nullptr to use the default adapter.
+		D3D_DRIVER_TYPE_HARDWARE,
+		nullptr,
+		creationFlags, // Set set debug and Direct2D compatibility flags.
+		featureLevels, // List of feature levels this app can support.
+		ARRAYSIZE(featureLevels),
+		D3D11_SDK_VERSION, // Always set this to D3D11_SDK_VERSION.
+		&device, // Returns the Direct3D device created.
+		&m_featureLevel, // Returns feature level of device created.
+		&context // Returns the device immediate context.
+		)
 		);
 
 	// Get the Direct3D 11.1 API device and context interfaces.
@@ -105,18 +105,18 @@ void Direct3DBase::CreateWindowSizeDependentResources()
 	// Allocate a 2-D surface as the render target buffer.
 	DX::ThrowIfFailed(
 		m_d3dDevice->CreateTexture2D(
-			&renderTargetDesc,
-			nullptr,
-			&m_renderTarget
-			)
+		&renderTargetDesc,
+		nullptr,
+		&m_renderTarget
+		)
 		);
 
 	DX::ThrowIfFailed(
 		m_d3dDevice->CreateRenderTargetView(
-			m_renderTarget.Get(),
-			nullptr,
-			&m_renderTargetView
-			)
+		m_renderTarget.Get(),
+		nullptr,
+		&m_renderTargetView
+		)
 		);
 
 	// Create a depth stencil view.
@@ -132,19 +132,19 @@ void Direct3DBase::CreateWindowSizeDependentResources()
 	ComPtr<ID3D11Texture2D> depthStencil;
 	DX::ThrowIfFailed(
 		m_d3dDevice->CreateTexture2D(
-			&depthStencilDesc,
-			nullptr,
-			&depthStencil
-			)
+		&depthStencilDesc,
+		nullptr,
+		&depthStencil
+		)
 		);
 
 	CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
 	DX::ThrowIfFailed(
 		m_d3dDevice->CreateDepthStencilView(
-			depthStencil.Get(),
-			&depthStencilViewDesc,
-			&m_depthStencilView
-			)
+		depthStencil.Get(),
+		&depthStencilViewDesc,
+		&m_depthStencilView
+		)
 		);
 
 	// Set the rendering viewport to target the entire window.
@@ -163,7 +163,7 @@ void Direct3DBase::UpdateForRenderResolutionChange(float width, float height)
 	m_renderTargetSize.Width = width;
 	m_renderTargetSize.Height = height;
 
-	ID3D11RenderTargetView* nullViews[] = {nullptr};
+	ID3D11RenderTargetView* nullViews[] = { nullptr };
 	m_d3dContext->OMSetRenderTargets(ARRAYSIZE(nullViews), nullViews, nullptr);
 	m_renderTarget = nullptr;
 	m_renderTargetView = nullptr;
@@ -174,7 +174,7 @@ void Direct3DBase::UpdateForRenderResolutionChange(float width, float height)
 
 void Direct3DBase::UpdateForWindowSizeChange(float width, float height)
 {
-	m_windowBounds.Width  = width;
+	m_windowBounds.Width = width;
 	m_windowBounds.Height = height;
 }
 
@@ -207,7 +207,7 @@ void Direct3DBase::touchUp(float x, float y)
 
 void Direct3DBase::loadScreen(Direct3DGameScreen &gameScreen)
 {
-	gameScreen.load(m_d3dDevice, m_d3dContext);
+	gameScreen.load(m_d3dDevice.Get(), m_d3dContext.Get(), m_renderTargetView.Get(), m_depthStencilView.Get());
 	gameScreen.onResume();
 }
 
@@ -230,7 +230,7 @@ void Direct3DBase::Update(Direct3DGameScreen &gameScreen, float timeDelta)
 
 void Direct3DBase::Render(Direct3DGameScreen &gameScreen)
 {
-	gameScreen.present(m_d3dContext, m_renderTargetView, m_depthStencilView);
+	gameScreen.present();
 	gameScreen.handleSound();
 	gameScreen.handleMusic();
 }

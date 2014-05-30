@@ -36,6 +36,7 @@ x86/
 xcshareddata/
 
 # Visual Studio
+*.ipch
 *.user
 *.*sdf
 *.suo

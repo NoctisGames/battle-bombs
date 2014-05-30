@@ -62,14 +62,14 @@ namespace BomberPartyComp
 
 	void Direct3DInterop::RenderResolution::set(Windows::Foundation::Size renderResolution)
 	{
-		if (renderResolution.Width != m_renderResolution.Width ||
-			renderResolution.Height != m_renderResolution.Height)
+		if (renderResolution.Width != m_renderResolution.Width || renderResolution.Height != m_renderResolution.Height)
 		{
 			m_renderResolution = renderResolution;
 
 			if (m_direct3DBase)
 			{
 				m_direct3DBase->UpdateForRenderResolutionChange(m_renderResolution.Width, m_renderResolution.Height);
+				m_direct3DBase->loadScreen(*m_gameScreen);
 				RecreateSynchronizedTexture();
 			}
 		}
@@ -96,9 +96,9 @@ namespace BomberPartyComp
 	{
 		m_direct3DBase = ref new Direct3DBase();
 		m_direct3DBase->Initialize();
-		m_direct3DBase->loadScreen(*m_gameScreen);
 		m_direct3DBase->UpdateForWindowSizeChange(WindowBounds.Width, WindowBounds.Height);
 		m_direct3DBase->UpdateForRenderResolutionChange(m_renderResolution.Width, m_renderResolution.Height);
+		m_direct3DBase->loadScreen(*m_gameScreen);
 
 		// Restart timer after renderer has finished initializing.
 		m_timer->Reset();

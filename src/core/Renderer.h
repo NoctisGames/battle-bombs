@@ -57,6 +57,8 @@ public:
     virtual void renderControls(DPadControl &dPadControl, ActiveButton &activeButton) = 0;
     
     virtual void endFrame() = 0;
+
+	virtual void cleanUp() = 0;
     
 protected:
     float m_fScrollY;

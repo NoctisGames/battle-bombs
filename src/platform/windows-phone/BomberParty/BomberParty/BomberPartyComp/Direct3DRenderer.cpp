@@ -27,18 +27,18 @@
 
 using namespace DirectX;
 
-Direct3DRenderer::Direct3DRenderer() : Renderer()
+Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView, int deviceScreenWidth, int deviceScreenHeight) : Renderer()
 {
+	m_d3dDevice = d3dDevice;
+	m_d3dContext = d3dContext;
+	m_renderTargetView = renderTargetView;
+	m_depthStencilView = depthStencilView;
 
-}
-
-void Direct3DRenderer::load(Microsoft::WRL::ComPtr<ID3D11Device1> &d3dDevice, Microsoft::WRL::ComPtr<ID3D11DeviceContext1> &d3dContext, int deviceScreenWidth, int deviceScreenHeight)
-{
 	// Create the SpriteBatch
-	m_spriteBatch = std::unique_ptr<SpriteBatch>(new SpriteBatch(d3dContext.Get()));
+	m_spriteBatch = std::unique_ptr<SpriteBatch>(new SpriteBatch(d3dContext));
 
 	// Initialize Textures
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice.Get(), L"Assets\\game.dds", NULL, &m_gameShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\game.dds", NULL, &m_gameShaderResourceView, NULL));
 
 	// Clear the blend state description.
 	D3D11_BLEND_DESC blendDesc;
@@ -57,7 +57,7 @@ void Direct3DRenderer::load(Microsoft::WRL::ComPtr<ID3D11Device1> &d3dDevice, Mi
 
 	//We then create an alpha enabled blending state using the description we just setup.
 	// Create the blend state using the description.
-	HRESULT result = d3dDevice.Get()->CreateBlendState(&blendDesc, &m_alphaEnableBlendingState);
+	HRESULT result = d3dDevice->CreateBlendState(&blendDesc, &m_alphaEnableBlendingState);
 	if (FAILED(result))
 	{
 		// Panic!
@@ -65,9 +65,9 @@ void Direct3DRenderer::load(Microsoft::WRL::ComPtr<ID3D11Device1> &d3dDevice, Mi
 
 	// Set up Stuff for PrimitiveBatch
 
-	m_primitiveBatch = std::unique_ptr<PrimitiveBatch<VertexPositionColor>>(new PrimitiveBatch<VertexPositionColor>(d3dContext.Get()));
+	m_primitiveBatch = std::unique_ptr<PrimitiveBatch<VertexPositionColor>>(new PrimitiveBatch<VertexPositionColor>(d3dContext));
 
-	m_basicEffect = std::unique_ptr<BasicEffect>(new BasicEffect(d3dDevice.Get()));
+	m_basicEffect = std::unique_ptr<BasicEffect>(new BasicEffect(d3dDevice));
 
 	m_basicEffect->SetProjection(XMMatrixOrthographicOffCenterRH(0, deviceScreenWidth, deviceScreenHeight, 0, 0, 1));
 	m_basicEffect->SetVertexColorEnabled(true);
@@ -77,12 +77,16 @@ void Direct3DRenderer::load(Microsoft::WRL::ComPtr<ID3D11Device1> &d3dDevice, Mi
 
 	m_basicEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
 
-	d3dDevice.Get()->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, shaderByteCode, byteCodeLength, &m_inputLayout);
+	d3dDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, shaderByteCode, byteCodeLength, &m_inputLayout);
 }
 
-void Direct3DRenderer::cleanUp()
+void Direct3DRenderer::clearScreenWithColor(float r, float g, float b, float a)
 {
-	m_gameShaderResourceView->Release();
+	float color[] = { r, g, b, a };
+
+	m_d3dContext->ClearRenderTargetView(m_renderTargetView, color);
+	m_d3dContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	m_d3dContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 }
 
 void Direct3DRenderer::renderWorldBackground()
@@ -167,6 +171,18 @@ void Direct3DRenderer::renderControls(DPadControl &dPadControl, ActiveButton &ac
 	renderGameObject(activeButton, Assets::getActiveButtonTextureRegion());
 	m_spriteBatch->End();
 }
+
+void Direct3DRenderer::endFrame()
+{
+	// Not Needed Yet
+}
+
+void Direct3DRenderer::cleanUp()
+{
+	m_gameShaderResourceView->Release();
+}
+
+// Private
 
 void Direct3DRenderer::renderGameObject(GameObject &go, TextureRegion tr)
 {

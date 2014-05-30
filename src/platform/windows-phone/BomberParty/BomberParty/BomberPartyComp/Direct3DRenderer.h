@@ -19,11 +19,9 @@
 class Direct3DRenderer : public Renderer
 {
 public:
-	Direct3DRenderer();
-	
-	void load(Microsoft::WRL::ComPtr<ID3D11Device1> &d3dDevice, Microsoft::WRL::ComPtr<ID3D11DeviceContext1> &d3dContext, int deviceScreenWidth, int deviceScreenHeight);
+	Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView, int deviceScreenWidth, int deviceScreenHeight);
 
-	void cleanUp();
+	virtual void clearScreenWithColor(float r, float g, float b, float a);
 
 	virtual void renderWorldBackground();
 
@@ -39,7 +37,15 @@ public:
 
 	virtual void renderControls(DPadControl &dPadControl, ActiveButton &activeButton);
 
+	virtual void endFrame();
+
+	virtual void cleanUp();
+
 private:
+	ID3D11Device1 *m_d3dDevice;
+	ID3D11DeviceContext1 *m_d3dContext;
+	ID3D11RenderTargetView *m_renderTargetView;
+	ID3D11DepthStencilView *m_depthStencilView;
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	ID3D11ShaderResourceView *m_gameShaderResourceView;
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
