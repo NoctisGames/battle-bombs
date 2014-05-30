@@ -29,6 +29,8 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 {
     PlayerDynamicGameObject::update(deltaTime, insideBlocks, breakableBlocks, powerUps, explosions);
 
+    // This is temporary AI
+    // TODO, create REAL AI
     if (m_playerState == ALIVE && m_fStateTime > 1)
     {
         m_fStateTime = 0;
@@ -38,6 +40,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
         m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + randomEvent);
     }
 
+    // Keep this though
     if (isHitByExplosion(explosions))
     {
         m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
