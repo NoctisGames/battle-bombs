@@ -17,6 +17,7 @@ class GameListener;
 class TouchEvent;
 class Vector2D;
 class Rectangle;
+class Renderer;
 
 class GameScreen : public GameSession
 {
@@ -44,6 +45,8 @@ public:
 	void onPause();
     
 	void update(float deltaTime, std::vector<TouchEvent> &touchEvents);
+    
+    void present();
 	
 	int getState();
     
@@ -64,6 +67,7 @@ public:
 	void resetTimeSinceLastClientEvent();
 
 protected:
+    std::unique_ptr<Renderer> m_renderer;
     char *m_username;
     PlayerDynamicGameObject *m_player; // Set once we figure out which player index we are.
     short m_sPlayerIndex;

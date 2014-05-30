@@ -21,7 +21,9 @@ class SpriteBatcher;
 class OpenGLESRenderer : public Renderer
 {
 public:
-    OpenGLESRenderer();
+    OpenGLESRenderer(int width, int height);
+    
+    virtual void clearScreenWithColor(float r, float g, float b, float a);
     
     virtual void renderWorldBackground();
     
@@ -36,6 +38,8 @@ public:
     virtual void renderInterface();
     
     virtual void renderControls(DPadControl &dPadControl, ActiveButton &activeButton);
+    
+    virtual void endFrame();
     
 private:
     std::unique_ptr<SpriteBatcher> m_spriteBatcher;

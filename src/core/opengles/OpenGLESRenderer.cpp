@@ -25,15 +25,35 @@ extern "C"
 #include "asset_utils.h"
 }
 
-OpenGLESRenderer::OpenGLESRenderer() : Renderer()
+OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
 {
+    glViewport(0, 0, width, height);
+	glScissor(0, 0, width, height);
+    
+	glLoadIdentity();
+    
+	glMatrixMode(GL_PROJECTION);
+	glOrthof(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, 1);
+	glMatrixMode(GL_MODELVIEW);
+    
+	glLoadIdentity();
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    
     m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(4000, false));
     
     m_gameTexture = load_png_asset_into_texture("game.png");
 }
 
+void OpenGLESRenderer::clearScreenWithColor(float r, float g, float b, float a)
+{
+    glClearColor(r, g, b, a);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
+
 void OpenGLESRenderer::renderWorldBackground()
 {
+    glEnable(GL_TEXTURE_2D);
+    
     m_spriteBatcher->beginBatch();
     m_spriteBatcher->drawSprite(WORLD_BACKGROUND_X, WORLD_BACKGROUND_Y - m_fScrollY, WORLD_BACKGROUND_WIDTH, WORLD_BACKGROUND_HEIGHT, 0, Assets::getWorldBackgroundTextureRegion());
     m_spriteBatcher->endBatchWithTexture(m_gameTexture);
@@ -41,6 +61,9 @@ void OpenGLESRenderer::renderWorldBackground()
 
 void OpenGLESRenderer::renderWorldForeground(std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
 {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     if(insideBlocks.size() > 0)
     {
         m_spriteBatcher->beginBatch();
@@ -111,6 +134,15 @@ void OpenGLESRenderer::renderControls(DPadControl &dPadControl, ActiveButton &ac
     renderGameObject(activeButton, Assets::getActiveButtonTextureRegion());
     m_spriteBatcher->endBatchWithTexture(m_gameTexture);
 }
+
+void OpenGLESRenderer::endFrame()
+{
+    glDisable(GL_BLEND);
+    
+    glDisable(GL_TEXTURE_2D);
+}
+
+#pragma mark <Private>
 
 void OpenGLESRenderer::renderGameObject(GameObject &go, TextureRegion tr)
 {

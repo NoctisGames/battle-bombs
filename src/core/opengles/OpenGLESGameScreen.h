@@ -33,11 +33,8 @@ public:
 	void onSurfaceChanged(int deviceScreenWidth, int deviceScreenHeight);
     
 	void setDpDimensions(int dpWidth, int dpHeight);
-    
-    void present();
 
 private:
-    std::unique_ptr<OpenGLESRenderer> m_renderer;
     int m_iDeviceScreenDpWidth;
     int m_iDeviceScreenDpHeight;
 };

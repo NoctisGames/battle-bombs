@@ -21,6 +21,7 @@
 #include "PlayerDynamicGameObject.h"
 #include "BotPlayerDynamicGameObject.h"
 #include "GameListener.h"
+#include "Renderer.h"
 
 GameScreen::GameScreen(const char *username) : GameSession()
 {
@@ -101,6 +102,40 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
         case SPECTATING:
             updateInputSpectating(touchEvents);
             updateSpectating(deltaTime);
+            break;
+        default:
+            break;
+    }
+}
+
+void GameScreen::present()
+{
+    m_renderer->clearScreenWithColor(0, 0, 0, 1);
+    
+    switch (m_gameState)
+    {
+        case WAITING_FOR_SERVER:
+            m_renderer->renderWorldBackground();
+            
+            m_renderer->renderWorldForeground(m_insideBlocks, m_breakableBlocks, m_powerUps);
+            m_renderer->renderInterface();
+            
+            m_renderer->endFrame();
+            break;
+        case RUNNING:
+        case SPECTATING:
+            m_renderer->calcScrollYForPlayer(*m_player);
+            
+            m_renderer->renderWorldBackground();
+            
+            m_renderer->renderWorldForeground(m_insideBlocks, m_breakableBlocks, m_powerUps);
+            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderExplosions(m_explosions);
+            m_renderer->renderPlayers(m_players);
+            m_renderer->renderInterface();
+            m_renderer->renderControls(*m_dPad, *m_activeButton);
+            
+            m_renderer->endFrame();
             break;
         default:
             break;

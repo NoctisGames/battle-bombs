@@ -40,6 +40,8 @@ public:
 
 	void calcScrollYForPlayer(PlayerDynamicGameObject &player);
     
+    virtual void clearScreenWithColor(float r, float g, float b, float a) = 0;
+    
     virtual void renderWorldBackground() = 0;
     
     virtual void renderWorldForeground(std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps) = 0;
@@ -53,6 +55,8 @@ public:
     virtual void renderInterface() = 0;
     
     virtual void renderControls(DPadControl &dPadControl, ActiveButton &activeButton) = 0;
+    
+    virtual void endFrame() = 0;
     
 protected:
     float m_fScrollY;
