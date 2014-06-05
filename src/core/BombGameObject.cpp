@@ -48,11 +48,23 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 				{
 					m_position->add(0, 0.2f);
 				}
+				else
+				{
+					m_position->setY(m_position->getY() - (GRID_CELL_HEIGHT - 0.2f));
+					m_isKicked = false;
+					//Gridlock the bomb again here
+				}
 				break;
 			case DIRECTION_DOWN :
 				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
 				{
 					m_position->sub(0, 0.2f);
+				}
+				else
+				{
+					m_position->setY(m_position->getY() + (GRID_CELL_HEIGHT + 0.2f));
+					m_isKicked = false;
+					//Gridlock the bomb again here
 				}
 				break;
 			case DIRECTION_RIGHT :
@@ -60,11 +72,23 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 				{
 					m_position->add(0.2f, 0);
 				}
+				else
+				{
+					m_position->setX(m_position->getX() - (GRID_CELL_WIDTH - 0.2f));
+					m_isKicked = false;
+					//Gridlock the bomb again here
+				}
 				break;
 			case DIRECTION_LEFT :
 				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
 				{
 					m_position->sub(0.2f, 0);
+				}
+				else
+				{
+					m_position->setX(m_position->getX() + (GRID_CELL_WIDTH + 0.2f));
+					m_isKicked = false;
+					//Gridlock the bomb again here
 				}
 				break;
 		}
@@ -206,7 +230,7 @@ bool BombGameObject::willHitBreakableBlock(std::vector<std::unique_ptr<Breakable
 	{
 		if (OverlapTester::isPointInRectangle(*m_position, (*itr)->getBounds()))
 		{
-			m_isKicked = false;
+			//m_isKicked = false;
 			return true;
 		}
 	}
@@ -220,7 +244,7 @@ bool BombGameObject::willHitInsideBlock(std::vector<std::unique_ptr<InsideBlock 
 	{
 		if (OverlapTester::isPointInRectangle(*m_position, (*itr)->getBounds()))
 		{
-			m_isKicked = false;
+			//m_isKicked = false;
 			return true;
 		}
 	}
