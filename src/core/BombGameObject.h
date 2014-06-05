@@ -45,6 +45,12 @@ private:
     bool canExplodeAtPosition(Vector2D &position, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);
     
     bool willDestroyBlockAtPosition(Vector2D &position, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+
+	bool willHitBreakableBlock(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+
+	bool willHitInsideBlock(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);
+
+	bool canContinueMoving(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);
 };
 
 #endif /* defined(__bomberparty__BombGameObject__) */

@@ -44,16 +44,28 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 		switch(m_iKickedDirection)
 		{
 			case DIRECTION_UP :	
-				m_position->add(0, 0.2f);
+				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
+				{
+					m_position->add(0, 0.2f);
+				}
 				break;
 			case DIRECTION_DOWN :
-				m_position->sub(0, 0.2f);
+				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
+				{
+					m_position->sub(0, 0.2f);
+				}
 				break;
 			case DIRECTION_RIGHT :
-				m_position->add(0.2f, 0);
+				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
+				{
+					m_position->add(0.2f, 0);
+				}
 				break;
 			case DIRECTION_LEFT :
-				m_position->sub(0.2f, 0);
+				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
+				{
+					m_position->sub(0.2f, 0);
+				}
 				break;
 		}
 	}
@@ -186,4 +198,32 @@ bool BombGameObject::willDestroyBlockAtPosition(Vector2D &position, std::vector<
     }
 
     return false;
+}
+
+bool BombGameObject::willHitBreakableBlock(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
+{
+	for(std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
+	{
+		if (OverlapTester::isPointInRectangle(*m_position, (*itr)->getBounds()))
+		{
+			m_isKicked = false;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool BombGameObject::willHitInsideBlock(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks)
+{
+	for(std::vector<std::unique_ptr<InsideBlock>>::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
+	{
+		if (OverlapTester::isPointInRectangle(*m_position, (*itr)->getBounds()))
+		{
+			m_isKicked = false;
+			return true;
+		}
+	}
+
+	return false;
 }
