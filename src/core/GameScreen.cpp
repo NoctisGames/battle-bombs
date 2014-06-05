@@ -134,6 +134,7 @@ void GameScreen::present()
             m_renderer->renderPlayers(m_players);
             m_renderer->renderInterface();
             m_renderer->renderControls(*m_dPad, *m_activeButton);
+			m_renderer->renderActivePowerUpIcon(m_player->getActivePowerUp());
             
             m_renderer->endFrame();
             break;
@@ -242,10 +243,20 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
                         m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
                     }
                 }
-				/*else if(m_activeButton->isPointInBounds(*m_touchPoint))
+				else if(m_activeButton->isPointInBounds(*m_touchPoint))
 				{
-
-				}*/
+					switch(m_player->getActivePowerUp())
+					{
+						case KICK :
+							for(std::vector<std::unique_ptr<BombGameObject>>::iterator itr = m_bombs.begin(); itr != m_bombs.end(); itr++)
+							{
+								if(m_player->isBombInFrontOfPlayer(*itr))
+								{
+									(*itr)->kicked(m_player->getDirection());
+								}
+							}
+					}
+				}
                 else
                 {
                     updatePlayerDirection();

@@ -30,7 +30,8 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, float x, flo
     m_firePower = 1;
     m_iDirection = direction;
     m_isMoving = false;
-    m_hasActivePowerUp = false;
+    m_hasActivePowerUp = true;
+	m_activePowerUp = KICK;
 
     m_iMaxBombCount = 1;
     m_iCurrentBombCount = 0;
@@ -102,7 +103,7 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
                         case 4:
                             (*itr)->onPickedUp();
                             m_hasActivePowerUp = true;
-                            m_activePowerUpIndex = type;
+							m_activePowerUp = KICK;
                             break;
                         default:
                             (*itr)->onPickedUp();
@@ -212,6 +213,39 @@ bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explo
 
     return false;
 }
+
+bool PlayerDynamicGameObject::isBombInFrontOfPlayer(std::unique_ptr<BombGameObject> &bomb)
+{
+		switch(m_iDirection)
+		{
+			case DIRECTION_UP :
+				if(bomb->getPosition().getY() > (getPosition().getY()) )
+				{
+					return true;
+				}
+				break;
+			case DIRECTION_DOWN	 :
+				if(bomb->getPosition().getY() < (getPosition().getY()) )
+				{
+					return true;
+				}
+				break;
+			case DIRECTION_RIGHT :
+				if(bomb->getPosition().getX() > (getPosition().getX()) )
+				{
+					return true;
+				}
+				break;
+			case DIRECTION_LEFT :
+				if(bomb->getPosition().getX() < (getPosition().getX()) )
+				{
+					return true;
+				}
+				break;
+		}
+	return false;
+}
+
 
 void PlayerDynamicGameObject::onDeath()
 {

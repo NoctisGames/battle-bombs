@@ -22,6 +22,7 @@ class BreakableBlock;
 class PowerUp;
 class Explosion;
 class GameListener;
+class BombGameObject;
 
 class PlayerDynamicGameObject : public DynamicGameObject
 {
@@ -53,6 +54,8 @@ public:
     bool isAbleToDropAdditionalBomb();
 
     bool hasActivePowerUp();
+
+	bool isBombInFrontOfPlayer(std::unique_ptr<BombGameObject> &bomb);
 
     Player_State getPlayerState();
 

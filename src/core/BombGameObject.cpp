@@ -23,6 +23,7 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
     m_fSizeScalar = 0.2f;
     m_sPower = power;
     m_isExploding = false;
+	m_isKicked = false;
 
     m_bombOwner->onBombDropped();
 }
@@ -37,6 +38,25 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
     {
         m_fSizeScalar = -m_fSizeScalar;
     }
+
+	if(m_isKicked)
+	{
+		switch(m_iKickedDirection)
+		{
+			case DIRECTION_UP :	
+				m_position->add(0, 0.2f);
+				break;
+			case DIRECTION_DOWN :
+				m_position->sub(0, 0.2f);
+				break;
+			case DIRECTION_RIGHT :
+				m_position->add(0.2f, 0);
+				break;
+			case DIRECTION_LEFT :
+				m_position->sub(0.2f, 0);
+				break;
+		}
+	}
 
     if (m_fStateTime > 3)
     {
@@ -130,6 +150,12 @@ float BombGameObject::getStateTime()
 float BombGameObject::isExploding()
 {
     return m_isExploding;
+}
+
+void BombGameObject::kicked(int direction)
+{
+	m_isKicked = true;
+	m_iKickedDirection = direction;
 }
 
 #pragma mark <Private>

@@ -21,6 +21,7 @@
 
 #include <memory>
 #include <vector>
+#include "PowerUpType.h"
 
 class GameObject;
 class TextureRegion;
@@ -55,6 +56,8 @@ public:
     virtual void renderInterface() = 0;
     
     virtual void renderControls(DPadControl &dPadControl, ActiveButton &activeButton) = 0;
+
+	virtual void renderActivePowerUpIcon(Power_Up_Type activePowerUp) = 0;
     
     virtual void endFrame() = 0;
 

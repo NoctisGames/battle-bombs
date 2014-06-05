@@ -15,7 +15,6 @@
 #include "PlayerState.h"
 #include "BombGameObject.h"
 #include "Explosion.h"
-#include "PowerUp.h"
 #include <list>
 
 Assets * Assets::getInstance()
@@ -242,14 +241,14 @@ TextureRegion Assets::getExplosionTextureRegion(Explosion &explosion)
     }
 }
 
-TextureRegion Assets::getPowerUpTextureRegion(PowerUp &powerUp)
+TextureRegion Assets::getPowerUpTextureRegion(Power_Up_Type powerUp)
 {
     static TextureRegion bombTextureRegion = TextureRegion(BOMB_POWER_UP_TEXTURE_REGION_X, BOMB_POWER_UP_TEXTURE_REGION_Y, BOMB_POWER_UP_TEXTURE_REGION_WIDTH, BOMB_POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     static TextureRegion fireTextureRegion = TextureRegion(FIRE_POWER_UP_TEXTURE_REGION_X, FIRE_POWER_UP_TEXTURE_REGION_Y, FIRE_POWER_UP_TEXTURE_REGION_WIDTH, FIRE_POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     static TextureRegion speedTextureRegion = TextureRegion(SPEED_POWER_UP_TEXTURE_REGION_X, SPEED_POWER_UP_TEXTURE_REGION_Y, SPEED_POWER_UP_TEXTURE_REGION_WIDTH, SPEED_POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     static TextureRegion kickTextureRegion = TextureRegion(KICK_POWER_UP_TEXTURE_REGION_X, KICK_POWER_UP_TEXTURE_REGION_Y, KICK_POWER_UP_TEXTURE_REGION_WIDTH, KICK_POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
 
-    switch (powerUp.getType())
+    switch (powerUp)
     {
         case NONE:
             return bombTextureRegion;

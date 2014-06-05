@@ -114,7 +114,7 @@ void Direct3DRenderer::renderWorldForeground(std::vector<std::unique_ptr<InsideB
 
 		for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
 		{
-			renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((**itr)));
+			renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((*itr)->getType()));
 		}
 
 		m_spriteBatch->End();
@@ -169,6 +169,13 @@ void Direct3DRenderer::renderControls(DPadControl &dPadControl, ActiveButton &ac
 
 	m_spriteBatch->Begin();
 	renderGameObject(activeButton, Assets::getActiveButtonTextureRegion());
+	m_spriteBatch->End();
+}
+
+void Direct3DRenderer::renderActivePowerUpIcon(Power_Up_Type activePowerUp)
+{
+	m_spriteBatch->Begin();
+	m_spriteBatch->Draw(m_gameShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(18.5f, 1.2f, 2.5f, 2.5f, false), &Assets::getPowerUpTextureRegion(activePowerUp).getSourceRECT(),  Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	m_spriteBatch->End();
 }
 

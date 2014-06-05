@@ -10,6 +10,7 @@
 #define __bomber_party__Assets__
 
 #include "ResourceConstants.h"
+#include "PowerUpType.h"
 
 #include <vector>
 
@@ -19,7 +20,6 @@ class BreakableBlock;
 class PlayerDynamicGameObject;
 class BombGameObject;
 class Explosion;
-class PowerUp;
 
 class Assets
 {
@@ -38,7 +38,7 @@ public:
 	
 	static TextureRegion getActiveButtonTextureRegion();
 
-	static TextureRegion getPowerUpTextureRegion(PowerUp &powerUp);
+	static TextureRegion getPowerUpTextureRegion(Power_Up_Type powerUp);
     
     static TextureRegion getPlayerTextureRegion(PlayerDynamicGameObject &player);
     

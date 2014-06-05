@@ -14,6 +14,7 @@
 #include <PrimitiveBatch.h>
 #include "CommonStates.h"
 #include "VertexTypes.h"
+#include "PowerUpType.h"
 #include <Effects.h>
 
 class Direct3DRenderer : public Renderer
@@ -36,6 +37,8 @@ public:
 	virtual void renderInterface();
 
 	virtual void renderControls(DPadControl &dPadControl, ActiveButton &activeButton);
+
+	virtual void renderActivePowerUpIcon(Power_Up_Type activePowerUp);
 
 	virtual void endFrame();
 
