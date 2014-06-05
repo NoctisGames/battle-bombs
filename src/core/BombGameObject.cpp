@@ -50,7 +50,11 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 				}
 				else
 				{
-					m_position->setY(m_position->getY() - (GRID_CELL_HEIGHT - 0.2f));
+					for(float i = ((GRID_CELL_HEIGHT/2.0f) - 0.2f); i > 0; i-=0.000005f)
+					{
+						m_position->sub(0, 0.000005f);
+					}
+					//m_position->setY(m_position->getY() - ((GRID_CELL_HEIGHT/2) - 0.2f));
 					m_isKicked = false;
 					//Gridlock the bomb again here
 				}
@@ -62,7 +66,12 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 				}
 				else
 				{
-					m_position->setY(m_position->getY() + (GRID_CELL_HEIGHT + 0.2f));
+					for(float i = ((GRID_CELL_HEIGHT/2.0f) + 0.2f); i > 0; i-=0.000005f)
+					{
+						m_position->add(0, 0.000005f);
+					}
+
+					//m_position->setY(m_position->getY() + ((GRID_CELL_HEIGHT/2.0f) + 0.2f));
 					m_isKicked = false;
 					//Gridlock the bomb again here
 				}
@@ -74,7 +83,12 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 				}
 				else
 				{
-					m_position->setX(m_position->getX() - (GRID_CELL_WIDTH - 0.2f));
+					for(float i = ((GRID_CELL_WIDTH/1.25f) - 0.2f); i > 0; i-=0.000005f)
+					{
+						m_position->sub(0.000005f, 0);
+					}
+
+					//m_position->setX(m_position->getX() - (GRID_CELL_WIDTH - 0.2f));
 					m_isKicked = false;
 					//Gridlock the bomb again here
 				}
@@ -86,7 +100,12 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 				}
 				else
 				{
-					m_position->setX(m_position->getX() + (GRID_CELL_WIDTH + 0.2f));
+					for(float i = ((GRID_CELL_WIDTH/1.25f) + 0.2f); i > 0; i-=0.000005f)
+					{
+						m_position->add(0.000005f, 0);
+					}
+
+					//m_position->setX(m_position->getX() + (GRID_CELL_WIDTH + 0.2f));
 					m_isKicked = false;
 					//Gridlock the bomb again here
 				}
