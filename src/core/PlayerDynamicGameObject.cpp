@@ -219,25 +219,25 @@ bool PlayerDynamicGameObject::isBombInFrontOfPlayer(std::unique_ptr<BombGameObje
 		switch(m_iDirection)
 		{
 			case DIRECTION_UP :
-				if(bomb->getPosition().getY() > (getPosition().getY()) )
+				if(bomb->getPosition().getY() > getPosition().getY() && (bomb->getPosition().getY() - getPosition().getY()) <= (GRID_CELL_HEIGHT/2))
 				{
 					return true;
 				}
 				break;
 			case DIRECTION_DOWN	 :
-				if(bomb->getPosition().getY() < (getPosition().getY()) )
+				if(bomb->getPosition().getY() < getPosition().getY() && (getPosition().getY() - bomb->getPosition().getY()) <= (GRID_CELL_HEIGHT/2))
 				{
 					return true;
 				}
 				break;
 			case DIRECTION_RIGHT :
-				if(bomb->getPosition().getX() > (getPosition().getX()) )
+				if(bomb->getPosition().getX() > getPosition().getX() && (bomb->getPosition().getX() - getPosition().getX()) <= (GRID_CELL_WIDTH/2))
 				{
 					return true;
 				}
 				break;
 			case DIRECTION_LEFT :
-				if(bomb->getPosition().getX() < (getPosition().getX()) )
+				if(bomb->getPosition().getX() < getPosition().getX() && (getPosition().getX() - bomb->getPosition().getX()) <= (GRID_CELL_WIDTH/2))
 				{
 					return true;
 				}
