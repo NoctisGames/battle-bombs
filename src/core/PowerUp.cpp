@@ -26,6 +26,8 @@ PowerUp::PowerUp(float x, float y, int powerUpIndex) : GameObject(x, y, 1, 1.25f
 				break;
 		case 4: m_powerUpType = KICK;
 				break;
+		case 5: m_powerUpType = THROW;
+				break;
 		default: m_powerUpType = NONE;
 				break;
 	}

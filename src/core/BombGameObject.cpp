@@ -24,6 +24,7 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
     m_sPower = power;
     m_isExploding = false;
 	m_isKicked = false;
+	m_fKickSpeed = 0.2;
 
     m_bombOwner->onBombDropped();
 }
@@ -41,12 +42,14 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 
 	if(m_isKicked)
 	{
+		 //((3.0f-m_fStateTime)/10.0f);
 		switch(m_iKickedDirection)
 		{
 			case DIRECTION_UP :	
 				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
 				{
-					m_position->add(0, 0.2f);
+					m_position->add(0, m_fKickSpeed);
+					m_fKickSpeed -= FRICTION_FACTOR;
 				}
 				else
 				{
@@ -55,13 +58,13 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 						m_position->sub(0, 0.000005f);
 					}
 					m_isKicked = false;
-					//Gridlock the bomb again here
 				}
 				break;
 			case DIRECTION_DOWN :
 				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
 				{
-					m_position->sub(0, 0.2f);
+					m_position->sub(0, m_fKickSpeed);
+					m_fKickSpeed -= FRICTION_FACTOR;
 				}
 				else
 				{
@@ -70,13 +73,13 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 						m_position->add(0, 0.000005f);
 					}
 					m_isKicked = false;
-					//Gridlock the bomb again here
 				}
 				break;
 			case DIRECTION_RIGHT :
 				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
 				{
-					m_position->add(0.2f, 0);
+					m_position->add(m_fKickSpeed, 0);
+					m_fKickSpeed -= FRICTION_FACTOR;
 				}
 				else
 				{
@@ -85,13 +88,13 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 						m_position->sub(0.000005f, 0);
 					}
 					m_isKicked = false;
-					//Gridlock the bomb again here
 				}
 				break;
 			case DIRECTION_LEFT :
 				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
 				{
-					m_position->sub(0.2f, 0);
+					m_position->sub(m_fKickSpeed, 0);
+					m_fKickSpeed -= FRICTION_FACTOR;
 				}
 				else
 				{
@@ -100,7 +103,6 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 						m_position->add(0.000005f, 0);
 					}
 					m_isKicked = false;
-					//Gridlock the bomb again here
 				}
 				break;
 		}
@@ -204,6 +206,9 @@ void BombGameObject::kicked(int direction)
 {
 	m_isKicked = true;
 	m_iKickedDirection = direction;
+
+	// Allows a bomb to be kicked more than once
+	m_fKickSpeed = 0.2f;
 }
 
 #pragma mark <Private>

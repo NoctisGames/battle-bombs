@@ -16,7 +16,8 @@ typedef enum
 	FIRE,
 	BOMBS,
 	SPEED,		
-	KICK
+	KICK,
+	THROW
 } Power_Up_Type;
 
 #endif
