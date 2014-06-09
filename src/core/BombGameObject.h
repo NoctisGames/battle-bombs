@@ -54,6 +54,8 @@ private:
 
 	bool willHitInsideBlock(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);
 
+	bool willTravelOffGameField();
+
 	bool canContinueMoving(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);
 };
 

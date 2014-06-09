@@ -25,6 +25,7 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
     m_isExploding = false;
 	m_isKicked = false;
 	m_fKickSpeed = 0.2;
+	m_isPickedUp = false;
 
     m_bombOwner->onBombDropped();
 }
@@ -42,11 +43,10 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 
 	if(m_isKicked)
 	{
-		 //((3.0f-m_fStateTime)/10.0f);
 		switch(m_iKickedDirection)
 		{
 			case DIRECTION_UP :	
-				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
+				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks) && !willTravelOffGameField())
 				{
 					m_position->add(0, m_fKickSpeed);
 					m_fKickSpeed -= FRICTION_FACTOR;
@@ -61,7 +61,7 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 				}
 				break;
 			case DIRECTION_DOWN :
-				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
+				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks) && !willTravelOffGameField())
 				{
 					m_position->sub(0, m_fKickSpeed);
 					m_fKickSpeed -= FRICTION_FACTOR;
@@ -76,7 +76,7 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 				}
 				break;
 			case DIRECTION_RIGHT :
-				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
+				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks) && !willTravelOffGameField())
 				{
 					m_position->add(m_fKickSpeed, 0);
 					m_fKickSpeed -= FRICTION_FACTOR;
@@ -91,7 +91,7 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 				}
 				break;
 			case DIRECTION_LEFT :
-				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks))
+				if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks) && !willTravelOffGameField())
 				{
 					m_position->sub(m_fKickSpeed, 0);
 					m_fKickSpeed -= FRICTION_FACTOR;
@@ -211,6 +211,11 @@ void BombGameObject::kicked(int direction)
 	m_fKickSpeed = 0.2f;
 }
 
+void BombGameObject::onPickedUp()
+{
+	m_isPickedUp = true;
+}
+
 #pragma mark <Private>
 
 bool BombGameObject::canExplodeAtPosition(Vector2D &position, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks)
@@ -262,6 +267,16 @@ bool BombGameObject::willHitInsideBlock(std::vector<std::unique_ptr<InsideBlock 
 		{
 			return true;
 		}
+	}
+
+	return false;
+}
+
+bool BombGameObject::willTravelOffGameField()
+{
+	if(m_position->getX() < PLAYER_STARTING_X_LEFT || m_position->getX() > PLAYER_STARTING_X_RIGHT || m_position->getY() < PLAYER_STARTING_Y_BOTTOM || m_position->getY() > PLAYER_STARTING_Y_TOP)
+	{
+		return true;
 	}
 
 	return false;
