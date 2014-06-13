@@ -39,6 +39,8 @@ public:
     
     virtual void renderControls(DPadControl &dPadControl, ActiveButton &activeButton);
     
+    virtual void renderActivePowerUpIcon(Power_Up_Type activePowerUp);
+    
     virtual void endFrame();
     
     virtual void cleanUp();
@@ -46,6 +48,7 @@ public:
 private:
     std::unique_ptr<SpriteBatcher> m_spriteBatcher;
     GLuint m_gameTexture;
+    GLuint m_blueCharTexture;
     
     virtual void renderGameObject(GameObject &go, TextureRegion tr);
     

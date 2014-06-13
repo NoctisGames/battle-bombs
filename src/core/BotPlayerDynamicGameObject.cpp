@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction, float width, float height) : PlayerDynamicGameObject(playerIndex, x, y, gameListener, direction, width, height)
+BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction) : PlayerDynamicGameObject(playerIndex, x, y, gameListener, direction)
 {
     srand(time(NULL));
 }

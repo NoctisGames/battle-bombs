@@ -87,6 +87,7 @@
 		BB9948E219366E2900A8E599 /* GameListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9948E019366E2900A8E599 /* GameListener.cpp */; };
 		BB9D09AC19155C9E002CBFD3 /* bg_game.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB9D09AB19155C9E002CBFD3 /* bg_game.aifc */; };
 		BB9D93BE191FB4EC00AD9CCE /* PowerUp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */; };
+		BBBEC914194B425200AAB520 /* blue_char.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBEC913194B425200AAB520 /* blue_char.png */; };
 		BBCCF55E193847A0000F509A /* BotPlayerDynamicGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */; };
 		BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32418BFC8E1003A4EED /* Logger.m */; };
 		BBCDD32918BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32818BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m */; };
@@ -246,6 +247,7 @@
 		BB9D09AB19155C9E002CBFD3 /* bg_game.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = bg_game.aifc; sourceTree = "<group>"; };
 		BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PowerUp.cpp; sourceTree = "<group>"; };
 		BB9D93BD191FB4EC00AD9CCE /* PowerUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerUp.h; sourceTree = "<group>"; };
+		BBBEC913194B425200AAB520 /* blue_char.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_char.png; sourceTree = "<group>"; };
 		BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BotPlayerDynamicGameObject.cpp; sourceTree = "<group>"; };
 		BBCCF55D193847A0000F509A /* BotPlayerDynamicGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BotPlayerDynamicGameObject.h; sourceTree = "<group>"; };
 		BBCDD32318BFC8E1003A4EED /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
@@ -536,6 +538,7 @@
 				BB9D09AB19155C9E002CBFD3 /* bg_game.aifc */,
 				BB451A3818C3107A0093E559 /* cancel_chat.png */,
 				BB82641118C3025900A24A7C /* game.png */,
+				BBBEC913194B425200AAB520 /* blue_char.png */,
 				BB82640E18C2F63200A24A7C /* bg_temp.png */,
 			);
 			path = assets;
@@ -597,6 +600,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBBEC914194B425200AAB520 /* blue_char.png in Resources */,
 				0ADF1886178E2185005DA99E /* InfoPlist.strings in Resources */,
 				0ADF188E178E2185005DA99E /* Default.png in Resources */,
 				BB82641218C3025900A24A7C /* game.png in Resources */,

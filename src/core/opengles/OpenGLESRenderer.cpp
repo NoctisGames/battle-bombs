@@ -42,6 +42,7 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(4000, false));
     
     m_gameTexture = load_png_asset_into_texture("game.png");
+    m_blueCharTexture = load_png_asset_into_texture("blue_char.png");
 }
 
 void OpenGLESRenderer::clearScreenWithColor(float r, float g, float b, float a)
@@ -80,7 +81,7 @@ void OpenGLESRenderer::renderWorldForeground(std::vector<std::unique_ptr<InsideB
         
         for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
 		{
-			renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((**itr)));
+			renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((*itr)->getType()));
 		}
         
         m_spriteBatcher->endBatchWithTexture(m_gameTexture);
@@ -97,7 +98,7 @@ void OpenGLESRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
             renderGameObjectWithRespectToPlayer((**itr), Assets::getPlayerTextureRegion((**itr)));
         }
     }
-    m_spriteBatcher->endBatchWithTexture(m_gameTexture);
+    m_spriteBatcher->endBatchWithTexture(m_blueCharTexture);
 }
 
 void OpenGLESRenderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
@@ -132,6 +133,13 @@ void OpenGLESRenderer::renderControls(DPadControl &dPadControl, ActiveButton &ac
     m_spriteBatcher->beginBatch();
     renderGameObject(dPadControl, Assets::getDPadControlTextureRegion());
     renderGameObject(activeButton, Assets::getActiveButtonTextureRegion());
+    m_spriteBatcher->endBatchWithTexture(m_gameTexture);
+}
+
+void OpenGLESRenderer::renderActivePowerUpIcon(Power_Up_Type activePowerUp)
+{
+    m_spriteBatcher->beginBatch();
+    m_spriteBatcher->drawSprite(18.5f, 1.2f, 2.5f, 2.5f, 0, Assets::getPowerUpTextureRegion(activePowerUp));
     m_spriteBatcher->endBatchWithTexture(m_gameTexture);
 }
 

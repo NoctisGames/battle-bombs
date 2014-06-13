@@ -21,9 +21,9 @@
 
 PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction, float width, float height) : DynamicGameObject(x, y, width, height, 0)
 {
-    m_bounds->getLowerLeft().set(x - width / 4, y - height / 2);
-    m_bounds->setWidth(width / 2);
-    m_bounds->setHeight(height * 7 / 16);
+    m_bounds->getLowerLeft().set(x - width * 5 / 64, y - height / 4);
+    m_bounds->setWidth(width * 5 / 32);
+    m_bounds->setHeight(height / 4);
 
     m_fStateTime = 0;
     m_fSpeed = 3;
@@ -53,7 +53,7 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
         float deltaY = m_velocity->getY() * deltaTime;
 
         m_position->add(deltaX, deltaY);
-        m_bounds->getLowerLeft().set(getPosition().getX() - getWidth() / 4, getPosition().getY() - getHeight() / 2);
+        m_bounds->getLowerLeft().set(getPosition().getX() - getWidth() * 5 / 64, getPosition().getY() - getHeight() / 4);
 
         bool isCollision = false;
 
@@ -117,12 +117,12 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
         if (isCollision)
         {
             m_position->sub(deltaX, deltaY);
-            m_bounds->getLowerLeft().set(getPosition().getX() - getWidth() / 4, getPosition().getY() - getHeight() / 2);
+            m_bounds->getLowerLeft().set(getPosition().getX() - getWidth() * 5 / 64, getPosition().getY() - getHeight() / 4);
         }
     }
     else if (m_playerState == DYING)
     {
-        if (m_fStateTime > 0.98f)
+        if (m_fStateTime > 0.6f)
         {
             m_playerState = DEAD;
         }
