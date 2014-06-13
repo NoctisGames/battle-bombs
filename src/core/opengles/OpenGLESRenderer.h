@@ -29,11 +29,11 @@ public:
     
     virtual void renderWorldForeground(std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
     
-    virtual void renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
-    
     virtual void renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs);
     
     virtual void renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions);
+    
+    virtual void renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
     
     virtual void renderInterface();
     
