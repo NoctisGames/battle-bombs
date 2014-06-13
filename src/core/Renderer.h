@@ -47,11 +47,11 @@ public:
     
     virtual void renderWorldForeground(std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps) = 0;
     
+	virtual void renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs) = 0;
+
+	virtual void renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions) = 0;
+
     virtual void renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players) = 0;
-    
-    virtual void renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs) = 0;
-    
-    virtual void renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions) = 0;
     
     virtual void renderInterface() = 0;
     

@@ -28,11 +28,11 @@ public:
 
 	virtual void renderWorldForeground(std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
 
-	virtual void renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
-
 	virtual void renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs);
 
 	virtual void renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions);
+
+	virtual void renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
 
 	virtual void renderInterface();
 
@@ -51,6 +51,8 @@ private:
 	ID3D11DepthStencilView *m_depthStencilView;
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	ID3D11ShaderResourceView *m_gameShaderResourceView;
+	ID3D11ShaderResourceView *m_blueCharShaderResourceView;
+	ID3D11ShaderResourceView *m_currentShaderResourceView;
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;

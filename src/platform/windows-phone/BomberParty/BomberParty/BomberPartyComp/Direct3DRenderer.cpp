@@ -39,6 +39,7 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 
 	// Initialize Textures
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\game.dds", NULL, &m_gameShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\blue_char.dds", NULL, &m_blueCharShaderResourceView, NULL));
 
 	// Clear the blend state description.
 	D3D11_BLEND_DESC blendDesc;
@@ -91,8 +92,10 @@ void Direct3DRenderer::clearScreenWithColor(float r, float g, float b, float a)
 
 void Direct3DRenderer::renderWorldBackground()
 {
+	m_currentShaderResourceView = m_gameShaderResourceView;
+
 	m_spriteBatch->Begin();
-	m_spriteBatch->Draw(m_gameShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(WORLD_BACKGROUND_X, WORLD_BACKGROUND_Y - m_fScrollY, WORLD_BACKGROUND_WIDTH, WORLD_BACKGROUND_HEIGHT, false), &Assets::getWorldBackgroundTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(WORLD_BACKGROUND_X, WORLD_BACKGROUND_Y - m_fScrollY, WORLD_BACKGROUND_WIDTH, WORLD_BACKGROUND_HEIGHT, false), &Assets::getWorldBackgroundTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	m_spriteBatch->End();
 }
 
@@ -121,19 +124,6 @@ void Direct3DRenderer::renderWorldForeground(std::vector<std::unique_ptr<InsideB
 	}
 }
 
-void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
-{
-	m_spriteBatch->Begin();
-	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
-	{
-		if ((**itr).getPlayerState() != Player_State::DEAD)
-		{
-			renderGameObjectWithRespectToPlayer((**itr), Assets::getPlayerTextureRegion((**itr)));
-		}
-	}
-	m_spriteBatch->End();
-}
-
 void Direct3DRenderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
 {
 	m_spriteBatch->Begin();
@@ -149,15 +139,32 @@ void Direct3DRenderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> 
 	m_spriteBatch->Begin();
 	for (std::vector<std::unique_ptr<Explosion>>::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
 	{
-		m_spriteBatch->Draw(m_gameShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates((**itr).getPosition().getX(), (**itr).getPosition().getY() - m_fScrollY, (**itr).getWidth(), (**itr).getHeight(), true), &Assets::getExplosionTextureRegion((**itr)).getSourceRECT(), Colors::White, DEGREES_TO_RADIANS_WP((**itr).getAngle()), XMFLOAT2(8, 8), SpriteEffects_None, 0);
+		m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates((**itr).getPosition().getX(), (**itr).getPosition().getY() - m_fScrollY, (**itr).getWidth(), (**itr).getHeight(), true), &Assets::getExplosionTextureRegion((**itr)).getSourceRECT(), Colors::White, DEGREES_TO_RADIANS_WP((**itr).getAngle()), XMFLOAT2(8, 8), SpriteEffects_None, 0);
+	}
+	m_spriteBatch->End();
+}
+
+void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
+{
+	m_currentShaderResourceView = m_blueCharShaderResourceView;
+
+	m_spriteBatch->Begin();
+	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
+	{
+		if ((**itr).getPlayerState() != Player_State::DEAD)
+		{
+			renderGameObjectWithRespectToPlayer((**itr), Assets::getPlayerTextureRegion((**itr)));
+		}
 	}
 	m_spriteBatch->End();
 }
 
 void Direct3DRenderer::renderInterface()
 {
+	m_currentShaderResourceView = m_gameShaderResourceView;
+
 	m_spriteBatch->Begin();
-	m_spriteBatch->Draw(m_gameShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_BACKGROUND_X, INTERFACE_BACKGROUND_Y, INTERFACE_BACKGROUND_WIDTH, INTERFACE_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_BACKGROUND_X, INTERFACE_BACKGROUND_Y, INTERFACE_BACKGROUND_WIDTH, INTERFACE_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	m_spriteBatch->End();
 }
 
@@ -175,7 +182,7 @@ void Direct3DRenderer::renderControls(DPadControl &dPadControl, ActiveButton &ac
 void Direct3DRenderer::renderActivePowerUpIcon(Power_Up_Type activePowerUp)
 {
 	m_spriteBatch->Begin();
-	m_spriteBatch->Draw(m_gameShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(18.5f, 1.2f, 2.5f, 2.5f, false), &Assets::getPowerUpTextureRegion(activePowerUp).getSourceRECT(),  Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(18.5f, 1.2f, 2.5f, 2.5f, false), &Assets::getPowerUpTextureRegion(activePowerUp).getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	m_spriteBatch->End();
 }
 
@@ -187,20 +194,21 @@ void Direct3DRenderer::endFrame()
 void Direct3DRenderer::cleanUp()
 {
 	m_gameShaderResourceView->Release();
+	m_blueCharShaderResourceView->Release();
 }
 
 // Private
 
 void Direct3DRenderer::renderGameObject(GameObject &go, TextureRegion tr)
 {
-	m_spriteBatch->Draw(m_gameShaderResourceView, RECTUtils::getInstance()->getRECTForGameObject(go, false), &tr.getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForGameObject(go, false), &tr.getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 }
 
 void Direct3DRenderer::renderGameObjectWithRespectToPlayer(GameObject &go, TextureRegion tr)
 {
 	if (m_fScrollY > 0)
 	{
-		m_spriteBatch->Draw(m_gameShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(go.getPosition().getX(), go.getPosition().getY() - m_fScrollY, go.getWidth(), go.getHeight(), false), &tr.getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+		m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(go.getPosition().getX(), go.getPosition().getY() - m_fScrollY, go.getWidth(), go.getHeight(), false), &tr.getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	}
 	else
 	{
