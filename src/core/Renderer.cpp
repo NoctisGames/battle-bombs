@@ -10,6 +10,7 @@
 #include "Renderer.h"
 #include "PlayerDynamicGameObject.h"
 #include "Vector2D.h"
+#include "GameConstants.h"
 
 Renderer::Renderer()
 {
@@ -18,12 +19,12 @@ Renderer::Renderer()
 
 void Renderer::calcScrollYForPlayer(PlayerDynamicGameObject &player)
 {
-	if (player.getPosition().getY() > 7.9f)
+	if (player.getPosition().getY() > (SCREEN_HEIGHT / 2 + GRID_CELL_HEIGHT))
 	{
-		m_fScrollY = player.getPosition().getY() - 7.9f;
-		if (m_fScrollY > 12)
+		m_fScrollY = player.getPosition().getY() - (SCREEN_HEIGHT / 2 + GRID_CELL_HEIGHT);
+		if (m_fScrollY > SCREEN_HEIGHT)
 		{
-			m_fScrollY = 12;
+			m_fScrollY = SCREEN_HEIGHT;
 		}
 	}
 	else
