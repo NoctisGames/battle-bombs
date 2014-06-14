@@ -216,7 +216,10 @@ static Logger *logger = nil;
     
     on_pause();
     
-    [self dismissViewControllerAnimated:NO completion:nil];
+    if (![self.presentedViewController isBeingDismissed])
+    {
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
 }
 
 @end

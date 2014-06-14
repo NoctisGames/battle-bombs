@@ -42,7 +42,7 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(4000, false));
     
     m_gameTexture = load_png_asset_into_texture("game.png");
-    m_blueCharTexture = load_png_asset_into_texture("blue_char.png");
+    m_charBlueTexture = load_png_asset_into_texture("char_blue.png");
 }
 
 void OpenGLESRenderer::clearScreenWithColor(float r, float g, float b, float a)
@@ -98,7 +98,7 @@ void OpenGLESRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
             renderGameObjectWithRespectToPlayer((**itr), Assets::getPlayerTextureRegion((**itr)));
         }
     }
-    m_spriteBatcher->endBatchWithTexture(m_blueCharTexture);
+    m_spriteBatcher->endBatchWithTexture(m_charBlueTexture);
 }
 
 void OpenGLESRenderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)

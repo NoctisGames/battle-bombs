@@ -9,8 +9,9 @@
 #include "BreakableBlock.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
+#include "GameConstants.h"
 
-BreakableBlock::BreakableBlock(int gridX, int gridY, int powerUpFlag) : GridGameObject(gridX, gridY, 1, 1.25f, 0)
+BreakableBlock::BreakableBlock(int gridX, int gridY, int powerUpFlag) : GridGameObject(gridX, gridY, GRID_CELL_WIDTH, GRID_CELL_HEIGHT, 0)
 {
     m_isDestroyed = false;
 	m_hasPowerUp = false;

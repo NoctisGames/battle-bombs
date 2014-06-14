@@ -48,7 +48,7 @@ public:
 private:
     std::unique_ptr<SpriteBatcher> m_spriteBatcher;
     GLuint m_gameTexture;
-    GLuint m_blueCharTexture;
+    GLuint m_charBlueTexture;
     
     virtual void renderGameObject(GameObject &go, TextureRegion tr);
     

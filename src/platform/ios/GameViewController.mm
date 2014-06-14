@@ -533,7 +533,10 @@ static Logger *logger = nil;
     [[WarpClient getInstance] leaveRoom:self.joinedRoomId];
     [[WarpClient getInstance] disconnect];
     
-    [self dismissViewControllerAnimated:NO completion:nil];
+    if (![self.presentedViewController isBeingDismissed])
+    {
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
 }
 
 @end
