@@ -11,8 +11,10 @@
 #include "Rectangle.h"
 #include "GameConstants.h"
 
-BreakableBlock::BreakableBlock(int gridX, int gridY, int powerUpFlag) : GridGameObject(gridX, gridY, GRID_CELL_WIDTH, GRID_CELL_HEIGHT, 0)
+BreakableBlock::BreakableBlock(int gridX, int gridY, int powerUpFlag) : GridGameObject(gridX, gridY, GRID_CELL_WIDTH * 3, GRID_CELL_HEIGHT * 3, 0)
 {
+    resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
+    
     m_isDestroyed = false;
 	m_hasPowerUp = false;
 	if (powerUpFlag > 0)
