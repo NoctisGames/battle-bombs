@@ -12,11 +12,12 @@
 #include "pch.h"
 #include "GameObject.h"
 #include "ExplosionType.h"
+#include "GameConstants.h"
 
 class Explosion : public GameObject
 {
 public:
-    Explosion(Explosion_Type explosionType, float x, float y, float angle, float width = 1, float height = 1);
+    Explosion(Explosion_Type explosionType, float x, float y, float angle, float width = GRID_CELL_WIDTH, float height = GRID_CELL_HEIGHT);
     
     void update(float deltaTime);
     

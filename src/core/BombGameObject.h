@@ -11,6 +11,7 @@
 
 #include "pch.h"
 #include "DynamicGridGameObject.h"
+#include "GameConstants.h"
 
 #include <vector>
 #include <memory>
@@ -23,7 +24,7 @@ class BreakableBlock;
 class BombGameObject : public DynamicGridGameObject
 {
 public:
-    BombGameObject(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY, float width = 0.8f, float height = 0.8f);
+    BombGameObject(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY, float width = GRID_CELL_WIDTH * 4 / 5, float height = GRID_CELL_HEIGHT * 4 / 5);
     
     void update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
     

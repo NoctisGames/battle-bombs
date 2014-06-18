@@ -259,6 +259,7 @@
 		BBE6F98819112D3E00062B8E /* Explosion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Explosion.cpp; sourceTree = "<group>"; };
 		BBE6F98919112D3E00062B8E /* Explosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Explosion.h; sourceTree = "<group>"; };
 		BBE6F98B1911301100062B8E /* ExplosionType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExplosionType.h; sourceTree = "<group>"; };
+		BBF683EC1951509900EBD23E /* BreakableBlockState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BreakableBlockState.h; sourceTree = "<group>"; };
 		BBF7CC5C18CCA2B700B7CD15 /* DPadControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DPadControl.cpp; sourceTree = "<group>"; };
 		BBF7CC5D18CCA2B700B7CD15 /* DPadControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPadControl.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -310,6 +311,7 @@
 				BBCCF55D193847A0000F509A /* BotPlayerDynamicGameObject.h */,
 				BB06563D18E24DA700076912 /* BreakableBlock.cpp */,
 				BB06563E18E24DA700076912 /* BreakableBlock.h */,
+				BBF683EC1951509900EBD23E /* BreakableBlockState.h */,
 				BB96EEB018B99A6900F7C356 /* Color.h */,
 				BBF7CC5C18CCA2B700B7CD15 /* DPadControl.cpp */,
 				BBF7CC5D18CCA2B700B7CD15 /* DPadControl.h */,

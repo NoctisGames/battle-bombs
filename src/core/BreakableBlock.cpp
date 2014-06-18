@@ -15,28 +15,32 @@ BreakableBlock::BreakableBlock(int gridX, int gridY, int powerUpFlag) : GridGame
 {
     resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
     
-    m_isDestroyed = false;
-	m_hasPowerUp = false;
-	if (powerUpFlag > 0)
-	{
-		m_hasPowerUp = true;
-	}
-	m_powerUpFlag = powerUpFlag;
+    m_breakableBlockState = NORMAL;
+    m_fStateTime = 0;
+    m_powerUpFlag = powerUpFlag;
+}
+
+void BreakableBlock::update(float deltaTime)
+{
+    if(m_breakableBlockState == EXPLODING)
+    {
+        m_fStateTime += deltaTime;
+        
+        if(m_fStateTime > 1)
+        {
+            m_breakableBlockState = DESTROYED;
+        }
+    }
 }
 
 void BreakableBlock::onDestroy()
 {
-    m_isDestroyed = true;
-}
-
-bool BreakableBlock::isDestroyed()
-{
-    return m_isDestroyed;
+    m_breakableBlockState = EXPLODING;
 }
 
 bool BreakableBlock::hasPowerUp()
 {
-    return m_hasPowerUp;
+    return m_powerUpFlag > 0;
 }
 
 float BreakableBlock::getX()
@@ -47,6 +51,16 @@ float BreakableBlock::getX()
 float BreakableBlock::getY()
 {
     return getPosition().getY();
+}
+
+Breakable_Block_State BreakableBlock::getBreakableBlockState()
+{
+    return m_breakableBlockState;
+}
+
+float BreakableBlock::getStateTime()
+{
+    return m_fStateTime;
 }
 
 int BreakableBlock::getPowerUpFlag()

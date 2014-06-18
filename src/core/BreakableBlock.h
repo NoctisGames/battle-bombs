@@ -11,15 +11,16 @@
 
 #include "GridGameObject.h"
 #include "PowerUp.h"
+#include "BreakableBlockState.h"
 
 class BreakableBlock : public GridGameObject
 {
 public:
 	BreakableBlock(int gridX, int gridY, int powerUpFlag);
+    
+    void update(float deltaTime);
 
     void onDestroy();
-
-    bool isDestroyed();
 
     bool hasPowerUp();
 
@@ -27,11 +28,15 @@ public:
 
     float getY();
 
+    Breakable_Block_State getBreakableBlockState();
+    
+    float getStateTime();
+    
 	int getPowerUpFlag();
 
 private:
-    bool m_isDestroyed;
-    bool m_hasPowerUp;
+    Breakable_Block_State m_breakableBlockState;
+    float m_fStateTime;
 	int m_powerUpFlag;
 };
 

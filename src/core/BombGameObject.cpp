@@ -20,7 +20,7 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
 {
     m_bombOwner = bombOwner;
     m_fStateTime = 0;
-    m_fSizeScalar = 0.2f;
+    m_fSizeScalar = 0.44f;
     m_sPower = power;
     m_isExploding = false;
 	m_isKicked = false;
@@ -36,7 +36,7 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 
     m_fWidth += deltaTime * m_fSizeScalar;
     m_fHeight = m_fWidth;
-    if (m_fWidth > 0.9f || m_fWidth < 0.7f)
+    if (m_fWidth > GRID_CELL_WIDTH || m_fWidth < GRID_CELL_WIDTH * 3 / 5)
     {
         m_fSizeScalar = -m_fSizeScalar;
     }
@@ -127,10 +127,10 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
 
         for (short i = m_sPower; i > 0; i--)
         {
-            rightPosition.add(1, 0);
-            topPosition.add(0, 1);
-            leftPosition.sub(1, 0);
-            bottomPosition.sub(0, 1);
+            rightPosition.add(GRID_CELL_WIDTH, 0);
+            topPosition.add(0, GRID_CELL_HEIGHT);
+            leftPosition.sub(GRID_CELL_WIDTH, 0);
+            bottomPosition.sub(0, GRID_CELL_HEIGHT);
 
             Explosion_Type explosionType = i == 1 ? Explosion_Type::TAIL : Explosion_Type::BODY;
 

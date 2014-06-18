@@ -84,7 +84,9 @@ void GameSession::updateCommon(float deltaTime)
 
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end();)
     {
-        if ((**itr).isDestroyed())
+        (**itr).update(deltaTime);
+        
+        if ((**itr).getBreakableBlockState() == DESTROYED)
         {
             if ((**itr).hasPowerUp())
             {

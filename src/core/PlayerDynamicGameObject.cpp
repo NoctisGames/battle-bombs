@@ -23,7 +23,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, float x, flo
 {
     m_bounds->getLowerLeft().set(x - width * 5 / 64, y - height / 4);
     m_bounds->setWidth(width * 5 / 32);
-    m_bounds->setHeight(height / 4);
+    m_bounds->setHeight(height / 16);
 
     m_fStateTime = 0;
     m_fSpeed = 3;

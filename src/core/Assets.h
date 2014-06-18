@@ -20,6 +20,7 @@ class BreakableBlock;
 class PlayerDynamicGameObject;
 class BombGameObject;
 class Explosion;
+class BreakableBlock;
 
 class Assets
 {
@@ -30,7 +31,7 @@ public:
     
     static TextureRegion getInsideBlockTextureRegion();
 
-	static TextureRegion getBreakableBlockTextureRegion();
+	static TextureRegion getBreakableBlockTextureRegion(BreakableBlock &breakableBlock);
     
     static TextureRegion getInterfaceOverlayTextureRegion();
     
