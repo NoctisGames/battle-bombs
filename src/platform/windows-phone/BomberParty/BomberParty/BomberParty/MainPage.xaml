@@ -16,22 +16,17 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot">
         <Grid.Background>
-            <ImageBrush ImageSource="/Assets/bg_temp.png" Stretch="UniformToFill" Opacity="0.5" />
+            <ImageBrush ImageSource="/Assets/bg_temp.png" Stretch="UniformToFill" />
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="Bomber Party" Style="{StaticResource PhoneTextNormalStyle}" HorizontalAlignment="Center" FontWeight="Bold" FontSize="36"/>
-        </StackPanel>
-
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button x:Name="StartQuickMatch" Content="Start a Quick Match" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="320" Click="Start_Quick_Match"/>
-            <Button x:Name="StartQuickOfflineMatch" Content="Start a Quick Offline Match" HorizontalAlignment="Center" Margin="0,125,0,0" VerticalAlignment="Center" Width="360" Click="Start_Quick_Offline_Match"/>
+            <Button x:Name="StartQuickMatch" Content="Start a Quick Match" HorizontalAlignment="Center" Margin="10,335,436,73" VerticalAlignment="Center" Width="330" Click="Start_Quick_Match" Opacity="0"/>
+            <Button x:Name="StartQuickOfflineMatch" Content="Start a Quick Offline Match" HorizontalAlignment="Center" Margin="0,398,436,10" VerticalAlignment="Center" Width="340" Click="Start_Quick_Offline_Match" Height="72" Opacity="0"/>
         </Grid>
     </Grid>
 
