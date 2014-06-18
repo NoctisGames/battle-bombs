@@ -55,8 +55,6 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
         m_position->add(deltaX, deltaY);
         m_bounds->getLowerLeft().set(getPosition().getX() - getWidth() * 5 / 64, getPosition().getY() - getHeight() / 4);
 
-        bool isCollision = false;
-
         if (m_position->getX() < PLAYER_STARTING_X_LEFT)
         {
             m_position->setX(PLAYER_STARTING_X_LEFT);
@@ -75,6 +73,8 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
         }
         else
         {
+            bool isCollision = false;
+            
             for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
             {
                 if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
@@ -92,46 +92,46 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
                     break;
                 }
             }
-
-            for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
+            
+            if (isCollision)
             {
-                if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
-                {
-                    int type = (*itr)->getPowerUpFlag();
-                    switch (type)
-                    {
-                        case 1:
-                            (*itr)->onPickedUp();
-                            ++m_iMaxBombCount;
-                            break;
-                        case 2:
-                            (*itr)->onPickedUp();
-                            ++m_firePower;
-                            break;
-                        case 3:
-                            (*itr)->onPickedUp();
-                            ++m_fSpeed;
-                            break;
-                        case 4:
-                            (*itr)->onPickedUp();
-                            m_hasActivePowerUp = true;
-							m_activePowerUp = KICK;
-                            break;
-                        default:
-                            (*itr)->onPickedUp();
-                            break;
-                    }
-                    break;
-                }
+                m_position->sub(deltaX, deltaY);
             }
-        }
-
-        if (isCollision)
-        {
-            m_position->sub(deltaX, deltaY);
         }
         
         m_bounds->getLowerLeft().set(getPosition().getX() - getWidth() * 5 / 64, getPosition().getY() - getHeight() / 4);
+        
+        for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
+        {
+            if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+            {
+                int type = (*itr)->getPowerUpFlag();
+                switch (type)
+                {
+                    case 1:
+                        (*itr)->onPickedUp();
+                        ++m_iMaxBombCount;
+                        break;
+                    case 2:
+                        (*itr)->onPickedUp();
+                        ++m_firePower;
+                        break;
+                    case 3:
+                        (*itr)->onPickedUp();
+                        ++m_fSpeed;
+                        break;
+                    case 4:
+                        (*itr)->onPickedUp();
+                        m_hasActivePowerUp = true;
+                        m_activePowerUp = KICK;
+                        break;
+                    default:
+                        (*itr)->onPickedUp();
+                        break;
+                }
+                break;
+            }
+        }
     }
     else if (m_playerState == DYING)
     {
