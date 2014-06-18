@@ -39,7 +39,7 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 
 	// Initialize Textures
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\game.dds", NULL, &m_gameShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\blue_char.dds", NULL, &m_blueCharShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_blue.dds", NULL, &m_blueCharShaderResourceView, NULL));
 
 	// Clear the blend state description.
 	D3D11_BLEND_DESC blendDesc;
@@ -168,14 +168,10 @@ void Direct3DRenderer::renderInterface()
 	m_spriteBatch->End();
 }
 
-void Direct3DRenderer::renderControls(DPadControl &dPadControl, ActiveButton &activeButton)
+void Direct3DRenderer::renderControls(DPadControl &dPadControl)
 {
 	m_spriteBatch->Begin();
 	renderGameObject(dPadControl, Assets::getDPadControlTextureRegion());
-	m_spriteBatch->End();
-
-	m_spriteBatch->Begin();
-	renderGameObject(activeButton, Assets::getActiveButtonTextureRegion());
 	m_spriteBatch->End();
 }
 

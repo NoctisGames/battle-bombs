@@ -36,7 +36,7 @@ public:
 
 	virtual void renderInterface();
 
-	virtual void renderControls(DPadControl &dPadControl, ActiveButton &activeButton);
+	virtual void renderControls(DPadControl &dPadControl);
 
 	virtual void renderActivePowerUpIcon(Power_Up_Type activePowerUp);
 

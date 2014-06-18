@@ -74,17 +74,53 @@ void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
     {
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
+            // Don't place breakable blocks where inside blocks are
             if (i % 2 != 0 && j % 2 != 0)
             {
                 continue;
             }
-
-            if ((i == 0 || i == GRID_CELL_NUM_ROWS - 1 || i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP || i == PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM) && (j < 2 || j >= NUM_GRID_CELLS_PER_ROW - 2))
+            
+            if (i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP + 1 && j == 0)
             {
                 continue;
             }
-
-            if ((i == 1 || i == GRID_CELL_NUM_ROWS - 2 || i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP - 1 || i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP + 1 || i == PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM - 1 || i == PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM + 1) && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
+            
+            if (i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP + 1 && j == NUM_GRID_CELLS_PER_ROW - 1)
+            {
+                continue;
+            }
+            
+            if(i == 0 && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
+            {
+                continue;
+            }
+            
+            if(i == 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
+            {
+                continue;
+            }
+            
+            if(i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP - 1 && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
+            {
+                continue;
+            }
+            
+            if(i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
+            {
+                continue;
+            }
+            
+            if(i == PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
+            {
+                continue;
+            }
+            
+            if(i == PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM + 1 && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
+            {
+                continue;
+            }
+            
+            if(i == GRID_CELL_NUM_ROWS - 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
             {
                 continue;
             }
