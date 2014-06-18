@@ -57,9 +57,21 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
 
         bool isCollision = false;
 
-        if (m_position->getX() < PLAYER_STARTING_X_LEFT || m_position->getX() > PLAYER_STARTING_X_RIGHT || m_position->getY() < PLAYER_STARTING_Y_BOTTOM || m_position->getY() > PLAYER_STARTING_Y_TOP)
+        if (m_position->getX() < PLAYER_STARTING_X_LEFT)
         {
-            isCollision = true;
+            m_position->setX(PLAYER_STARTING_X_LEFT);
+        }
+        else if (m_position->getX() > PLAYER_STARTING_X_RIGHT)
+        {
+            m_position->setX(PLAYER_STARTING_X_RIGHT);
+        }
+        else if (m_position->getY() < PLAYER_STARTING_Y_BOTTOM)
+        {
+            m_position->setY(PLAYER_STARTING_Y_BOTTOM);
+        }
+        else if (m_position->getY() > PLAYER_STARTING_Y_TOP)
+        {
+            m_position->setY(PLAYER_STARTING_Y_TOP);
         }
         else
         {
@@ -117,8 +129,9 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
         if (isCollision)
         {
             m_position->sub(deltaX, deltaY);
-            m_bounds->getLowerLeft().set(getPosition().getX() - getWidth() * 5 / 64, getPosition().getY() - getHeight() / 4);
         }
+        
+        m_bounds->getLowerLeft().set(getPosition().getX() - getWidth() * 5 / 64, getPosition().getY() - getHeight() / 4);
     }
     else if (m_playerState == DYING)
     {
