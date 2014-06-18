@@ -133,7 +133,7 @@ void GameScreen::present()
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderInterface();
-            m_renderer->renderControls(*m_dPad, *m_activeButton);
+            m_renderer->renderControls(*m_dPad);
 			m_renderer->renderActivePowerUpIcon(m_player->getActivePowerUp());
             
             m_renderer->endFrame();

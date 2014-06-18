@@ -35,8 +35,6 @@ public:
     static TextureRegion getInterfaceOverlayTextureRegion();
     
     static TextureRegion getDPadControlTextureRegion();
-	
-	static TextureRegion getActiveButtonTextureRegion();
 
 	static TextureRegion getPowerUpTextureRegion(Power_Up_Type powerUp);
     

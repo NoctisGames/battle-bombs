@@ -128,11 +128,10 @@ void OpenGLESRenderer::renderInterface()
     m_spriteBatcher->endBatchWithTexture(m_gameTexture);
 }
 
-void OpenGLESRenderer::renderControls(DPadControl &dPadControl, ActiveButton &activeButton)
+void OpenGLESRenderer::renderControls(DPadControl &dPadControl)
 {
     m_spriteBatcher->beginBatch();
     renderGameObject(dPadControl, Assets::getDPadControlTextureRegion());
-    renderGameObject(activeButton, Assets::getActiveButtonTextureRegion());
     m_spriteBatcher->endBatchWithTexture(m_gameTexture);
 }
 

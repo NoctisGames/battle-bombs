@@ -55,12 +55,6 @@ TextureRegion Assets::getDPadControlTextureRegion()
     return textureRegion;
 }
 
-TextureRegion Assets::getActiveButtonTextureRegion()
-{
-    static TextureRegion textureRegion = TextureRegion(ACTIVE_BUTTON_TEXTURE_REGION_X, ACTIVE_BUTTON_TEXTURE_REGION_Y, ACTIVE_BUTTON_TEXTURE_REGION_WIDTH, ACTIVE_BUTTON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-    return textureRegion;
-}
-
 TextureRegion Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
 {
     if (player.getPlayerState() == Player_State::ALIVE)
