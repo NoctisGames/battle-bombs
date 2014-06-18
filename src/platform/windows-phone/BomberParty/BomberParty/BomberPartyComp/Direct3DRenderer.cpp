@@ -112,7 +112,7 @@ void Direct3DRenderer::renderWorldForeground(std::vector<std::unique_ptr<InsideB
 
 		for (std::vector<std::unique_ptr<BreakableBlock>>::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
 		{
-			renderGameObjectWithRespectToPlayer((**itr), Assets::getBreakableBlockTextureRegion());
+			renderGameObjectWithRespectToPlayer((**itr), Assets::getBreakableBlockTextureRegion((**itr)));
 		}
 
 		for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
