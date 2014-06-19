@@ -58,7 +58,7 @@
 		BB7305E2189C6BFA009F6DF4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7305E1189C6BFA009F6DF4 /* AudioToolbox.framework */; };
 		BB7305E4189C6C06009F6DF4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7305E3189C6C06009F6DF4 /* AVFoundation.framework */; };
 		BB74E80718C2541F007C223E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BB74E80518C2541F007C223E /* Localizable.strings */; };
-		BB82640B18C288F200A24A7C /* AppWarp_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */; };
+		BB82640B18C288F200A24A7C /* AppWarp_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		BB82640F18C2F63200A24A7C /* bg_temp.png in Resources */ = {isa = PBXBuildFile; fileRef = BB82640E18C2F63200A24A7C /* bg_temp.png */; };
 		BB82641218C3025900A24A7C /* game.png in Resources */ = {isa = PBXBuildFile; fileRef = BB82641118C3025900A24A7C /* game.png */; };
 		BB9139C918BEFCC800E51FB5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9139C818BEFCC800E51FB5 /* MainViewController.m */; };
@@ -815,15 +815,16 @@
 				INFOPLIST_FILE = "bomberparty-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-std=c++0x",
 					"-lstdc++",
 					"-ObjC\n",
 				);
 				PRODUCT_NAME = "Bomber Party";
-				PROVISIONING_PROFILE = "F9A2F2D4-6A5E-4D21-8D9D-A8D496749ED1";
+				PROVISIONING_PROFILE = "732A0194-683F-4A79-B1A7-A323AB68CCD9";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -850,16 +851,16 @@
 				INFOPLIST_FILE = "bomberparty-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "";
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-std=c++0x",
 					"-lstdc++",
 					"-ObjC\n",
 				);
 				PRODUCT_NAME = "Bomber Party";
-				PROVISIONING_PROFILE = "F9A2F2D4-6A5E-4D21-8D9D-A8D496749ED1";
+				PROVISIONING_PROFILE = "732A0194-683F-4A79-B1A7-A323AB68CCD9";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
