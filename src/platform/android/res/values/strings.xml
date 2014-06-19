@@ -4,8 +4,8 @@
     <string name="app_name">Bomber Party</string>
 
     <!-- Activity Main -->
-    <string name="start_quick_match">Start a Quick Match</string>
-    <string name="start_quick_offline_match">Start a Quick Offline Match</string>
+    <string name="start_quick_match">QUICK MATCH</string>
+    <string name="start_quick_offline_match">OFFLINE MATCH</string>
     
     <!-- Activity Game -->
     <string name="chat_hint">Enter a Message&#8230;</string>

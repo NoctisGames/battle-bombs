@@ -59,7 +59,7 @@
 		BB7305E4189C6C06009F6DF4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7305E3189C6C06009F6DF4 /* AVFoundation.framework */; };
 		BB74E80718C2541F007C223E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BB74E80518C2541F007C223E /* Localizable.strings */; };
 		BB82640B18C288F200A24A7C /* AppWarp_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		BB82640F18C2F63200A24A7C /* bg_temp.png in Resources */ = {isa = PBXBuildFile; fileRef = BB82640E18C2F63200A24A7C /* bg_temp.png */; };
+		BB82640F18C2F63200A24A7C /* bg_main.png in Resources */ = {isa = PBXBuildFile; fileRef = BB82640E18C2F63200A24A7C /* bg_main.png */; };
 		BB82641218C3025900A24A7C /* game.png in Resources */ = {isa = PBXBuildFile; fileRef = BB82641118C3025900A24A7C /* game.png */; };
 		BB9139C918BEFCC800E51FB5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9139C818BEFCC800E51FB5 /* MainViewController.m */; };
 		BB96EECE18B99A6900F7C356 /* Assets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEAE18B99A6900F7C356 /* Assets.cpp */; };
@@ -187,7 +187,7 @@
 		BB7305E3189C6C06009F6DF4 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		BB74E80618C2541F007C223E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppWarp_iOS_SDK.framework; path = ../../3rdparty/AppWarp/AppWarp_iOS_SDK.framework; sourceTree = "<group>"; };
-		BB82640E18C2F63200A24A7C /* bg_temp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_temp.png; sourceTree = "<group>"; };
+		BB82640E18C2F63200A24A7C /* bg_main.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_main.png; sourceTree = "<group>"; };
 		BB82641118C3025900A24A7C /* game.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = game.png; sourceTree = "<group>"; };
 		BB90FA7818D50E4100733E9B /* GameEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameEvent.h; sourceTree = "<group>"; };
 		BB9139C718BEFCC800E51FB5 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -541,7 +541,7 @@
 				BB451A3818C3107A0093E559 /* cancel_chat.png */,
 				BB82641118C3025900A24A7C /* game.png */,
 				BBBEC913194B425200AAB520 /* char_blue.png */,
-				BB82640E18C2F63200A24A7C /* bg_temp.png */,
+				BB82640E18C2F63200A24A7C /* bg_main.png */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -611,7 +611,7 @@
 				BB16D96D191987B80034BE67 /* explosion.caf in Resources */,
 				BB74E80718C2541F007C223E /* Localizable.strings in Resources */,
 				BB451A3918C3107A0093E559 /* cancel_chat.png in Resources */,
-				BB82640F18C2F63200A24A7C /* bg_temp.png in Resources */,
+				BB82640F18C2F63200A24A7C /* bg_main.png in Resources */,
 				BB16D96C191987B80034BE67 /* death.caf in Resources */,
 				0ADF1892178E2185005DA99E /* Default-568h@2x.png in Resources */,
 				BB9D09AC19155C9E002CBFD3 /* bg_game.aifc in Resources */,

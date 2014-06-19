@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_temp"
+    android:background="@drawable/bg_main"
     android:orientation="vertical" >
 
     <Button
@@ -14,6 +14,7 @@
         android:background="@android:color/transparent"
         android:gravity="center"
         android:onClick="startQuickOfflineMatch"
+        android:text="@string/start_quick_offline_match"
         android:textColor="@android:color/white"
         android:textStyle="bold" />
 
@@ -26,6 +27,7 @@
         android:background="@android:color/transparent"
         android:gravity="center"
         android:onClick="startQuickMatch"
+        android:text="@string/start_quick_match"
         android:textColor="@android:color/white"
         android:textStyle="bold" />
 
