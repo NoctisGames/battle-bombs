@@ -227,7 +227,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                 }
             }
         }
-        else if (_inRoomUserSessionDataMap.size() >= 2)
+        else if (_inRoomUserSessionDataMap.size() >= 1)
         {
             _stateTime += deltaTime;
 
