@@ -38,8 +38,6 @@ public:
 
 	virtual void renderControls(DPadControl &dPadControl);
 
-	virtual void renderActivePowerUpIcon(Power_Up_Type activePowerUp);
-
 	virtual void endFrame();
 
 	virtual void cleanUp();

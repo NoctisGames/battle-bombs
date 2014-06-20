@@ -24,6 +24,7 @@
 #include "BombGameObject.h"
 #include "Explosion.h"
 #include "PowerUp.h"
+#include "Vector2D.h"
 
 using namespace DirectX;
 
@@ -117,7 +118,7 @@ void Direct3DRenderer::renderWorldForeground(std::vector<std::unique_ptr<InsideB
 
 		for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
 		{
-			renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((*itr)->getType()));
+			renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((**itr)));
 		}
 
 		m_spriteBatch->End();
@@ -164,6 +165,8 @@ void Direct3DRenderer::renderInterface()
 	m_currentShaderResourceView = m_gameShaderResourceView;
 
 	m_spriteBatch->Begin();
+	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_LEFT_BAR_BACKGROUND_X, INTERFACE_LEFT_BAR_BACKGROUND_Y, INTERFACE_LEFT_BAR_BACKGROUND_WIDTH, INTERFACE_LEFT_BAR_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayLeftBarTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_BOTTOM_BAR_BACKGROUND_X, INTERFACE_BOTTOM_BAR_BACKGROUND_Y, INTERFACE_BOTTOM_BAR_BACKGROUND_WIDTH, INTERFACE_BOTTOM_BAR_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayBottomBarTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_BACKGROUND_X, INTERFACE_BACKGROUND_Y, INTERFACE_BACKGROUND_WIDTH, INTERFACE_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	m_spriteBatch->End();
 }
@@ -172,13 +175,6 @@ void Direct3DRenderer::renderControls(DPadControl &dPadControl)
 {
 	m_spriteBatch->Begin();
 	renderGameObject(dPadControl, Assets::getDPadControlTextureRegion());
-	m_spriteBatch->End();
-}
-
-void Direct3DRenderer::renderActivePowerUpIcon(Power_Up_Type activePowerUp)
-{
-	m_spriteBatch->Begin();
-	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(18.5f, 1.2f, 2.5f, 2.5f, false), &Assets::getPowerUpTextureRegion(activePowerUp).getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	m_spriteBatch->End();
 }
 
