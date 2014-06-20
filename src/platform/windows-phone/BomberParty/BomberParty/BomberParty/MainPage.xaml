@@ -16,7 +16,7 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot">
         <Grid.Background>
-            <ImageBrush ImageSource="/Assets/bg_temp.png" Stretch="UniformToFill" />
+            <ImageBrush ImageSource="/Assets/bg_main.png" Stretch="UniformToFill" />
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -25,8 +25,8 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button x:Name="StartQuickMatch" Content="Start a Quick Match" HorizontalAlignment="Center" Margin="10,335,436,73" VerticalAlignment="Center" Width="330" Click="Start_Quick_Match" Opacity="0"/>
-            <Button x:Name="StartQuickOfflineMatch" Content="Start a Quick Offline Match" HorizontalAlignment="Center" Margin="0,398,436,10" VerticalAlignment="Center" Width="340" Click="Start_Quick_Offline_Match" Height="72" Opacity="0"/>
+            <Button x:Name="StartQuickMatch" Content="Start a Quick Match" HorizontalAlignment="Center" Margin="10,326,426,82" VerticalAlignment="Center" Width="340" Click="Start_Quick_Match"/>
+            <Button x:Name="StartQuickOfflineMatch" Content="Start a Quick Offline Match" HorizontalAlignment="Center" Margin="10,398,426,10" VerticalAlignment="Center" Width="340" Click="Start_Quick_Offline_Match" Height="72"/>
         </Grid>
     </Grid>
 

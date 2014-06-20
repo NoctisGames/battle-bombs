@@ -143,9 +143,7 @@
     <Content Include="Assets\bg_game.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\bg_temp.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets\bg_main.png" />
     <Content Include="Assets\char_blue.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
