@@ -24,16 +24,33 @@
 
 GameSession::GameSession()
 {
-    for (int i = 1; i < GRID_CELL_NUM_ROWS; i += 2)
+    for (int i = 1; i < GRID_CELL_NUM_ROWS / 2 - 2; i += 2)
     {
         for (int j = 1; j < NUM_GRID_CELLS_PER_ROW; j += 2)
         {
             m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(j, i)));
         }
     }
-
+    
     m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(0, PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP + 1)));
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(0, PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM - 1)));
+    
+    for (int j = 1; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+    {
+        m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(j, PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP + 1)));
+        m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(j, PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM - 1)));
+    }
+    
     m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(NUM_GRID_CELLS_PER_ROW - 1, PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP + 1)));
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(NUM_GRID_CELLS_PER_ROW - 1, PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM - 1)));
+    
+    for (int i = GRID_CELL_NUM_ROWS / 2 + 2; i < GRID_CELL_NUM_ROWS; i += 2)
+    {
+        for (int j = 1; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+        {
+            m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(j, i)));
+        }
+    }
 }
 
 int GameSession::getNumPlayers()
