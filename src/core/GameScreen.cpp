@@ -263,13 +263,13 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
                 }
                 continue;
             case DRAGGED:
-                if(!OverlapTester::isPointInRectangle(*m_touchPoint, *m_bombButtonBounds))
+                if(!OverlapTester::isPointInRectangle(*m_touchPoint, *m_bombButtonBounds) && !m_activeButton->isPointInBounds(*m_touchPoint))
                 {
                     updatePlayerDirection();
                 }
                 continue;
             case UP:
-                if(!OverlapTester::isPointInRectangle(*m_touchPoint, *m_bombButtonBounds))
+                if(!OverlapTester::isPointInRectangle(*m_touchPoint, *m_bombButtonBounds) && !m_activeButton->isPointInBounds(*m_touchPoint))
                 {
                     if(m_player->getPlayerState() == ALIVE)
                     {
