@@ -30,7 +30,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
     PlayerDynamicGameObject::update(deltaTime, insideBlocks, breakableBlocks, powerUps, explosions);
 
     // BEGIN TEMPORARY AI
-    if (m_playerState == ALIVE && m_fStateTime > 1.5f)
+    if (m_playerState == ALIVE && m_fStateTime > 1)
     {
         m_fStateTime = 0;
 
