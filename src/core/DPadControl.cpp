@@ -11,31 +11,30 @@
 #include "OverlapTester.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
-#include "Line.h"
 
 DPadControl::DPadControl(float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
 {
-    m_rightBounds = std::unique_ptr<Triangle>(new Triangle(x + width / 2, y - height / 2, x, y, x + width / 2, y + height / 2));
-    m_upBounds = std::unique_ptr<Triangle>(new Triangle(x - width / 2, y + height / 2, x, y, x + width / 2, y + height / 2));
-    m_leftBounds = std::unique_ptr<Triangle>(new Triangle(x - width / 2, y - height / 2, x, y, x - width / 2, y + height / 2));
-    m_downBounds = std::unique_ptr<Triangle>(new Triangle(x - width / 2, y - height / 2, x, y, x + width / 2, y - height / 2));
+    m_rightBounds = std::unique_ptr<Rectangle>(new Rectangle(x + width / 6, y - height / 2, width / 3, height / 2));
+    m_upBounds = std::unique_ptr<Rectangle>(new Rectangle(x - width / 6, y, width / 3, height / 2));
+    m_leftBounds = std::unique_ptr<Rectangle>(new Rectangle(x - width / 2, y - height / 2, width / 3, height / 2));
+    m_downBounds = std::unique_ptr<Rectangle>(new Rectangle(x - width / 6, y - height / 2, width / 3, height / 2));
 }
 
 int DPadControl::getDirectionForTouchPoint(Vector2D &touchPoint)
 {
-    if(OverlapTester::isPointInTriangle(touchPoint, *m_rightBounds))
+    if(OverlapTester::isPointInRectangle(touchPoint, *m_rightBounds))
     {
         return DIRECTION_RIGHT;
     }
-    else if(OverlapTester::isPointInTriangle(touchPoint, *m_upBounds))
+    else if(OverlapTester::isPointInRectangle(touchPoint, *m_upBounds))
     {
         return DIRECTION_UP;
     }
-    else if(OverlapTester::isPointInTriangle(touchPoint, *m_leftBounds))
+    else if(OverlapTester::isPointInRectangle(touchPoint, *m_leftBounds))
     {
         return DIRECTION_LEFT;
     }
-    else if(OverlapTester::isPointInTriangle(touchPoint, *m_downBounds))
+    else if(OverlapTester::isPointInRectangle(touchPoint, *m_downBounds))
     {
         return DIRECTION_DOWN;
     }

@@ -16,16 +16,21 @@ class PowerUp : public GameObject
 {
 public:
 	PowerUp(float x, float y, int powerUpFlag);
+    
+    void update(float deltaTime);
 
 	void onPickedUp();
 
 	bool isPickedUp();
+    
+    float getStateTime();
 
 	int getPowerUpFlag();
 
 	Power_Up_Type getType();
 
 private:
+    float m_fStateTime;
 	int m_powerUpFlag;
     bool m_isPickedUp;
 	Power_Up_Type m_powerUpType;

@@ -32,19 +32,19 @@ public:
     
     float isExploding();
 
-	void kicked(int direction);
+	void pushed(int direction);
 
 	void onPickedUp();
     
 private:
     PlayerDynamicGameObject *m_bombOwner;
-	int m_iKickedDirection;
+	int m_iPushedDirection;
     float m_fStateTime;
     float m_fSizeScalar;
-	float m_fKickSpeed;
+	float m_fPushSpeed;
     short m_sPower;
     bool m_isExploding;
-	bool m_isKicked;
+	bool m_isPushed;
 	bool m_isPickedUp;
     
     bool canExplodeAtPosition(Vector2D &position, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);

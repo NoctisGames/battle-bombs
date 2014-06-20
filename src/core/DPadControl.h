@@ -10,7 +10,8 @@
 #define __bomberparty__DPadControl__
 
 #include "GameObject.h"
-#include "Triangle.h"
+
+class Rectangle;
 
 class DPadControl : public GameObject
 {
@@ -20,10 +21,10 @@ public:
     int getDirectionForTouchPoint(Vector2D &touchPoint);
 
 private:
-    std::unique_ptr<Triangle> m_rightBounds;
-    std::unique_ptr<Triangle> m_upBounds;
-    std::unique_ptr<Triangle> m_leftBounds;
-    std::unique_ptr<Triangle> m_downBounds;
+    std::unique_ptr<Rectangle> m_rightBounds;
+    std::unique_ptr<Rectangle> m_upBounds;
+    std::unique_ptr<Rectangle> m_leftBounds;
+    std::unique_ptr<Rectangle> m_downBounds;
 };
 
 #endif /* defined(__bomberparty__DPadControl__) */

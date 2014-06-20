@@ -21,6 +21,7 @@ class PlayerDynamicGameObject;
 class BombGameObject;
 class Explosion;
 class BreakableBlock;
+class PowerUp;
 
 class Assets
 {
@@ -33,11 +34,15 @@ public:
 
 	static TextureRegion getBreakableBlockTextureRegion(BreakableBlock &breakableBlock);
     
-    static TextureRegion getInterfaceOverlayTextureRegion();
+    static TextureRegion getInterfaceOverlayLeftBarTextureRegion();
     
     static TextureRegion getDPadControlTextureRegion();
+    
+    static TextureRegion getInterfaceOverlayBottomBarTextureRegion();
+    
+    static TextureRegion getInterfaceOverlayTextureRegion();
 
-	static TextureRegion getPowerUpTextureRegion(Power_Up_Type powerUp);
+	static TextureRegion getPowerUpTextureRegion(PowerUp &powerUp);
     
     static TextureRegion getPlayerTextureRegion(PlayerDynamicGameObject &player);
     

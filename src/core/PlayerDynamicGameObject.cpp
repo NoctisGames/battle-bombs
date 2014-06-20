@@ -31,7 +31,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, float x, flo
     m_iDirection = direction;
     m_isMoving = false;
     m_hasActivePowerUp = true;
-	m_activePowerUp = KICK;
+	m_activePowerUp = PUSH;
 
     m_iMaxBombCount = 1;
     m_iCurrentBombCount = 0;
@@ -123,7 +123,7 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
                     case 4:
                         (*itr)->onPickedUp();
                         m_hasActivePowerUp = true;
-                        m_activePowerUp = KICK;
+                        m_activePowerUp = PUSH;
                         break;
                     default:
                         (*itr)->onPickedUp();

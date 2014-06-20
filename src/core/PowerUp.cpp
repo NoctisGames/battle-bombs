@@ -9,28 +9,35 @@
 #include "PowerUp.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
+#include "GameConstants.h"
 
-PowerUp::PowerUp(float x, float y, int powerUpIndex) : GameObject(x, y, 1, 1.25f, 0)
+PowerUp::PowerUp(float x, float y, int powerUpIndex) : GameObject(x, y, GRID_CELL_WIDTH * 4 / 5, GRID_CELL_HEIGHT * 4 / 5, 0)
 {
+    m_fStateTime = 0;
 	m_isPickedUp = false;
 	m_powerUpFlag = powerUpIndex;
 	switch (powerUpIndex)
 	{
 		case 0: m_powerUpType = NONE;
 				break;
-		case 1: m_powerUpType = BOMBS;
+		case 1: m_powerUpType = BOMB;
 				break;
 		case 2: m_powerUpType = FIRE;
 				break;
 		case 3: m_powerUpType = SPEED;
 				break;
-		case 4: m_powerUpType = KICK;
+		case 4: m_powerUpType = PUSH;
 				break;
 		case 5: m_powerUpType = THROW;
 				break;
 		default: m_powerUpType = NONE;
 				break;
 	}
+}
+
+void PowerUp::update(float deltaTime)
+{
+    m_fStateTime += deltaTime;
 }
 
 void PowerUp::onPickedUp()
@@ -41,6 +48,11 @@ void PowerUp::onPickedUp()
 bool PowerUp::isPickedUp()
 {
 	return m_isPickedUp;
+}
+
+float PowerUp::getStateTime()
+{
+    return m_fStateTime;
 }
 
 Power_Up_Type PowerUp::getType()

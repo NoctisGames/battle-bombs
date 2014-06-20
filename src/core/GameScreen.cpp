@@ -36,7 +36,7 @@ GameScreen::GameScreen(const char *username) : GameSession()
 
 	m_activeButton = std::unique_ptr<ActiveButton>(new ActiveButton(18.5f, 1.2f , 2.5f, 2.5f));
     
-    m_dPad = std::unique_ptr<DPadControl>(new DPadControl(2.15f, 2.15f, 4.3f, 4.3f));
+    m_dPad = std::unique_ptr<DPadControl>(new DPadControl(2.4f, 1.65333334f, 4.8f, 3.30666667f));
     
     m_gameListener = std::unique_ptr<GameListener>(new GameListener());
     
@@ -134,7 +134,6 @@ void GameScreen::present()
             m_renderer->renderPlayers(m_players);
             m_renderer->renderInterface();
             m_renderer->renderControls(*m_dPad);
-			m_renderer->renderActivePowerUpIcon(m_player->getActivePowerUp());
             
             m_renderer->endFrame();
             break;
@@ -247,12 +246,12 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 				{
 					switch(m_player->getActivePowerUp())
 					{
-						case KICK :
+						case PUSH :
 							for(std::vector<std::unique_ptr<BombGameObject>>::iterator itr = m_bombs.begin(); itr != m_bombs.end(); itr++)
 							{
 								if(m_player->isBombInFrontOfPlayer(*itr))
 								{
-									(*itr)->kicked(m_player->getDirection());
+									(*itr)->pushed(m_player->getDirection());
 								}
 							}
 					}

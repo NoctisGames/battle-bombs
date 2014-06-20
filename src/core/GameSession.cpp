@@ -139,6 +139,8 @@ void GameSession::updateCommon(float deltaTime)
 
     for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end();)
     {
+        (**itr).update(deltaTime);
+        
         if ((**itr).isPickedUp())
         {
             itr = m_powerUps.erase(itr);
