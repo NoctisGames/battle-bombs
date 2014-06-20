@@ -79,75 +79,74 @@ void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
             {
                 continue;
             }
-            
+
             if (i > PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP && i < PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM && j == 0)
             {
                 continue;
             }
-            
+
             if (i > PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP && i < PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM && j % 2 != 0)
             {
                 continue;
             }
-            
+
             if (i > PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP && i < PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM && j == NUM_GRID_CELLS_PER_ROW - 1)
             {
                 continue;
             }
-            
+
             if (i >= PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM && i % 2 == 0 && j % 2 != 0)
             {
                 continue;
             }
-            
-            if(i == 0 && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
-            {
-                continue;
-            }
-            
-            if(i == 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
-            {
-                continue;
-            }
-            
-            if(i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP - 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
-            {
-                continue;
-            }
-            
-            if(i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
-            {
-                continue;
-            }
-            
-            if(i == PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
-            {
-                continue;
-            }
-            
-            if(i == PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM + 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
-            {
-                continue;
-            }
-            
-            if(i == GRID_CELL_NUM_ROWS - 1 && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
-            {
-                continue;
-            }
-            
-            if(i == GRID_CELL_NUM_ROWS - 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
+
+            if (i == 0 && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
             {
                 continue;
             }
 
-            // 60% chance there will be a powerup at all
-            if ((rand() % 100 + 1) < 61)
+            if (i == 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
+            {
+                continue;
+            }
+
+            if (i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP - 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
+            {
+                continue;
+            }
+
+            if (i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
+            {
+                continue;
+            }
+
+            if (i == PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
+            {
+                continue;
+            }
+
+            if (i == PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM + 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
+            {
+                continue;
+            }
+
+            if (i == GRID_CELL_NUM_ROWS - 1 && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
+            {
+                continue;
+            }
+
+            if (i == GRID_CELL_NUM_ROWS - 2 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
+            {
+                continue;
+            }
+
+            // 70% chance there will be a breakable block at all
+            if ((rand() % 100 + 1) < 71)
             {
                 int flag = 0;
                 // Generate a random number from 1 - 100
                 // This will be used to determine which type of powerups will appear
                 int flagRange = (rand() % 100 + 1);
-
 
                 // TODO, generate a random power up flag
                 // Some Power Up are more rare than others,
@@ -159,12 +158,11 @@ void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
                 {
                     flag = rand() % 3 + 1;
                 }
-
+                else if (flagRange > 40 && flagRange < 61)
+                {
                     // 20% chance of an active powerup
                     // We'll determine the weight of these once we get them created and play with them a bit
                     // Right now, it just sets the flag to 4 as a placeholder value for the Kick
-                else if (flagRange > 40 && flagRange < 61)
-                {
                     flag = 4;
                 }
 
