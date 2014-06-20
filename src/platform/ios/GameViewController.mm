@@ -65,10 +65,6 @@ static Logger *logger = nil;
     
     [self setupGL];
     
-    self.bgm = [[Music alloc] initWithMusicNamed:@"bg_game" fromBundle:[NSBundle mainBundle]];
-    [self.bgm setLooping:true];
-    [self.bgm setVolume:1.0f];
-    
     self.plantBombSound = [[Sound alloc] initWithSoundNamed:@"plant_bomb.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:3];
     self.explosionSound = [[Sound alloc] initWithSoundNamed:@"explosion.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
     self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
@@ -503,6 +499,9 @@ static Logger *logger = nil;
             [self.bgm stop];
             break;
         case MUSIC_PLAY:
+            self.bgm = [[Music alloc] initWithMusicNamed:@"bg_game" fromBundle:[NSBundle mainBundle]];
+            [self.bgm setLooping:true];
+            [self.bgm setVolume:1.0f];
             [self.bgm play];
             break;
         default:

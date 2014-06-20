@@ -432,11 +432,6 @@ void GameSession::layBombForPlayer(PlayerDynamicGameObject *player)
     {
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
-            if (i % 2 != 0 && j % 2 != 0)
-            {
-                continue;
-            }
-
             float leftX = GAME_X + GRID_CELL_WIDTH * j;
             float rightX = GAME_X + GRID_CELL_WIDTH * (j + 1);
             float bottomY = GAME_Y + GRID_CELL_HEIGHT * i;

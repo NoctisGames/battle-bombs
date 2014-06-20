@@ -45,11 +45,13 @@ public final class RendererWrapper implements Renderer
 	private final int deviceScreenWidth;
 	private final int deviceScreenHeight;
 	private final String username;
-	private final Music bgm;
+	private final Audio audio;
 	private final Sound plantBombSound;
 	private final Sound explosionSound;
 	private final Sound deathSound;
 	private final boolean isOnline;
+
+	private Music bgm;
 
 	private float smoothedDeltaRealTime_ms = 17.5f; // initial value, Optionally you can save the new computed value (will change with each hardware) in Preferences to optimize the first drawing frames
 	private float movAverageDeltaTime_ms = smoothedDeltaRealTime_ms; // mov Average start with default value
@@ -63,11 +65,7 @@ public final class RendererWrapper implements Renderer
 		this.deviceScreenHeight = deviceScreenHeight;
 		this.username = username;
 		this.isOnline = !username.equalsIgnoreCase("Player_Offline");
-
-		final Audio audio = new Audio(activity.getAssets());
-
-		this.bgm = audio.newMusic("bg_game.ogg");
-		this.bgm.setLooping(true);
+		this.audio = new Audio(activity.getAssets());
 		this.plantBombSound = audio.newSound("plant_bomb.ogg");
 		this.explosionSound = audio.newSound("explosion.ogg");
 		this.deathSound = audio.newSound("death.ogg");
@@ -258,6 +256,13 @@ public final class RendererWrapper implements Renderer
 				bgm.stop();
 				break;
 			case MUSIC_PLAY:
+				if (bgm != null && bgm.isPlaying())
+				{
+					bgm.dispose();
+					bgm = null;
+				}
+				bgm = audio.newMusic("bg_game.ogg");
+				bgm.setLooping(true);
 				bgm.play();
 				break;
 			default:
