@@ -10,7 +10,6 @@
       <itemPath>../../../core/DynamicGameObject.h</itemPath>
       <itemPath>../../../core/DynamicGridGameObject.h</itemPath>
       <itemPath>../../../core/Explosion.h</itemPath>
-      <itemPath>../../../core/ExplosionType.h</itemPath>
       <itemPath>../../../core/GameConstants.h</itemPath>
       <itemPath>../../../core/GameEvent.h</itemPath>
       <itemPath>../../../core/GameListener.h</itemPath>
@@ -140,8 +139,6 @@
       <item path="../../../core/Explosion.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/Explosion.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/ExplosionType.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/GameConstants.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -295,8 +292,6 @@
       <item path="../../../core/Explosion.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/Explosion.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/ExplosionType.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/GameConstants.h" ex="false" tool="3" flavor2="0">
       </item>
