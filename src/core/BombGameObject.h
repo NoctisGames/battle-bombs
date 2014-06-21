@@ -24,13 +24,15 @@ class BreakableBlock;
 class BombGameObject : public DynamicGridGameObject
 {
 public:
-    BombGameObject(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY, float width = GRID_CELL_WIDTH * 4 / 5, float height = GRID_CELL_HEIGHT * 4 / 5);
+    BombGameObject(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY, float width = GRID_CELL_WIDTH * 8 / 5, float height = GRID_CELL_HEIGHT * 8 / 5);
     
     void update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
     
     float getStateTime();
     
-    float isExploding();
+    bool isExploding();
+    
+    bool isDestroyed();
 
 	void pushed(int direction);
 
@@ -44,12 +46,9 @@ private:
 	float m_fPushSpeed;
     short m_sPower;
     bool m_isExploding;
+    bool m_isDestroyed;
 	bool m_isPushed;
 	bool m_isPickedUp;
-    
-    bool canExplodeAtPosition(Vector2D &position, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);
-    
-    bool willDestroyBlockAtPosition(Vector2D &position, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
 
 	bool willHitBreakableBlock(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
 

@@ -22,6 +22,7 @@
 #include "BotPlayerDynamicGameObject.h"
 #include "GameListener.h"
 #include "Renderer.h"
+#include "Fire.h"
 
 GameScreen::GameScreen(const char *username) : GameSession()
 {
@@ -191,7 +192,7 @@ void GameScreen::resetTimeSinceLastClientEvent()
 
 void GameScreen::updateRunning(float deltaTime)
 {
-    if(m_player->isHitByExplosion(m_explosions))
+    if(m_player->isHitByExplosion(m_explosions, m_bombs))
     {
         m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
     }

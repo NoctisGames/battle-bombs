@@ -9,28 +9,48 @@
 #ifndef __bomberparty__Explosion__
 #define __bomberparty__Explosion__
 
-#include "pch.h"
-#include "GameObject.h"
-#include "ExplosionType.h"
+#include "GridGameObject.h"
 #include "GameConstants.h"
 
-class Explosion : public GameObject
+#include <vector>
+#include <memory>
+
+class InsideBlock;
+class BreakableBlock;
+class Fire;
+
+class Explosion : public GridGameObject
 {
 public:
-    Explosion(Explosion_Type explosionType, float x, float y, float angle, float width = GRID_CELL_WIDTH, float height = GRID_CELL_HEIGHT);
+    Explosion(short power, int gridX, int gridY, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, float width = GRID_CELL_WIDTH, float height = GRID_CELL_HEIGHT);
     
-    void update(float deltaTime);
+    void update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+    
+    std::vector<std::unique_ptr<Fire >> & getFireParts();
     
     float getStateTime();
-    
-    Explosion_Type getExplosionType();
     
     float isComplete();
     
 private:
-    Explosion_Type m_explosionType;
+    std::vector<std::unique_ptr<Fire >> m_fireParts;
     float m_fStateTime;
+    float m_fTravelTime;
+    float m_fExplosionTime;
+    short m_sPower;
+    short m_sPowerRemaining;
+    short m_sFrames;
+    bool m_travelingRight;
+    bool m_travelingUp;
+    bool m_travelingLeft;
+    bool m_travelingDown;
+    int m_iRightGridX;
+    int m_iUpGridY;
+    int m_iLeftGridX;
+    int m_iDownGridY;
     bool m_isComplete;
+    
+    void runBlockLogic(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
 };
 
 #endif /* defined(__bomberparty__Explosion__) */

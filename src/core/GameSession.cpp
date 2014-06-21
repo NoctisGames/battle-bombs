@@ -21,6 +21,7 @@
 #include "Explosion.h"
 #include "PowerUp.h"
 #include "PlayerDynamicGameObject.h"
+#include "Fire.h"
 
 GameSession::GameSession()
 {
@@ -89,7 +90,7 @@ void GameSession::updateCommon(float deltaTime)
     {
         (**itr).update(deltaTime, m_explosions, m_insideBlocks, m_breakableBlocks);
 
-        if ((**itr).isExploding())
+        if ((**itr).isDestroyed())
         {
             itr = m_bombs.erase(itr);
         }
@@ -120,7 +121,7 @@ void GameSession::updateCommon(float deltaTime)
 
     for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = m_explosions.begin(); itr != m_explosions.end();)
     {
-        (**itr).update(deltaTime);
+        (**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks);
 
         if ((**itr).isComplete())
         {
@@ -134,7 +135,7 @@ void GameSession::updateCommon(float deltaTime)
 
     for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
     {
-        (**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks, m_powerUps, m_explosions);
+        (**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks, m_powerUps, m_explosions, m_bombs);
     }
 
     for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end();)

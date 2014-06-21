@@ -20,6 +20,7 @@
 #include "Explosion.h"
 #include "PowerUp.h"
 #include "Vector2D.h"
+#include "Fire.h"
 
 extern "C"
 {
@@ -117,7 +118,10 @@ void OpenGLESRenderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> 
     m_spriteBatcher->beginBatch();
     for (std::vector<std::unique_ptr<Explosion>>::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
     {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getExplosionTextureRegion((**itr)));
+        for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
+        {
+            renderGameObjectWithRespectToPlayer((**itr2), Assets::getFireTextureRegion((**itr2)));
+        }
     }
     m_spriteBatcher->endBatchWithTexture(m_gameTexture);
 }

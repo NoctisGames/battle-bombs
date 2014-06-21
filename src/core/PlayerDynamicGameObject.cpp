@@ -18,6 +18,7 @@
 #include "PowerUp.h"
 #include "ResourceConstants.h"
 #include "GameListener.h"
+#include "Fire.h"
 
 PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction, float width, float height) : DynamicGameObject(x, y, width, height, 0)
 {
@@ -43,7 +44,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, float x, flo
     m_playerState = ALIVE;
 }
 
-void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions)
+void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
     m_fStateTime += deltaTime;
 
@@ -211,13 +212,24 @@ void PlayerDynamicGameObject::onBombExploded()
     m_gameListener->playSound(SOUND_EXPLOSION);
 }
 
-bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explosion >> &explosions)
+bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
     if (m_playerState == ALIVE)
     {
         for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
         {
-            if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+            for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
+            {
+                if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr2)->getBounds()))
+                {
+                    return true;
+                }
+            }
+        }
+        
+        for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+        {
+            if ((*itr)->isExploding() && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
             {
                 return true;
             }

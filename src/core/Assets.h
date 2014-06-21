@@ -19,7 +19,7 @@ class InsideBlock;
 class BreakableBlock;
 class PlayerDynamicGameObject;
 class BombGameObject;
-class Explosion;
+class Fire;
 class BreakableBlock;
 class PowerUp;
 
@@ -48,7 +48,7 @@ public:
     
     static TextureRegion getBombTextureRegion(BombGameObject &bomb);
     
-    static TextureRegion getExplosionTextureRegion(Explosion &explosion);
+    static TextureRegion getFireTextureRegion(Fire &fire);
     
     void setMusicId(short musicId);
     
