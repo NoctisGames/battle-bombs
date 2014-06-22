@@ -60,7 +60,7 @@ static NSString *username;
 
 - (IBAction)startQuickMatch:(id)sender
 {
-    [[WarpClient getInstance] connectWithUserName:username];
+    [[WarpClient getInstance] connectWithUserName:username authData:@"iOS"];
 }
 
 - (IBAction)startQuickOfflineMatch:(id)sender
@@ -298,7 +298,7 @@ static NSString *username;
 
 - (void)initializeAppWarp
 {
-    [WarpClient initWarp:APPWARP_API_KEY secretKey:APPWARP_SECRET_KEY hostAddress:APPWARP_HOST_ADDRESS];
+    [WarpClient initWarp:APPWARP_API_KEY server:APPWARP_HOST_ADDRESS];
     
     WarpClient *warpClient = [WarpClient getInstance];
     
