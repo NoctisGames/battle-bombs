@@ -41,6 +41,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/32229614/DynamicGameObject.o \
 	${OBJECTDIR}/_ext/32229614/DynamicGridGameObject.o \
 	${OBJECTDIR}/_ext/32229614/Explosion.o \
+	${OBJECTDIR}/_ext/32229614/Fire.o \
 	${OBJECTDIR}/_ext/32229614/GameObject.o \
 	${OBJECTDIR}/_ext/32229614/GameSession.o \
 	${OBJECTDIR}/_ext/32229614/GridGameObject.o \
@@ -110,6 +111,11 @@ ${OBJECTDIR}/_ext/32229614/Explosion.o: ../../../core/Explosion.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/Explosion.o ../../../core/Explosion.cpp
+
+${OBJECTDIR}/_ext/32229614/Fire.o: ../../../core/Fire.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/Fire.o ../../../core/Fire.cpp
 
 ${OBJECTDIR}/_ext/32229614/GameObject.o: ../../../core/GameObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/32229614

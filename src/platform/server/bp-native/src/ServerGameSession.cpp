@@ -20,6 +20,7 @@
 #include "GameListener.h"
 #include "PlayerDynamicGameObject.h"
 #include "BotPlayerDynamicGameObject.h"
+#include "Fire.h"
 
 //For RNG purposes
 #include <stdlib.h>

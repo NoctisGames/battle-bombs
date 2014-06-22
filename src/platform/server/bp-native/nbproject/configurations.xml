@@ -10,6 +10,8 @@
       <itemPath>../../../core/DynamicGameObject.h</itemPath>
       <itemPath>../../../core/DynamicGridGameObject.h</itemPath>
       <itemPath>../../../core/Explosion.h</itemPath>
+      <itemPath>../../../core/Fire.h</itemPath>
+      <itemPath>../../../core/FireType.h</itemPath>
       <itemPath>../../../core/GameConstants.h</itemPath>
       <itemPath>../../../core/GameEvent.h</itemPath>
       <itemPath>../../../core/GameListener.h</itemPath>
@@ -46,6 +48,7 @@
       <itemPath>../../../core/DynamicGameObject.cpp</itemPath>
       <itemPath>../../../core/DynamicGridGameObject.cpp</itemPath>
       <itemPath>../../../core/Explosion.cpp</itemPath>
+      <itemPath>../../../core/Fire.cpp</itemPath>
       <itemPath>src/GameListener.cpp</itemPath>
       <itemPath>../../../core/GameObject.cpp</itemPath>
       <itemPath>../../../core/GameSession.cpp</itemPath>
@@ -60,6 +63,17 @@
       <itemPath>../../../core/Triangle.cpp</itemPath>
       <itemPath>../../../core/Vector2D.cpp</itemPath>
       <itemPath>src/bp_room_adaptor.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -139,6 +153,12 @@
       <item path="../../../core/Explosion.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/Explosion.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/Fire.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/Fire.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/FireType.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/GameConstants.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -292,6 +312,12 @@
       <item path="../../../core/Explosion.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/Explosion.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/Fire.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/Fire.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/FireType.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/GameConstants.h" ex="false" tool="3" flavor2="0">
       </item>
