@@ -173,13 +173,6 @@ void Direct3DRenderer::renderInterface()
 	m_spriteBatch->End();
 }
 
-void Direct3DRenderer::renderControls(DPadControl &dPadControl)
-{
-	m_spriteBatch->Begin();
-	renderGameObject(dPadControl, Assets::getDPadControlTextureRegion());
-	m_spriteBatch->End();
-}
-
 void Direct3DRenderer::endFrame()
 {
 	// Not Needed Yet
