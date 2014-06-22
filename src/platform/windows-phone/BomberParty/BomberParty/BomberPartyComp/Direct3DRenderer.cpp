@@ -25,6 +25,7 @@
 #include "Explosion.h"
 #include "PowerUp.h"
 #include "Vector2D.h"
+#include "Fire.h"
 
 using namespace DirectX;
 
@@ -140,7 +141,10 @@ void Direct3DRenderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> 
 	m_spriteBatch->Begin();
 	for (std::vector<std::unique_ptr<Explosion>>::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
 	{
-		m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates((**itr).getPosition().getX(), (**itr).getPosition().getY() - m_fScrollY, (**itr).getWidth(), (**itr).getHeight(), true), &Assets::getExplosionTextureRegion((**itr)).getSourceRECT(), Colors::White, DEGREES_TO_RADIANS_WP((**itr).getAngle()), XMFLOAT2(8, 8), SpriteEffects_None, 0);
+		for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
+		{
+			m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates((**itr2).getPosition().getX(), (**itr2).getPosition().getY() - m_fScrollY, (**itr2).getWidth(), (**itr2).getHeight(), true), &Assets::getFireTextureRegion((**itr2)).getSourceRECT(), Colors::White, DEGREES_TO_RADIANS_WP((**itr2).getAngle()), XMFLOAT2(16, 16), SpriteEffects_None, 0);
+		}
 	}
 	m_spriteBatch->End();
 }
@@ -165,9 +169,7 @@ void Direct3DRenderer::renderInterface()
 	m_currentShaderResourceView = m_gameShaderResourceView;
 
 	m_spriteBatch->Begin();
-	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_LEFT_BAR_BACKGROUND_X, INTERFACE_LEFT_BAR_BACKGROUND_Y, INTERFACE_LEFT_BAR_BACKGROUND_WIDTH, INTERFACE_LEFT_BAR_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayLeftBarTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
-	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_BOTTOM_BAR_BACKGROUND_X, INTERFACE_BOTTOM_BAR_BACKGROUND_Y, INTERFACE_BOTTOM_BAR_BACKGROUND_WIDTH, INTERFACE_BOTTOM_BAR_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayBottomBarTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
-	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_BACKGROUND_X, INTERFACE_BACKGROUND_Y, INTERFACE_BACKGROUND_WIDTH, INTERFACE_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_OVERLAY_BACKGROUND_X, INTERFACE_OVERLAY_BACKGROUND_Y, INTERFACE_OVERLAY_BACKGROUND_WIDTH, INTERFACE_OVERLAY_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	m_spriteBatch->End();
 }
 
