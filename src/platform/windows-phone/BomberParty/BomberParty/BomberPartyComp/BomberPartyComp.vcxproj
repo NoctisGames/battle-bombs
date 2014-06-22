@@ -169,7 +169,8 @@
     <ClInclude Include="..\..\..\..\..\core\DynamicGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\DynamicGridGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\Explosion.h" />
-    <ClInclude Include="..\..\..\..\..\core\ExplosionType.h" />
+    <ClInclude Include="..\..\..\..\..\core\Fire.h" />
+    <ClInclude Include="..\..\..\..\..\core\FireType.h" />
     <ClInclude Include="..\..\..\..\..\core\Font.h" />
     <ClInclude Include="..\..\..\..\..\core\GameButton.h" />
     <ClInclude Include="..\..\..\..\..\core\GameConstants.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="..\..\..\..\..\core\DynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DynamicGridGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Explosion.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\Fire.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Font.cpp" />
     <ClCompile Include="..\..\..\..\..\core\GameButton.cpp" />
     <ClCompile Include="..\..\..\..\..\core\GameListener.cpp" />
