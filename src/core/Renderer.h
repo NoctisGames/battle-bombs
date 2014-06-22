@@ -14,20 +14,10 @@
 #define WORLD_BACKGROUND_WIDTH SCREEN_WIDTH
 #define WORLD_BACKGROUND_HEIGHT SCREEN_HEIGHT * 2
 
-#define INTERFACE_LEFT_BAR_BACKGROUND_X 1.07462687f
-#define INTERFACE_LEFT_BAR_BACKGROUND_Y 8.24835525f
-#define INTERFACE_LEFT_BAR_BACKGROUND_WIDTH 2.14925374f
-#define INTERFACE_LEFT_BAR_BACKGROUND_HEIGHT 9.5032895f
-
-#define INTERFACE_BOTTOM_BAR_BACKGROUND_X 11.4537314f
-#define INTERFACE_BOTTOM_BAR_BACKGROUND_Y 1.42105265f
-#define INTERFACE_BOTTOM_BAR_BACKGROUND_WIDTH 8.59701504f
-#define INTERFACE_BOTTOM_BAR_BACKGROUND_HEIGHT 2.13157899f
-
-#define INTERFACE_BACKGROUND_X 20.82089552238804f
-#define INTERFACE_BACKGROUND_Y 1.5447761195724f
-#define INTERFACE_BACKGROUND_WIDTH 6.35820895522392f
-#define INTERFACE_BACKGROUND_HEIGHT 3.08955223914479f
+#define INTERFACE_OVERLAY_BACKGROUND_X SCREEN_WIDTH / 2
+#define INTERFACE_OVERLAY_BACKGROUND_Y SCREEN_HEIGHT / 2
+#define INTERFACE_OVERLAY_BACKGROUND_WIDTH SCREEN_WIDTH
+#define INTERFACE_OVERLAY_BACKGROUND_HEIGHT SCREEN_HEIGHT
 
 #include <memory>
 #include <vector>
@@ -35,7 +25,6 @@
 
 class GameObject;
 class TextureRegion;
-class DPadControl;
 class ActiveButton;
 class PlayerDynamicGameObject;
 class InsideBlock;
@@ -64,8 +53,6 @@ public:
     virtual void renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players) = 0;
     
     virtual void renderInterface() = 0;
-    
-    virtual void renderControls(DPadControl &dPadControl) = 0;
     
     virtual void endFrame() = 0;
 

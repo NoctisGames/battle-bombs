@@ -34,12 +34,6 @@ public:
 
 	static TextureRegion getBreakableBlockTextureRegion(BreakableBlock &breakableBlock);
     
-    static TextureRegion getInterfaceOverlayLeftBarTextureRegion();
-    
-    static TextureRegion getDPadControlTextureRegion();
-    
-    static TextureRegion getInterfaceOverlayBottomBarTextureRegion();
-    
     static TextureRegion getInterfaceOverlayTextureRegion();
 
 	static TextureRegion getPowerUpTextureRegion(PowerUp &powerUp);

@@ -37,8 +37,6 @@ public:
     
     virtual void renderInterface();
     
-    virtual void renderControls(DPadControl &dPadControl);
-    
     virtual void endFrame();
     
     virtual void cleanUp();

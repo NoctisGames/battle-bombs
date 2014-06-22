@@ -129,16 +129,7 @@ void OpenGLESRenderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> 
 void OpenGLESRenderer::renderInterface()
 {
     m_spriteBatcher->beginBatch();
-    m_spriteBatcher->drawSprite(INTERFACE_LEFT_BAR_BACKGROUND_X, INTERFACE_LEFT_BAR_BACKGROUND_Y, INTERFACE_LEFT_BAR_BACKGROUND_WIDTH, INTERFACE_LEFT_BAR_BACKGROUND_HEIGHT, 0, Assets::getInterfaceOverlayLeftBarTextureRegion());
-    m_spriteBatcher->drawSprite(INTERFACE_BOTTOM_BAR_BACKGROUND_X, INTERFACE_BOTTOM_BAR_BACKGROUND_Y, INTERFACE_BOTTOM_BAR_BACKGROUND_WIDTH, INTERFACE_BOTTOM_BAR_BACKGROUND_HEIGHT, 0, Assets::getInterfaceOverlayBottomBarTextureRegion());
-    m_spriteBatcher->drawSprite(INTERFACE_BACKGROUND_X, INTERFACE_BACKGROUND_Y, INTERFACE_BACKGROUND_WIDTH, INTERFACE_BACKGROUND_HEIGHT, 0, Assets::getInterfaceOverlayTextureRegion());
-    m_spriteBatcher->endBatchWithTexture(m_gameTexture);
-}
-
-void OpenGLESRenderer::renderControls(DPadControl &dPadControl)
-{
-    m_spriteBatcher->beginBatch();
-    renderGameObject(dPadControl, Assets::getDPadControlTextureRegion());
+    m_spriteBatcher->drawSprite(INTERFACE_OVERLAY_BACKGROUND_X, INTERFACE_OVERLAY_BACKGROUND_Y, INTERFACE_OVERLAY_BACKGROUND_WIDTH, INTERFACE_OVERLAY_BACKGROUND_HEIGHT, 0, Assets::getInterfaceOverlayTextureRegion());
     m_spriteBatcher->endBatchWithTexture(m_gameTexture);
 }
 

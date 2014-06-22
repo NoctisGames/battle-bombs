@@ -44,6 +44,10 @@ private:
     bool m_travelingUp;
     bool m_travelingLeft;
     bool m_travelingDown;
+    bool m_destroyedBlockRight;
+    bool m_destroyedBlockUp;
+    bool m_destroyedBlockLeft;
+    bool m_destroyedBlockDown;
     int m_iRightGridX;
     int m_iUpGridY;
     int m_iLeftGridX;
@@ -51,6 +55,8 @@ private:
     bool m_isComplete;
     
     void runBlockLogic(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+    
+    void runPostBlockLogic();
 };
 
 #endif /* defined(__bomberparty__Explosion__) */

@@ -28,7 +28,7 @@ void Fire::nextFrame(short explosionPowerRemaining)
             m_fireType = CORE_PART_3;
             break;
         case CORE_PART_3:
-            m_fireType = explosionPowerRemaining == 1 ? CORE_PART_4_POW_1 : CORE_PART_4_POW_2;
+            m_fireType = explosionPowerRemaining == 0 ? CORE_PART_4_POW_1 : CORE_PART_4_POW_2;
             break;
         case CORE_PART_4_POW_1:
             m_fireType = CORE_END;
@@ -52,13 +52,13 @@ void Fire::nextFrame(short explosionPowerRemaining)
             m_fireType = HEAD_PART_3;
             break;
         case HEAD_PART_3:
-            m_fireType = explosionPowerRemaining == 1 ? HEAD_PART_4_POW_1 : FAT_NECK;
+            m_fireType = explosionPowerRemaining == 0 ? HEAD_PART_4_POW_1 : FAT_NECK;
             break;
         case HEAD_PART_4_POW_1:
             m_isExhausted = true;
             break;
         case HEAD_PART_4_POW_2:
-            m_fireType = THIN_NECK;
+            m_fireType = explosionPowerRemaining == 0 ? HEAD_PART_5_POW_2 : THIN_NECK;
             break;
         case HEAD_PART_5_POW_2:
             m_fireType = explosionPowerRemaining == 0 ? HEAD_PART_6_POW_2 : THIN_NECK;
@@ -73,7 +73,7 @@ void Fire::nextFrame(short explosionPowerRemaining)
             m_fireType = EDGE_FROM_CORE_PART_3;
             break;
         case EDGE_FROM_CORE_PART_3:
-            m_fireType = explosionPowerRemaining == 1 ? EDGE_FROM_CORE_PART_4_POW_1 : EDGE_FROM_CORE_PART_4_POW_2;
+            m_fireType = explosionPowerRemaining == 0 ? EDGE_FROM_CORE_PART_4_POW_1 : EDGE_FROM_CORE_PART_4_POW_2;
             break;
         case EDGE_FROM_CORE_PART_4_POW_1:
             m_isExhausted = true;
@@ -91,10 +91,10 @@ void Fire::nextFrame(short explosionPowerRemaining)
             m_isExhausted = explosionPowerRemaining == 0;
             break;
         case FAT_NECK:
-            m_fireType = BODY;
+            m_fireType = explosionPowerRemaining == 0 ? THIN_NECK : BODY;
             break;
         case THIN_NECK:
-            m_fireType = BODY;
+            m_fireType = explosionPowerRemaining == 0 ? NECK_AND_BODY_END : BODY;
             break;
         case BODY:
             m_fireType = explosionPowerRemaining == 0 ? NECK_AND_BODY_END : BODY;

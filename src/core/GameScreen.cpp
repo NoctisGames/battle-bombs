@@ -23,6 +23,7 @@
 #include "GameListener.h"
 #include "Renderer.h"
 #include "Fire.h"
+#include "Triangle.h"
 
 GameScreen::GameScreen(const char *username) : GameSession()
 {
@@ -33,11 +34,11 @@ GameScreen::GameScreen(const char *username) : GameSession()
     std::strncpy(m_username, username, usernameLength);
     m_username[usernameLength] = '\0';
     
-    m_bombButtonBounds = std::unique_ptr<Rectangle>(new Rectangle(20.536f, 0, 3.456f, 2.916f));
+    m_bombButtonBounds = std::unique_ptr<Rectangle>(new Rectangle(21, 0, 3, 2.97532894736849f));
 
-	m_activeButton = std::unique_ptr<ActiveButton>(new ActiveButton(18.5f, 1.2f , 2.5f, 2.5f));
+	m_activeButton = std::unique_ptr<ActiveButton>(new ActiveButton(19.00746268656708f, 1.32089552253289f, 2.64179104477608f, 2.64179104506578f));
     
-    m_dPad = std::unique_ptr<DPadControl>(new DPadControl(2.4f, 1.65333334f, 4.8f, 3.30666667f));
+    m_dPad = std::unique_ptr<DPadControl>(new DPadControl(GAME_X + 2.30597014925376f, 2.26119403009867f, 4.61194029850752f, 4.52238806019733f));
     
     m_gameListener = std::unique_ptr<GameListener>(new GameListener());
     
@@ -134,7 +135,6 @@ void GameScreen::present()
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderInterface();
-            m_renderer->renderControls(*m_dPad);
             
             m_renderer->endFrame();
             break;
