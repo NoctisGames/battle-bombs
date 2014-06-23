@@ -24,10 +24,13 @@
 #include "Renderer.h"
 #include "Fire.h"
 #include "Triangle.h"
+#include "MapBorder.h"
+#include "InsideBlock.h"
+#include "BreakableBlock.h"
 
 GameScreen::GameScreen(const char *username) : GameSession()
 {
-    int usernameLength = strlen(username);
+    int usernameLength = (int) strlen(username);
     
     m_username = new char[usernameLength];
     
@@ -119,7 +122,8 @@ void GameScreen::present()
         case WAITING_FOR_SERVER:
             m_renderer->renderWorldBackground();
             
-            m_renderer->renderWorldForeground(m_insideBlocks, m_breakableBlocks, m_powerUps);
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
+            m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderInterface();
             
             m_renderer->endFrame();
@@ -130,10 +134,11 @@ void GameScreen::present()
             
             m_renderer->renderWorldBackground();
             
-            m_renderer->renderWorldForeground(m_insideBlocks, m_breakableBlocks, m_powerUps);
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
             m_renderer->renderBombs(m_bombs);
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
+            m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderInterface();
             
             m_renderer->endFrame();
@@ -255,6 +260,9 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 									(*itr)->pushed(m_player->getDirection());
 								}
 							}
+                        default:
+                            break;
+                            // TODO!
 					}
 				}
                 else

@@ -15,7 +15,7 @@
 #include <vector>
 
 class TextureRegion;
-class InsideBlock;
+class MapBorder;
 class BreakableBlock;
 class PlayerDynamicGameObject;
 class BombGameObject;
@@ -29,6 +29,8 @@ public:
 	static Assets * getInstance();
     
     static TextureRegion getWorldBackgroundTextureRegion();
+    
+    static TextureRegion getMapBorderTextureRegion(MapBorder &mapBorder);
     
     static TextureRegion getInsideBlockTextureRegion();
 

@@ -19,13 +19,14 @@
 #include "rapidjson/document.h"
 
 #include "GameState.h"
-#include "InsideBlock.h"
-#include "BreakableBlock.h"
-#include "PowerUp.h"
 
+class MapBorder;
+class InsideBlock;
+class BreakableBlock;
 class BombGameObject;
 class Explosion;
 class PlayerDynamicGameObject;
+class PowerUp;
 
 class GameSession
 {
@@ -49,6 +50,7 @@ public:
     bool isPlayerAliveAtIndex(short playerIndex);
 
 protected:
+    std::vector<std::unique_ptr<MapBorder>> m_mapBorders;
     std::vector<std::unique_ptr<InsideBlock >> m_insideBlocks;
     std::vector<std::unique_ptr<BreakableBlock >> m_breakableBlocks;
     std::vector<std::unique_ptr<PlayerDynamicGameObject >> m_players;

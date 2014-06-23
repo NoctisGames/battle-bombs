@@ -60,7 +60,7 @@ static AppPrefs *instance = nil;
 - (int)getInt:(NSString *)key
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return [userDefaults integerForKey:key];
+    return (int)[userDefaults integerForKey:key];
 }
 
 @end

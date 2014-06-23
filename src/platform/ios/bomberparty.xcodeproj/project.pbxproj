@@ -50,7 +50,6 @@
 		BB34DC861925224F00E9AA8C /* GridGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB34DC841925224F00E9AA8C /* GridGameObject.cpp */; };
 		BB34DC89192523C000E9AA8C /* DynamicGridGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB34DC87192523C000E9AA8C /* DynamicGridGameObject.cpp */; };
 		BB451A3718C30E810093E559 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB451A3618C30E810093E559 /* libz.dylib */; };
-		BB451A3918C3107A0093E559 /* cancel_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = BB451A3818C3107A0093E559 /* cancel_chat.png */; };
 		BB600760192958CB008C11CC /* ActiveButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB60075E192958CB008C11CC /* ActiveButton.cpp */; };
 		BB68B02A192A82EF0065CE1D /* OfflineGameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB68B029192A82EF0065CE1D /* OfflineGameViewController.mm */; };
 		BB7305DA189C598D009F6DF4 /* AppPrefs.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7305D5189C598D009F6DF4 /* AppPrefs.m */; };
@@ -88,6 +87,7 @@
 		BB9948E219366E2900A8E599 /* GameListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9948E019366E2900A8E599 /* GameListener.cpp */; };
 		BB9D09AC19155C9E002CBFD3 /* bg_game.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB9D09AB19155C9E002CBFD3 /* bg_game.aifc */; };
 		BB9D93BE191FB4EC00AD9CCE /* PowerUp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */; };
+		BBA1CD531958B10A00AF2AD8 /* MapBorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */; };
 		BBBEC914194B425200AAB520 /* char_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBEC913194B425200AAB520 /* char_blue.png */; };
 		BBCCF55E193847A0000F509A /* BotPlayerDynamicGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */; };
 		BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32418BFC8E1003A4EED /* Logger.m */; };
@@ -164,7 +164,6 @@
 		BB430E23189313C600E4EAE1 /* pngpriv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pngpriv.h; path = ../../3rdparty/libpng/pngpriv.h; sourceTree = "<group>"; };
 		BB430E24189313C600E4EAE1 /* pngstruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pngstruct.h; path = ../../3rdparty/libpng/pngstruct.h; sourceTree = "<group>"; };
 		BB451A3618C30E810093E559 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		BB451A3818C3107A0093E559 /* cancel_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_chat.png; sourceTree = "<group>"; };
 		BB47C9BD18F326D4002ED03B /* PlayerState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerState.h; sourceTree = "<group>"; };
 		BB60075E192958CB008C11CC /* ActiveButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActiveButton.cpp; sourceTree = "<group>"; };
 		BB60075F192958CB008C11CC /* ActiveButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveButton.h; sourceTree = "<group>"; };
@@ -250,6 +249,9 @@
 		BB9D09AB19155C9E002CBFD3 /* bg_game.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = bg_game.aifc; sourceTree = "<group>"; };
 		BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PowerUp.cpp; sourceTree = "<group>"; };
 		BB9D93BD191FB4EC00AD9CCE /* PowerUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerUp.h; sourceTree = "<group>"; };
+		BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapBorder.cpp; sourceTree = "<group>"; };
+		BBA1CD521958B10A00AF2AD8 /* MapBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBorder.h; sourceTree = "<group>"; };
+		BBA1CD541958C8D700AF2AD8 /* MapBorderType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapBorderType.h; sourceTree = "<group>"; };
 		BBBEC913194B425200AAB520 /* char_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_blue.png; sourceTree = "<group>"; };
 		BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BotPlayerDynamicGameObject.cpp; sourceTree = "<group>"; };
 		BBCCF55D193847A0000F509A /* BotPlayerDynamicGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BotPlayerDynamicGameObject.h; sourceTree = "<group>"; };
@@ -324,9 +326,9 @@
 				BB34DC88192523C000E9AA8C /* DynamicGridGameObject.h */,
 				BBE6F98819112D3E00062B8E /* Explosion.cpp */,
 				BBE6F98919112D3E00062B8E /* Explosion.h */,
-				BBE6F98B1911301100062B8E /* FireType.h */,
 				BB024B551955D99A0051C09E /* Fire.cpp */,
 				BB024B561955D99A0051C09E /* Fire.h */,
+				BBE6F98B1911301100062B8E /* FireType.h */,
 				BB96EEB318B99A6900F7C356 /* Font.cpp */,
 				BB96EEB418B99A6900F7C356 /* Font.h */,
 				BB96EEB518B99A6900F7C356 /* GameButton.cpp */,
@@ -349,6 +351,9 @@
 				BB96EEBC18B99A6900F7C356 /* Line.cpp */,
 				BB96EEBD18B99A6900F7C356 /* Line.h */,
 				BB96EEBE18B99A6900F7C356 /* macros.h */,
+				BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */,
+				BBA1CD521958B10A00AF2AD8 /* MapBorder.h */,
+				BBA1CD541958C8D700AF2AD8 /* MapBorderType.h */,
 				BB96EEDC18B99A7100F7C356 /* opengles */,
 				BB96EEBF18B99A6900F7C356 /* OverlapTester.cpp */,
 				BB96EEC018B99A6900F7C356 /* OverlapTester.h */,
@@ -543,7 +548,6 @@
 				BB16D96A191987B80034BE67 /* explosion.caf */,
 				BB16D96B191987B80034BE67 /* plant_bomb.caf */,
 				BB9D09AB19155C9E002CBFD3 /* bg_game.aifc */,
-				BB451A3818C3107A0093E559 /* cancel_chat.png */,
 				BB82641118C3025900A24A7C /* game.png */,
 				BBBEC913194B425200AAB520 /* char_blue.png */,
 				BB82640E18C2F63200A24A7C /* bg_main.png */,
@@ -615,7 +619,6 @@
 				BB16D96E191987B80034BE67 /* plant_bomb.caf in Resources */,
 				BB16D96D191987B80034BE67 /* explosion.caf in Resources */,
 				BB74E80718C2541F007C223E /* Localizable.strings in Resources */,
-				BB451A3918C3107A0093E559 /* cancel_chat.png in Resources */,
 				BB82640F18C2F63200A24A7C /* bg_main.png in Resources */,
 				BB16D96C191987B80034BE67 /* death.caf in Resources */,
 				0ADF1892178E2185005DA99E /* Default-568h@2x.png in Resources */,
@@ -656,6 +659,7 @@
 				0A8FBF7C179E07320039BA29 /* png.c in Sources */,
 				0A8FBF7D179E07320039BA29 /* pngerror.c in Sources */,
 				BBDF1A6C190F256300ECDBE2 /* BombGameObject.cpp in Sources */,
+				BBA1CD531958B10A00AF2AD8 /* MapBorder.cpp in Sources */,
 				0A8FBF7E179E07320039BA29 /* pngget.c in Sources */,
 				BB96EEDA18B99A6900F7C356 /* Triangle.cpp in Sources */,
 				BB96EEF418B99A7100F7C356 /* Vertices2D.cpp in Sources */,

@@ -42,7 +42,7 @@ void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, 
 {
 	if (isCentered)
 	{
-		int len = text.length();
+		int len = (int) text.length();
 		float result = width / 2;
 		x -= len * result;
 		x += width / 2;

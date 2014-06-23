@@ -10,6 +10,7 @@
 #include "BotPlayerDynamicGameObject.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
+#include "MapBorder.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "Explosion.h"
@@ -22,12 +23,12 @@
 
 BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction) : PlayerDynamicGameObject(playerIndex, x, y, gameListener, direction)
 {
-    srand(time(NULL));
+    srand((int)time(NULL));
 }
 
-void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
-    PlayerDynamicGameObject::update(deltaTime, insideBlocks, breakableBlocks, powerUps, explosions, bombs);
+    PlayerDynamicGameObject::update(deltaTime, mapBorders, insideBlocks, breakableBlocks, powerUps, explosions, bombs);
 
     // BEGIN TEMPORARY AI
     if (m_playerState == ALIVE && m_fStateTime > 1)

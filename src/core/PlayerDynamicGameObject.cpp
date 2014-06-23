@@ -10,6 +10,7 @@
 #include "PlayerDynamicGameObject.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
+#include "MapBorder.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "OverlapTester.h"
@@ -20,11 +21,10 @@
 #include "GameListener.h"
 #include "Fire.h"
 
-PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction, float width, float height) : DynamicGameObject(x, y, width, height, 0)
+PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
 {
-    m_bounds->getLowerLeft().set(x - width * 5 / 64, y - height / 4);
-    m_bounds->setWidth(width * 5 / 32);
-    m_bounds->setHeight(height / 12);
+    resetBounds(width * 5 / 32, height / 12);
+    updateBounds();
 
     m_fStateTime = 0;
     m_fSpeed = 3;
@@ -44,7 +44,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, float x, flo
     m_playerState = ALIVE;
 }
 
-void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
     m_fStateTime += deltaTime;
 
@@ -54,53 +54,44 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
         float deltaY = m_velocity->getY() * deltaTime;
 
         m_position->add(deltaX, deltaY);
-        m_bounds->getLowerLeft().set(getPosition().getX() - getWidth() * 5 / 64, getPosition().getY() - getHeight() / 4);
-
-        if (m_position->getX() < PLAYER_STARTING_X_LEFT)
+        updateBounds();
+        
+        bool isCollision = false;
+        
+        for (std::vector < std::unique_ptr < MapBorder >> ::iterator itr = mapBorders.begin(); itr != mapBorders.end(); itr++)
         {
-            m_position->setX(PLAYER_STARTING_X_LEFT);
-        }
-        else if (m_position->getX() > PLAYER_STARTING_X_RIGHT)
-        {
-            m_position->setX(PLAYER_STARTING_X_RIGHT);
-        }
-        else if (m_position->getY() < PLAYER_STARTING_Y_BOTTOM)
-        {
-            m_position->setY(PLAYER_STARTING_Y_BOTTOM);
-        }
-        else if (m_position->getY() > PLAYER_STARTING_Y_TOP)
-        {
-            m_position->setY(PLAYER_STARTING_Y_TOP);
-        }
-        else
-        {
-            bool isCollision = false;
-            
-            for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
+            if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
             {
-                if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
-                {
-                    isCollision = true;
-                    break;
-                }
-            }
-
-            for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
-            {
-                if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
-                {
-                    isCollision = true;
-                    break;
-                }
-            }
-            
-            if (isCollision)
-            {
-                m_position->sub(deltaX, deltaY);
+                isCollision = true;
+                break;
             }
         }
         
-        m_bounds->getLowerLeft().set(getPosition().getX() - getWidth() * 5 / 64, getPosition().getY() - getHeight() / 4);
+        for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
+        {
+            if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+            {
+                isCollision = true;
+                break;
+            }
+        }
+        
+        for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
+        {
+            if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+            {
+                isCollision = true;
+                break;
+            }
+        }
+        
+        if (isCollision)
+        {
+            m_position->sub(deltaX, deltaY);
+            updateBounds();
+        }
+        
+        updateGrid();
         
         for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
         {
@@ -303,6 +294,12 @@ Power_Up_Type PlayerDynamicGameObject::getActivePowerUp()
 short PlayerDynamicGameObject::getPlayerIndex()
 {
     return m_sPlayerIndex;
+}
+
+void PlayerDynamicGameObject::updateBounds()
+{
+    Vector2D &lowerLeft = m_bounds->getLowerLeft();
+    lowerLeft.set(getPosition().getX() - getWidth() * 5 / 64, getPosition().getY() - getHeight() / 4);
 }
 
 bool PlayerDynamicGameObject::isBot()

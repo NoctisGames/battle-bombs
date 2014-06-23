@@ -14,6 +14,7 @@
 #include "DPadControl.h"
 #include "ActiveButton.h"
 #include "PlayerDynamicGameObject.h"
+#include "MapBorder.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "BombGameObject.h"
@@ -62,7 +63,7 @@ void OpenGLESRenderer::renderWorldBackground()
     m_spriteBatcher->endBatchWithTexture(m_gameTexture);
 }
 
-void OpenGLESRenderer::renderWorldForeground(std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
+void OpenGLESRenderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
 {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -70,6 +71,14 @@ void OpenGLESRenderer::renderWorldForeground(std::vector<std::unique_ptr<InsideB
     if(insideBlocks.size() > 0)
     {
         m_spriteBatcher->beginBatch();
+        
+        for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersFar.begin(); itr != mapBordersFar.end(); itr++)
+        {
+            if(!(*itr)->isNearFront())
+            {
+                renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
+            }
+        }
         
         for (std::vector<std::unique_ptr<InsideBlock>>::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
         {
@@ -121,6 +130,19 @@ void OpenGLESRenderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> 
         for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
         {
             renderGameObjectWithRespectToPlayer((**itr2), Assets::getFireTextureRegion((**itr2)));
+        }
+    }
+    m_spriteBatcher->endBatchWithTexture(m_gameTexture);
+}
+
+void OpenGLESRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersNear.begin(); itr != mapBordersNear.end(); itr++)
+    {
+        if((*itr)->isNearFront())
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
         }
     }
     m_spriteBatcher->endBatchWithTexture(m_gameTexture);

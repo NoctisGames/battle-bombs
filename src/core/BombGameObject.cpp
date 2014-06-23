@@ -12,6 +12,7 @@
 #include "Rectangle.h"
 #include "PlayerDynamicGameObject.h"
 #include "Explosion.h"
+#include "MapBorder.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "OverlapTester.h"
@@ -21,7 +22,7 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
 {
     m_bombOwner = bombOwner;
     m_fStateTime = 0;
-    m_fSizeScalar = 0.88f;
+    m_fSizeScalar = 0.78f + 0.1f * power;
     m_sPower = power;
     m_isExploding = false;
     m_isDestroyed = false;
@@ -34,7 +35,7 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
     m_bombOwner->onBombDropped();
 }
 
-void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
+void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
 {
     m_fStateTime += deltaTime;
     
@@ -52,7 +53,7 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
             switch(m_iPushedDirection)
             {
                 case DIRECTION_UP :
-                    if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks) && !willTravelOffGameField())
+                    if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks) && !willTravelOffGameField(mapBorders))
                     {
                         m_position->add(0, m_fPushSpeed);
                         m_fPushSpeed -= FRICTION_FACTOR;
@@ -67,7 +68,7 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
                     }
                     break;
                 case DIRECTION_DOWN :
-                    if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks) && !willTravelOffGameField())
+                    if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks) && !willTravelOffGameField(mapBorders))
                     {
                         m_position->sub(0, m_fPushSpeed);
                         m_fPushSpeed -= FRICTION_FACTOR;
@@ -82,7 +83,7 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
                     }
                     break;
                 case DIRECTION_RIGHT :
-                    if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks) && !willTravelOffGameField())
+                    if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks) && !willTravelOffGameField(mapBorders))
                     {
                         m_position->add(m_fPushSpeed, 0);
                         m_fPushSpeed -= FRICTION_FACTOR;
@@ -97,7 +98,7 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
                     }
                     break;
                 case DIRECTION_LEFT :
-                    if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks) && !willTravelOffGameField())
+                    if(!willHitBreakableBlock(breakableBlocks) && !willHitInsideBlock(insideBlocks) && !willTravelOffGameField(mapBorders))
                     {
                         m_position->sub(m_fPushSpeed, 0);
                         m_fPushSpeed -= FRICTION_FACTOR;
@@ -112,6 +113,8 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
                     }
                     break;
             }
+            
+            updateBounds();
         }
         
         if (m_fStateTime > 3)
@@ -191,11 +194,14 @@ bool BombGameObject::willHitInsideBlock(std::vector<std::unique_ptr<InsideBlock 
 	return false;
 }
 
-bool BombGameObject::willTravelOffGameField()
+bool BombGameObject::willTravelOffGameField(std::vector<std::unique_ptr<MapBorder >> &mapBorders)
 {
-	if(m_position->getX() < PLAYER_STARTING_X_LEFT || m_position->getX() > PLAYER_STARTING_X_RIGHT || m_position->getY() < PLAYER_STARTING_Y_BOTTOM || m_position->getY() > PLAYER_STARTING_Y_TOP)
+	for(std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBorders.begin(); itr != mapBorders.end(); itr++)
 	{
-		return true;
+		if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+		{
+			return true;
+		}
 	}
 
 	return false;

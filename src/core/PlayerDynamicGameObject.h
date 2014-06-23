@@ -10,13 +10,14 @@
 #define __bomberparty__PlayerDynamicGameObject__
 
 #include "GameConstants.h"
-#include "DynamicGameObject.h"
+#include "DynamicGridGameObject.h"
 #include "PlayerState.h"
 #include "PowerUpType.h"
 
 #include <memory>
 #include <vector>
 
+class MapBorder;
 class InsideBlock;
 class BreakableBlock;
 class PowerUp;
@@ -24,12 +25,12 @@ class Explosion;
 class GameListener;
 class BombGameObject;
 
-class PlayerDynamicGameObject : public DynamicGameObject
+class PlayerDynamicGameObject : public DynamicGridGameObject
 {
 public:
-    PlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction = DIRECTION_RIGHT, float width = PLAYER_FRAME_WIDTH, float height = PLAYER_FRAME_HEIGHT);
+    PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction = DIRECTION_RIGHT, float width = PLAYER_FRAME_WIDTH, float height = PLAYER_FRAME_HEIGHT);
 
-    virtual void update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs);
+    virtual void update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs);
 
     float getStateTime();
 
@@ -62,6 +63,8 @@ public:
     Power_Up_Type getActivePowerUp();
 
     short getPlayerIndex();
+    
+    virtual void updateBounds();
     
     virtual bool isBot();
 

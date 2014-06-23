@@ -28,7 +28,7 @@ public:
 
     void resetBounds(float width, float height);
 
-    void updateBounds();
+    virtual void updateBounds();
 
     Vector2D& getPosition();
 

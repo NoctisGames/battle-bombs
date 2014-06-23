@@ -14,6 +14,7 @@
 #include "Rectangle.h"
 #include "Assets.h"
 #include "OverlapTester.h"
+#include "MapBorder.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "GameEvent.h"
@@ -25,7 +26,25 @@
 
 GameSession::GameSession()
 {
-    for (int i = 1; i < GRID_CELL_NUM_ROWS / 2 - 2; i += 2)
+    // BEGIN MAP BORDER FAR
+    m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_TOP, SCREEN_WIDTH / 2, SCREEN_HEIGHT - 0.73880597023028f, SCREEN_WIDTH, 1.47761194046056f)));
+    m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_TOP, 0.7388059701492f, 15.76119403157902f, 1.4776119402984f, 20.0597014947369f)));
+    m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_TOP, 23.44029850746264f, 15.76119403157902f, 1.11940298507472f, 20.0597014947369f)));
+    m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_TOP, 2.865671641791f, 3.58208955263162f, 5.731343283582f, 4.29850746315789f)));
+    m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_TOP, 21.31343283582084f, 3.58208955263162f, 5.37313432835832f, 4.29850746315789f)));
+    m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_TOP, SCREEN_WIDTH / 2, 0.71641791052634f, SCREEN_WIDTH, 1.43283582105267f)));
+    
+    // BEGIN BOTTOM CENTER
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock( 5, 0)));
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock( 7, 0)));
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock( 9, 0)));
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock( 4, 2)));
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock( 6, 2)));
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock( 8, 2)));
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(10, 2)));
+    
+    // BEGIN BOTTOM
+    for (int i = 4; i < BOTTOM_HALF_TOP_GRID_Y; i += 2)
     {
         for (int j = 1; j < NUM_GRID_CELLS_PER_ROW; j += 2)
         {
@@ -33,19 +52,21 @@ GameSession::GameSession()
         }
     }
     
-    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(0, PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP + 1)));
-    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(0, PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM - 1)));
+    // BEGIN MIDDLE
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(0, BOTTOM_HALF_TOP_GRID_Y + 1)));
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(0, TOP_HALF_BOTTOM_GRID_Y - 1)));
     
     for (int j = 1; j < NUM_GRID_CELLS_PER_ROW; j += 2)
     {
-        m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(j, PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP + 1)));
-        m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(j, PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM - 1)));
+        m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(j, BOTTOM_HALF_TOP_GRID_Y + 1)));
+        m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(j, TOP_HALF_BOTTOM_GRID_Y - 1)));
     }
     
-    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(NUM_GRID_CELLS_PER_ROW - 1, PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP + 1)));
-    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(NUM_GRID_CELLS_PER_ROW - 1, PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM - 1)));
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(NUM_GRID_CELLS_PER_ROW - 1, BOTTOM_HALF_TOP_GRID_Y + 1)));
+    m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(NUM_GRID_CELLS_PER_ROW - 1, TOP_HALF_BOTTOM_GRID_Y - 1)));
     
-    for (int i = GRID_CELL_NUM_ROWS / 2 + 2; i < GRID_CELL_NUM_ROWS; i += 2)
+    // BEGIN TOP
+    for (int i = TOP_HALF_BOTTOM_GRID_Y + 1; i < GRID_CELL_NUM_ROWS; i += 2)
     {
         for (int j = 1; j < NUM_GRID_CELLS_PER_ROW; j += 2)
         {
@@ -56,7 +77,7 @@ GameSession::GameSession()
 
 int GameSession::getNumPlayers()
 {
-    return m_players.size();
+    return (int) m_players.size();
 }
 
 bool GameSession::isPlayerBotAtIndex(short playerIndex)
@@ -88,7 +109,7 @@ void GameSession::updateCommon(float deltaTime)
 {
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = m_bombs.begin(); itr != m_bombs.end();)
     {
-        (**itr).update(deltaTime, m_explosions, m_insideBlocks, m_breakableBlocks);
+        (**itr).update(deltaTime, m_explosions, m_mapBorders, m_insideBlocks, m_breakableBlocks);
 
         if ((**itr).isDestroyed())
         {
@@ -135,7 +156,7 @@ void GameSession::updateCommon(float deltaTime)
 
     for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
     {
-        (**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks, m_powerUps, m_explosions, m_bombs);
+        (**itr).update(deltaTime, m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps, m_explosions, m_bombs);
     }
 
     for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end();)
@@ -428,23 +449,5 @@ void GameSession::handlePlayerEvent(short event)
 
 void GameSession::layBombForPlayer(PlayerDynamicGameObject *player)
 {
-    float playerBoundsLowerLeftX = player->getBounds().getLowerLeft().getX() + player->getBounds().getWidth() / 2;
-    float playerBoundsLowerLeftY = player->getBounds().getLowerLeft().getY() + player->getBounds().getHeight() / 2;
-
-    for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
-    {
-        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
-        {
-            float leftX = GAME_X + GRID_CELL_WIDTH * j;
-            float rightX = GAME_X + GRID_CELL_WIDTH * (j + 1);
-            float bottomY = GAME_Y + GRID_CELL_HEIGHT * i;
-            float topY = GAME_Y + GRID_CELL_HEIGHT * (i + 1);
-
-            if (playerBoundsLowerLeftX > leftX && playerBoundsLowerLeftX < rightX && playerBoundsLowerLeftY > bottomY && playerBoundsLowerLeftY < topY)
-            {
-                m_bombs.push_back(std::unique_ptr<BombGameObject>(new BombGameObject(player, player->getFirePower(), j, i)));
-                return;
-            }
-        }
-    }
+    m_bombs.push_back(std::unique_ptr<BombGameObject>(new BombGameObject(player, player->getFirePower(), player->getGridX(), player->getGridY())));
 }

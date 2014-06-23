@@ -18,6 +18,30 @@ DynamicGridGameObject::DynamicGridGameObject(int gridX, int gridY, float width, 
     m_gridY = gridY;
 }
 
+void DynamicGridGameObject::updateGrid()
+{
+    float boundsLowerLeftX = m_bounds->getLowerLeft().getX() + m_bounds->getWidth() / 2;
+    float boundsLowerLeftY = m_bounds->getLowerLeft().getY() + m_bounds->getHeight() / 2;
+    
+    for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
+    {
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            float leftX = GAME_X + GRID_CELL_WIDTH * j;
+            float rightX = GAME_X + GRID_CELL_WIDTH * (j + 1);
+            float bottomY = GAME_Y + GRID_CELL_HEIGHT * i;
+            float topY = GAME_Y + GRID_CELL_HEIGHT * (i + 1);
+            
+            if (boundsLowerLeftX > leftX && boundsLowerLeftX < rightX && boundsLowerLeftY > bottomY && boundsLowerLeftY < topY)
+            {
+                m_gridX = j;
+                m_gridY = i;
+                return;
+            }
+        }
+    }
+}
+
 int DynamicGridGameObject::getGridX()
 {
     return m_gridX;
