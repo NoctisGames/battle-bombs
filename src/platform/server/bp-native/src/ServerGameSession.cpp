@@ -20,7 +20,9 @@
 #include "GameListener.h"
 #include "PlayerDynamicGameObject.h"
 #include "BotPlayerDynamicGameObject.h"
+#include "MapBorder.h"
 #include "InsideBlock.h"
+#include "BreakableBlock.h" 
 #include "Fire.h"
 
 //For RNG purposes
