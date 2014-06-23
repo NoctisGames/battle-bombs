@@ -20,6 +20,7 @@
 #include "GameListener.h"
 #include "PlayerDynamicGameObject.h"
 #include "BotPlayerDynamicGameObject.h"
+#include "InsideBlock.h"
 #include "Fire.h"
 
 //For RNG purposes
@@ -38,36 +39,36 @@ void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
     init();
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 1 ?
-            new PlayerDynamicGameObject(0, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM, m_gameListener.get(), DIRECTION_RIGHT) :
-            new BotPlayerDynamicGameObject(0, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM, m_gameListener.get(), DIRECTION_RIGHT)));
+            new PlayerDynamicGameObject(0, PLAYER_1_GRID_X, PLAYER_1_GRID_Y, m_gameListener.get(), DIRECTION_RIGHT) :
+            new BotPlayerDynamicGameObject(0, PLAYER_1_GRID_X, PLAYER_1_GRID_Y, m_gameListener.get(), DIRECTION_RIGHT)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 2 ?
-            new PlayerDynamicGameObject(1, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, m_gameListener.get(), DIRECTION_LEFT) :
-            new BotPlayerDynamicGameObject(1, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, m_gameListener.get(), DIRECTION_LEFT)));
+            new PlayerDynamicGameObject(1, PLAYER_2_GRID_X, PLAYER_2_GRID_Y, m_gameListener.get(), DIRECTION_LEFT) :
+            new BotPlayerDynamicGameObject(1, PLAYER_2_GRID_X, PLAYER_2_GRID_Y, m_gameListener.get(), DIRECTION_LEFT)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 3 ?
-            new PlayerDynamicGameObject(2, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, m_gameListener.get(), DIRECTION_RIGHT) :
-            new BotPlayerDynamicGameObject(2, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, m_gameListener.get(), DIRECTION_RIGHT)));
+            new PlayerDynamicGameObject(2, PLAYER_3_GRID_X, PLAYER_3_GRID_Y, m_gameListener.get(), DIRECTION_RIGHT) :
+            new BotPlayerDynamicGameObject(2, PLAYER_3_GRID_X, PLAYER_3_GRID_Y, m_gameListener.get(), DIRECTION_RIGHT)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 4 ?
-            new PlayerDynamicGameObject(3, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP, m_gameListener.get(), DIRECTION_LEFT) :
-            new BotPlayerDynamicGameObject(3, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP, m_gameListener.get(), DIRECTION_LEFT)));
+            new PlayerDynamicGameObject(3, PLAYER_4_GRID_X, PLAYER_4_GRID_Y, m_gameListener.get(), DIRECTION_LEFT) :
+            new BotPlayerDynamicGameObject(3, PLAYER_4_GRID_X, PLAYER_4_GRID_Y, m_gameListener.get(), DIRECTION_LEFT)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 5 ?
-            new PlayerDynamicGameObject(4, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM, m_gameListener.get(), DIRECTION_UP) :
-            new BotPlayerDynamicGameObject(4, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_BOTTOM, m_gameListener.get(), DIRECTION_UP)));
+            new PlayerDynamicGameObject(4, PLAYER_5_GRID_X, PLAYER_5_GRID_Y, m_gameListener.get(), DIRECTION_UP) :
+            new BotPlayerDynamicGameObject(4, PLAYER_5_GRID_X, PLAYER_5_GRID_Y, m_gameListener.get(), DIRECTION_UP)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 6 ?
-            new PlayerDynamicGameObject(5, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, m_gameListener.get(), DIRECTION_UP) :
-            new BotPlayerDynamicGameObject(5, PLAYER_STARTING_X_RIGHT, PLAYER_STARTING_Y_TOP_HALF_BOTTOM, m_gameListener.get(), DIRECTION_UP)));
+            new PlayerDynamicGameObject(5, PLAYER_6_GRID_X, PLAYER_6_GRID_Y, m_gameListener.get(), DIRECTION_UP) :
+            new BotPlayerDynamicGameObject(5, PLAYER_6_GRID_X, PLAYER_6_GRID_Y, m_gameListener.get(), DIRECTION_UP)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 7 ?
-            new PlayerDynamicGameObject(6, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, m_gameListener.get(), DIRECTION_DOWN) :
-            new BotPlayerDynamicGameObject(6, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_BOTTOM_HALF_TOP, m_gameListener.get(), DIRECTION_DOWN)));
+            new PlayerDynamicGameObject(6, PLAYER_7_GRID_X, PLAYER_7_GRID_Y, m_gameListener.get(), DIRECTION_DOWN) :
+            new BotPlayerDynamicGameObject(6, PLAYER_7_GRID_X, PLAYER_7_GRID_Y, m_gameListener.get(), DIRECTION_DOWN)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 8 ?
-            new PlayerDynamicGameObject(7, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP, m_gameListener.get(), DIRECTION_DOWN) :
-            new BotPlayerDynamicGameObject(7, PLAYER_STARTING_X_LEFT, PLAYER_STARTING_Y_TOP, m_gameListener.get(), DIRECTION_DOWN)));
+            new PlayerDynamicGameObject(7, PLAYER_8_GRID_X, PLAYER_8_GRID_Y, m_gameListener.get(), DIRECTION_DOWN) :
+            new BotPlayerDynamicGameObject(7, PLAYER_8_GRID_X, PLAYER_8_GRID_Y, m_gameListener.get(), DIRECTION_DOWN)));
 
     srand(time(NULL));
 
@@ -76,31 +77,8 @@ void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
             // Don't place breakable blocks where inside blocks are
-            if (i <= PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP && i % 2 != 0 && j % 2 != 0)
-            {
-                continue;
-            }
-
-            if (i > PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP && i < PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM && j == 0)
-            {
-                continue;
-            }
-
-            if (i > PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP && i < PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM && j % 2 != 0)
-            {
-                continue;
-            }
-
-            if (i > PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP && i < PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM && j == NUM_GRID_CELLS_PER_ROW - 1)
-            {
-                continue;
-            }
-
-            if (i >= PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM && i % 2 == 0 && j % 2 != 0)
-            {
-                continue;
-            }
-
+            isLocationOccupiedByInsideBlock(j, i);
+            
             if (i == 0 && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
             {
                 continue;
@@ -111,22 +89,22 @@ void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
                 continue;
             }
 
-            if (i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP - 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
+            if (i == BOTTOM_HALF_TOP_GRID_Y - 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
             {
                 continue;
             }
 
-            if (i == PLAYER_STARTING_GRID_CELL_BOTTOM_HALF_TOP && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
+            if (i == BOTTOM_HALF_TOP_GRID_Y && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
             {
                 continue;
             }
 
-            if (i == PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
+            if (i == BOTTOM_HALF_TOP_GRID_Y && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
             {
                 continue;
             }
 
-            if (i == PLAYER_STARTING_GRID_CELL_TOP_HALF_BOTTOM + 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
+            if (i == BOTTOM_HALF_TOP_GRID_Y + 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
             {
                 continue;
             }
@@ -274,4 +252,17 @@ void ServerGameSession::clientUpdateForPlayerIndex(rapidjson::Document &d, const
     handlePositionAndDirectionUpdate(d, keyX, keyY, keyDirection, playerIndex);
 
     handleClientEventsArrayInDocument(d);
+}
+
+bool ServerGameSession::isLocationOccupiedByInsideBlock(int gridX, int gridY)
+{
+    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = m_insideBlocks.begin(); itr != m_insideBlocks.end(); itr++)
+    {
+        if (gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY())
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

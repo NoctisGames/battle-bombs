@@ -21,6 +21,8 @@
       <itemPath>../../../core/GridGameObject.h</itemPath>
       <itemPath>../../../core/InsideBlock.h</itemPath>
       <itemPath>../../../core/Line.h</itemPath>
+      <itemPath>../../../core/MapBorder.h</itemPath>
+      <itemPath>../../../core/MapBorderType.h</itemPath>
       <itemPath>../../../core/OverlapTester.h</itemPath>
       <itemPath>../../../core/PlayerDynamicGameObject.h</itemPath>
       <itemPath>../../../core/PlayerState.h</itemPath>
@@ -55,6 +57,7 @@
       <itemPath>../../../core/GridGameObject.cpp</itemPath>
       <itemPath>../../../core/InsideBlock.cpp</itemPath>
       <itemPath>../../../core/Line.cpp</itemPath>
+      <itemPath>../../../core/MapBorder.cpp</itemPath>
       <itemPath>../../../core/OverlapTester.cpp</itemPath>
       <itemPath>../../../core/PlayerDynamicGameObject.cpp</itemPath>
       <itemPath>../../../core/PowerUp.cpp</itemPath>
@@ -187,6 +190,12 @@
       <item path="../../../core/Line.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/Line.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/MapBorder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/MapBorder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/MapBorderType.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/OverlapTester.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -346,6 +355,12 @@
       <item path="../../../core/Line.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/Line.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/MapBorder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/MapBorder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/MapBorderType.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/OverlapTester.cpp" ex="false" tool="1" flavor2="0">
       </item>
