@@ -78,45 +78,14 @@ void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
     {
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
-            // Don't place breakable blocks where inside blocks are
-            isLocationOccupiedByInsideBlock(j, i);
-            
-            if (i == 0 && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
+            // Don't place breakable blocks where inside blocks or players are
+            if (isLocationOccupiedByInsideBlock(j, i) || isLocationOccupiedByPlayer(j, i))
             {
                 continue;
             }
 
-            if (i == 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
-            {
-                continue;
-            }
-
-            if (i == BOTTOM_HALF_TOP_GRID_Y - 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
-            {
-                continue;
-            }
-
-            if (i == BOTTOM_HALF_TOP_GRID_Y && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
-            {
-                continue;
-            }
-
-            if (i == BOTTOM_HALF_TOP_GRID_Y && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
-            {
-                continue;
-            }
-
-            if (i == BOTTOM_HALF_TOP_GRID_Y + 1 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
-            {
-                continue;
-            }
-
-            if (i == GRID_CELL_NUM_ROWS - 1 && (j <= 1 || j >= NUM_GRID_CELLS_PER_ROW - 2))
-            {
-                continue;
-            }
-
-            if (i == GRID_CELL_NUM_ROWS - 2 && (j == 0 || j == NUM_GRID_CELLS_PER_ROW - 1))
+            // Don't place breakable blocks where map borders are
+            if (i <= 2 && (j <= 2 || j >= NUM_GRID_CELLS_PER_ROW - 3))
             {
                 continue;
             }
@@ -261,6 +230,19 @@ bool ServerGameSession::isLocationOccupiedByInsideBlock(int gridX, int gridY)
     for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = m_insideBlocks.begin(); itr != m_insideBlocks.end(); itr++)
     {
         if (gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY())
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool ServerGameSession::isLocationOccupiedByPlayer(int gridX, int gridY)
+{
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        if ((gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY()) || (gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY() + 1) || (gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY() - 1) || (gridX == (*itr)->getGridX() + 1 && gridY == (*itr)->getGridY()) || (gridX == (*itr)->getGridX() - 1 && gridY == (*itr)->getGridY()))
         {
             return true;
         }
