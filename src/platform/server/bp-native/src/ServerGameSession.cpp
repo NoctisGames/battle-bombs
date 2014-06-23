@@ -61,12 +61,12 @@ void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
             new BotPlayerDynamicGameObject(4, PLAYER_5_GRID_X, PLAYER_5_GRID_Y, m_gameListener.get(), DIRECTION_UP)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 6 ?
-            new PlayerDynamicGameObject(5, PLAYER_6_GRID_X, PLAYER_6_GRID_Y, m_gameListener.get(), DIRECTION_UP) :
-            new BotPlayerDynamicGameObject(5, PLAYER_6_GRID_X, PLAYER_6_GRID_Y, m_gameListener.get(), DIRECTION_UP)));
+            new PlayerDynamicGameObject(5, PLAYER_6_GRID_X, PLAYER_6_GRID_Y, m_gameListener.get(), DIRECTION_DOWN) :
+            new BotPlayerDynamicGameObject(5, PLAYER_6_GRID_X, PLAYER_6_GRID_Y, m_gameListener.get(), DIRECTION_DOWN)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 7 ?
-            new PlayerDynamicGameObject(6, PLAYER_7_GRID_X, PLAYER_7_GRID_Y, m_gameListener.get(), DIRECTION_DOWN) :
-            new BotPlayerDynamicGameObject(6, PLAYER_7_GRID_X, PLAYER_7_GRID_Y, m_gameListener.get(), DIRECTION_DOWN)));
+            new PlayerDynamicGameObject(6, PLAYER_7_GRID_X, PLAYER_7_GRID_Y, m_gameListener.get(), DIRECTION_UP) :
+            new BotPlayerDynamicGameObject(6, PLAYER_7_GRID_X, PLAYER_7_GRID_Y, m_gameListener.get(), DIRECTION_UP)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 8 ?
             new PlayerDynamicGameObject(7, PLAYER_8_GRID_X, PLAYER_8_GRID_Y, m_gameListener.get(), DIRECTION_DOWN) :
