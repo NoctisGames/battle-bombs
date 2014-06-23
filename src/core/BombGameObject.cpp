@@ -115,6 +115,7 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
             }
             
             updateBounds();
+            updateGrid();
         }
         
         if (m_fStateTime > 3)

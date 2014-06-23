@@ -216,6 +216,26 @@ void Explosion::runBlockLogic(std::vector<std::unique_ptr<InsideBlock> > &inside
     {
         m_travelingDown = false;
     }
+    
+    if(m_iDownGridY <= 2 && m_iRightGridX >= NUM_GRID_CELLS_PER_ROW - 3 && m_gridX == NUM_GRID_CELLS_PER_ROW - 4)
+    {
+        m_travelingRight = false;
+    }
+    
+    if(m_iDownGridY <= 2 && m_iRightGridX >= NUM_GRID_CELLS_PER_ROW - 3 && m_gridX >= NUM_GRID_CELLS_PER_ROW - 3)
+    {
+        m_travelingDown = false;
+    }
+    
+    if(m_iDownGridY <= 2 && m_iLeftGridX <= 2 && m_gridX == 3)
+    {
+        m_travelingLeft = false;
+    }
+    
+    if(m_iDownGridY <= 2 && m_iLeftGridX <= 2 && m_gridX <= 2)
+    {
+        m_travelingDown = false;
+    }
 }
 
 void Explosion::runPostBlockLogic()

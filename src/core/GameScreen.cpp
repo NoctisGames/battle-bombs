@@ -37,11 +37,11 @@ GameScreen::GameScreen(const char *username) : GameSession()
     std::strncpy(m_username, username, usernameLength);
     m_username[usernameLength] = '\0';
     
-    m_bombButtonBounds = std::unique_ptr<Rectangle>(new Rectangle(21, 0, 3, 2.97532894736849f));
+    m_bombButtonBounds = std::unique_ptr<Rectangle>(new Rectangle(21.1343282f, 2.46268653, 2.59701504f, 2.59701504f));
 
-	m_activeButton = std::unique_ptr<ActiveButton>(new ActiveButton(19.00746268656708f, 1.32089552253289f, 2.64179104477608f, 2.64179104506578f));
+	m_activeButton = std::unique_ptr<ActiveButton>(new ActiveButton(19.2089551f, 0.35820895f, 2.3283582f, 2.3283582f));
     
-    m_dPad = std::unique_ptr<DPadControl>(new DPadControl(GAME_X + 2.30597014925376f, 2.26119403009867f, 4.61194029850752f, 4.52238806019733f));
+    m_dPad = std::unique_ptr<DPadControl>(new DPadControl(2.95522392f, 2.95522392f, 5.91044784f, 5.91044784f));
     
     m_gameListener = std::unique_ptr<GameListener>(new GameListener());
     
