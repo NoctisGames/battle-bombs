@@ -13,17 +13,17 @@
 MapBorder::MapBorder(Map_Border_Type type, float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
 {
     m_type = type;
-    
+
     switch (type)
     {
         case BORDER_TOP:
             m_bounds->setHeight(height * 6);
             break;
         case BORDER_LEFT:
-            m_bounds->setWidth(width * 6);
+            resetBounds(width * 6, height);
             break;
         case BORDER_RIGHT:
-            resetBounds(width * 6, height);
+            m_bounds->setWidth(width * 6);
             break;
         case BORDER_BOTTOM:
             resetBounds(width, height * 6);
