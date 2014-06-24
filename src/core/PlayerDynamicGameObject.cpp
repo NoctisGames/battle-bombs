@@ -211,7 +211,7 @@ bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explo
         {
             for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
             {
-                if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr2)->getBounds()))
+                if ((*itr2)->isDeadly() && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr2)->getBounds()))
                 {
                     return true;
                 }

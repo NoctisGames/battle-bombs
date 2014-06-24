@@ -22,6 +22,8 @@ public:
     
     bool isExhausted();
     
+    bool isDeadly();
+    
     Fire_Type getFireType();
     
 private:

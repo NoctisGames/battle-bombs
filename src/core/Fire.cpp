@@ -112,6 +112,11 @@ bool Fire::isExhausted()
     return m_isExhausted;
 }
 
+bool Fire::isDeadly()
+{
+    return m_fireType != BODY && m_fireType != NECK_AND_BODY_END && m_fireType != CORE_END;
+}
+
 Fire_Type Fire::getFireType()
 {
     return m_fireType;
