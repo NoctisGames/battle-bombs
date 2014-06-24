@@ -42,7 +42,14 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 
 	// Initialize Textures
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\game.dds", NULL, &m_gameShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_blue.dds", NULL, &m_blueCharShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_red.dds", NULL, &m_charRedShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
 
 	// Clear the blend state description.
 	D3D11_BLEND_DESC blendDesc;
@@ -160,13 +167,41 @@ void Direct3DRenderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> 
 
 void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
-	m_currentShaderResourceView = m_blueCharShaderResourceView;
-
 	m_spriteBatch->Begin();
 	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
 	{
 		if ((**itr).getPlayerState() != Player_State::DEAD)
 		{
+			switch ((**itr).getPlayerIndex())
+			{
+			case 0:
+				m_currentShaderResourceView = m_charBlackShaderResourceView;
+				break;
+			case 1:
+				m_currentShaderResourceView = m_charBlueShaderResourceView;
+				break;
+			case 2:
+				m_currentShaderResourceView = m_charGreenShaderResourceView;
+				break;
+			case 3:
+				m_currentShaderResourceView = m_charOrangeShaderResourceView;
+				break;
+			case 4:
+				m_currentShaderResourceView = m_charPinkShaderResourceView;
+				break;
+			case 5:
+				m_currentShaderResourceView = m_charRedShaderResourceView;
+				break;
+			case 6:
+				m_currentShaderResourceView = m_charWhiteShaderResourceView;
+				break;
+			case 7:
+				m_currentShaderResourceView = m_charYellowShaderResourceView;
+				break;
+			default:
+				break;
+			}
+
 			renderGameObjectWithRespectToPlayer((**itr), Assets::getPlayerTextureRegion((**itr)));
 		}
 	}
@@ -203,7 +238,14 @@ void Direct3DRenderer::endFrame()
 void Direct3DRenderer::cleanUp()
 {
 	m_gameShaderResourceView->Release();
-	m_blueCharShaderResourceView->Release();
+	m_charBlackShaderResourceView->Release();
+	m_charBlueShaderResourceView->Release();
+	m_charGreenShaderResourceView->Release();
+	m_charOrangeShaderResourceView->Release();
+	m_charPinkShaderResourceView->Release();
+	m_charRedShaderResourceView->Release();
+	m_charWhiteShaderResourceView->Release();
+	m_charYellowShaderResourceView->Release();
 }
 
 // Private

@@ -49,7 +49,14 @@ private:
 	ID3D11DepthStencilView *m_depthStencilView;
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	ID3D11ShaderResourceView *m_gameShaderResourceView;
-	ID3D11ShaderResourceView *m_blueCharShaderResourceView;
+	ID3D11ShaderResourceView *m_charBlackShaderResourceView;
+	ID3D11ShaderResourceView *m_charBlueShaderResourceView;
+	ID3D11ShaderResourceView *m_charGreenShaderResourceView;
+	ID3D11ShaderResourceView *m_charOrangeShaderResourceView;
+	ID3D11ShaderResourceView *m_charPinkShaderResourceView;
+	ID3D11ShaderResourceView *m_charRedShaderResourceView;
+	ID3D11ShaderResourceView *m_charWhiteShaderResourceView;
+	ID3D11ShaderResourceView *m_charYellowShaderResourceView;
 	ID3D11ShaderResourceView *m_currentShaderResourceView;
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
