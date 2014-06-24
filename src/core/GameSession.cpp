@@ -233,7 +233,7 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
 
 void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex)
 {
-    if (d.HasMember(keyX) && d.HasMember(keyY) && d.HasMember(keyDirection) && d.HasMember(keyAlive))
+    if (d.HasMember(keyX) && d.HasMember(keyY) && d.HasMember(keyDirection))
     {
         float playerX = d[keyX].GetDouble();
         m_players.at(playerIndex).get()->getPosition().setX(playerX);
@@ -243,7 +243,10 @@ void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *key
 
         int playerDirection = d[keyDirection].GetInt();
         m_players.at(playerIndex).get()->setDirection(playerDirection);
-        
+    }
+    
+    if(d.HasMember(keyAlive))
+    {
         bool isPlayerAlive = d[keyAlive].GetBool();
         m_players.at(playerIndex).get()->setPlayerState(isPlayerAlive ? ALIVE : DEAD);
     }
