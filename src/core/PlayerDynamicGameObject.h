@@ -44,7 +44,7 @@ public:
 
     bool isMoving();
 
-    void onBombDropped();
+    void onBombDropped(BombGameObject *bomb);
 
     void onBombExploded();
 
@@ -64,11 +64,14 @@ public:
 
     short getPlayerIndex();
     
+    virtual void resetBounds(float width, float height);
+    
     virtual void updateBounds();
     
     virtual bool isBot();
 
 protected:
+    BombGameObject *lastBombDropped;
     Player_State m_playerState;
     float m_fStateTime;
     float m_fSpeed;
@@ -82,6 +85,9 @@ protected:
     Power_Up_Type m_activePowerUp;
     short m_sPlayerIndex;
     GameListener *m_gameListener;
+    
+private:
+    bool isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
 };
 
 #endif /* defined(__bomberparty__PlayerDynamicGameObject__) */

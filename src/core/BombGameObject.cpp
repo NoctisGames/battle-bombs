@@ -30,9 +30,9 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
 	m_fPushSpeed = 0.2;
 	m_isPickedUp = false;
 
-    resetBounds(GRID_CELL_WIDTH * 4 / 5, GRID_CELL_HEIGHT * 4 / 5);
+    resetBounds(GRID_CELL_WIDTH * 3 / 5, GRID_CELL_HEIGHT * 3 / 5);
     
-    m_bombOwner->onBombDropped();
+    m_bombOwner->onBombDropped(this);
 }
 
 void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)

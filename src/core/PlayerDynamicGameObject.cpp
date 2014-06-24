@@ -24,8 +24,8 @@
 PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
 {
     resetBounds(width * 5 / 32, height / 12);
-    updateBounds();
 
+    lastBombDropped = nullptr;
     m_fStateTime = 0;
     m_fSpeed = 3;
     m_firePower = 1;
@@ -56,42 +56,18 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
         m_position->add(deltaX, deltaY);
         updateBounds();
         
-        bool isCollision = false;
-        
-        for (std::vector < std::unique_ptr < MapBorder >> ::iterator itr = mapBorders.begin(); itr != mapBorders.end(); itr++)
-        {
-            if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
-            {
-                isCollision = true;
-                break;
-            }
-        }
-        
-        for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
-        {
-            if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
-            {
-                isCollision = true;
-                break;
-            }
-        }
-        
-        for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
-        {
-            if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
-            {
-                isCollision = true;
-                break;
-            }
-        }
-        
-        if (isCollision)
+        if (isCollision(mapBorders, insideBlocks, breakableBlocks, players, bombs))
         {
             m_position->sub(deltaX, deltaY);
             updateBounds();
         }
         
         updateGrid();
+        
+        if(lastBombDropped != nullptr && !(lastBombDropped->getGridX() == m_gridX && lastBombDropped->getGridY() == m_gridY))
+        {
+            lastBombDropped = nullptr;
+        }
         
         for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
         {
@@ -189,8 +165,10 @@ bool PlayerDynamicGameObject::isMoving()
     return m_isMoving;
 }
 
-void PlayerDynamicGameObject::onBombDropped()
+void PlayerDynamicGameObject::onBombDropped(BombGameObject *bomb)
 {
+    lastBombDropped = bomb;
+    
     m_iCurrentBombCount++;
 
     m_gameListener->playSound(SOUND_PLANT_BOMB);
@@ -304,6 +282,14 @@ short PlayerDynamicGameObject::getPlayerIndex()
     return m_sPlayerIndex;
 }
 
+void PlayerDynamicGameObject::resetBounds(float width, float height)
+{
+    m_bounds->setWidth(width);
+    m_bounds->setHeight(height);
+    
+    updateBounds();
+}
+
 void PlayerDynamicGameObject::updateBounds()
 {
     Vector2D &lowerLeft = m_bounds->getLowerLeft();
@@ -312,5 +298,46 @@ void PlayerDynamicGameObject::updateBounds()
 
 bool PlayerDynamicGameObject::isBot()
 {
+    return false;
+}
+
+// Private
+
+bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+{
+    // TODO, Don't let players walk over each other
+    
+    for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+    {
+        if ((*itr).get() != lastBombDropped && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        {
+            return true;
+        }
+    }
+    
+    for (std::vector < std::unique_ptr < MapBorder >> ::iterator itr = mapBorders.begin(); itr != mapBorders.end(); itr++)
+    {
+        if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        {
+            return true;
+        }
+    }
+    
+    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
+    {
+        if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        {
+            return true;
+        }
+    }
+    
+    for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
+    {
+        if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        {
+            return true;
+        }
+    }
+    
     return false;
 }
