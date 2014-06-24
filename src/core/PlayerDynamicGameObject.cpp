@@ -255,6 +255,11 @@ short PlayerDynamicGameObject::getFirePower()
     return m_firePower;
 }
 
+void PlayerDynamicGameObject::setPlayerState(Player_State playerState)
+{
+    m_playerState = playerState;
+}
+
 Player_State PlayerDynamicGameObject::getPlayerState()
 {
     return m_playerState;

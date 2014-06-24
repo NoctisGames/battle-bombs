@@ -468,7 +468,7 @@ void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)
     }
 }
 
-void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex, bool isBeginGame)
+void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame)
 {
     if(isBeginGame && d.HasMember(keyIndex))
     {
@@ -482,7 +482,7 @@ void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *
     
     if(isBeginGame || m_gameState == SPECTATING || playerIndex != m_sPlayerIndex)
     {
-        handlePositionAndDirectionUpdate(d, keyX, keyY, keyDirection, playerIndex);
+        handlePlayerDataUpdate(d, keyX, keyY, keyDirection, keyAlive, playerIndex);
     }
     
     handleClientEventsArrayInDocument(d);

@@ -57,6 +57,8 @@ public:
     bool hasActivePowerUp();
 
 	bool isBombInFrontOfPlayer(BombGameObject &bomb);
+    
+    void setPlayerState(Player_State playerState);
 
     Player_State getPlayerState();
 

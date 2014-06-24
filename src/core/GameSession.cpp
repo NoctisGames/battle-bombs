@@ -211,20 +211,29 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
     static const char *playerIndex5DirectionKey = "playerIndex5Direction";
     static const char *playerIndex6DirectionKey = "playerIndex6Direction";
     static const char *playerIndex7DirectionKey = "playerIndex7Direction";
+    
+    static const char *playerIndex0AliveKey = "playerIndex0Alive";
+    static const char *playerIndex1AliveKey = "playerIndex1Alive";
+    static const char *playerIndex2AliveKey = "playerIndex2Alive";
+    static const char *playerIndex3AliveKey = "playerIndex3Alive";
+    static const char *playerIndex4AliveKey = "playerIndex4Alive";
+    static const char *playerIndex5AliveKey = "playerIndex5Alive";
+    static const char *playerIndex6AliveKey = "playerIndex6Alive";
+    static const char *playerIndex7AliveKey = "playerIndex7Alive";
 
-    clientUpdateForPlayerIndex(d, playerIndex0Key, playerIndex0XKey, playerIndex0YKey, playerIndex0DirectionKey, 0, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex1Key, playerIndex1XKey, playerIndex1YKey, playerIndex1DirectionKey, 1, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex2Key, playerIndex2XKey, playerIndex2YKey, playerIndex2DirectionKey, 2, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex3Key, playerIndex3XKey, playerIndex3YKey, playerIndex3DirectionKey, 3, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex4Key, playerIndex4XKey, playerIndex4YKey, playerIndex4DirectionKey, 4, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex5Key, playerIndex5XKey, playerIndex5YKey, playerIndex5DirectionKey, 5, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex6Key, playerIndex6XKey, playerIndex6YKey, playerIndex6DirectionKey, 6, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex7Key, playerIndex7XKey, playerIndex7YKey, playerIndex7DirectionKey, 7, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex0Key, playerIndex0XKey, playerIndex0YKey, playerIndex0DirectionKey, playerIndex0AliveKey, 0, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex1Key, playerIndex1XKey, playerIndex1YKey, playerIndex1DirectionKey, playerIndex1AliveKey, 1, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex2Key, playerIndex2XKey, playerIndex2YKey, playerIndex2DirectionKey, playerIndex2AliveKey, 2, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex3Key, playerIndex3XKey, playerIndex3YKey, playerIndex3DirectionKey, playerIndex3AliveKey, 3, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex4Key, playerIndex4XKey, playerIndex4YKey, playerIndex4DirectionKey, playerIndex4AliveKey, 4, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex5Key, playerIndex5XKey, playerIndex5YKey, playerIndex5DirectionKey, playerIndex5AliveKey, 5, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex6Key, playerIndex6XKey, playerIndex6YKey, playerIndex6DirectionKey, playerIndex6AliveKey, 6, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex7Key, playerIndex7XKey, playerIndex7YKey, playerIndex7DirectionKey, playerIndex7AliveKey, 7, isBeginGame);
 }
 
-void GameSession::handlePositionAndDirectionUpdate(rapidjson::Document& d, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex)
+void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex)
 {
-    if (d.HasMember(keyX) && d.HasMember(keyY) && d.HasMember(keyDirection))
+    if (d.HasMember(keyX) && d.HasMember(keyY) && d.HasMember(keyDirection) && d.HasMember(keyAlive))
     {
         float playerX = d[keyX].GetDouble();
         m_players.at(playerIndex).get()->getPosition().setX(playerX);
@@ -234,6 +243,9 @@ void GameSession::handlePositionAndDirectionUpdate(rapidjson::Document& d, const
 
         int playerDirection = d[keyDirection].GetInt();
         m_players.at(playerIndex).get()->setDirection(playerDirection);
+        
+        bool isPlayerAlive = d[keyAlive].GetBool();
+        m_players.at(playerIndex).get()->setPlayerState(isPlayerAlive ? ALIVE : DEAD);
     }
 }
 
