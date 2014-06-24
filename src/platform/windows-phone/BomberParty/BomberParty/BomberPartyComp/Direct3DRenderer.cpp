@@ -19,6 +19,7 @@
 #include "DPadControl.h"
 #include "ActiveButton.h"
 #include "PlayerDynamicGameObject.h"
+#include "MapBorder.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "BombGameObject.h"
@@ -101,11 +102,19 @@ void Direct3DRenderer::renderWorldBackground()
 	m_spriteBatch->End();
 }
 
-void Direct3DRenderer::renderWorldForeground(std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
+void Direct3DRenderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
 {
 	if (insideBlocks.size() > 0)
 	{
 		m_spriteBatch->Begin();
+
+		for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersFar.begin(); itr != mapBordersFar.end(); itr++)
+		{
+			if (!(*itr)->isNearFront())
+			{
+				renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
+			}
+		}
 
 		for (std::vector<std::unique_ptr<InsideBlock>>::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
 		{
@@ -159,6 +168,19 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 		if ((**itr).getPlayerState() != Player_State::DEAD)
 		{
 			renderGameObjectWithRespectToPlayer((**itr), Assets::getPlayerTextureRegion((**itr)));
+		}
+	}
+	m_spriteBatch->End();
+}
+
+void Direct3DRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear)
+{
+	m_spriteBatch->Begin();
+	for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersNear.begin(); itr != mapBordersNear.end(); itr++)
+	{
+		if ((*itr)->isNearFront())
+		{
+			renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
 		}
 	}
 	m_spriteBatch->End();
