@@ -45,7 +45,15 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(4000, false));
     
     m_gameTexture = load_png_asset_into_texture("game.png");
+    
+    m_charBlackTexture = load_png_asset_into_texture("char_black.png");
     m_charBlueTexture = load_png_asset_into_texture("char_blue.png");
+    m_charGreenTexture = load_png_asset_into_texture("char_green.png");
+    m_charOrangeTexture = load_png_asset_into_texture("char_orange.png");
+    m_charPinkTexture = load_png_asset_into_texture("char_pink.png");
+    m_charRedTexture = load_png_asset_into_texture("char_red.png");
+    m_charWhiteTexture = load_png_asset_into_texture("char_white.png");
+    m_charYellowTexture = load_png_asset_into_texture("char_yellow.png");
 }
 
 void OpenGLESRenderer::clearScreenWithColor(float r, float g, float b, float a)
@@ -101,15 +109,44 @@ void OpenGLESRenderer::renderWorldForeground(std::vector<std::unique_ptr<MapBord
 
 void OpenGLESRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
-    m_spriteBatcher->beginBatch();
     for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
     {
         if((**itr).getPlayerState() != Player_State::DEAD)
         {
+            m_spriteBatcher->beginBatch();
             renderGameObjectWithRespectToPlayer((**itr), Assets::getPlayerTextureRegion((**itr)));
+            
+            switch ((**itr).getPlayerIndex())
+            {
+                case 0:
+                    m_spriteBatcher->endBatchWithTexture(m_charBlackTexture);
+                    break;
+                case 1:
+                    m_spriteBatcher->endBatchWithTexture(m_charBlueTexture);
+                    break;
+                case 2:
+                    m_spriteBatcher->endBatchWithTexture(m_charGreenTexture);
+                    break;
+                case 3:
+                    m_spriteBatcher->endBatchWithTexture(m_charOrangeTexture);
+                    break;
+                case 4:
+                    m_spriteBatcher->endBatchWithTexture(m_charPinkTexture);
+                    break;
+                case 5:
+                    m_spriteBatcher->endBatchWithTexture(m_charRedTexture);
+                    break;
+                case 6:
+                    m_spriteBatcher->endBatchWithTexture(m_charWhiteTexture);
+                    break;
+                case 7:
+                    m_spriteBatcher->endBatchWithTexture(m_charYellowTexture);
+                    break;
+                default:
+                    break;
+            }
         }
     }
-    m_spriteBatcher->endBatchWithTexture(m_charBlueTexture);
 }
 
 void OpenGLESRenderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)

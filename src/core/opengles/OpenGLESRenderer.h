@@ -46,7 +46,14 @@ public:
 private:
     std::unique_ptr<SpriteBatcher> m_spriteBatcher;
     GLuint m_gameTexture;
+    GLuint m_charBlackTexture;
     GLuint m_charBlueTexture;
+    GLuint m_charGreenTexture;
+    GLuint m_charOrangeTexture;
+    GLuint m_charPinkTexture;
+    GLuint m_charRedTexture;
+    GLuint m_charWhiteTexture;
+    GLuint m_charYellowTexture;
     
     virtual void renderGameObject(GameObject &go, TextureRegion tr);
     
