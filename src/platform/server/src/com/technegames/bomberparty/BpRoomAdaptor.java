@@ -322,6 +322,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                 tobeSent.put("playerIndex" + playerIndex + "X", get_player_x(_room.getId(), playerIndex));
                 tobeSent.put("playerIndex" + playerIndex + "Y", get_player_y(_room.getId(), playerIndex));
                 tobeSent.put("playerIndex" + playerIndex + "Direction", get_player_direction(_room.getId(), playerIndex));
+                tobeSent.put("playerIndex" + playerIndex + "Alive", is_player_alive(_room.getId(), playerIndex));
             }
 
             appendBotData(tobeSent);
