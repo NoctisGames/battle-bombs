@@ -175,6 +175,8 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 
 void Direct3DRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear)
 {
+	m_currentShaderResourceView = m_gameShaderResourceView;
+
 	m_spriteBatch->Begin();
 	for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersNear.begin(); itr != mapBordersNear.end(); itr++)
 	{
@@ -188,8 +190,6 @@ void Direct3DRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorde
 
 void Direct3DRenderer::renderInterface()
 {
-	m_currentShaderResourceView = m_gameShaderResourceView;
-
 	m_spriteBatch->Begin();
 	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_OVERLAY_BACKGROUND_X, INTERFACE_OVERLAY_BACKGROUND_Y, INTERFACE_OVERLAY_BACKGROUND_WIDTH, INTERFACE_OVERLAY_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	m_spriteBatch->End();
