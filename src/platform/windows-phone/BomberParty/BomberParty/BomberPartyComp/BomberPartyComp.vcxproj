@@ -184,6 +184,8 @@
     <ClInclude Include="..\..\..\..\..\core\InsideBlock.h" />
     <ClInclude Include="..\..\..\..\..\core\Line.h" />
     <ClInclude Include="..\..\..\..\..\core\macros.h" />
+    <ClInclude Include="..\..\..\..\..\core\MapBorder.h" />
+    <ClInclude Include="..\..\..\..\..\core\MapBorderType.h" />
     <ClInclude Include="..\..\..\..\..\core\OverlapTester.h" />
     <ClInclude Include="..\..\..\..\..\core\pch.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerDynamicGameObject.h" />
@@ -231,6 +233,7 @@
     <ClCompile Include="..\..\..\..\..\core\GridGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\InsideBlock.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Line.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\MapBorder.cpp" />
     <ClCompile Include="..\..\..\..\..\core\OverlapTester.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PlayerDynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PowerUp.cpp" />
