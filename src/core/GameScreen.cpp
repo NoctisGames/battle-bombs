@@ -257,7 +257,7 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 							{
 								if(m_player->isBombInFrontOfPlayer(**itr))
 								{
-									(*itr)->pushed(m_player->getDirection());
+                                    m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PUSH_BOMB);
 								}
 							}
                         default:

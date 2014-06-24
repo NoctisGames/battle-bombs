@@ -78,6 +78,8 @@ protected:
 
 private:
     void layBombForPlayer(PlayerDynamicGameObject *player);
+    
+    void pushBombForPlayer(PlayerDynamicGameObject *player);
 };
 
 #endif /* GAME_SESSION_H */

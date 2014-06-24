@@ -292,6 +292,9 @@ void GameSession::handlePlayerEvent(short event)
         case PLAYER_0_PLANT_BOMB:
             layBombForPlayer(m_players.at(0).get());
             break;
+        case PLAYER_0_PUSH_BOMB:
+            pushBombForPlayer(m_players.at(0).get());
+            break;
         case PLAYER_0_DEATH:
             m_players.at(0).get()->onDeath();
             break;
@@ -312,6 +315,9 @@ void GameSession::handlePlayerEvent(short event)
             break;
         case PLAYER_1_PLANT_BOMB:
             layBombForPlayer(m_players.at(1).get());
+            break;
+        case PLAYER_1_PUSH_BOMB:
+            pushBombForPlayer(m_players.at(1).get());
             break;
         case PLAYER_1_DEATH:
             m_players.at(1).get()->onDeath();
@@ -334,6 +340,9 @@ void GameSession::handlePlayerEvent(short event)
         case PLAYER_2_PLANT_BOMB:
             layBombForPlayer(m_players.at(2).get());
             break;
+        case PLAYER_2_PUSH_BOMB:
+            pushBombForPlayer(m_players.at(2).get());
+            break;
         case PLAYER_2_DEATH:
             m_players.at(2).get()->onDeath();
             break;
@@ -354,6 +363,9 @@ void GameSession::handlePlayerEvent(short event)
             break;
         case PLAYER_3_PLANT_BOMB:
             layBombForPlayer(m_players.at(3).get());
+            break;
+        case PLAYER_3_PUSH_BOMB:
+            pushBombForPlayer(m_players.at(3).get());
             break;
         case PLAYER_3_DEATH:
             m_players.at(3).get()->onDeath();
@@ -376,6 +388,9 @@ void GameSession::handlePlayerEvent(short event)
         case PLAYER_4_PLANT_BOMB:
             layBombForPlayer(m_players.at(4).get());
             break;
+        case PLAYER_4_PUSH_BOMB:
+            pushBombForPlayer(m_players.at(4).get());
+            break;
         case PLAYER_4_DEATH:
             m_players.at(4).get()->onDeath();
             break;
@@ -396,6 +411,9 @@ void GameSession::handlePlayerEvent(short event)
             break;
         case PLAYER_5_PLANT_BOMB:
             layBombForPlayer(m_players.at(5).get());
+            break;
+        case PLAYER_5_PUSH_BOMB:
+            pushBombForPlayer(m_players.at(5).get());
             break;
         case PLAYER_5_DEATH:
             m_players.at(5).get()->onDeath();
@@ -418,6 +436,9 @@ void GameSession::handlePlayerEvent(short event)
         case PLAYER_6_PLANT_BOMB:
             layBombForPlayer(m_players.at(6).get());
             break;
+        case PLAYER_6_PUSH_BOMB:
+            pushBombForPlayer(m_players.at(6).get());
+            break;
         case PLAYER_6_DEATH:
             m_players.at(6).get()->onDeath();
             break;
@@ -439,6 +460,9 @@ void GameSession::handlePlayerEvent(short event)
         case PLAYER_7_PLANT_BOMB:
             layBombForPlayer(m_players.at(7).get());
             break;
+        case PLAYER_7_PUSH_BOMB:
+            pushBombForPlayer(m_players.at(7).get());
+            break;
         case PLAYER_7_DEATH:
             m_players.at(7).get()->onDeath();
             break;
@@ -450,4 +474,15 @@ void GameSession::handlePlayerEvent(short event)
 void GameSession::layBombForPlayer(PlayerDynamicGameObject *player)
 {
     m_bombs.push_back(std::unique_ptr<BombGameObject>(new BombGameObject(player, player->getFirePower(), player->getGridX(), player->getGridY())));
+}
+
+void GameSession::pushBombForPlayer(PlayerDynamicGameObject *player)
+{
+    for(std::vector<std::unique_ptr<BombGameObject>>::iterator itr = m_bombs.begin(); itr != m_bombs.end(); itr++)
+    {
+        if(player->isBombInFrontOfPlayer(**itr))
+        {
+            (*itr)->pushed(player->getDirection());
+        }
+    }
 }
