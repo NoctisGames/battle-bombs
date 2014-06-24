@@ -43,7 +43,7 @@ private:
     
     virtual void updateRunning(float deltaTime);
 
-    virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex, bool isBeginGame);
+    virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame);
     
     bool isLocationOccupiedByInsideBlock(int gridX, int gridY);
     
