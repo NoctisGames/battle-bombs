@@ -243,7 +243,7 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
             case DOWN:
                 if(OverlapTester::isPointInRectangle(*m_touchPoint, *m_bombButtonBounds))
                 {
-                    if(m_player->isAbleToDropAdditionalBomb())
+                    if(m_player->isAbleToDropAdditionalBomb(m_players, m_bombs))
                     {
                         m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
                     }
@@ -255,7 +255,7 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 						case PUSH :
 							for(std::vector<std::unique_ptr<BombGameObject>>::iterator itr = m_bombs.begin(); itr != m_bombs.end(); itr++)
 							{
-								if(m_player->isBombInFrontOfPlayer(*itr))
+								if(m_player->isBombInFrontOfPlayer(**itr))
 								{
 									(*itr)->pushed(m_player->getDirection());
 								}

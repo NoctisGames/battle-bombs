@@ -156,7 +156,7 @@ void GameSession::updateCommon(float deltaTime)
 
     for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
     {
-        (**itr).update(deltaTime, m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps, m_explosions, m_bombs);
+        (**itr).update(deltaTime, m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps, m_explosions, m_players, m_bombs);
     }
 
     for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end();)

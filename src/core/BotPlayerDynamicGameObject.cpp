@@ -26,9 +26,9 @@ BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, float 
     srand((int)time(NULL));
 }
 
-void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
-    PlayerDynamicGameObject::update(deltaTime, mapBorders, insideBlocks, breakableBlocks, powerUps, explosions, bombs);
+    PlayerDynamicGameObject::update(deltaTime, mapBorders, insideBlocks, breakableBlocks, powerUps, explosions, players, bombs);
 
     // BEGIN TEMPORARY AI
     if (m_playerState == ALIVE && m_fStateTime > 1)
@@ -42,7 +42,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
         bool shouldPlantBomb = rand() % 10 > 8;
         if(shouldPlantBomb)
         {
-            if(isAbleToDropAdditionalBomb())
+            if(isAbleToDropAdditionalBomb(players, bombs))
             {
                 m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
             }

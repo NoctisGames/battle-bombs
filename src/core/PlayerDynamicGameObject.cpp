@@ -44,7 +44,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
     m_playerState = ALIVE;
 }
 
-void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
     m_fStateTime += deltaTime;
 
@@ -230,38 +230,22 @@ bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explo
     return false;
 }
 
-bool PlayerDynamicGameObject::isBombInFrontOfPlayer(std::unique_ptr<BombGameObject> &bomb)
+bool PlayerDynamicGameObject::isBombInFrontOfPlayer(BombGameObject &bomb)
 {
-		switch(m_iDirection)
-		{
-			case DIRECTION_UP :
-				if(bomb->getPosition().getY() > getPosition().getY() && (bomb->getPosition().getY() - getPosition().getY()) <= (GRID_CELL_HEIGHT/2))
-				{
-					return true;
-				}
-				break;
-			case DIRECTION_DOWN	 :
-				if(bomb->getPosition().getY() < getPosition().getY() && (getPosition().getY() - bomb->getPosition().getY()) <= (GRID_CELL_HEIGHT/2))
-				{
-					return true;
-				}
-				break;
-			case DIRECTION_RIGHT :
-				if(bomb->getPosition().getX() > getPosition().getX() && (bomb->getPosition().getX() - getPosition().getX()) <= (GRID_CELL_WIDTH/2))
-				{
-					return true;
-				}
-				break;
-			case DIRECTION_LEFT :
-				if(bomb->getPosition().getX() < getPosition().getX() && (getPosition().getX() - bomb->getPosition().getX()) <= (GRID_CELL_WIDTH/2))
-				{
-					return true;
-				}
-				break;
-		}
-	return false;
+    switch(m_iDirection)
+    {
+        case DIRECTION_UP :
+            return m_gridY == bomb.getGridY() - 1;
+        case DIRECTION_DOWN	 :
+            return m_gridY == bomb.getGridY() + 1;
+        case DIRECTION_RIGHT :
+            return m_gridX == bomb.getGridX() - 1;
+        case DIRECTION_LEFT :
+            return m_gridX == bomb.getGridX() + 1;
+        default:
+            return false;
+    }
 }
-
 
 void PlayerDynamicGameObject::onDeath()
 {
@@ -271,9 +255,33 @@ void PlayerDynamicGameObject::onDeath()
     m_gameListener->playSound(SOUND_DEATH);
 }
 
-bool PlayerDynamicGameObject::isAbleToDropAdditionalBomb()
+bool PlayerDynamicGameObject::isAbleToDropAdditionalBomb(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
-    return m_playerState == ALIVE && m_iCurrentBombCount < m_iMaxBombCount;
+    if(m_playerState == ALIVE && m_iCurrentBombCount < m_iMaxBombCount)
+    {
+        for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
+        {
+            if((**itr).getPlayerState() == Player_State::ALIVE && (*itr).get() != this)
+            {
+                if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
+                {
+                    return false;
+                }
+            }
+        }
+        
+        for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+        {
+            if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    return false;
 }
 
 short PlayerDynamicGameObject::getFirePower()
