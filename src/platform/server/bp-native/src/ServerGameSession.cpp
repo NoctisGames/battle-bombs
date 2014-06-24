@@ -220,7 +220,7 @@ void ServerGameSession::updateRunning(float deltaTime)
 
 void ServerGameSession::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame)
 {
-    handlePositionAndDirectionUpdate(d, keyX, keyY, keyDirection, keyAlive, playerIndex);
+    handlePlayerDataUpdate(d, keyX, keyY, keyDirection, keyAlive, playerIndex);
 
     handleClientEventsArrayInDocument(d);
 }
