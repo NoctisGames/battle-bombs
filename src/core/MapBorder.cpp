@@ -14,6 +14,7 @@ MapBorder::MapBorder(Map_Border_Type type, float x, float y, float width, float 
 {
     m_type = type;
 
+    Vector2D &lowerLeft = m_bounds->getLowerLeft();
     switch (type)
     {
         case BORDER_TOP:
@@ -21,12 +22,14 @@ MapBorder::MapBorder(Map_Border_Type type, float x, float y, float width, float 
             break;
         case BORDER_LEFT:
             resetBounds(width * 6, height);
+            lowerLeft.set(m_position->getX() - width * 6 + width / 2, m_position->getY() - height / 2);
             break;
         case BORDER_RIGHT:
             m_bounds->setWidth(width * 6);
             break;
         case BORDER_BOTTOM:
             resetBounds(width, height * 6);
+            lowerLeft.set(m_position->getX() - width / 2, m_position->getY() - height * 6 + height / 2);
         default:
             break;
     }
