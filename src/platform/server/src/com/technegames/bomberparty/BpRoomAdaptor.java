@@ -35,6 +35,10 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     private static final short PLAYER_DEATH = 9;
     private static final short PLAYER_EVENT_BASE = 100;
 
+    // smooth constant elements to play with
+    private static final float movAveragePeriod = 40; // #frames involved in average calc (suggested values 5-100)
+    private static final float smoothFactor = 0.1f; // adjusting ratio (suggested values 0.01-0.5)
+
     private final IRoom _room;
     private final Map<IUser, UserSessionData> _inRoomUserSessionDataMap = new HashMap<>();
     private final Map<IUser, UserSessionData> _inGameUserSessionDataMap = new HashMap<>();
@@ -48,14 +52,15 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     };
 
     private float _stateTime;
-    private long _lastFrameTime;
     private boolean _isGameRunning;
+    private float smoothedDeltaRealTime_ms = 17.5f; // initial value, Optionally you can save the new computed value (will change with each hardware) in Preferences to optimize the first drawing frames
+    private float movAverageDeltaTime_ms = smoothedDeltaRealTime_ms; // mov Average start with default value
+    private long lastRealTimeMeasurement_ms; // temporal storage for last time measurement
 
     public BpRoomAdaptor(IRoom room)
     {
         _room = room;
         _stateTime = 0;
-        _lastFrameTime = 0L;
         _isGameRunning = false;
 
         System.out.println("Creating Adapter for Room: " + _room.getName() + ", with MAX USERS: " + _room.getMaxUsers());
@@ -132,8 +137,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     @Override
     public void onTimerTick(long time)
     {
-        float deltaTime = (time - _lastFrameTime) / 1000.0f;
-        _lastFrameTime = time;
+        float deltaTime = smoothedDeltaRealTime_ms / 1000;
 
         for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
         {
@@ -278,6 +282,25 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
         {
             _stateTime = 0;
         }
+
+        // Moving average calc
+        long currTimePick_ms = System.nanoTime() / 1000000;
+        float realTimeElapsed_ms;
+        if (lastRealTimeMeasurement_ms > 0)
+        {
+            realTimeElapsed_ms = (currTimePick_ms - lastRealTimeMeasurement_ms);
+        }
+        else
+        {
+            realTimeElapsed_ms = smoothedDeltaRealTime_ms; // just the first time
+        }
+
+        movAverageDeltaTime_ms = (realTimeElapsed_ms + movAverageDeltaTime_ms * (movAveragePeriod - 1)) / movAveragePeriod;
+
+        // Calc a better aproximation for smooth stepTime
+        smoothedDeltaRealTime_ms = smoothedDeltaRealTime_ms + (movAverageDeltaTime_ms - smoothedDeltaRealTime_ms) * smoothFactor;
+
+        lastRealTimeMeasurement_ms = currTimePick_ms;
     }
 
     private String getGameStateCommand(short eventType)
