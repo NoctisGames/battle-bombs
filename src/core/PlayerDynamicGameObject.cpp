@@ -48,7 +48,7 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
 {
     m_fStateTime += deltaTime;
 
-    if (m_playerState == ALIVE)
+    if (m_playerState == ALIVE && m_playerActionState != WINNING)
     {
         if(m_playerActionState == PLACING_BOMB || m_playerActionState == PUSHING_BOMB)
         {
@@ -121,6 +121,8 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
         
         if(numPlayersAlive == 1)
         {
+            m_fStateTime = 0;
+            m_velocity->set(0, 0);
             m_playerActionState = WINNING;
         }
     }
@@ -213,7 +215,7 @@ void PlayerDynamicGameObject::onBombExploded()
 
 bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
-    if (m_playerState == ALIVE && m_playerState != WINNING)
+    if (m_playerState == ALIVE && m_playerActionState != WINNING)
     {
         for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
         {
