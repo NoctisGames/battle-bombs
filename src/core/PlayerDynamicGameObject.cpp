@@ -213,7 +213,7 @@ void PlayerDynamicGameObject::onBombExploded()
 
 bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
-    if (m_playerState == ALIVE)
+    if (m_playerState == ALIVE && m_playerState != WINNING)
     {
         for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
         {

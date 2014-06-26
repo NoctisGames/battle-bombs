@@ -211,7 +211,7 @@ TextureRegion Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
                         return playerDownTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
                 }
             }
-            else if(player.getStateTime() > 4)
+            else if(player.getStateTime() > 3)
             {
                 static std::vector<TextureRegion> playerIdleTextureRegions;
                 if (playerIdleTextureRegions.size() == 0)
