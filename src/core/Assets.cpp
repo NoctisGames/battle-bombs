@@ -257,11 +257,115 @@ TextureRegion Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
         }
         else if(player.getPlayerActionState() == PLACING_BOMB)
         {
+            static std::vector<TextureRegion> playerPlacingBombRightTextureRegions;
+            if (playerPlacingBombRightTextureRegions.size() == 0)
+            {
+                playerPlacingBombRightTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_RIGHT_FRAME_1_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_RIGHT_FRAME_1_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPlacingBombRightTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_RIGHT_FRAME_2_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_RIGHT_FRAME_2_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPlacingBombRightTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_RIGHT_FRAME_3_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_RIGHT_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            }
             
+            static std::vector<TextureRegion> playerPlacingBombUpTextureRegions;
+            if (playerPlacingBombUpTextureRegions.size() == 0)
+            {
+                playerPlacingBombUpTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_UP_FRAME_1_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_UP_FRAME_1_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPlacingBombUpTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_UP_FRAME_2_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_UP_FRAME_2_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPlacingBombUpTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_UP_FRAME_3_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_UP_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            }
+            
+            static std::vector<TextureRegion> playerPlacingBombLeftTextureRegions;
+            if (playerPlacingBombLeftTextureRegions.size() == 0)
+            {
+                playerPlacingBombLeftTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_LEFT_FRAME_1_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_LEFT_FRAME_1_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPlacingBombLeftTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_LEFT_FRAME_2_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_LEFT_FRAME_2_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPlacingBombLeftTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_LEFT_FRAME_3_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_LEFT_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            }
+            
+            static std::vector<TextureRegion> playerPlacingBombDownTextureRegions;
+            if (playerPlacingBombDownTextureRegions.size() == 0)
+            {
+                playerPlacingBombDownTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_DOWN_FRAME_1_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_DOWN_FRAME_1_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPlacingBombDownTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_DOWN_FRAME_2_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_DOWN_FRAME_2_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPlacingBombDownTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_DOWN_FRAME_3_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_DOWN_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            }
+            
+            static float cycleTime = 0.3f;
+            static std::vector<float> playerFrames;
+            if (playerFrames.size() == 0)
+            {
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+            }
+            
+            switch (player.getDirection())
+            {
+                case DIRECTION_RIGHT:
+                    return playerPlacingBombRightTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+                case DIRECTION_UP:
+                    return playerPlacingBombUpTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+                case DIRECTION_LEFT:
+                    return playerPlacingBombLeftTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+                case DIRECTION_DOWN:
+                default:
+                    return playerPlacingBombDownTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+            }
         }
         else if(player.getPlayerActionState() == PUSHING_BOMB)
         {
+            static std::vector<TextureRegion> playerPushingBombRightTextureRegions;
+            if (playerPushingBombRightTextureRegions.size() == 0)
+            {
+                playerPushingBombRightTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_RIGHT_FRAME_1_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_RIGHT_FRAME_1_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPushingBombRightTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_RIGHT_FRAME_2_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_RIGHT_FRAME_2_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPushingBombRightTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_RIGHT_FRAME_3_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_RIGHT_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            }
             
+            static std::vector<TextureRegion> playerPushingBombUpTextureRegions;
+            if (playerPushingBombUpTextureRegions.size() == 0)
+            {
+                playerPushingBombUpTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_UP_FRAME_1_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_UP_FRAME_1_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPushingBombUpTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_UP_FRAME_2_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_UP_FRAME_2_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPushingBombUpTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_UP_FRAME_3_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_UP_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            }
+            
+            static std::vector<TextureRegion> playerPushingBombLeftTextureRegions;
+            if (playerPushingBombLeftTextureRegions.size() == 0)
+            {
+                playerPushingBombLeftTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_LEFT_FRAME_1_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_LEFT_FRAME_1_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPushingBombLeftTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_LEFT_FRAME_2_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_LEFT_FRAME_2_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPushingBombLeftTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_LEFT_FRAME_3_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_LEFT_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            }
+            
+            static std::vector<TextureRegion> playerPushingBombDownTextureRegions;
+            if (playerPushingBombDownTextureRegions.size() == 0)
+            {
+                playerPushingBombDownTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_DOWN_FRAME_1_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_DOWN_FRAME_1_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPushingBombDownTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_DOWN_FRAME_2_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_DOWN_FRAME_2_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerPushingBombDownTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_DOWN_FRAME_3_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_DOWN_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            }
+            
+            static float cycleTime = 0.3f;
+            static std::vector<float> playerFrames;
+            if (playerFrames.size() == 0)
+            {
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+            }
+            
+            switch (player.getDirection())
+            {
+                case DIRECTION_RIGHT:
+                    return playerPushingBombRightTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+                case DIRECTION_UP:
+                    return playerPushingBombUpTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+                case DIRECTION_LEFT:
+                    return playerPushingBombLeftTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+                case DIRECTION_DOWN:
+                default:
+                    return playerPushingBombDownTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+            }
         }
         else
         {

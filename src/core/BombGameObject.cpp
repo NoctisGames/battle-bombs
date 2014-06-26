@@ -160,6 +160,8 @@ void BombGameObject::pushed(int direction)
 
 	// Allows a bomb to be pushed more than once
 	m_fPushSpeed = 0.2f;
+    
+    m_bombOwner->onBombPushed(this);
 }
 
 void BombGameObject::onPickedUp()

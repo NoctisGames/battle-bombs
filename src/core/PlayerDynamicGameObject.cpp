@@ -50,6 +50,15 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
 
     if (m_playerState == ALIVE)
     {
+        if(m_playerActionState == PLACING_BOMB || m_playerActionState == PUSHING_BOMB)
+        {
+            if(m_fStateTime > 0.3f)
+            {
+                m_playerActionState = IDLE;
+                m_fStateTime = 0;
+            }
+        }
+        
         float deltaX = m_velocity->getX() * deltaTime;
         float deltaY = m_velocity->getY() * deltaTime;
 
@@ -184,6 +193,15 @@ void PlayerDynamicGameObject::onBombDropped(BombGameObject *bomb)
     m_iCurrentBombCount++;
 
     m_gameListener->playSound(SOUND_PLANT_BOMB);
+    
+    m_playerActionState = PLACING_BOMB;
+    m_fStateTime = 0;
+}
+
+void PlayerDynamicGameObject::onBombPushed(BombGameObject *bomb)
+{
+    m_playerActionState = PUSHING_BOMB;
+    m_fStateTime = 0;
 }
 
 void PlayerDynamicGameObject::onBombExploded()

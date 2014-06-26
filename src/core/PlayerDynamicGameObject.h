@@ -46,6 +46,8 @@ public:
     bool isMoving();
 
     void onBombDropped(BombGameObject *bomb);
+    
+    void onBombPushed(BombGameObject *bomb);
 
     void onBombExploded();
 
