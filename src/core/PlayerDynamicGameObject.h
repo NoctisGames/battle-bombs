@@ -12,6 +12,7 @@
 #include "GameConstants.h"
 #include "DynamicGridGameObject.h"
 #include "PlayerState.h"
+#include "PlayerActionState.h"
 #include "PowerUpType.h"
 
 #include <memory>
@@ -61,6 +62,8 @@ public:
     void setPlayerState(Player_State playerState);
 
     Player_State getPlayerState();
+    
+    Player_Action_State getPlayerActionState();
 
     Power_Up_Type getActivePowerUp();
 
@@ -75,12 +78,12 @@ public:
 protected:
     BombGameObject *lastBombDropped;
     Player_State m_playerState;
+    Player_Action_State m_playerActionState;
     float m_fStateTime;
     float m_fSpeed;
     int m_iDirection;
     int m_iMaxBombCount;
     int m_iCurrentBombCount;
-    bool m_isMoving;
     short m_firePower;
     bool m_hasActivePowerUp;
     int m_activePowerUpIndex;

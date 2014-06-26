@@ -30,7 +30,6 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
     m_fSpeed = 3;
     m_firePower = 1;
     m_iDirection = direction;
-    m_isMoving = false;
     m_hasActivePowerUp = true;
 	m_activePowerUp = PUSH;
 
@@ -42,6 +41,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
     m_gameListener = gameListener;
 
     m_playerState = ALIVE;
+    m_playerActionState = IDLE;
 }
 
 void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
@@ -100,6 +100,20 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
                 break;
             }
         }
+        
+        short numPlayersAlive = 0;
+        for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = players.begin(); itr != players.end(); itr++)
+        {
+            if((*itr)->getPlayerState() == ALIVE)
+            {
+                numPlayersAlive++;
+            }
+        }
+        
+        if(numPlayersAlive == 1)
+        {
+            m_playerActionState = WINNING;
+        }
     }
     else if (m_playerState == DYING)
     {
@@ -134,8 +148,6 @@ void PlayerDynamicGameObject::moveInDirection(int direction)
     {
         m_iDirection = direction;
 
-        m_isMoving = true;
-
         switch (m_iDirection)
         {
             case DIRECTION_RIGHT:
@@ -156,13 +168,13 @@ void PlayerDynamicGameObject::moveInDirection(int direction)
     else
     {
         m_velocity->set(0, 0);
-        m_isMoving = false;
+        m_fStateTime = 0;
     }
 }
 
 bool PlayerDynamicGameObject::isMoving()
 {
-    return m_isMoving;
+    return m_velocity->getX() != 0 || m_velocity->getY() != 0;
 }
 
 void PlayerDynamicGameObject::onBombDropped(BombGameObject *bomb)
@@ -263,6 +275,11 @@ void PlayerDynamicGameObject::setPlayerState(Player_State playerState)
 Player_State PlayerDynamicGameObject::getPlayerState()
 {
     return m_playerState;
+}
+
+Player_Action_State PlayerDynamicGameObject::getPlayerActionState()
+{
+    return m_playerActionState;
 }
 
 Power_Up_Type PlayerDynamicGameObject::getActivePowerUp()

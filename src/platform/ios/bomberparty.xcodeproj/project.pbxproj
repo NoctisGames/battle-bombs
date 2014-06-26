@@ -278,6 +278,7 @@
 		BBE6F98819112D3E00062B8E /* Explosion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Explosion.cpp; sourceTree = "<group>"; };
 		BBE6F98919112D3E00062B8E /* Explosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Explosion.h; sourceTree = "<group>"; };
 		BBE6F98B1911301100062B8E /* FireType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FireType.h; sourceTree = "<group>"; };
+		BBF67CBF195C7AAB00587AB6 /* PlayerActionState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerActionState.h; sourceTree = "<group>"; };
 		BBF683EC1951509900EBD23E /* BreakableBlockState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BreakableBlockState.h; sourceTree = "<group>"; };
 		BBF7CC5C18CCA2B700B7CD15 /* DPadControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DPadControl.cpp; sourceTree = "<group>"; };
 		BBF7CC5D18CCA2B700B7CD15 /* DPadControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPadControl.h; sourceTree = "<group>"; };
@@ -372,6 +373,7 @@
 				BB96EEBF18B99A6900F7C356 /* OverlapTester.cpp */,
 				BB96EEC018B99A6900F7C356 /* OverlapTester.h */,
 				BB96EEC118B99A6900F7C356 /* pch.h */,
+				BBF67CBF195C7AAB00587AB6 /* PlayerActionState.h */,
 				BB1B8C7F18C8B13300C72D2D /* PlayerDynamicGameObject.cpp */,
 				BB1B8C8018C8B13300C72D2D /* PlayerDynamicGameObject.h */,
 				BB47C9BD18F326D4002ED03B /* PlayerState.h */,

@@ -341,7 +341,7 @@ void GameScreen::spectateNextLivePlayer()
 
 void GameScreen::updatePlayerDirection()
 {
-    if(m_player->getPlayerState() == ALIVE)
+    if(m_player->getPlayerState() == ALIVE && m_player->getPlayerActionState() != WINNING)
     {
         int directionInput = m_dPad->getDirectionForTouchPoint(*m_touchPoint);
         
