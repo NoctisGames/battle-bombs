@@ -200,6 +200,8 @@ void GameScreen::updateRunning(float deltaTime)
     if(m_player->isHitByExplosion(m_explosions, m_bombs))
     {
         m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
+        
+        m_gameState = SPECTATING;
     }
     
     std::vector<short> localConsumedEventIds = m_gameListener->freeLocalEventIds();
@@ -374,7 +376,7 @@ void GameScreen::processServerMessages()
             {
                 clientUpdate(d, false);
             }
-            else if(m_gameState == WAITING_FOR_SERVER && eventType == BEGIN_SPECTATE)
+            else if(eventType == BEGIN_SPECTATE && m_gameState == WAITING_FOR_SERVER)
             {
                 beginSpectate(d);
             }
@@ -448,6 +450,8 @@ void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)
     
     if(d.HasMember(numBreakableBlocksKey))
     {
+        m_breakableBlocks.clear();
+        
         static const char *breakableBlockXValuesKey = "breakableBlockXValues";
         static const char *breakableBlockYValuesKey = "breakableBlockYValues";
         static const char *breakableBlockPowerUpFlagsKey = "breakableBlockPowerUpFlags";
