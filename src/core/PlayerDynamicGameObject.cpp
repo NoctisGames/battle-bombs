@@ -255,7 +255,7 @@ void PlayerDynamicGameObject::onDeath()
 
 bool PlayerDynamicGameObject::isAbleToDropAdditionalBomb(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
-    if(m_playerState == ALIVE && m_player->getPlayerActionState() != WINNING && m_iCurrentBombCount < m_iMaxBombCount)
+    if(m_playerState == ALIVE && m_playerActionState != WINNING && m_iCurrentBombCount < m_iMaxBombCount)
     {
         for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
         {
