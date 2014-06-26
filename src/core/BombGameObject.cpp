@@ -169,6 +169,11 @@ void BombGameObject::onPickedUp()
 	m_isPickedUp = true;
 }
 
+short BombGameObject::getPower()
+{
+    return m_sPower;
+}
+
 #pragma mark <Private>
 
 bool BombGameObject::willHitBreakableBlock(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)

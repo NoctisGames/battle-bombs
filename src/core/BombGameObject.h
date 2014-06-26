@@ -39,6 +39,8 @@ public:
 
 	void onPickedUp();
     
+    short getPower();
+    
 private:
     PlayerDynamicGameObject *m_bombOwner;
 	int m_iPushedDirection;
