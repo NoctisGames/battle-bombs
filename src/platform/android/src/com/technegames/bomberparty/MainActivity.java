@@ -41,7 +41,7 @@ public final class MainActivity extends Activity implements ChatRequestListener,
 		UUID uuid = UUID.randomUUID();
 		username = "Player_" + uuid.toString().toUpperCase(Locale.US).substring(0, 16);
 
-		WarpClient.initialize(AppWarpConstants.APPWARP_API_KEY, AppWarpConstants.APPWARP_HOST_ADDRESS);
+		WarpClient.initialize(AppWarpConstants.APPWARP_APP_KEY, AppWarpConstants.APPWARP_HOST_ADDRESS);
 	}
 
 	@Override

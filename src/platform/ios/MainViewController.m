@@ -298,7 +298,7 @@ static NSString *username;
 
 - (void)initializeAppWarp
 {
-    [WarpClient initWarp:APPWARP_API_KEY server:APPWARP_HOST_ADDRESS];
+    [WarpClient initWarp:APPWARP_APP_KEY server:APPWARP_HOST_ADDRESS];
     
     WarpClient *warpClient = [WarpClient getInstance];
     
