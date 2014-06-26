@@ -39,40 +39,52 @@ ServerGameSession::ServerGameSession()
 void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
 {
     init();
+    
+    int playerStartingPositions[8][2] = {
+        {PLAYER_1_GRID_X, PLAYER_1_GRID_Y},
+        {PLAYER_2_GRID_X, PLAYER_2_GRID_Y},
+        {PLAYER_3_GRID_X, PLAYER_3_GRID_Y},
+        {PLAYER_4_GRID_X, PLAYER_4_GRID_Y},
+        {PLAYER_5_GRID_X, PLAYER_5_GRID_Y},
+        {PLAYER_6_GRID_X, PLAYER_6_GRID_Y},
+        {PLAYER_7_GRID_X, PLAYER_7_GRID_Y},
+        {PLAYER_8_GRID_X, PLAYER_8_GRID_Y}
+    };
+    
+    int n = sizeof(playerStartingPositions)/ sizeof(playerStartingPositions[0]);
+    randomize(playerStartingPositions, n);
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 1 ?
-            new PlayerDynamicGameObject(0, PLAYER_1_GRID_X, PLAYER_1_GRID_Y, m_gameListener.get(), DIRECTION_RIGHT) :
-            new BotPlayerDynamicGameObject(0, PLAYER_1_GRID_X, PLAYER_1_GRID_Y, m_gameListener.get(), DIRECTION_RIGHT)));
+            new PlayerDynamicGameObject(0, playerStartingPositions[0][0], playerStartingPositions[0][1], m_gameListener.get(), DIRECTION_RIGHT) :
+            new BotPlayerDynamicGameObject(0, playerStartingPositions[0][0], playerStartingPositions[0][1], m_gameListener.get(), DIRECTION_RIGHT)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 2 ?
-            new PlayerDynamicGameObject(1, PLAYER_2_GRID_X, PLAYER_2_GRID_Y, m_gameListener.get(), DIRECTION_LEFT) :
-            new BotPlayerDynamicGameObject(1, PLAYER_2_GRID_X, PLAYER_2_GRID_Y, m_gameListener.get(), DIRECTION_LEFT)));
+            new PlayerDynamicGameObject(1, playerStartingPositions[1][0], playerStartingPositions[1][1], m_gameListener.get(), DIRECTION_LEFT) :
+            new BotPlayerDynamicGameObject(1, playerStartingPositions[1][0], playerStartingPositions[1][1], m_gameListener.get(), DIRECTION_LEFT)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 3 ?
-            new PlayerDynamicGameObject(2, PLAYER_3_GRID_X, PLAYER_3_GRID_Y, m_gameListener.get(), DIRECTION_RIGHT) :
-            new BotPlayerDynamicGameObject(2, PLAYER_3_GRID_X, PLAYER_3_GRID_Y, m_gameListener.get(), DIRECTION_RIGHT)));
+            new PlayerDynamicGameObject(2, playerStartingPositions[2][0], playerStartingPositions[2][1], m_gameListener.get(), DIRECTION_RIGHT) :
+            new BotPlayerDynamicGameObject(2, playerStartingPositions[2][0], playerStartingPositions[2][1], m_gameListener.get(), DIRECTION_RIGHT)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 4 ?
-            new PlayerDynamicGameObject(3, PLAYER_4_GRID_X, PLAYER_4_GRID_Y, m_gameListener.get(), DIRECTION_LEFT) :
-            new BotPlayerDynamicGameObject(3, PLAYER_4_GRID_X, PLAYER_4_GRID_Y, m_gameListener.get(), DIRECTION_LEFT)));
+            new PlayerDynamicGameObject(3, playerStartingPositions[3][0], playerStartingPositions[3][1], m_gameListener.get(), DIRECTION_LEFT) :
+            new BotPlayerDynamicGameObject(3, playerStartingPositions[3][0], playerStartingPositions[3][1], m_gameListener.get(), DIRECTION_LEFT)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 5 ?
-            new PlayerDynamicGameObject(4, PLAYER_5_GRID_X, PLAYER_5_GRID_Y, m_gameListener.get(), DIRECTION_UP) :
-            new BotPlayerDynamicGameObject(4, PLAYER_5_GRID_X, PLAYER_5_GRID_Y, m_gameListener.get(), DIRECTION_UP)));
+            new PlayerDynamicGameObject(4, playerStartingPositions[4][0], playerStartingPositions[4][1], m_gameListener.get(), DIRECTION_UP) :
+            new BotPlayerDynamicGameObject(4, playerStartingPositions[4][0], playerStartingPositions[4][1], m_gameListener.get(), DIRECTION_UP)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 6 ?
-            new PlayerDynamicGameObject(5, PLAYER_6_GRID_X, PLAYER_6_GRID_Y, m_gameListener.get(), DIRECTION_DOWN) :
-            new BotPlayerDynamicGameObject(5, PLAYER_6_GRID_X, PLAYER_6_GRID_Y, m_gameListener.get(), DIRECTION_DOWN)));
+            new PlayerDynamicGameObject(5, playerStartingPositions[5][0], playerStartingPositions[5][1], m_gameListener.get(), DIRECTION_DOWN) :
+            new BotPlayerDynamicGameObject(5, playerStartingPositions[5][0], playerStartingPositions[5][1], m_gameListener.get(), DIRECTION_DOWN)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 7 ?
-            new PlayerDynamicGameObject(6, PLAYER_7_GRID_X, PLAYER_7_GRID_Y, m_gameListener.get(), DIRECTION_UP) :
-            new BotPlayerDynamicGameObject(6, PLAYER_7_GRID_X, PLAYER_7_GRID_Y, m_gameListener.get(), DIRECTION_UP)));
+            new PlayerDynamicGameObject(6, playerStartingPositions[6][0], playerStartingPositions[6][1], m_gameListener.get(), DIRECTION_UP) :
+            new BotPlayerDynamicGameObject(6, playerStartingPositions[6][0], playerStartingPositions[6][1], m_gameListener.get(), DIRECTION_UP)));
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 8 ?
-            new PlayerDynamicGameObject(7, PLAYER_8_GRID_X, PLAYER_8_GRID_Y, m_gameListener.get(), DIRECTION_DOWN) :
-            new BotPlayerDynamicGameObject(7, PLAYER_8_GRID_X, PLAYER_8_GRID_Y, m_gameListener.get(), DIRECTION_DOWN)));
-
-    srand(time(NULL));
+            new PlayerDynamicGameObject(7, playerStartingPositions[7][0], playerStartingPositions[7][1], m_gameListener.get(), DIRECTION_DOWN) :
+            new BotPlayerDynamicGameObject(7, playerStartingPositions[7][0], playerStartingPositions[7][1], m_gameListener.get(), DIRECTION_DOWN)));
 
     for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
     {
@@ -130,6 +142,8 @@ void ServerGameSession::init()
     m_bombs.clear();
     m_explosions.clear();
     m_powerUps.clear();
+
+    srand((int) time(NULL));
 }
 
 void ServerGameSession::handleServerUpdate(const char *message)
@@ -249,4 +263,26 @@ bool ServerGameSession::isLocationOccupiedByPlayer(int gridX, int gridY)
     }
 
     return false;
+}
+
+void ServerGameSession::swap(int *a, int *b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void ServerGameSession::randomize(int arr[][2], int n)
+{
+    // Start from the last element and swap one by one. We don't
+    // need to run for the first element that's why i > 0
+    for (int i = n - 1; i > 0; i--)
+    {
+        // Pick a random index from 0 to i
+        int j = rand() % (i + 1);
+
+        // Swap arr[i] with the element at random index
+        swap(&arr[i][0], &arr[j][0]);
+        swap(&arr[i][1], &arr[j][1]);
+    }
 }

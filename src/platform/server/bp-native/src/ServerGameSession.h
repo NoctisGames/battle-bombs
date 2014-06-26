@@ -48,6 +48,12 @@ private:
     bool isLocationOccupiedByInsideBlock(int gridX, int gridY);
     
     bool isLocationOccupiedByPlayer(int gridX, int gridY);
+    
+    // A utility function to swap to integers
+    void swap(int *a, int *b);
+    
+    // A function to generate a random permutation of arr[]
+    void randomize(int arr[][2], int n);
 };
 
 #endif /* SERVER_GAME_SESSION_H */
