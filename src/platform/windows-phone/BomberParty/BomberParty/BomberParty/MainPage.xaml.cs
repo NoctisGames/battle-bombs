@@ -65,7 +65,7 @@ namespace BomberParty
 
         private void initializeAppWarp()
         {
-            WarpClient.initialize(AppWarpConstants.APPWARP_API_KEY, AppWarpConstants.APPWARP_HOST_ADDRESS);
+            WarpClient.initialize(AppWarpConstants.APPWARP_APP_KEY, AppWarpConstants.APPWARP_HOST_ADDRESS);
 
             // We pass an instance of MainPage so that these listeners can change properties of the page, like show chats or other game status
             m_chatRequestListener = new MyChatRequestListener(this);
