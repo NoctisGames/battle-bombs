@@ -222,14 +222,14 @@ TextureRegion Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
                     playerIdleTextureRegions.push_back(TextureRegion(PLAYER_IDLE_FRAME_4_TEXTURE_REGION_X, PLAYER_IDLE_WINNING_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
                 }
                 
-                static float cycleTime = 0.4f;
+                static float cycleTime = 0.8f;
                 static std::vector<float> playerFrames;
                 if (playerFrames.size() == 0)
                 {
-                    playerFrames.push_back(0.1f);
-                    playerFrames.push_back(0.1f);
-                    playerFrames.push_back(0.1f);
-                    playerFrames.push_back(0.1f);
+                    playerFrames.push_back(0.2f);
+                    playerFrames.push_back(0.2f);
+                    playerFrames.push_back(0.2f);
+                    playerFrames.push_back(0.2f);
                 }
                 
                 return playerIdleTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
