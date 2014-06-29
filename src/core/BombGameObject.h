@@ -52,6 +52,7 @@ private:
     bool m_isDestroyed;
 	bool m_isPushed;
 	bool m_isPickedUp;
+	bool m_isRebounding;
 
 	bool willHitBreakableBlock(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
 
