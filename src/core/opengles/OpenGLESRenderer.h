@@ -23,6 +23,8 @@ class OpenGLESRenderer : public Renderer
 public:
     OpenGLESRenderer(int width, int height);
     
+    ~OpenGLESRenderer();
+    
     virtual void clearScreenWithColor(float r, float g, float b, float a);
     
     virtual void renderWorldBackground();
@@ -46,6 +48,7 @@ public:
 private:
     std::unique_ptr<SpriteBatcher> m_spriteBatcher;
     GLuint m_gameTexture;
+    GLuint m_interfaceTexture;
     GLuint m_charBlackTexture;
     GLuint m_charBlueTexture;
     GLuint m_charGreenTexture;
