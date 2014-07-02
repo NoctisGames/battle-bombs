@@ -368,6 +368,8 @@
 				BB34DC851925224F00E9AA8C /* GridGameObject.h */,
 				BB31AC9C18E05A6400E7369F /* InsideBlock.cpp */,
 				BB31AC9D18E05A6400E7369F /* InsideBlock.h */,
+				BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */,
+				BBB24BA41963AFFA00EF78B2 /* InterfaceOverlay.h */,
 				BB96EEBC18B99A6900F7C356 /* Line.cpp */,
 				BB96EEBD18B99A6900F7C356 /* Line.h */,
 				BB96EEBE18B99A6900F7C356 /* macros.h */,
@@ -397,8 +399,6 @@
 				BB96EECB18B99A6900F7C356 /* Triangle.h */,
 				BB96EECC18B99A6900F7C356 /* Vector2D.cpp */,
 				BB96EECD18B99A6900F7C356 /* Vector2D.h */,
-				BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */,
-				BBB24BA41963AFFA00EF78B2 /* InterfaceOverlay.h */,
 			);
 			name = core;
 			path = ../../core;
