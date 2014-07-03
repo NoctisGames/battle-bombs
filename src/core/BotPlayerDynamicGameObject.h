@@ -35,7 +35,7 @@ private:
     
     void determinePlayerTarget(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
     
-    void calculatePathToTarget(int x, int y);
+    bool calculatePathToTarget(int x, int y);
     
     void moveInDirection(int direction);
 };

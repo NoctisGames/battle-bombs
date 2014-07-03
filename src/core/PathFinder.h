@@ -50,6 +50,8 @@ public:
     
     void freeGameGridCell(int gridX, int gridY);
     
+    void occupyGameGridCell(int gridX, int gridY);
+    
     int getGridCellCost(int x, int y);
     
     int getGridCellIndexForCoords(int x, int y);

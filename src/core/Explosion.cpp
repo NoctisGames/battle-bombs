@@ -14,6 +14,7 @@
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "Fire.h"
+#include "PathFinder.h"
 
 Explosion::Explosion(short power, int gridX, int gridY, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, float width, float height) : GridGameObject(gridX, gridY, width, height, 0)
 {
@@ -48,6 +49,12 @@ Explosion::Explosion(short power, int gridX, int gridY, std::vector<std::unique_
     m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingLeft ? HEAD_PART_1 : EDGE_FROM_CORE_PART_1, m_iLeftGridX, gridY, 180)));
     m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingDown ? HEAD_PART_1 : EDGE_FROM_CORE_PART_1, gridX, m_iDownGridY, 270)));
     
+    PathFinder::getInstance().occupyGameGridCell(gridX, gridY);
+    PathFinder::getInstance().occupyGameGridCell(m_iRightGridX, gridY);
+    PathFinder::getInstance().occupyGameGridCell(gridX, m_iUpGridY);
+    PathFinder::getInstance().occupyGameGridCell(m_iLeftGridX, gridY);
+    PathFinder::getInstance().occupyGameGridCell(gridX, m_iDownGridY);
+    
     runPostBlockLogic();
 }
 
@@ -68,6 +75,7 @@ void Explosion::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock 
             
             if ((*itr)->isExhausted())
             {
+                PathFinder::getInstance().freeGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
                 itr = m_fireParts.erase(itr);
             }
             else
@@ -96,21 +104,25 @@ void Explosion::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock 
             if(canExpandRight)
             {
                 m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingRight ? travelingFireType : blockingFireType, m_iRightGridX, m_gridY, 0)));
+                PathFinder::getInstance().occupyGameGridCell(m_iRightGridX, m_gridY);
             }
             
             if(canExpandUp)
             {
                 m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingUp ? travelingFireType : blockingFireType, m_gridX, m_iUpGridY, 90)));
+                PathFinder::getInstance().occupyGameGridCell(m_gridX, m_iUpGridY);
             }
             
             if(canExpandLeft)
             {
                 m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingLeft ? travelingFireType : blockingFireType, m_iLeftGridX, m_gridY, 180)));
+                PathFinder::getInstance().occupyGameGridCell(m_iLeftGridX, m_gridY);
             }
             
             if(canExpandDown)
             {
                 m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingDown ? travelingFireType : blockingFireType, m_gridX, m_iDownGridY, 270)));
+                PathFinder::getInstance().occupyGameGridCell(m_gridX, m_iDownGridY);
             }
             
             runPostBlockLogic();
@@ -123,8 +135,14 @@ void Explosion::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock 
         
         if(m_sPowerRemaining == 0 && m_sPower >= 3 && m_sFrames >= 4 + m_sPower)
         {
+            for (std::vector<std::unique_ptr<Fire>>::iterator itr = m_fireParts.begin(); itr != m_fireParts.end(); itr++)
+            {
+                PathFinder::getInstance().freeGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
+            }
+            
             m_fireParts.clear();
             m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(Fire_Type::CORE_END, m_gridX, m_gridY, 0)));
+            PathFinder::getInstance().occupyGameGridCell(m_gridX, m_gridY);
         }
     }
     

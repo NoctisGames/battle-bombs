@@ -55,15 +55,25 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
             {
                 determinePlayerTarget(players);
                 
-                Node currentNode = Node {m_gridX, m_gridY};
-                if(PathFinder::calculateClosestNodeToPlayerTarget(m_playerTarget, currentNode))
+                if(calculatePathToTarget(m_playerTarget->getGridX(), m_playerTarget->getGridY()))
                 {
-                    calculatePathToTarget(currentNode.x, currentNode.y);
+                    // Great, we have a path to the player, kick ass
                     m_currentPathType = 0;
                 }
-                else if(isAbleToDropAdditionalBomb(players, bombs))
+                else if(m_playerTarget != nullptr)
                 {
-                    m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+                    Node currentNode = Node {m_gridX, m_gridY};
+                    if(PathFinder::getInstance().calculateClosestNodeToPlayerTarget(m_playerTarget, currentNode))
+                    {
+                        if(calculatePathToTarget(currentNode.x, currentNode.y))
+                        {
+                            m_currentPathType = 2;
+                        }
+                    }
+                }
+                else
+                {
+                    // Let's randomly traverse the map
                 }
             }
             
@@ -74,8 +84,13 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
                     Node currentNode = Node {m_gridX, m_gridY};
                     if(PathFinder::calculateClosestSafeNodeFromStartingNode(bombs, explosions, currentNode))
                     {
-                        calculatePathToTarget(currentNode.x, currentNode.y);
-                        m_currentPathType = 1;
+                        if(calculatePathToTarget(currentNode.x, currentNode.y))
+                        {
+                            m_currentPathType = 1;
+                        }
+                        
+                        m_fWaitTime = 0;
+                        m_fActionTime = 0;
                     }
                     
                     break;
@@ -90,9 +105,26 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
                     m_currentPath.clear();
                     m_currentPathIndex = 0;
                     m_currentPathType = 0;
-                    m_fActionTime = 0;
-                    m_fWaitTime = 2;
-                    m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
+                    
+                    if(m_currentPathType == 0)
+                    {
+                        // We were pursuing a player and caught up with them...
+                        // This shouldn't happen since the bot will drop bombs ahead
+                        // of time and then reroute itself to dodge the bomb
+                    }
+                    else if(m_currentPathType == 1)
+                    {
+                        m_fActionTime = 0;
+                        m_fWaitTime = 2;
+                        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
+                    }
+                    else if(m_currentPathType == 2)
+                    {
+                        if(isAbleToDropAdditionalBomb(players, bombs))
+                        {
+                            m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+                        }
+                    }
                 }
                 else
                 {
@@ -120,14 +152,14 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
                             moveInDirection(DIRECTION_DOWN);
                         }
                     }
-                    
-                    if(m_currentPathType == 0 && PathFinder::shouldPlayerPlantBomb(breakableBlocks, players, this))
-                    {
-                        if(isAbleToDropAdditionalBomb(players, bombs))
-                        {
-                            m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
-                        }
-                    }
+                }
+            }
+            
+            if(m_currentPathType != 1 && PathFinder::shouldPlayerPlantBomb(breakableBlocks, players, this))
+            {
+                if(isAbleToDropAdditionalBomb(players, bombs))
+                {
+                    m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
                 }
             }
         }
@@ -172,122 +204,114 @@ void BotPlayerDynamicGameObject::determinePlayerTarget(std::vector<std::unique_p
     }
 }
 
-void BotPlayerDynamicGameObject::calculatePathToTarget(int x, int y)
+bool BotPlayerDynamicGameObject::calculatePathToTarget(int x, int y)
 {
     m_currentPath.clear();
     m_currentPathIndex = 0;
     
+    // Create a start state
+    MapSearchNode nodeStart;
+    nodeStart.x = m_gridX;
+    nodeStart.y = m_gridY;
+    
+    // Define the goal state
+    MapSearchNode nodeEnd;
+    nodeEnd.x = x;
+    nodeEnd.y = y;
+    
+    // Set Start and goal states
+    
     AStarSearch<MapSearchNode> astarsearch;
+    astarsearch.SetStartAndGoalStates( nodeStart, nodeEnd );
     
-	unsigned int SearchCount = 0;
+    unsigned int SearchState;
+    unsigned int SearchSteps = 0;
     
-	const unsigned int NumSearches = 1;
-    
-	while(SearchCount < NumSearches)
-	{
-        // Create a start state
-		MapSearchNode nodeStart;
-		nodeStart.x = m_gridX;
-		nodeStart.y = m_gridY;
+    do
+    {
+        SearchState = astarsearch.SearchStep();
         
-		// Define the goal state
-		MapSearchNode nodeEnd;
-		nodeEnd.x = x;
-		nodeEnd.y = y;
-		
-		// Set Start and goal states
-		
-		astarsearch.SetStartAndGoalStates( nodeStart, nodeEnd );
+        SearchSteps++;
         
-		unsigned int SearchState;
-		unsigned int SearchSteps = 0;
-        
-		do
-		{
-			SearchState = astarsearch.SearchStep();
-            
-			SearchSteps++;
-            
 #if DEBUG_LISTS
-            
-			cout << "Steps:" << SearchSteps << "\n";
-            
-			int len = 0;
-            
-			cout << "Open:\n";
-			MapSearchNode *p = astarsearch.GetOpenListStart();
-			while(p)
-			{
-				len++;
-#if !DEBUG_LIST_LENGTHS_ONLY
-				((MapSearchNode *)p)->PrintNodeInfo();
-#endif
-				p = astarsearch.GetOpenListNext();
-			}
-            
-			cout << "Open list has " << len << " nodes\n";
-            
-			len = 0;
-            
-			cout << "Closed:\n";
-			p = astarsearch.GetClosedListStart();
-			while(p)
-			{
-				len++;
-#if !DEBUG_LIST_LENGTHS_ONLY
-				p->PrintNodeInfo();
-#endif
-				p = astarsearch.GetClosedListNext();
-			}
-            
-			cout << "Closed list has " << len << " nodes\n";
-#endif
-		}
-		while(SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING);
         
-		if(SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED)
-		{
-			cout << "Search found goal state\n";
-            
-            MapSearchNode *node = astarsearch.GetSolutionStart();
-            
-#if DISPLAY_SOLUTION
-            cout << "Displaying solution\n";
+        cout << "Steps:" << SearchSteps << "\n";
+        
+        int len = 0;
+        
+        cout << "Open:\n";
+        MapSearchNode *p = astarsearch.GetOpenListStart();
+        while(p)
+        {
+            len++;
+#if !DEBUG_LIST_LENGTHS_ONLY
+            ((MapSearchNode *)p)->PrintNodeInfo();
 #endif
-            int steps = 0;
+            p = astarsearch.GetOpenListNext();
+        }
+        
+        cout << "Open list has " << len << " nodes\n";
+        
+        len = 0;
+        
+        cout << "Closed:\n";
+        p = astarsearch.GetClosedListStart();
+        while(p)
+        {
+            len++;
+#if !DEBUG_LIST_LENGTHS_ONLY
+            p->PrintNodeInfo();
+#endif
+            p = astarsearch.GetClosedListNext();
+        }
+        
+        cout << "Closed list has " << len << " nodes\n";
+#endif
+    }
+    while(SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING);
+    
+    if(SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED)
+    {
+        cout << "Search found goal state\n";
+        
+        MapSearchNode *node = astarsearch.GetSolutionStart();
+        
+#if DISPLAY_SOLUTION
+        cout << "Displaying solution\n";
+#endif
+        int steps = 0;
+        
+        node->PrintNodeInfo();
+        for(;;)
+        {
+            node = astarsearch.GetSolutionNext();
+            
+            if(!node)
+            {
+                break;
+            }
             
             node->PrintNodeInfo();
-            for(;;)
-            {
-                node = astarsearch.GetSolutionNext();
-                
-                if(!node)
-                {
-                    break;
-                }
-                
-                node->PrintNodeInfo();
-                m_currentPath.push_back(std::unique_ptr<MapSearchNode>(new MapSearchNode(node->x, node->y)));
-                steps++;
-            };
-            
-            cout << "Solution steps " << steps << endl;
-            
-            // Once you're done with the solution you can free the nodes up
-            astarsearch.FreeSolutionNodes();
-		}
-		else if(SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED)
-		{
-			cout << "Search terminated. Did not find goal state\n";
-		}
+            m_currentPath.push_back(std::unique_ptr<MapSearchNode>(new MapSearchNode(node->x, node->y)));
+            steps++;
+        };
         
-		// Display the number of loops the search went through
-		cout << "SearchSteps : " << SearchSteps << "\n";
+        cout << "Solution steps " << steps << endl;
         
-		SearchCount++;
-        
-		astarsearch.EnsureMemoryFreed();
-	}
+        // Once you're done with the solution you can free the nodes up
+        astarsearch.FreeSolutionNodes();
+    }
+    else if(SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED)
+    {
+        cout << "Search terminated. Did not find goal state\n";
+    }
+    
+    // Display the number of loops the search went through
+    cout << "SearchSteps : " << SearchSteps << "\n";
+    
+    astarsearch.EnsureMemoryFreed();
+    
+    return SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED;
 }
 
 void BotPlayerDynamicGameObject::moveInDirection(int direction)

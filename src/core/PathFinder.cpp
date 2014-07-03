@@ -111,7 +111,7 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             proceedRight = false;
         }
         
-        if(proceedTop && gridTopY < GRID_CELL_NUM_ROWS)
+        if(proceedTop)
         {
             // tX is Traversal X
             for (int tX = gridLeftX; tX <= gridRightX; tX++)
@@ -125,7 +125,7 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             }
         }
         
-        if(proceedBottom && gridBottomY >= 0)
+        if(proceedBottom)
         {
             // tX is Traversal X
             for (int tX = gridLeftX; tX <= gridRightX; tX++)
@@ -139,7 +139,7 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             }
         }
         
-        if(proceedLeft && gridLeftX >= 0)
+        if(proceedLeft)
         {
             // tY is Traversal Y
             for (int tY = gridBottomY; tY <= gridTopY; tY++)
@@ -153,7 +153,7 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             }
         }
         
-        if(proceedRight && gridRightX < NUM_GRID_CELLS_PER_ROW)
+        if(proceedRight)
         {
             // tY is Traversal Y
             for (int tY = gridBottomY; tY <= gridTopY; tY++)
@@ -183,49 +183,27 @@ bool PathFinder::calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *pla
     int gridTopY = node.y;
     int gridBottomY = node.y;
     
-    bool proceedTop = true;
-    bool proceedBottom = true;
-    bool proceedLeft = true;
-    bool proceedRight = true;
     bool nodeUpdated = false;
     
     // Obnoxiously high number, so that the first distance we calculate is definitely shorter than this one
     float shortestDistance = 9000;
     Vector2D vectorTarget = player->getPosition();
     
-    gridRightX++;
-    gridLeftX--;
-    gridTopY++;
-    gridBottomY--;
+    int searchDepth = 0;
     
-    if(proceedTop && PathFinder::getInstance().getGridCellCost(node.x, gridTopY) == 9)
+    while(true)
     {
-        proceedTop = false;
-    }
-    
-    if(proceedBottom && PathFinder::getInstance().getGridCellCost(node.x, gridBottomY) == 9)
-    {
-        proceedBottom = false;
-    }
-    
-    if(proceedLeft && PathFinder::getInstance().getGridCellCost(gridLeftX, node.y) == 9)
-    {
-        proceedLeft = false;
-    }
-    
-    if(proceedRight && PathFinder::getInstance().getGridCellCost(gridRightX, node.y) == 9)
-    {
-        proceedRight = false;
-    }
-    
-    if(proceedTop && player->getGridY() >= node.y && gridTopY < GRID_CELL_NUM_ROWS)
-    {
+        gridRightX++;
+        gridLeftX--;
+        gridTopY++;
+        gridBottomY--;
+        
         // tX is Traversal X
         for (int tX = gridLeftX; tX <= gridRightX; tX++)
         {
-            if(PathFinder::getInstance().getGridCellCost(tX, gridTopY) != 9)
+            if(PathFinder::getInstance().getGridCellCost(tX, gridTopY))
             {
-                Vector2D vector = Vector2D(tX, gridTopY);
+                Vector2D vector = Vector2D(node.x, gridTopY);
                 float distance = vector.dist(vectorTarget);
                 if(distance < shortestDistance)
                 {
@@ -236,16 +214,13 @@ bool PathFinder::calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *pla
                 }
             }
         }
-    }
-    
-    if(proceedBottom && player->getGridY() <= node.y && gridBottomY >= 0)
-    {
+        
         // tX is Traversal X
         for (int tX = gridLeftX; tX <= gridRightX; tX++)
         {
-            if(PathFinder::getInstance().getGridCellCost(tX, gridBottomY) != 9)
+            if(PathFinder::getInstance().getGridCellCost(tX, gridBottomY))
             {
-                Vector2D vector = Vector2D(tX, gridBottomY);
+                Vector2D vector = Vector2D(node.x, gridBottomY);
                 float distance = vector.dist(vectorTarget);
                 if(distance < shortestDistance)
                 {
@@ -256,16 +231,13 @@ bool PathFinder::calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *pla
                 }
             }
         }
-    }
-    
-    if(proceedLeft && player->getGridX() <= node.x && gridLeftX >= 0)
-    {
+        
         // tY is Traversal Y
         for (int tY = gridBottomY; tY <= gridTopY; tY++)
         {
-            if(PathFinder::getInstance().getGridCellCost(gridLeftX, tY) != 9)
+            if(PathFinder::getInstance().getGridCellCost(gridLeftX, tY))
             {
-                Vector2D vector = Vector2D(gridLeftX, tY);
+                Vector2D vector = Vector2D(node.x, gridTopY);
                 float distance = vector.dist(vectorTarget);
                 if(distance < shortestDistance)
                 {
@@ -276,16 +248,13 @@ bool PathFinder::calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *pla
                 }
             }
         }
-    }
-    
-    if(proceedRight && player->getGridX() >= node.x && gridRightX < NUM_GRID_CELLS_PER_ROW)
-    {
+        
         // tY is Traversal Y
         for (int tY = gridBottomY; tY <= gridTopY; tY++)
         {
             if(PathFinder::getInstance().getGridCellCost(gridRightX, tY) != 9)
             {
-                Vector2D vector = Vector2D(gridRightX, tY);
+                Vector2D vector = Vector2D(node.x, gridTopY);
                 float distance = vector.dist(vectorTarget);
                 if(distance < shortestDistance)
                 {
@@ -295,6 +264,13 @@ bool PathFinder::calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *pla
                     nodeUpdated = true;
                 }
             }
+        }
+        
+        searchDepth++;
+        
+        if(searchDepth > 4)
+        {
+            break;
         }
     }
     
@@ -310,19 +286,19 @@ bool PathFinder::shouldPlayerPlantBomb(std::vector<std::unique_ptr<BreakableBloc
     int gridTopY = pGridY + 1;
     int gridBottomY = pGridY - 1;
     
-    if(player->getDirection() == DIRECTION_RIGHT && isLocationOccupiedByBreakableBlock(breakableBlocks, gridRightX, pGridY))
+    if(isLocationOccupiedByBreakableBlock(breakableBlocks, gridRightX, pGridY))
     {
         return true;
     }
-    else if(player->getDirection() == DIRECTION_LEFT && isLocationOccupiedByBreakableBlock(breakableBlocks, gridLeftX, pGridY))
+    else if(isLocationOccupiedByBreakableBlock(breakableBlocks, gridLeftX, pGridY))
     {
         return true;
     }
-    else if(player->getDirection() == DIRECTION_UP && isLocationOccupiedByBreakableBlock(breakableBlocks, pGridX, gridTopY))
+    else if(isLocationOccupiedByBreakableBlock(breakableBlocks, pGridX, gridTopY))
     {
         return true;
     }
-    else if(player->getDirection() == DIRECTION_DOWN && isLocationOccupiedByBreakableBlock(breakableBlocks, pGridX, gridBottomY))
+    else if(isLocationOccupiedByBreakableBlock(breakableBlocks, pGridX, gridBottomY))
     {
         return true;
     }
@@ -398,6 +374,11 @@ void PathFinder::initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &
 void PathFinder::freeGameGridCell(int gridX, int gridY)
 {
     game_grid[getGridCellIndexForCoords(gridX, gridY)] = 1;
+}
+
+void PathFinder::occupyGameGridCell(int gridX, int gridY)
+{
+    game_grid[getGridCellIndexForCoords(gridX, gridY)] = 9;
 }
 
 int PathFinder::getGridCellCost(int x, int y)
