@@ -23,6 +23,7 @@
 #include "PowerUp.h"
 #include "PlayerDynamicGameObject.h"
 #include "Fire.h"
+#include "PathFinder.h"
 
 GameSession::GameSession()
 {
@@ -131,6 +132,8 @@ void GameSession::updateCommon(float deltaTime)
             {
                 m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp((**itr).getX(), (**itr).getY(), (**itr).getPowerUpFlag())));
             }
+            
+            PathFinder::getInstance().freeGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
 
             itr = m_breakableBlocks.erase(itr);
         }
@@ -243,6 +246,9 @@ void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *key
 
         int playerDirection = d[keyDirection].GetInt();
         m_players.at(playerIndex).get()->setDirection(playerDirection);
+        
+        m_players.at(playerIndex).get()->updateBounds();
+        m_players.at(playerIndex).get()->updateGrid();
     }
     
     if(d.HasMember(keyAlive))

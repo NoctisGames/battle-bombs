@@ -42,6 +42,8 @@
 		BB024B571955D99A0051C09E /* Fire.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB024B551955D99A0051C09E /* Fire.cpp */; };
 		BB06563C18E214B000076912 /* GameSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB06563A18E214B000076912 /* GameSession.cpp */; };
 		BB06563F18E24DA700076912 /* BreakableBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB06563D18E24DA700076912 /* BreakableBlock.cpp */; };
+		BB0CC4B61964F91600F770C4 /* PathFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0CC4B41964F91600F770C4 /* PathFinder.cpp */; };
+		BB0CC4B91964FAD100F770C4 /* MapSearchNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0CC4B71964FAD100F770C4 /* MapSearchNode.cpp */; };
 		BB16D96C191987B80034BE67 /* death.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB16D969191987B80034BE67 /* death.caf */; };
 		BB16D96D191987B80034BE67 /* explosion.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB16D96A191987B80034BE67 /* explosion.caf */; };
 		BB16D96E191987B80034BE67 /* plant_bomb.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB16D96B191987B80034BE67 /* plant_bomb.caf */; };
@@ -154,6 +156,12 @@
 		BB06563B18E214B000076912 /* GameSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSession.h; sourceTree = "<group>"; };
 		BB06563D18E24DA700076912 /* BreakableBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BreakableBlock.cpp; sourceTree = "<group>"; };
 		BB06563E18E24DA700076912 /* BreakableBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BreakableBlock.h; sourceTree = "<group>"; };
+		BB0CC4B41964F91600F770C4 /* PathFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathFinder.cpp; sourceTree = "<group>"; };
+		BB0CC4B51964F91600F770C4 /* PathFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathFinder.h; sourceTree = "<group>"; };
+		BB0CC4B71964FAD100F770C4 /* MapSearchNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapSearchNode.cpp; sourceTree = "<group>"; };
+		BB0CC4B81964FAD100F770C4 /* MapSearchNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearchNode.h; sourceTree = "<group>"; };
+		BB0CC4BA1964FB5100F770C4 /* fsa.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fsa.h; sourceTree = "<group>"; };
+		BB0CC4BB1964FB6F00F770C4 /* stlastar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stlastar.h; sourceTree = "<group>"; };
 		BB16D969191987B80034BE67 /* death.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = death.caf; sourceTree = "<group>"; };
 		BB16D96A191987B80034BE67 /* explosion.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = explosion.caf; sourceTree = "<group>"; };
 		BB16D96B191987B80034BE67 /* plant_bomb.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = plant_bomb.caf; sourceTree = "<group>"; };
@@ -351,6 +359,7 @@
 				BBE6F98B1911301100062B8E /* FireType.h */,
 				BB96EEB318B99A6900F7C356 /* Font.cpp */,
 				BB96EEB418B99A6900F7C356 /* Font.h */,
+				BB0CC4BA1964FB5100F770C4 /* fsa.h */,
 				BB96EEB518B99A6900F7C356 /* GameButton.cpp */,
 				BB96EEB618B99A6900F7C356 /* GameButton.h */,
 				BB98977B1922C40400AFF579 /* GameConstants.h */,
@@ -379,6 +388,8 @@
 				BB96EEDC18B99A7100F7C356 /* opengles */,
 				BB96EEBF18B99A6900F7C356 /* OverlapTester.cpp */,
 				BB96EEC018B99A6900F7C356 /* OverlapTester.h */,
+				BB0CC4B41964F91600F770C4 /* PathFinder.cpp */,
+				BB0CC4B51964F91600F770C4 /* PathFinder.h */,
 				BB96EEC118B99A6900F7C356 /* pch.h */,
 				BBF67CBF195C7AAB00587AB6 /* PlayerActionState.h */,
 				BB1B8C7F18C8B13300C72D2D /* PlayerDynamicGameObject.cpp */,
@@ -391,6 +402,7 @@
 				BB96EEC418B99A6900F7C356 /* Renderer.cpp */,
 				BB96EEC518B99A6900F7C356 /* Renderer.h */,
 				BB9948E31936736600A8E599 /* ResourceConstants.h */,
+				BB0CC4BB1964FB6F00F770C4 /* stlastar.h */,
 				BB96EEC618B99A6900F7C356 /* TextureRegion.cpp */,
 				BB96EEC718B99A6900F7C356 /* TextureRegion.h */,
 				BB96EEC818B99A6900F7C356 /* TouchEvent.cpp */,
@@ -399,6 +411,8 @@
 				BB96EECB18B99A6900F7C356 /* Triangle.h */,
 				BB96EECC18B99A6900F7C356 /* Vector2D.cpp */,
 				BB96EECD18B99A6900F7C356 /* Vector2D.h */,
+				BB0CC4B71964FAD100F770C4 /* MapSearchNode.cpp */,
+				BB0CC4B81964FAD100F770C4 /* MapSearchNode.h */,
 			);
 			name = core;
 			path = ../../core;
@@ -726,6 +740,7 @@
 				BB96EEEF18B99A7100F7C356 /* image.c in Sources */,
 				BB96EED818B99A6900F7C356 /* TextureRegion.cpp in Sources */,
 				BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */,
+				BB0CC4B91964FAD100F770C4 /* MapSearchNode.cpp in Sources */,
 				BB96EED618B99A6900F7C356 /* Rectangle.cpp in Sources */,
 				0A8FBF86179E07320039BA29 /* pngtrans.c in Sources */,
 				BB31AC9E18E05A6400E7369F /* InsideBlock.cpp in Sources */,
@@ -739,6 +754,7 @@
 				BB96EED218B99A6900F7C356 /* GameObject.cpp in Sources */,
 				BB9139C918BEFCC800E51FB5 /* MainViewController.m in Sources */,
 				0A8FBF8A179E07320039BA29 /* pngwutil.c in Sources */,
+				BB0CC4B61964F91600F770C4 /* PathFinder.cpp in Sources */,
 				BB024B571955D99A0051C09E /* Fire.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -846,8 +862,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Stephen Gowen (8S5X8SQ245)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stephen Gowen (8S5X8SQ245)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty\"/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -872,7 +888,7 @@
 					"-ObjC\n",
 				);
 				PRODUCT_NAME = "Bomber Party";
-				PROVISIONING_PROFILE = "732A0194-683F-4A79-B1A7-A323AB68CCD9";
+				PROVISIONING_PROFILE = "8EAF4C1E-601A-4C75-93B0-2E536D47D686";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
@@ -883,8 +899,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Stephen Gowen (83V22B9TY9)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Stephen Gowen (83V22B9TY9)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty\"/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -908,7 +924,7 @@
 					"-ObjC\n",
 				);
 				PRODUCT_NAME = "Bomber Party";
-				PROVISIONING_PROFILE = "732A0194-683F-4A79-B1A7-A323AB68CCD9";
+				PROVISIONING_PROFILE = "8EAF4C1E-601A-4C75-93B0-2E536D47D686";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;

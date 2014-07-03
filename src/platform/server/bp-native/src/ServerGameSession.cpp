@@ -24,6 +24,7 @@
 #include "InsideBlock.h"
 #include "BreakableBlock.h" 
 #include "Fire.h"
+#include "PathFinder.h"
 
 //For RNG purposes
 #include <stdlib.h>
@@ -91,7 +92,7 @@ void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
             // Don't place breakable blocks where inside blocks or players are
-            if (isLocationOccupiedByInsideBlock(j, i) || isLocationOccupiedByPlayer(j, i))
+            if (PathFinder::isLocationOccupiedByInsideBlock(m_insideBlocks, j, i) || isLocationOccupiedByPlayer(j, i))
             {
                 continue;
             }
@@ -237,19 +238,6 @@ void ServerGameSession::clientUpdateForPlayerIndex(rapidjson::Document &d, const
     handlePlayerDataUpdate(d, keyX, keyY, keyDirection, keyAlive, playerIndex);
 
     handleClientEventsArrayInDocument(d);
-}
-
-bool ServerGameSession::isLocationOccupiedByInsideBlock(int gridX, int gridY)
-{
-    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = m_insideBlocks.begin(); itr != m_insideBlocks.end(); itr++)
-    {
-        if (gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY())
-        {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 bool ServerGameSession::isLocationOccupiedByPlayer(int gridX, int gridY)

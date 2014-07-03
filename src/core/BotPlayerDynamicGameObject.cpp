@@ -17,14 +17,24 @@
 #include "GameListener.h"
 #include "GameEvent.h"
 #include "BombGameObject.h"
+#include "MapSearchNode.h"
+#include "PathFinder.h"
 
 // For Random Event Generation
 #include <stdlib.h>
 #include <time.h>
 
-BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, float x, float y, GameListener *gameListener, int direction) : PlayerDynamicGameObject(playerIndex, x, y, gameListener, direction)
+#define DEBUG_LISTS 0
+#define DEBUG_LIST_LENGTHS_ONLY 0
+
+BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction) : PlayerDynamicGameObject(playerIndex, gridX, gridY, gameListener, direction)
 {
     srand((int)time(NULL));
+    
+    m_currentPathIndex = 0;
+    m_currentPathType = 0;
+    m_fActionTime = 0;
+    m_fWaitTime = 0;
     
     m_playerTarget = nullptr;
 }
@@ -33,206 +43,93 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 {
     PlayerDynamicGameObject::update(deltaTime, mapBorders, insideBlocks, breakableBlocks, powerUps, explosions, players, bombs);
 
-    // BEGIN TEMPORARY AI
     if (m_playerState == ALIVE && m_playerActionState != WINNING)
     {
-        if(m_playerTarget == nullptr || m_playerTarget->getPlayerState() != ALIVE)
+        if(m_fWaitTime > 0 && m_fActionTime < m_fWaitTime)
         {
-            determinePlayerTarget(players);
+            m_fActionTime += deltaTime;
         }
-        
-        bool isSafeFromBombs = true;
-        
-        bool shouldPlantBomb = false;
-        
-        for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+        else
         {
-            if(m_gridX == (*itr)->getGridX() && (m_gridY >= (*itr)->getGridY() - (*itr)->getPower() || m_gridY <= (*itr)->getGridY() + (*itr)->getPower()))
+            if(m_currentPathType != 1)
             {
-                isSafeFromBombs = false;
-                if(!moveInDirectionIfPossible(DIRECTION_RIGHT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
+                determinePlayerTarget(players);
+                
+                Node currentNode = Node {m_gridX, m_gridY};
+                if(PathFinder::calculateClosestNodeToPlayerTarget(m_playerTarget, currentNode))
                 {
-                    if(!moveInDirectionIfPossible(DIRECTION_LEFT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                    {
-                        if(m_gridY > (*itr)->getGridY())
-                        {
-                            if(!moveInDirectionIfPossible(DIRECTION_UP, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                            {
-                                moveInDirectionIfPossible(DIRECTION_DOWN, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks);
-                            }
-                        }
-                        else
-                        {
-                            if(!moveInDirectionIfPossible(DIRECTION_DOWN, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                            {
-                                moveInDirectionIfPossible(DIRECTION_UP, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks);
-                            }
-                        }
-                    }
+                    calculatePathToTarget(currentNode.x, currentNode.y);
+                    m_currentPathType = 0;
                 }
-            }
-            else if(m_gridY == (*itr)->getGridY() && (m_gridX >= (*itr)->getGridX() - (*itr)->getPower() || m_gridX <= (*itr)->getGridX() + (*itr)->getPower()))
-            {
-                isSafeFromBombs = false;
-                if(!moveInDirectionIfPossible(DIRECTION_UP, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                {
-                    if(!moveInDirectionIfPossible(DIRECTION_DOWN, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                    {
-                        if(m_gridX > (*itr)->getGridX())
-                        {
-                            if(!moveInDirectionIfPossible(DIRECTION_RIGHT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                            {
-                                moveInDirectionIfPossible(DIRECTION_LEFT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks);
-                            }
-                        }
-                        else
-                        {
-                            if(!moveInDirectionIfPossible(DIRECTION_LEFT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                            {
-                                moveInDirectionIfPossible(DIRECTION_RIGHT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        if(isSafeFromBombs)
-        {
-            m_firePower = 0;
-            
-            if(m_gridX == m_playerTarget->getGridX() && m_gridY <= m_playerTarget->getGridY() + m_firePower && m_gridY >= m_playerTarget->getGridY() - m_firePower)
-            {
-                if(isAbleToDropAdditionalBomb(players, bombs))
-                {
-                    m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
-                }
-            }
-            else if(m_gridY == m_playerTarget->getGridY() && m_gridX <= m_playerTarget->getGridX() + m_firePower && m_gridX >= m_playerTarget->getGridX() - m_firePower)
-            {
-                if(isAbleToDropAdditionalBomb(players, bombs))
+                else if(isAbleToDropAdditionalBomb(players, bombs))
                 {
                     m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
                 }
             }
             
-            int gridXDistanceToTarget = abs(m_playerTarget->getGridX() - m_gridX);
-            int gridYDistanceToTarget = abs(m_playerTarget->getGridY() - m_gridY);
-            if(gridXDistanceToTarget > gridYDistanceToTarget)
+            for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
             {
-                if(m_gridX < m_playerTarget->getGridX())
+                if(PathFinder::getInstance().isLocationOccupiedByBombOrExplosionPath(bombs, explosions, m_gridX, m_gridY))
                 {
-                    if(!moveInDirectionIfPossible(DIRECTION_RIGHT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
+                    Node currentNode = Node {m_gridX, m_gridY};
+                    if(PathFinder::calculateClosestSafeNodeFromStartingNode(bombs, explosions, currentNode))
                     {
-                        if(m_gridY < m_playerTarget->getGridY())
-                        {
-                            if(!moveInDirectionIfPossible(DIRECTION_UP, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                            {
-                                if(!moveInDirectionIfPossible(DIRECTION_LEFT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                                {
-                                    moveInDirectionIfPossible(DIRECTION_DOWN, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if(!moveInDirectionIfPossible(DIRECTION_DOWN, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                            {
-                                if(!moveInDirectionIfPossible(DIRECTION_LEFT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                                {
-                                    moveInDirectionIfPossible(DIRECTION_UP, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks);
-                                }
-                            }
-                        }
+                        calculatePathToTarget(currentNode.x, currentNode.y);
+                        m_currentPathType = 1;
                     }
+                    
+                    break;
+                }
+            }
+            
+            if(m_currentPath.size() > 0)
+            {
+                if(m_currentPathIndex == m_currentPath.size())
+                {
+                    m_playerTarget = nullptr;
+                    m_currentPath.clear();
+                    m_currentPathIndex = 0;
+                    m_currentPathType = 0;
+                    m_fActionTime = 0;
+                    m_fWaitTime = 2;
+                    m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
                 }
                 else
                 {
-                    if(!moveInDirectionIfPossible(DIRECTION_LEFT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
+                    if(m_gridX == m_currentPath.at(m_currentPathIndex)->x && m_gridY == m_currentPath.at(m_currentPathIndex)->y)
                     {
-                        if(m_gridY < m_playerTarget->getGridY())
+                        cout << "Node position reached : (" << m_gridX << ", " << m_gridY << ")" << endl;
+                        m_currentPathIndex++;
+                    }
+                    else
+                    {
+                        if(m_gridX < m_currentPath.at(m_currentPathIndex)->x && m_gridY == m_currentPath.at(m_currentPathIndex)->y)
                         {
-                            if(!moveInDirectionIfPossible(DIRECTION_UP, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                            {
-                                if(!moveInDirectionIfPossible(DIRECTION_RIGHT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                                {
-                                    moveInDirectionIfPossible(DIRECTION_DOWN, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks);
-                                }
-                            }
+                            moveInDirection(DIRECTION_RIGHT);
                         }
-                        else
+                        else if(m_gridX == m_currentPath.at(m_currentPathIndex)->x && m_gridY < m_currentPath.at(m_currentPathIndex)->y)
                         {
-                            if(!moveInDirectionIfPossible(DIRECTION_DOWN, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                            {
-                                if(!moveInDirectionIfPossible(DIRECTION_RIGHT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                                {
-                                    moveInDirectionIfPossible(DIRECTION_UP, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks);
-                                }
-                            }
+                            moveInDirection(DIRECTION_UP);
+                        }
+                        else if(m_gridX > m_currentPath.at(m_currentPathIndex)->x && m_gridY == m_currentPath.at(m_currentPathIndex)->y)
+                        {
+                            moveInDirection(DIRECTION_LEFT);
+                        }
+                        else if(m_gridX == m_currentPath.at(m_currentPathIndex)->x && m_gridY > m_currentPath.at(m_currentPathIndex)->y)
+                        {
+                            moveInDirection(DIRECTION_DOWN);
+                        }
+                    }
+                    
+                    if(m_currentPathType == 0 && PathFinder::shouldPlayerPlantBomb(breakableBlocks, players, this))
+                    {
+                        if(isAbleToDropAdditionalBomb(players, bombs))
+                        {
+                            m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
                         }
                     }
                 }
             }
-            else
-            {
-                if(m_gridY < m_playerTarget->getGridY())
-                {
-                    if(!moveInDirectionIfPossible(DIRECTION_UP, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                    {
-                        if(m_gridX < m_playerTarget->getGridX())
-                        {
-                            if(!moveInDirectionIfPossible(DIRECTION_RIGHT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                            {
-                                if(!moveInDirectionIfPossible(DIRECTION_DOWN, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                                {
-                                    moveInDirectionIfPossible(DIRECTION_LEFT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if(!moveInDirectionIfPossible(DIRECTION_LEFT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                            {
-                                if(!moveInDirectionIfPossible(DIRECTION_DOWN, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                                {
-                                    moveInDirectionIfPossible(DIRECTION_RIGHT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks);
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if(!moveInDirectionIfPossible(DIRECTION_DOWN, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                    {
-                        if(m_gridX < m_playerTarget->getGridX())
-                        {
-                            if(!moveInDirectionIfPossible(DIRECTION_RIGHT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                            {
-                                if(!moveInDirectionIfPossible(DIRECTION_UP, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                                {
-                                    moveInDirectionIfPossible(DIRECTION_LEFT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if(!moveInDirectionIfPossible(DIRECTION_LEFT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                            {
-                                if(!moveInDirectionIfPossible(DIRECTION_UP, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
-                                {
-                                    moveInDirectionIfPossible(DIRECTION_RIGHT, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        if(shouldPlantBomb && isAbleToDropAdditionalBomb(players, bombs))
-        {
-            m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
         }
     }
     
@@ -263,7 +160,7 @@ void BotPlayerDynamicGameObject::determinePlayerTarget(std::vector<std::unique_p
                 m_playerTarget = (*itr).get();
                 shortestPlayerTargetDistance = playerTargetDistance;
             }
-            else if(m_playerTarget != nullptr)
+            else
             {
                 if(playerTargetDistance < shortestPlayerTargetDistance)
                 {
@@ -275,106 +172,128 @@ void BotPlayerDynamicGameObject::determinePlayerTarget(std::vector<std::unique_p
     }
 }
 
-bool BotPlayerDynamicGameObject::isAbleToMoveDirection(short direction, bool &shouldPlantBomb, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
+void BotPlayerDynamicGameObject::calculatePathToTarget(int x, int y)
 {
-    int rightGridX = m_gridX + 1;
-    int upGridY = m_gridY + 1;
-    int leftGridX = m_gridX - 1;
-    int downGridY = m_gridY - 1;
+    m_currentPath.clear();
+    m_currentPathIndex = 0;
     
-    for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
-    {
-        if(direction == DIRECTION_RIGHT && (*itr)->getGridX() == rightGridX && (*itr)->getGridY() == m_gridY)
-        {
-            shouldPlantBomb = true;
-            return false;
-        }
-        else if(direction == DIRECTION_UP && (*itr)->getGridX() == m_gridX && (*itr)->getGridY() == upGridY)
-        {
-            shouldPlantBomb = true;
-            return false;
-        }
-        else if(direction == DIRECTION_LEFT && (*itr)->getGridX() == leftGridX && (*itr)->getGridY() == m_gridY)
-        {
-            shouldPlantBomb = true;
-            return false;
-        }
-        else if(direction == DIRECTION_DOWN && (*itr)->getGridX() == m_gridX && (*itr)->getGridY() == downGridY)
-        {
-            shouldPlantBomb = true;
-            return false;
-        }
-    }
+    AStarSearch<MapSearchNode> astarsearch;
     
-    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
-    {
-        if(direction == DIRECTION_RIGHT && (*itr)->getGridX() == rightGridX && (*itr)->getGridY() == m_gridY)
-        {
-            return false;
-        }
-        else if(direction == DIRECTION_UP && (*itr)->getGridX() == m_gridX && (*itr)->getGridY() == upGridY)
-        {
-            return false;
-        }
-        else if(direction == DIRECTION_LEFT && (*itr)->getGridX() == leftGridX && (*itr)->getGridY() == m_gridY)
-        {
-            return false;
-        }
-        else if(direction == DIRECTION_DOWN && (*itr)->getGridX() == m_gridX && (*itr)->getGridY() == downGridY)
-        {
-            return false;
-        }
-    }
+	unsigned int SearchCount = 0;
     
-    if(direction == DIRECTION_RIGHT && rightGridX >= NUM_GRID_CELLS_PER_ROW)
-    {
-        return false;
-    }
+	const unsigned int NumSearches = 1;
     
-    if(direction == DIRECTION_UP && upGridY >= GRID_CELL_NUM_ROWS)
-    {
-        return false;
-    }
-    
-    if(direction == DIRECTION_LEFT && leftGridX < 0)
-    {
-        return false;
-    }
-    
-    if(direction == DIRECTION_DOWN && downGridY < 0)
-    {
-        return false;
-    }
-    
-    if(direction == DIRECTION_RIGHT && m_gridY <= 2 && rightGridX >= NUM_GRID_CELLS_PER_ROW - 3)
-    {
-        return false;
-    }
-    
-    if(direction == DIRECTION_DOWN && downGridY <= 2 && (m_gridX <= 2 || m_gridX >= NUM_GRID_CELLS_PER_ROW - 3))
-    {
-        return false;
-    }
-    
-    if(direction == DIRECTION_LEFT && m_gridY <= 2 && leftGridX <= 2)
-    {
-        return false;
-    }
-    
-    return true;
+	while(SearchCount < NumSearches)
+	{
+        // Create a start state
+		MapSearchNode nodeStart;
+		nodeStart.x = m_gridX;
+		nodeStart.y = m_gridY;
+        
+		// Define the goal state
+		MapSearchNode nodeEnd;
+		nodeEnd.x = x;
+		nodeEnd.y = y;
+		
+		// Set Start and goal states
+		
+		astarsearch.SetStartAndGoalStates( nodeStart, nodeEnd );
+        
+		unsigned int SearchState;
+		unsigned int SearchSteps = 0;
+        
+		do
+		{
+			SearchState = astarsearch.SearchStep();
+            
+			SearchSteps++;
+            
+#if DEBUG_LISTS
+            
+			cout << "Steps:" << SearchSteps << "\n";
+            
+			int len = 0;
+            
+			cout << "Open:\n";
+			MapSearchNode *p = astarsearch.GetOpenListStart();
+			while(p)
+			{
+				len++;
+#if !DEBUG_LIST_LENGTHS_ONLY
+				((MapSearchNode *)p)->PrintNodeInfo();
+#endif
+				p = astarsearch.GetOpenListNext();
+			}
+            
+			cout << "Open list has " << len << " nodes\n";
+            
+			len = 0;
+            
+			cout << "Closed:\n";
+			p = astarsearch.GetClosedListStart();
+			while(p)
+			{
+				len++;
+#if !DEBUG_LIST_LENGTHS_ONLY
+				p->PrintNodeInfo();
+#endif
+				p = astarsearch.GetClosedListNext();
+			}
+            
+			cout << "Closed list has " << len << " nodes\n";
+#endif
+		}
+		while(SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING);
+        
+		if(SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED)
+		{
+			cout << "Search found goal state\n";
+            
+            MapSearchNode *node = astarsearch.GetSolutionStart();
+            
+#if DISPLAY_SOLUTION
+            cout << "Displaying solution\n";
+#endif
+            int steps = 0;
+            
+            node->PrintNodeInfo();
+            for(;;)
+            {
+                node = astarsearch.GetSolutionNext();
+                
+                if(!node)
+                {
+                    break;
+                }
+                
+                node->PrintNodeInfo();
+                m_currentPath.push_back(std::unique_ptr<MapSearchNode>(new MapSearchNode(node->x, node->y)));
+                steps++;
+            };
+            
+            cout << "Solution steps " << steps << endl;
+            
+            // Once you're done with the solution you can free the nodes up
+            astarsearch.FreeSolutionNodes();
+		}
+		else if(SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED)
+		{
+			cout << "Search terminated. Did not find goal state\n";
+		}
+        
+		// Display the number of loops the search went through
+		cout << "SearchSteps : " << SearchSteps << "\n";
+        
+		SearchCount++;
+        
+		astarsearch.EnsureMemoryFreed();
+	}
 }
 
-bool BotPlayerDynamicGameObject::moveInDirectionIfPossible(short direction, bool &shouldPlantBomb, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
+void BotPlayerDynamicGameObject::moveInDirection(int direction)
 {
-    if(isAbleToMoveDirection(direction, shouldPlantBomb, mapBorders, insideBlocks, breakableBlocks))
+    if(getDirection() != direction || !isMoving())
     {
-        if(getDirection() != direction || !isMoving())
-        {
-            m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + direction + 1);
-        }
-        
-        return true;
+        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + direction + 1);
     }
-    
-    return false;
 }
