@@ -28,15 +28,15 @@ public:
         return instance;
     }
     
-    static bool isLocationOccupiedByInsideBlock(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, int gridX, int gridY);
-    
     static bool isLocationOccupiedByBreakableBlock(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int gridX, int gridY);
+    
+    static bool isLocationOccupiedByOtherPlayer(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, PlayerDynamicGameObject *player, int gridX, int gridY);
     
     static bool isLocationOccupiedByBombOrExplosionPath(std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, int gridX, int gridY);
     
     // Calculate closest safe node, returning true if one was indeed calculated
     // Store the result in the node param
-    static bool calculateClosestSafeNodeFromStartingNode(std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, Node &node);
+    static bool calculateClosestSafeNodeFromStartingNode(std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, PlayerDynamicGameObject *player, std::vector<std::unique_ptr<Node>> &badBombEscapeNodes, Node &node);
     
     static bool calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *player, Node &node);
     
@@ -55,6 +55,7 @@ public:
     int getGridCellCost(int x, int y);
 
 private:
+    static bool hasBombEscapeNodeBeenUsedAlready(std::vector<std::unique_ptr<Node>> &badBombEscapeNodes, int gridX, int gridY);
     PathFinder() {}; // Constructor? (the {} brackets) are needed here.
     // Dont forget to declare these two. You want to make sure they
     // are unaccessable otherwise you may accidently get copies of

@@ -29,6 +29,7 @@ public:
 private:
     std::vector<std::unique_ptr<MapSearchNode>> m_currentPath;
     std::vector<std::unique_ptr<Node>> m_exploredPath;
+    std::vector<std::unique_ptr<Node>> m_badBombEscapeNodes;
     int m_currentPathIndex;
     int m_currentPathType; // 0 for player target pursuit, 1 for evading bomb
     float m_fActionTime;
@@ -41,7 +42,7 @@ private:
     
     void moveInDirection(int direction);
     
-    void explore(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
+    void explore(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
     
     bool isProposedNodeUnexplored(int x, int y);
 };
