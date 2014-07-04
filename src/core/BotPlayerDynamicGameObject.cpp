@@ -51,29 +51,29 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
         }
         else
         {
+            if(isProposedNodeUnexplored(m_gridX, m_gridY))
+            {
+                m_exploredPath.push_back(std::unique_ptr<Node>(new Node{m_gridX, m_gridY}));
+            }
+            
             if(m_currentPathType != 1)
             {
-                determinePlayerTarget(players);
+                if (m_playerTarget == nullptr || m_playerTarget->getPlayerState() != ALIVE)
+                {
+                    determinePlayerTarget(players);
+                }
                 
                 if(calculatePathToTarget(m_playerTarget->getGridX(), m_playerTarget->getGridY()))
                 {
                     // Great, we have a path to the player, kick ass
                     m_currentPathType = 0;
-                }
-                else if(m_playerTarget != nullptr)
-                {
-                    Node currentNode = Node {m_gridX, m_gridY};
-                    if(PathFinder::getInstance().calculateClosestNodeToPlayerTarget(m_playerTarget, currentNode))
-                    {
-                        if(calculatePathToTarget(currentNode.x, currentNode.y))
-                        {
-                            m_currentPathType = 2;
-                        }
-                    }
+                    m_exploredPath.clear();
                 }
                 else
                 {
                     // Let's randomly traverse the map
+                    explore(players, bombs);
+                    m_currentPathType = 2;
                 }
             }
             
@@ -86,6 +86,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
                     {
                         if(calculatePathToTarget(currentNode.x, currentNode.y))
                         {
+                            m_exploredPath.clear();
                             m_currentPathType = 1;
                         }
                         
@@ -111,19 +112,16 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
                         // We were pursuing a player and caught up with them...
                         // This shouldn't happen since the bot will drop bombs ahead
                         // of time and then reroute itself to dodge the bomb
+                        if(isAbleToDropAdditionalBomb(players, bombs))
+                        {
+                            m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+                        }
                     }
                     else if(m_currentPathType == 1)
                     {
                         m_fActionTime = 0;
                         m_fWaitTime = 2;
                         m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
-                    }
-                    else if(m_currentPathType == 2)
-                    {
-                        if(isAbleToDropAdditionalBomb(players, bombs))
-                        {
-                            m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
-                        }
                     }
                 }
                 else
@@ -153,13 +151,13 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
                         }
                     }
                 }
-            }
-            
-            if(m_currentPathType != 1 && PathFinder::shouldPlayerPlantBomb(breakableBlocks, players, this))
-            {
-                if(isAbleToDropAdditionalBomb(players, bombs))
+                
+                if(m_currentPathType != 1 && PathFinder::shouldPlayerPlantBomb(breakableBlocks, players, this))
                 {
-                    m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+                    if(isAbleToDropAdditionalBomb(players, bombs))
+                    {
+                        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+                    }
                 }
             }
         }
@@ -320,4 +318,49 @@ void BotPlayerDynamicGameObject::moveInDirection(int direction)
     {
         m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + direction + 1);
     }
+}
+
+void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+{
+    int gridRightX = m_gridX + 1;
+    int gridLeftX = m_gridX - 1;
+    int gridTopY = m_gridY + 1;
+    int gridBottomY = m_gridY - 1;
+    
+    if(PathFinder::getInstance().getGridCellCost(gridRightX, m_gridY) == 1 && isProposedNodeUnexplored(gridRightX, m_gridY))
+    {
+        moveInDirection(DIRECTION_RIGHT);
+    }
+    else if(PathFinder::getInstance().getGridCellCost(gridLeftX, m_gridY) == 1 && isProposedNodeUnexplored(gridLeftX, m_gridY))
+    {
+        moveInDirection(DIRECTION_LEFT);
+    }
+    else if(PathFinder::getInstance().getGridCellCost(m_gridX, gridTopY) == 1 && isProposedNodeUnexplored(m_gridX, gridTopY))
+    {
+        moveInDirection(DIRECTION_UP);
+    }
+    else if(PathFinder::getInstance().getGridCellCost(m_gridX, gridBottomY) == 1 && isProposedNodeUnexplored(m_gridX, gridBottomY))
+    {
+        moveInDirection(DIRECTION_DOWN);
+    }
+    else
+    {
+        if(isAbleToDropAdditionalBomb(players, bombs))
+        {
+            m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+        }
+    }
+}
+
+bool BotPlayerDynamicGameObject::isProposedNodeUnexplored(int x, int y)
+{
+    for (std::vector<std::unique_ptr<Node>>::iterator itr = m_exploredPath.begin(); itr != m_exploredPath.end(); itr++)
+    {
+        if((*itr)->x == x && (*itr)->y == y)
+        {
+            return false;
+        }
+    }
+    
+    return true;
 }

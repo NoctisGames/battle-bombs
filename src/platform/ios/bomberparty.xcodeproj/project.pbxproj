@@ -291,6 +291,7 @@
 		BBE6F98819112D3E00062B8E /* Explosion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Explosion.cpp; sourceTree = "<group>"; };
 		BBE6F98919112D3E00062B8E /* Explosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Explosion.h; sourceTree = "<group>"; };
 		BBE6F98B1911301100062B8E /* FireType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FireType.h; sourceTree = "<group>"; };
+		BBED327B1966271D0023B758 /* Node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
 		BBF67CBF195C7AAB00587AB6 /* PlayerActionState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerActionState.h; sourceTree = "<group>"; };
 		BBF683EC1951509900EBD23E /* BreakableBlockState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BreakableBlockState.h; sourceTree = "<group>"; };
 		BBF7CC5C18CCA2B700B7CD15 /* DPadControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DPadControl.cpp; sourceTree = "<group>"; };
@@ -413,6 +414,7 @@
 				BB96EECD18B99A6900F7C356 /* Vector2D.h */,
 				BB0CC4B71964FAD100F770C4 /* MapSearchNode.cpp */,
 				BB0CC4B81964FAD100F770C4 /* MapSearchNode.h */,
+				BBED327B1966271D0023B758 /* Node.h */,
 			);
 			name = core;
 			path = ../../core;

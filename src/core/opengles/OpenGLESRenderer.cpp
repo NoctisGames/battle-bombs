@@ -198,6 +198,27 @@ void OpenGLESRenderer::renderInterface()
     m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
 }
 
+void OpenGLESRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
+{
+    m_spriteBatcher->beginBatch();
+    for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
+    {
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            if(game_grid[j][i] == 1)
+            {
+                m_spriteBatcher->drawSprite(GAME_X + GRID_CELL_WIDTH * j + GRID_CELL_WIDTH / 2.0f, GAME_Y + GRID_CELL_HEIGHT * i + GRID_CELL_HEIGHT / 2.0f - m_fScrollY, GRID_CELL_WIDTH, GRID_CELL_HEIGHT, 0, Assets::getOneTextureRegion());
+            }
+            else
+            {
+                m_spriteBatcher->drawSprite(GAME_X + GRID_CELL_WIDTH * j + GRID_CELL_WIDTH / 2.0f, GAME_Y + GRID_CELL_HEIGHT * i + GRID_CELL_HEIGHT / 2.0f - m_fScrollY, GRID_CELL_WIDTH, GRID_CELL_HEIGHT, 0, Assets::getNineTextureRegion());
+            }
+        }
+    }
+    
+    m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
+}
+
 void OpenGLESRenderer::endFrame()
 {
     glDisable(GL_BLEND);

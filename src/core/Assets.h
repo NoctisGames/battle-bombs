@@ -33,6 +33,10 @@ public:
     static TextureRegion getMapBorderTextureRegion(MapBorder &mapBorder);
     
     static TextureRegion getInsideBlockTextureRegion();
+    
+    static TextureRegion getNineTextureRegion();
+    
+    static TextureRegion getOneTextureRegion();
 
 	static TextureRegion getBreakableBlockTextureRegion(BreakableBlock &breakableBlock);
     

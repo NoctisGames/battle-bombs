@@ -286,19 +286,19 @@ bool PathFinder::shouldPlayerPlantBomb(std::vector<std::unique_ptr<BreakableBloc
     int gridTopY = pGridY + 1;
     int gridBottomY = pGridY - 1;
     
-    if(isLocationOccupiedByBreakableBlock(breakableBlocks, gridRightX, pGridY))
+    if(player->getDirection() == DIRECTION_RIGHT && isLocationOccupiedByBreakableBlock(breakableBlocks, gridRightX, pGridY))
     {
         return true;
     }
-    else if(isLocationOccupiedByBreakableBlock(breakableBlocks, gridLeftX, pGridY))
+    else if(player->getDirection() == DIRECTION_LEFT && isLocationOccupiedByBreakableBlock(breakableBlocks, gridLeftX, pGridY))
     {
         return true;
     }
-    else if(isLocationOccupiedByBreakableBlock(breakableBlocks, pGridX, gridTopY))
+    else if(player->getDirection() == DIRECTION_UP && isLocationOccupiedByBreakableBlock(breakableBlocks, pGridX, gridTopY))
     {
         return true;
     }
-    else if(isLocationOccupiedByBreakableBlock(breakableBlocks, pGridX, gridBottomY))
+    else if(player->getDirection() == DIRECTION_DOWN && isLocationOccupiedByBreakableBlock(breakableBlocks, pGridX, gridBottomY))
     {
         return true;
     }
@@ -321,51 +321,54 @@ bool PathFinder::shouldPlayerPlantBomb(std::vector<std::unique_ptr<BreakableBloc
     return false;
 }
 
-void PathFinder::initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
+void PathFinder::resetGameGrid()
 {
     for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
     {
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
-            game_grid[getGridCellIndexForCoords(j, i)] = 1;
+            game_grid[j][i] = 1;
         }
     }
-    
+}
+
+void PathFinder::initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
+{
     for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
     {
         int gridX = (*itr)->getGridX();
         int gridY = (*itr)->getGridY();
-        game_grid[getGridCellIndexForCoords(gridX, gridY)] = 9;
+        game_grid[gridX][gridY] = 9;
     }
     
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
     {
         int gridX = (*itr)->getGridX();
         int gridY = (*itr)->getGridY();
-        game_grid[getGridCellIndexForCoords(gridX, gridY)] = 9;
+        game_grid[gridX][gridY] = 9;
     }
     
     // For Map Borders
     
-    game_grid[getGridCellIndexForCoords(0, 0)] = 9;
-    game_grid[getGridCellIndexForCoords(1, 0)] = 9;
-    game_grid[getGridCellIndexForCoords(2, 0)] = 9;
-    game_grid[getGridCellIndexForCoords(0, 1)] = 9;
-    game_grid[getGridCellIndexForCoords(1, 1)] = 9;
-    game_grid[getGridCellIndexForCoords(2, 1)] = 9;
-    game_grid[getGridCellIndexForCoords(0, 2)] = 9;
-    game_grid[getGridCellIndexForCoords(1, 2)] = 9;
-    game_grid[getGridCellIndexForCoords(2, 2)] = 9;
+    game_grid[0][0] = 9;
+    game_grid[1][0] = 9;
+    game_grid[2][0] = 9;
+    game_grid[0][1] = 9;
+    game_grid[1][1] = 9;
+    game_grid[2][1] = 9;
+    game_grid[0][2] = 9;
+    game_grid[1][2] = 9;
+    game_grid[2][2] = 9;
     
-    game_grid[getGridCellIndexForCoords(NUM_GRID_CELLS_PER_ROW - 3, 0)] = 9;
-    game_grid[getGridCellIndexForCoords(NUM_GRID_CELLS_PER_ROW - 2, 0)] = 9;
-    game_grid[getGridCellIndexForCoords(NUM_GRID_CELLS_PER_ROW - 1, 0)] = 9;
-    game_grid[getGridCellIndexForCoords(NUM_GRID_CELLS_PER_ROW - 3, 1)] = 9;
-    game_grid[getGridCellIndexForCoords(NUM_GRID_CELLS_PER_ROW - 2, 1)] = 9;
-    game_grid[getGridCellIndexForCoords(NUM_GRID_CELLS_PER_ROW - 1, 1)] = 9;
-    game_grid[getGridCellIndexForCoords(NUM_GRID_CELLS_PER_ROW - 3, 2)] = 9;
-    game_grid[getGridCellIndexForCoords(NUM_GRID_CELLS_PER_ROW - 2, 2)] = 9;
-    game_grid[getGridCellIndexForCoords(NUM_GRID_CELLS_PER_ROW - 1, 2)] = 9;
+    game_grid[NUM_GRID_CELLS_PER_ROW - 3][0] = 9;
+    game_grid[NUM_GRID_CELLS_PER_ROW - 2][0] = 9;
+    game_grid[NUM_GRID_CELLS_PER_ROW - 1][0] = 9;
+    game_grid[NUM_GRID_CELLS_PER_ROW - 3][1] = 9;
+    game_grid[NUM_GRID_CELLS_PER_ROW - 2][1] = 9;
+    game_grid[NUM_GRID_CELLS_PER_ROW - 1][1] = 9;
+    game_grid[NUM_GRID_CELLS_PER_ROW - 3][2] = 9;
+    game_grid[NUM_GRID_CELLS_PER_ROW - 2][2] = 9;
+    game_grid[NUM_GRID_CELLS_PER_ROW - 1][2] = 9;
     
     using namespace std;
     cout << "game_grid size : (" << sizeof(game_grid) / sizeof(int) << ")" << endl;
@@ -373,12 +376,12 @@ void PathFinder::initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &
 
 void PathFinder::freeGameGridCell(int gridX, int gridY)
 {
-    game_grid[getGridCellIndexForCoords(gridX, gridY)] = 1;
+    game_grid[gridX][gridY] = 1;
 }
 
 void PathFinder::occupyGameGridCell(int gridX, int gridY)
 {
-    game_grid[getGridCellIndexForCoords(gridX, gridY)] = 9;
+    game_grid[gridX][gridY] = 9;
 }
 
 int PathFinder::getGridCellCost(int x, int y)
@@ -388,10 +391,5 @@ int PathFinder::getGridCellCost(int x, int y)
 		return 9;
 	}
     
-	return game_grid[getGridCellIndexForCoords(x, y)];
-}
-
-int PathFinder::getGridCellIndexForCoords(int x, int y)
-{
-    return ((GRID_CELL_NUM_ROWS - y - 1) * NUM_GRID_CELLS_PER_ROW) + x;
+	return game_grid[x][y];
 }

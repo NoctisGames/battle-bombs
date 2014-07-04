@@ -9,12 +9,8 @@
 #ifndef __bomberparty__PathFinder__
 #define __bomberparty__PathFinder__
 
-struct Node
-{
-    int x, y;
-};
-
 #include "GameConstants.h"
+#include "Node.h"
 #include <vector>
 
 class InsideBlock;
@@ -46,6 +42,10 @@ public:
     
     static bool shouldPlayerPlantBomb(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, PlayerDynamicGameObject *player);
     
+    int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS];
+    
+    void resetGameGrid();
+    
     void initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
     
     void freeGameGridCell(int gridX, int gridY);
@@ -53,12 +53,8 @@ public:
     void occupyGameGridCell(int gridX, int gridY);
     
     int getGridCellCost(int x, int y);
-    
-    int getGridCellIndexForCoords(int x, int y);
 
 private:
-    int game_grid[NUM_GRID_CELLS_PER_ROW * GRID_CELL_NUM_ROWS];
-    
     PathFinder() {}; // Constructor? (the {} brackets) are needed here.
     // Dont forget to declare these two. You want to make sure they
     // are unaccessable otherwise you may accidently get copies of
