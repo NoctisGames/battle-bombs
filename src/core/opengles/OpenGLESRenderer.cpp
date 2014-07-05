@@ -45,6 +45,7 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(4000, false));
     
     m_gameTexture = load_png_asset_into_texture("game.png");
+    m_interfaceTexture = load_png_asset_into_texture("interface.png");
     
     m_charBlackTexture = load_png_asset_into_texture("char_black.png");
     m_charBlueTexture = load_png_asset_into_texture("char_blue.png");
@@ -54,6 +55,11 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     m_charRedTexture = load_png_asset_into_texture("char_red.png");
     m_charWhiteTexture = load_png_asset_into_texture("char_white.png");
     m_charYellowTexture = load_png_asset_into_texture("char_yellow.png");
+}
+
+OpenGLESRenderer::~OpenGLESRenderer()
+{
+    cleanUp();
 }
 
 void OpenGLESRenderer::clearScreenWithColor(float r, float g, float b, float a)
@@ -189,7 +195,28 @@ void OpenGLESRenderer::renderInterface()
 {
     m_spriteBatcher->beginBatch();
     m_spriteBatcher->drawSprite(INTERFACE_OVERLAY_BACKGROUND_X, INTERFACE_OVERLAY_BACKGROUND_Y, INTERFACE_OVERLAY_BACKGROUND_WIDTH, INTERFACE_OVERLAY_BACKGROUND_HEIGHT, 0, Assets::getInterfaceOverlayTextureRegion());
-    m_spriteBatcher->endBatchWithTexture(m_gameTexture);
+    m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
+}
+
+void OpenGLESRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
+{
+    m_spriteBatcher->beginBatch();
+    for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
+    {
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            if(game_grid[j][i] == 1)
+            {
+                m_spriteBatcher->drawSprite(GAME_X + GRID_CELL_WIDTH * j + GRID_CELL_WIDTH / 2.0f, GAME_Y + GRID_CELL_HEIGHT * i + GRID_CELL_HEIGHT / 2.0f - m_fScrollY, GRID_CELL_WIDTH, GRID_CELL_HEIGHT, 0, Assets::getOneTextureRegion());
+            }
+            else
+            {
+                m_spriteBatcher->drawSprite(GAME_X + GRID_CELL_WIDTH * j + GRID_CELL_WIDTH / 2.0f, GAME_Y + GRID_CELL_HEIGHT * i + GRID_CELL_HEIGHT / 2.0f - m_fScrollY, GRID_CELL_WIDTH, GRID_CELL_HEIGHT, 0, Assets::getNineTextureRegion());
+            }
+        }
+    }
+    
+    m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
 }
 
 void OpenGLESRenderer::endFrame()
@@ -201,7 +228,16 @@ void OpenGLESRenderer::endFrame()
 
 void OpenGLESRenderer::cleanUp()
 {
-    // TODO
+    glDeleteTextures(1, &m_gameTexture);
+    glDeleteTextures(1, &m_interfaceTexture);
+    glDeleteTextures(1, &m_charBlackTexture);
+    glDeleteTextures(1, &m_charBlueTexture);
+    glDeleteTextures(1, &m_charGreenTexture);
+    glDeleteTextures(1, &m_charOrangeTexture);
+    glDeleteTextures(1, &m_charPinkTexture);
+    glDeleteTextures(1, &m_charRedTexture);
+    glDeleteTextures(1, &m_charWhiteTexture);
+    glDeleteTextures(1, &m_charYellowTexture);
 }
 
 #pragma mark <Private>

@@ -30,7 +30,9 @@ public:
     
     float getStateTime();
     
-    float isComplete();
+    short getPower();
+    
+    bool isComplete();
     
 private:
     std::vector<std::unique_ptr<Fire >> m_fireParts;

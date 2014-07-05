@@ -67,6 +67,20 @@ TextureRegion Assets::getInsideBlockTextureRegion()
     return insideBlockTextureRegion;
 }
 
+TextureRegion Assets::getNineTextureRegion()
+{
+    static TextureRegion insideBlockTextureRegion = TextureRegion(POWER_UP_ICON_FRAME_5_TEXTURE_REGION_X, POWER_UP_ICON_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_ICON_TEXTURE_REGION_WIDTH, POWER_UP_ICON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    return insideBlockTextureRegion;
+}
+
+TextureRegion Assets::getOneTextureRegion()
+{
+    static TextureRegion insideBlockTextureRegion = TextureRegion(POWER_UP_ICON_FRAME_1_TEXTURE_REGION_X, POWER_UP_ICON_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_ICON_TEXTURE_REGION_WIDTH, POWER_UP_ICON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    return insideBlockTextureRegion;
+}
+
 TextureRegion Assets::getBreakableBlockTextureRegion(BreakableBlock &breakableBlock)
 {
     if(breakableBlock.getBreakableBlockState() == NORMAL)

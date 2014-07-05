@@ -22,6 +22,7 @@
 #include <memory>
 #include <vector>
 #include "PowerUpType.h"
+#include "GameConstants.h"
 
 class GameObject;
 class TextureRegion;
@@ -56,6 +57,8 @@ public:
     virtual void renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear) = 0;
     
     virtual void renderInterface() = 0;
+    
+    virtual void renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]) = 0;
     
     virtual void endFrame() = 0;
 

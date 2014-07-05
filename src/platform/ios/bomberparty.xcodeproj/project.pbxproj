@@ -42,6 +42,8 @@
 		BB024B571955D99A0051C09E /* Fire.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB024B551955D99A0051C09E /* Fire.cpp */; };
 		BB06563C18E214B000076912 /* GameSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB06563A18E214B000076912 /* GameSession.cpp */; };
 		BB06563F18E24DA700076912 /* BreakableBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB06563D18E24DA700076912 /* BreakableBlock.cpp */; };
+		BB0CC4B61964F91600F770C4 /* PathFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0CC4B41964F91600F770C4 /* PathFinder.cpp */; };
+		BB0CC4B91964FAD100F770C4 /* MapSearchNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0CC4B71964FAD100F770C4 /* MapSearchNode.cpp */; };
 		BB16D96C191987B80034BE67 /* death.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB16D969191987B80034BE67 /* death.caf */; };
 		BB16D96D191987B80034BE67 /* explosion.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB16D96A191987B80034BE67 /* explosion.caf */; };
 		BB16D96E191987B80034BE67 /* plant_bomb.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB16D96B191987B80034BE67 /* plant_bomb.caf */; };
@@ -88,6 +90,8 @@
 		BB9D09AC19155C9E002CBFD3 /* bg_game.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB9D09AB19155C9E002CBFD3 /* bg_game.aifc */; };
 		BB9D93BE191FB4EC00AD9CCE /* PowerUp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */; };
 		BBA1CD531958B10A00AF2AD8 /* MapBorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */; };
+		BBB24BA219638A9300EF78B2 /* interface.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB24BA119638A9300EF78B2 /* interface.png */; };
+		BBB24BA51963AFFA00EF78B2 /* InterfaceOverlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */; };
 		BBBEC914194B425200AAB520 /* char_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBEC913194B425200AAB520 /* char_blue.png */; };
 		BBCCF55E193847A0000F509A /* BotPlayerDynamicGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */; };
 		BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32418BFC8E1003A4EED /* Logger.m */; };
@@ -152,6 +156,12 @@
 		BB06563B18E214B000076912 /* GameSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSession.h; sourceTree = "<group>"; };
 		BB06563D18E24DA700076912 /* BreakableBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BreakableBlock.cpp; sourceTree = "<group>"; };
 		BB06563E18E24DA700076912 /* BreakableBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BreakableBlock.h; sourceTree = "<group>"; };
+		BB0CC4B41964F91600F770C4 /* PathFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathFinder.cpp; sourceTree = "<group>"; };
+		BB0CC4B51964F91600F770C4 /* PathFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathFinder.h; sourceTree = "<group>"; };
+		BB0CC4B71964FAD100F770C4 /* MapSearchNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapSearchNode.cpp; sourceTree = "<group>"; };
+		BB0CC4B81964FAD100F770C4 /* MapSearchNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearchNode.h; sourceTree = "<group>"; };
+		BB0CC4BA1964FB5100F770C4 /* fsa.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fsa.h; sourceTree = "<group>"; };
+		BB0CC4BB1964FB6F00F770C4 /* stlastar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stlastar.h; sourceTree = "<group>"; };
 		BB16D969191987B80034BE67 /* death.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = death.caf; sourceTree = "<group>"; };
 		BB16D96A191987B80034BE67 /* explosion.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = explosion.caf; sourceTree = "<group>"; };
 		BB16D96B191987B80034BE67 /* plant_bomb.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = plant_bomb.caf; sourceTree = "<group>"; };
@@ -259,6 +269,9 @@
 		BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapBorder.cpp; sourceTree = "<group>"; };
 		BBA1CD521958B10A00AF2AD8 /* MapBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBorder.h; sourceTree = "<group>"; };
 		BBA1CD541958C8D700AF2AD8 /* MapBorderType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapBorderType.h; sourceTree = "<group>"; };
+		BBB24BA119638A9300EF78B2 /* interface.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = interface.png; sourceTree = "<group>"; };
+		BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InterfaceOverlay.cpp; sourceTree = "<group>"; };
+		BBB24BA41963AFFA00EF78B2 /* InterfaceOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterfaceOverlay.h; sourceTree = "<group>"; };
 		BBBEC913194B425200AAB520 /* char_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_blue.png; sourceTree = "<group>"; };
 		BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BotPlayerDynamicGameObject.cpp; sourceTree = "<group>"; };
 		BBCCF55D193847A0000F509A /* BotPlayerDynamicGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BotPlayerDynamicGameObject.h; sourceTree = "<group>"; };
@@ -278,6 +291,7 @@
 		BBE6F98819112D3E00062B8E /* Explosion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Explosion.cpp; sourceTree = "<group>"; };
 		BBE6F98919112D3E00062B8E /* Explosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Explosion.h; sourceTree = "<group>"; };
 		BBE6F98B1911301100062B8E /* FireType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FireType.h; sourceTree = "<group>"; };
+		BBED327B1966271D0023B758 /* Node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
 		BBF67CBF195C7AAB00587AB6 /* PlayerActionState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerActionState.h; sourceTree = "<group>"; };
 		BBF683EC1951509900EBD23E /* BreakableBlockState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BreakableBlockState.h; sourceTree = "<group>"; };
 		BBF7CC5C18CCA2B700B7CD15 /* DPadControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DPadControl.cpp; sourceTree = "<group>"; };
@@ -346,6 +360,7 @@
 				BBE6F98B1911301100062B8E /* FireType.h */,
 				BB96EEB318B99A6900F7C356 /* Font.cpp */,
 				BB96EEB418B99A6900F7C356 /* Font.h */,
+				BB0CC4BA1964FB5100F770C4 /* fsa.h */,
 				BB96EEB518B99A6900F7C356 /* GameButton.cpp */,
 				BB96EEB618B99A6900F7C356 /* GameButton.h */,
 				BB98977B1922C40400AFF579 /* GameConstants.h */,
@@ -363,6 +378,8 @@
 				BB34DC851925224F00E9AA8C /* GridGameObject.h */,
 				BB31AC9C18E05A6400E7369F /* InsideBlock.cpp */,
 				BB31AC9D18E05A6400E7369F /* InsideBlock.h */,
+				BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */,
+				BBB24BA41963AFFA00EF78B2 /* InterfaceOverlay.h */,
 				BB96EEBC18B99A6900F7C356 /* Line.cpp */,
 				BB96EEBD18B99A6900F7C356 /* Line.h */,
 				BB96EEBE18B99A6900F7C356 /* macros.h */,
@@ -372,6 +389,8 @@
 				BB96EEDC18B99A7100F7C356 /* opengles */,
 				BB96EEBF18B99A6900F7C356 /* OverlapTester.cpp */,
 				BB96EEC018B99A6900F7C356 /* OverlapTester.h */,
+				BB0CC4B41964F91600F770C4 /* PathFinder.cpp */,
+				BB0CC4B51964F91600F770C4 /* PathFinder.h */,
 				BB96EEC118B99A6900F7C356 /* pch.h */,
 				BBF67CBF195C7AAB00587AB6 /* PlayerActionState.h */,
 				BB1B8C7F18C8B13300C72D2D /* PlayerDynamicGameObject.cpp */,
@@ -384,6 +403,7 @@
 				BB96EEC418B99A6900F7C356 /* Renderer.cpp */,
 				BB96EEC518B99A6900F7C356 /* Renderer.h */,
 				BB9948E31936736600A8E599 /* ResourceConstants.h */,
+				BB0CC4BB1964FB6F00F770C4 /* stlastar.h */,
 				BB96EEC618B99A6900F7C356 /* TextureRegion.cpp */,
 				BB96EEC718B99A6900F7C356 /* TextureRegion.h */,
 				BB96EEC818B99A6900F7C356 /* TouchEvent.cpp */,
@@ -392,6 +412,9 @@
 				BB96EECB18B99A6900F7C356 /* Triangle.h */,
 				BB96EECC18B99A6900F7C356 /* Vector2D.cpp */,
 				BB96EECD18B99A6900F7C356 /* Vector2D.h */,
+				BB0CC4B71964FAD100F770C4 /* MapSearchNode.cpp */,
+				BB0CC4B81964FAD100F770C4 /* MapSearchNode.h */,
+				BBED327B1966271D0023B758 /* Node.h */,
 			);
 			name = core;
 			path = ../../core;
@@ -573,6 +596,7 @@
 				BB16D969191987B80034BE67 /* death.caf */,
 				BB16D96A191987B80034BE67 /* explosion.caf */,
 				BB82641118C3025900A24A7C /* game.png */,
+				BBB24BA119638A9300EF78B2 /* interface.png */,
 				BB16D96B191987B80034BE67 /* plant_bomb.caf */,
 			);
 			path = assets;
@@ -639,6 +663,7 @@
 				0ADF1886178E2185005DA99E /* InfoPlist.strings in Resources */,
 				BBDE14B8195A2D7400A91FD7 /* char_white.png in Resources */,
 				BBDE14B7195A2D7400A91FD7 /* char_red.png in Resources */,
+				BBB24BA219638A9300EF78B2 /* interface.png in Resources */,
 				0ADF188E178E2185005DA99E /* Default.png in Resources */,
 				BB82641218C3025900A24A7C /* game.png in Resources */,
 				BBDE14B6195A2D7400A91FD7 /* char_pink.png in Resources */,
@@ -699,6 +724,7 @@
 				BB9948E219366E2900A8E599 /* GameListener.cpp in Sources */,
 				BB96EEF018B99A7100F7C356 /* OpenGLESGameScreen.cpp in Sources */,
 				0A8FBF81179E07320039BA29 /* pngread.c in Sources */,
+				BBB24BA51963AFFA00EF78B2 /* InterfaceOverlay.cpp in Sources */,
 				BB34DC89192523C000E9AA8C /* DynamicGridGameObject.cpp in Sources */,
 				BB96EED518B99A6900F7C356 /* OverlapTester.cpp in Sources */,
 				BB600760192958CB008C11CC /* ActiveButton.cpp in Sources */,
@@ -716,6 +742,7 @@
 				BB96EEEF18B99A7100F7C356 /* image.c in Sources */,
 				BB96EED818B99A6900F7C356 /* TextureRegion.cpp in Sources */,
 				BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */,
+				BB0CC4B91964FAD100F770C4 /* MapSearchNode.cpp in Sources */,
 				BB96EED618B99A6900F7C356 /* Rectangle.cpp in Sources */,
 				0A8FBF86179E07320039BA29 /* pngtrans.c in Sources */,
 				BB31AC9E18E05A6400E7369F /* InsideBlock.cpp in Sources */,
@@ -729,6 +756,7 @@
 				BB96EED218B99A6900F7C356 /* GameObject.cpp in Sources */,
 				BB9139C918BEFCC800E51FB5 /* MainViewController.m in Sources */,
 				0A8FBF8A179E07320039BA29 /* pngwutil.c in Sources */,
+				BB0CC4B61964F91600F770C4 /* PathFinder.cpp in Sources */,
 				BB024B571955D99A0051C09E /* Fire.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -836,8 +864,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Stephen Gowen (8S5X8SQ245)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stephen Gowen (8S5X8SQ245)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty\"/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -862,7 +890,7 @@
 					"-ObjC\n",
 				);
 				PRODUCT_NAME = "Bomber Party";
-				PROVISIONING_PROFILE = "732A0194-683F-4A79-B1A7-A323AB68CCD9";
+				PROVISIONING_PROFILE = "8EAF4C1E-601A-4C75-93B0-2E536D47D686";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
@@ -873,8 +901,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Stephen Gowen (83V22B9TY9)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Stephen Gowen (83V22B9TY9)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty\"/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -898,7 +926,7 @@
 					"-ObjC\n",
 				);
 				PRODUCT_NAME = "Bomber Party";
-				PROVISIONING_PROFILE = "732A0194-683F-4A79-B1A7-A323AB68CCD9";
+				PROVISIONING_PROFILE = "8EAF4C1E-601A-4C75-93B0-2E536D47D686";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;

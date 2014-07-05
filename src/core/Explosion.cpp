@@ -144,7 +144,12 @@ float Explosion::getStateTime()
     return m_fStateTime;
 }
 
-float Explosion::isComplete()
+short Explosion::getPower()
+{
+    return m_sPower;
+}
+
+bool Explosion::isComplete()
 {
     return m_isComplete;
 }

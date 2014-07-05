@@ -20,6 +20,7 @@
 #include "PowerUp.h"
 #include "PlayerDynamicGameObject.h"
 #include "BotPlayerDynamicGameObject.h"
+#include "MapSearchNode.h"
 #include "GameListener.h"
 #include "Renderer.h"
 #include "Fire.h"
@@ -27,6 +28,7 @@
 #include "MapBorder.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
+#include "PathFinder.h"
 
 GameScreen::GameScreen(const char *username) : GameSession()
 {
@@ -140,6 +142,7 @@ void GameScreen::present()
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderInterface();
+            m_renderer->renderGameGrid(PathFinder::getInstance().game_grid);
             
             m_renderer->endFrame();
             break;
@@ -437,6 +440,9 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         clientUpdate(d, isBeginGame);
         
         handleBreakableBlocksArrayInDocument(d);
+        
+        PathFinder::getInstance().resetGameGrid();
+        PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks);
         
         Assets::getInstance()->setMusicId(MUSIC_PLAY);
     }
