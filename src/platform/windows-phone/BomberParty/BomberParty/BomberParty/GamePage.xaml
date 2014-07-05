@@ -15,7 +15,7 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Black">
-        <DrawingSurface x:Name="DrawingSurface" Loaded="DrawingSurface_Loaded" />
+        <DrawingSurfaceBackgroundGrid x:Name="DrawingSurface" Loaded="DrawingSurface_Loaded" />
     </Grid>
 
 </phone:PhoneApplicationPage>
