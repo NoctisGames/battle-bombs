@@ -12,6 +12,7 @@
 #include "GameConstants.h"
 #include "Node.h"
 #include <vector>
+#include <memory>
 
 class InsideBlock;
 class BombGameObject;
@@ -27,6 +28,8 @@ public:
         static PathFinder instance; // Guaranteed to be destroyed.
         return instance;
     }
+    
+    static bool isLocationOccupiedByInsideBlock(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, int gridX, int gridY);
     
     static bool isLocationOccupiedByBreakableBlock(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int gridX, int gridY);
     

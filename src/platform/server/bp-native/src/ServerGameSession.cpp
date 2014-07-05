@@ -25,6 +25,7 @@
 #include "BreakableBlock.h" 
 #include "Fire.h"
 #include "PathFinder.h"
+#include "MapSearchNode.h"
 
 //For RNG purposes
 #include <stdlib.h>

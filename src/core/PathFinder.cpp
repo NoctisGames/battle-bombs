@@ -15,6 +15,19 @@
 #include "Vector2D.h"
 #include <iostream>
 
+bool isLocationOccupiedByInsideBlock(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, int gridX, int gridY)
+{
+    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
+    {
+        if (gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY())
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 bool PathFinder::isLocationOccupiedByBreakableBlock(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int gridX, int gridY)
 {
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
