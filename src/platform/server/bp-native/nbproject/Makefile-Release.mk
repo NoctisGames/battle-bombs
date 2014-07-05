@@ -48,7 +48,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/32229614/InsideBlock.o \
 	${OBJECTDIR}/_ext/32229614/Line.o \
 	${OBJECTDIR}/_ext/32229614/MapBorder.o \
+	${OBJECTDIR}/_ext/32229614/MapSearchNode.o \
 	${OBJECTDIR}/_ext/32229614/OverlapTester.o \
+	${OBJECTDIR}/_ext/32229614/PathFinder.o \
 	${OBJECTDIR}/_ext/32229614/PlayerDynamicGameObject.o \
 	${OBJECTDIR}/_ext/32229614/PowerUp.o \
 	${OBJECTDIR}/_ext/32229614/Rectangle.o \
@@ -148,10 +150,20 @@ ${OBJECTDIR}/_ext/32229614/MapBorder.o: ../../../core/MapBorder.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/MapBorder.o ../../../core/MapBorder.cpp
 
+${OBJECTDIR}/_ext/32229614/MapSearchNode.o: ../../../core/MapSearchNode.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/MapSearchNode.o ../../../core/MapSearchNode.cpp
+
 ${OBJECTDIR}/_ext/32229614/OverlapTester.o: ../../../core/OverlapTester.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/OverlapTester.o ../../../core/OverlapTester.cpp
+
+${OBJECTDIR}/_ext/32229614/PathFinder.o: ../../../core/PathFinder.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/PathFinder.o ../../../core/PathFinder.cpp
 
 ${OBJECTDIR}/_ext/32229614/PlayerDynamicGameObject.o: ../../../core/PlayerDynamicGameObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/32229614

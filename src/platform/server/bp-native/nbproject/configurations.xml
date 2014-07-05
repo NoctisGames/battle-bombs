@@ -23,7 +23,9 @@
       <itemPath>../../../core/Line.h</itemPath>
       <itemPath>../../../core/MapBorder.h</itemPath>
       <itemPath>../../../core/MapBorderType.h</itemPath>
+      <itemPath>../../../core/MapSearchNode.h</itemPath>
       <itemPath>../../../core/OverlapTester.h</itemPath>
+      <itemPath>../../../core/PathFinder.h</itemPath>
       <itemPath>../../../core/PlayerDynamicGameObject.h</itemPath>
       <itemPath>../../../core/PlayerState.h</itemPath>
       <itemPath>../../../core/PowerUp.h</itemPath>
@@ -34,8 +36,10 @@
       <itemPath>src/ServerGameSession.h</itemPath>
       <itemPath>../../../core/Triangle.h</itemPath>
       <itemPath>../../../core/Vector2D.h</itemPath>
+      <itemPath>../../../core/fsa.h</itemPath>
       <itemPath>../../../core/macros.h</itemPath>
       <itemPath>../../../core/pch.h</itemPath>
+      <itemPath>../../../core/stlastar.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -58,7 +62,9 @@
       <itemPath>../../../core/InsideBlock.cpp</itemPath>
       <itemPath>../../../core/Line.cpp</itemPath>
       <itemPath>../../../core/MapBorder.cpp</itemPath>
+      <itemPath>../../../core/MapSearchNode.cpp</itemPath>
       <itemPath>../../../core/OverlapTester.cpp</itemPath>
+      <itemPath>../../../core/PathFinder.cpp</itemPath>
       <itemPath>../../../core/PlayerDynamicGameObject.cpp</itemPath>
       <itemPath>../../../core/PowerUp.cpp</itemPath>
       <itemPath>../../../core/Rectangle.cpp</itemPath>
@@ -197,9 +203,17 @@
       </item>
       <item path="../../../core/MapBorderType.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/MapSearchNode.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/MapSearchNode.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/OverlapTester.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/OverlapTester.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/PathFinder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/PathFinder.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/PlayerDynamicGameObject.cpp"
             ex="false"
@@ -235,9 +249,13 @@
       </item>
       <item path="../../../core/Vector2D.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/fsa.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/macros.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/pch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/stlastar.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/GameListener.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -362,9 +380,17 @@
       </item>
       <item path="../../../core/MapBorderType.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/MapSearchNode.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/MapSearchNode.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/OverlapTester.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/OverlapTester.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/PathFinder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/PathFinder.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/PlayerDynamicGameObject.cpp"
             ex="false"
@@ -400,9 +426,13 @@
       </item>
       <item path="../../../core/Vector2D.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/fsa.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/macros.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/pch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/stlastar.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/GameListener.cpp" ex="false" tool="1" flavor2="0">
       </item>
