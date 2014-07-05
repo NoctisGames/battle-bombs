@@ -386,6 +386,9 @@
 				BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */,
 				BBA1CD521958B10A00AF2AD8 /* MapBorder.h */,
 				BBA1CD541958C8D700AF2AD8 /* MapBorderType.h */,
+				BB0CC4B71964FAD100F770C4 /* MapSearchNode.cpp */,
+				BB0CC4B81964FAD100F770C4 /* MapSearchNode.h */,
+				BBED327B1966271D0023B758 /* Node.h */,
 				BB96EEDC18B99A7100F7C356 /* opengles */,
 				BB96EEBF18B99A6900F7C356 /* OverlapTester.cpp */,
 				BB96EEC018B99A6900F7C356 /* OverlapTester.h */,
@@ -412,9 +415,6 @@
 				BB96EECB18B99A6900F7C356 /* Triangle.h */,
 				BB96EECC18B99A6900F7C356 /* Vector2D.cpp */,
 				BB96EECD18B99A6900F7C356 /* Vector2D.h */,
-				BB0CC4B71964FAD100F770C4 /* MapSearchNode.cpp */,
-				BB0CC4B81964FAD100F770C4 /* MapSearchNode.h */,
-				BBED327B1966271D0023B758 /* Node.h */,
 			);
 			name = core;
 			path = ../../core;

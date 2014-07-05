@@ -137,13 +137,13 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
                     else if(m_currentPathType == 1)
                     {
                         cout << "We have reached the end of the path, type is 1" << endl;
-                        m_exploredPath.clear();
                         m_fActionTime = 0;
-                        m_fWaitTime = 2.8f;
+                        m_fWaitTime = 2.9f - (m_currentPath.size() * 0.1f) + (m_firePower * 0.15f);
                         m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
                     }
                     
                     m_playerTarget = nullptr;
+                    m_exploredPath.clear();
                     m_currentPath.clear();
                     m_currentPathIndex = 0;
                     m_currentPathType = 0;
@@ -157,12 +157,27 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
                 }
                 else
                 {
+                    bool bombDropped = false;
+                    // Run this code regardless of whether or not the bot is pursuing a target
+                    if(m_currentPathType != 1 && PathFinder::shouldPlayerPlantBomb(breakableBlocks, players, this))
+                    {
+                        cout << "Bot wants to plant bomb" << endl;
+                        
+                        // TODO, only drop bomb if bot is able to escape it
+                        
+                        if(isAbleToDropAdditionalBomb(players, bombs))
+                        {
+                            bombDropped = true;
+                            m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+                        }
+                    }
+                    
                     if(m_gridX == m_currentPath.at(m_currentPathIndex)->x && m_gridY == m_currentPath.at(m_currentPathIndex)->y)
                     {
                         cout << "Node position reached : (" << m_gridX << ", " << m_gridY << ")" << endl;
                         m_currentPathIndex++;
                     }
-                    else
+                    else if(!bombDropped)
                     {
                         if(m_gridX < m_currentPath.at(m_currentPathIndex)->x && m_gridY == m_currentPath.at(m_currentPathIndex)->y)
                         {
@@ -183,19 +198,6 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
                         {
                             cout << "Moving Down" << endl;
                             moveInDirection(DIRECTION_DOWN);
-                        }
-                    }
-                    
-                    // Run this code regardless of whether or not the bot is pursuing a target
-                    if(m_currentPathType != 1 && PathFinder::shouldPlayerPlantBomb(breakableBlocks, players, this))
-                    {
-                        cout << "Bot wants to plant bomb" << endl;
-                        
-                        // TODO, only drop bomb if bot is able to escape it
-                        
-                        if(isAbleToDropAdditionalBomb(players, bombs))
-                        {
-                            m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
                         }
                     }
                 }

@@ -20,6 +20,8 @@ protected:
 public:
     DynamicGridGameObject(int gridX, int gridY, float width, float height, float angle);
     
+    virtual Rectangle & getBoundsForGridLogic();
+    
     void updateGrid();
     
     int getGridX();

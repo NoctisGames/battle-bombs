@@ -23,6 +23,7 @@
 
 PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
 {
+    m_gridBounds = std::unique_ptr<Rectangle>(new Rectangle(m_position->getX() - GRID_CELL_WIDTH * 2 / 5, m_position->getY() - GRID_CELL_HEIGHT * 2 / 5, GRID_CELL_WIDTH * 4 / 5, GRID_CELL_HEIGHT * 4 / 5));
     resetBounds(width * 5 / 32, height / 12);
 
     lastBombDropped = nullptr;
@@ -324,6 +325,14 @@ void PlayerDynamicGameObject::updateBounds()
 {
     Vector2D &lowerLeft = m_bounds->getLowerLeft();
     lowerLeft.set(getPosition().getX() - getWidth() * 5 / 64, getPosition().getY() - getHeight() / 4);
+    
+    Vector2D &lowerLeftGrid = m_gridBounds->getLowerLeft();
+    lowerLeftGrid.set(m_position->getX() - m_gridBounds->getWidth() / 2, m_position->getY() - m_gridBounds->getHeight() / 2);
+}
+
+Rectangle & PlayerDynamicGameObject::getBoundsForGridLogic()
+{
+    return *m_gridBounds;
 }
 
 bool PlayerDynamicGameObject::isBot()

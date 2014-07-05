@@ -18,12 +18,17 @@ DynamicGridGameObject::DynamicGridGameObject(int gridX, int gridY, float width, 
     m_gridY = gridY;
 }
 
+Rectangle & DynamicGridGameObject::getBoundsForGridLogic()
+{
+    return *m_bounds;
+}
+
 void DynamicGridGameObject::updateGrid()
 {
-    float boundsLeftX = m_bounds->getLowerLeft().getX();
-    float boundsRightX = m_bounds->getLowerLeft().getX() + m_bounds->getWidth();
-    float boundsBottomY = m_bounds->getLowerLeft().getY();
-    float boundsTopY = m_bounds->getLowerLeft().getY() + m_bounds->getHeight();
+    float boundsLeftX = getBoundsForGridLogic().getLowerLeft().getX();
+    float boundsRightX = getBoundsForGridLogic().getLowerLeft().getX() + getBoundsForGridLogic().getWidth();
+    float boundsBottomY = getBoundsForGridLogic().getLowerLeft().getY();
+    float boundsMiddleY = getBoundsForGridLogic().getLowerLeft().getY() + getBoundsForGridLogic().getHeight() / 2;
     
     for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
     {
@@ -34,7 +39,7 @@ void DynamicGridGameObject::updateGrid()
             float bottomY = GAME_Y + GRID_CELL_HEIGHT * i;
             float topY = GAME_Y + GRID_CELL_HEIGHT * (i + 1);
             
-            if (boundsLeftX > leftX && boundsRightX < rightX && boundsBottomY > bottomY && boundsTopY < topY)
+            if (boundsLeftX > leftX && boundsRightX < rightX && boundsBottomY > bottomY && boundsMiddleY < topY)
             {
                 m_gridX = j;
                 m_gridY = i;

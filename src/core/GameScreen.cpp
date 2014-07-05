@@ -142,7 +142,7 @@ void GameScreen::present()
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderInterface();
-            m_renderer->renderGameGrid(PathFinder::getInstance().game_grid);
+//            m_renderer->renderGameGrid(PathFinder::getInstance().game_grid);
             
             m_renderer->endFrame();
             break;
