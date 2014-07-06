@@ -174,6 +174,8 @@ void ServerGameSession::update(float deltaTime)
             else if (eventType == BEGIN_GAME)
             {
                 m_gameState = RUNNING;
+                PathFinder::getInstance().resetGameGrid();
+                PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks);
             }
         }
     }
