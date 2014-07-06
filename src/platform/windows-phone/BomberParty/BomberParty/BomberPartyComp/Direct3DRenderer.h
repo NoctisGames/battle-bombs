@@ -38,6 +38,8 @@ public:
 
 	virtual void renderInterface();
 
+	virtual void renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]);
+
 	virtual void endFrame();
 
 	virtual void cleanUp();

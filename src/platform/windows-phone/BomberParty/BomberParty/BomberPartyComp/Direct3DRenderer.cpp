@@ -230,6 +230,25 @@ void Direct3DRenderer::renderInterface()
 	m_spriteBatch->End();
 }
 
+void Direct3DRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
+{
+	m_spriteBatch->Begin();
+	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
+	{
+		for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+		{
+			if (game_grid[j][i] == 1)
+			{
+				m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(GAME_X + GRID_CELL_WIDTH * j + GRID_CELL_WIDTH / 2.0f, GAME_Y + GRID_CELL_HEIGHT * i + GRID_CELL_HEIGHT / 2.0f - m_fScrollY, GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false), &Assets::getOneTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+			}
+			else
+			{
+				m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(GAME_X + GRID_CELL_WIDTH * j + GRID_CELL_WIDTH / 2.0f, GAME_Y + GRID_CELL_HEIGHT * i + GRID_CELL_HEIGHT / 2.0f - m_fScrollY, GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false), &Assets::getNineTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+			}
+		}
+	}m_spriteBatch->End();
+}
+
 void Direct3DRenderer::endFrame()
 {
 	// Not Needed Yet
