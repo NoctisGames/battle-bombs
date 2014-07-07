@@ -139,6 +139,11 @@ void GameSession::updateCommon(float deltaTime)
         }
         else
         {
+            if ((**itr).getBreakableBlockState() == EXPLODING)
+            {
+                PathFinder::getInstance().freeGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
+            }
+            
             itr++;
         }
     }
