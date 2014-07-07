@@ -39,6 +39,13 @@ BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, int gr
 	m_playerTarget = nullptr;
 }
 
+BotPlayerDynamicGameObject::~BotPlayerDynamicGameObject()
+{
+	m_currentPath.clear();
+	m_exploredPath.clear();
+	m_badBombEscapeNodes.clear();
+}
+
 void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
 	PlayerDynamicGameObject::update(deltaTime, mapBorders, insideBlocks, breakableBlocks, powerUps, explosions, players, bombs);
@@ -55,7 +62,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 			if (m_currentPathType == 2 && isProposedNodeUnexplored(m_gridX, m_gridY))
 			{
 				cout << "isProposedNodeUnexplored = true" << endl;
-				m_exploredPath.push_back(std::unique_ptr<Node>(new Node(m_gridX, m_gridY)));
+				m_exploredPath.push_back(Node(m_gridX, m_gridY));
 			}
 
 			if (m_currentPathType != 1)
@@ -101,7 +108,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 						else
 						{
 							cout << "calculatePathTo Safe Node is bad" << endl;
-							m_badBombEscapeNodes.push_back(std::unique_ptr<Node>(new Node(currentNode.x, currentNode.y)));
+							m_badBombEscapeNodes.push_back(Node(currentNode.x, currentNode.y));
 						}
 
 						m_currentPathType = 1;
@@ -148,7 +155,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 					m_currentPathIndex = 0;
 					m_currentPathType = 0;
 				}
-				else if (m_currentPathType != 1 && m_currentPathIndex < (m_currentPath.size() - 1) && PathFinder::getInstance().isLocationOccupiedByBombOrExplosionPath(bombs, explosions, m_currentPath.at(m_currentPathIndex)->x, m_currentPath.at(m_currentPathIndex)->y))
+				else if (m_currentPathType != 1 && m_currentPathIndex < (m_currentPath.size() - 1) && PathFinder::getInstance().isLocationOccupiedByBombOrExplosionPath(bombs, explosions, m_currentPath.at(m_currentPathIndex).x, m_currentPath.at(m_currentPathIndex).y))
 				{
 					cout << "Stopping the player from moving due to bomb" << endl;
 					m_fActionTime = 0;
@@ -172,29 +179,29 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 						}
 					}
 
-					if (m_gridX == m_currentPath.at(m_currentPathIndex)->x && m_gridY == m_currentPath.at(m_currentPathIndex)->y)
+					if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
 					{
 						cout << "Node position reached : (" << m_gridX << ", " << m_gridY << ")" << endl;
 						m_currentPathIndex++;
 					}
 					else if (!bombDropped)
 					{
-						if (m_gridX < m_currentPath.at(m_currentPathIndex)->x && m_gridY == m_currentPath.at(m_currentPathIndex)->y)
+						if (m_gridX < m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
 						{
 							cout << "Moving Right" << endl;
 							moveInDirection(DIRECTION_RIGHT);
 						}
-						else if (m_gridX == m_currentPath.at(m_currentPathIndex)->x && m_gridY < m_currentPath.at(m_currentPathIndex)->y)
+						else if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY < m_currentPath.at(m_currentPathIndex).y)
 						{
 							cout << "Moving Up" << endl;
 							moveInDirection(DIRECTION_UP);
 						}
-						else if (m_gridX > m_currentPath.at(m_currentPathIndex)->x && m_gridY == m_currentPath.at(m_currentPathIndex)->y)
+						else if (m_gridX > m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
 						{
 							cout << "Moving Left" << endl;
 							moveInDirection(DIRECTION_LEFT);
 						}
-						else if (m_gridX == m_currentPath.at(m_currentPathIndex)->x && m_gridY > m_currentPath.at(m_currentPathIndex)->y)
+						else if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY > m_currentPath.at(m_currentPathIndex).y)
 						{
 							cout << "Moving Down" << endl;
 							moveInDirection(DIRECTION_DOWN);
@@ -331,7 +338,7 @@ bool BotPlayerDynamicGameObject::calculatePathToTarget(int x, int y)
 			}
 
 			node->PrintNodeInfo();
-			m_currentPath.push_back(std::unique_ptr<MapSearchNode>(new MapSearchNode(node->x, node->y)));
+			m_currentPath.push_back(MapSearchNode(node->x, node->y));
 			steps++;
 		};
 
@@ -459,9 +466,9 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 
 bool BotPlayerDynamicGameObject::isProposedNodeUnexplored(int x, int y)
 {
-	for (std::vector<std::unique_ptr<Node>>::iterator itr = m_exploredPath.begin(); itr != m_exploredPath.end(); itr++)
+	for (std::vector<Node>::iterator itr = m_exploredPath.begin(); itr != m_exploredPath.end(); itr++)
 	{
-		if ((*itr)->x == x && (*itr)->y == y)
+		if ((*itr).x == x && (*itr).y == y)
 		{
 			return false;
 		}
