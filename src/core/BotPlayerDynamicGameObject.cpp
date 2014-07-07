@@ -145,7 +145,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 					{
 						cout << "We have reached the end of the path, type is 1" << endl;
 						m_fActionTime = 0;
-						m_fWaitTime = 2.9f - (m_currentPath.size() * 0.1f) + (m_firePower * 0.15f);
+						m_fWaitTime = 3.2f - (m_currentPath.size() * 0.1f) + (m_firePower * 0.2f);
 						m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
 					}
 
@@ -316,6 +316,7 @@ bool BotPlayerDynamicGameObject::calculatePathToTarget(int x, int y)
 #endif
 	} while (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING);
 
+    bool isSuccess = false;
 	if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED)
 	{
 		cout << "Search found goal state\n";
@@ -346,10 +347,14 @@ bool BotPlayerDynamicGameObject::calculatePathToTarget(int x, int y)
 
 		// Once you're done with the solution you can free the nodes up
 		astarsearch.FreeSolutionNodes();
+        
+        isSuccess = steps > 0;
 	}
 	else if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED)
 	{
 		cout << "Search terminated. Did not find goal state\n";
+        
+        isSuccess = false;
 	}
 
 	// Display the number of loops the search went through
@@ -357,7 +362,7 @@ bool BotPlayerDynamicGameObject::calculatePathToTarget(int x, int y)
 
 	astarsearch.EnsureMemoryFreed();
 
-	return SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED;
+	return isSuccess;
 }
 
 void BotPlayerDynamicGameObject::moveInDirection(int direction)

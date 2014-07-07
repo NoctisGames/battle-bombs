@@ -83,7 +83,6 @@ protected:
     BombGameObject *lastBombDropped;
     Player_State m_playerState;
     Player_Action_State m_playerActionState;
-    std::unique_ptr<Rectangle> m_gridBounds;
     float m_fStateTime;
     float m_fSpeed;
     int m_iDirection;

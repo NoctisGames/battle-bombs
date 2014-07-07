@@ -296,6 +296,13 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 
 void GameScreen::updateSpectating(float deltaTime)
 {
+    std::vector<short> localConsumedEventIds = m_gameListener->freeLocalEventIds();
+    
+    for (std::vector<short>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)
+	{
+        handlePlayerEvent((*itr));
+	}
+    
     for (std::vector<short>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
     {
         handlePlayerEvent((*itr));
