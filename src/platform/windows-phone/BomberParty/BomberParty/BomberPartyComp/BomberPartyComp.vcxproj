@@ -172,6 +172,7 @@
     <ClInclude Include="..\..\..\..\..\core\Fire.h" />
     <ClInclude Include="..\..\..\..\..\core\FireType.h" />
     <ClInclude Include="..\..\..\..\..\core\Font.h" />
+    <ClInclude Include="..\..\..\..\..\core\fsa.h" />
     <ClInclude Include="..\..\..\..\..\core\GameButton.h" />
     <ClInclude Include="..\..\..\..\..\core\GameConstants.h" />
     <ClInclude Include="..\..\..\..\..\core\GameEvent.h" />
@@ -182,11 +183,15 @@
     <ClInclude Include="..\..\..\..\..\core\GameState.h" />
     <ClInclude Include="..\..\..\..\..\core\GridGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\InsideBlock.h" />
+    <ClInclude Include="..\..\..\..\..\core\InterfaceOverlay.h" />
     <ClInclude Include="..\..\..\..\..\core\Line.h" />
     <ClInclude Include="..\..\..\..\..\core\macros.h" />
     <ClInclude Include="..\..\..\..\..\core\MapBorder.h" />
     <ClInclude Include="..\..\..\..\..\core\MapBorderType.h" />
+    <ClInclude Include="..\..\..\..\..\core\MapSearchNode.h" />
+    <ClInclude Include="..\..\..\..\..\core\Node.h" />
     <ClInclude Include="..\..\..\..\..\core\OverlapTester.h" />
+    <ClInclude Include="..\..\..\..\..\core\PathFinder.h" />
     <ClInclude Include="..\..\..\..\..\core\pch.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerActionState.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerDynamicGameObject.h" />
@@ -194,6 +199,7 @@
     <ClInclude Include="..\..\..\..\..\core\Rectangle.h" />
     <ClInclude Include="..\..\..\..\..\core\Renderer.h" />
     <ClInclude Include="..\..\..\..\..\core\ResourceConstants.h" />
+    <ClInclude Include="..\..\..\..\..\core\stlastar.h" />
     <ClInclude Include="..\..\..\..\..\core\TextureRegion.h" />
     <ClInclude Include="..\..\..\..\..\core\TouchEvent.h" />
     <ClInclude Include="..\..\..\..\..\core\Triangle.h" />
@@ -233,9 +239,12 @@
     <ClCompile Include="..\..\..\..\..\core\GameSession.cpp" />
     <ClCompile Include="..\..\..\..\..\core\GridGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\InsideBlock.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\InterfaceOverlay.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Line.cpp" />
     <ClCompile Include="..\..\..\..\..\core\MapBorder.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\MapSearchNode.cpp" />
     <ClCompile Include="..\..\..\..\..\core\OverlapTester.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\PathFinder.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PlayerDynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PowerUp.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Rectangle.cpp" />

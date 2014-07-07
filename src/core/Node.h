@@ -12,6 +12,11 @@
 struct Node
 {
     int x, y;
+
+	Node(int xIn, int yIn) : x(xIn), y(yIn)
+	{
+		// Empty
+	}
 };
 
 #endif

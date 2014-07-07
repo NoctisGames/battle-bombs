@@ -42,6 +42,7 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 
 	// Initialize Textures
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\game.dds", NULL, &m_gameShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
@@ -232,6 +233,8 @@ void Direct3DRenderer::renderInterface()
 
 void Direct3DRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
 {
+	m_currentShaderResourceView = m_interfaceShaderResourceView;
+
 	m_spriteBatch->Begin();
 	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
 	{
