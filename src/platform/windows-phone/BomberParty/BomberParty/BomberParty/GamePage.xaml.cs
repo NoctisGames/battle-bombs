@@ -317,6 +317,11 @@ namespace BomberParty
                 Debug.WriteLine("onGetLiveRoomInfoDone");
             }
 
+            public void onInvokeRoomRPCDone(RPCEvent rpcEvent)
+            {
+                Debug.WriteLine("onInvokeRoomRPCDone");
+            }
+
             public void onJoinRoomDone(RoomEvent eventObj)
             {
                 Debug.WriteLine("onJoinRoomDone");
@@ -395,6 +400,11 @@ namespace BomberParty
             public void onGetOnlineUsersDone(AllUsersEvent eventObj)
             {
                 Debug.WriteLine("onGetOnlineUsersDone");
+            }
+
+            public void onInvokeZoneRPCDone(RPCEvent rpcEvent)
+            {
+                Debug.WriteLine("onInvokeZoneRPCDone");
             }
 
             public void onSetCustomUserDataDone(LiveUserInfoEvent eventObj)

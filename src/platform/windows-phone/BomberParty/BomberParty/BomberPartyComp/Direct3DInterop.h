@@ -60,6 +60,7 @@ namespace BomberPartyComp
 		Direct3DBase^ m_direct3DBase;
 		BasicTimer^ m_timer;
 		Windows::Foundation::Size m_renderResolution;
+		bool m_isOnline;
 
 		void pushEvents();
 

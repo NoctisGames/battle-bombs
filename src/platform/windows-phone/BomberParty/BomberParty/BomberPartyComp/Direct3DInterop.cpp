@@ -23,6 +23,7 @@ namespace BomberPartyComp
 		const char *usernameCharArray = fooA.c_str();
 
 		m_gameScreen = std::unique_ptr<Direct3DGameScreen>(new Direct3DGameScreen(usernameCharArray, (int)NativeResolution.Width, (int)NativeResolution.Height));
+		m_isOnline = !username->Equals("Player_Offline");
 
 		ComPtr<Direct3DContentProvider> provider = Make<Direct3DContentProvider>(this);
 		return reinterpret_cast<IDrawingSurfaceContentProvider^>(provider.Get());
@@ -157,44 +158,47 @@ namespace BomberPartyComp
 
 	void Direct3DInterop::pushEvents()
 	{
-		short eventId = m_gameScreen->popOldestEventId();
-		if (eventId > 0)
+		if (m_isOnline)
 		{
-			Platform::String^ eventsMessage = eventId + ",";
-			while ((eventId = m_gameScreen->popOldestEventId()) > 0)
+			short eventId = m_gameScreen->popOldestEventId();
+			if (eventId > 0)
 			{
-				eventsMessage += eventId + ",";
+				Platform::String^ eventsMessage = eventId + ",";
+				while ((eventId = m_gameScreen->popOldestEventId()) > 0)
+				{
+					eventsMessage += eventId + ",";
+				}
+
+				eventsMessage += "0"; // Terminate with 0
+
+				static Platform::String^ EVENT_TYPE = "eventType";
+				static int CLIENT_UPDATE = 1338;
+				static Platform::String^ EVENTS = "events";
+
+				static Platform::String^ PLAYER_INDEX = "playerIndex";
+				static Platform::String^ X = "X";
+				static Platform::String^ Y = "Y";
+				static Platform::String^ DIRECTION = "Direction";
+
+				int playerIndex = m_gameScreen->getPlayerIndex();
+				Platform::String^ clientUpdate = "{";
+				clientUpdate += "\"" + EVENT_TYPE + "\":" + CLIENT_UPDATE;
+				clientUpdate += ",\"" + EVENTS + "\":\"" + eventsMessage + "\"";
+				clientUpdate += ",\"" + PLAYER_INDEX + playerIndex + X + "\":" + m_gameScreen->getPlayerX();
+				clientUpdate += ",\"" + PLAYER_INDEX + playerIndex + Y + "\":" + m_gameScreen->getPlayerY();
+				clientUpdate += ",\"" + PLAYER_INDEX + playerIndex + DIRECTION + "\":" + m_gameScreen->getPlayerDirection();
+				clientUpdate += "}";
+
+				m_gameScreen->resetTimeSinceLastClientEvent();
+
+				m_winRtCallback->Invoke("SEND_CHAT", clientUpdate);
 			}
+			else if (m_gameScreen->isTimeToSendKeepAlive())
+			{
+				m_gameScreen->resetTimeSinceLastClientEvent();
 
-			eventsMessage += "0"; // Terminate with 0
-
-			static Platform::String^ EVENT_TYPE = "eventType";
-			static int CLIENT_UPDATE = 1338;
-			static Platform::String^ EVENTS = "events";
-
-			static Platform::String^ PLAYER_INDEX = "playerIndex";
-			static Platform::String^ X = "X";
-			static Platform::String^ Y = "Y";
-			static Platform::String^ DIRECTION = "Direction";
-
-			int playerIndex = m_gameScreen->getPlayerIndex();
-			Platform::String^ clientUpdate = "{";
-			clientUpdate += "\"" + EVENT_TYPE + "\":" + CLIENT_UPDATE;
-			clientUpdate += ",\"" + EVENTS + "\":\"" + eventsMessage + "\"";
-			clientUpdate += ",\"" + PLAYER_INDEX + playerIndex + X + "\":" + m_gameScreen->getPlayerX();
-			clientUpdate += ",\"" + PLAYER_INDEX + playerIndex + Y + "\":" + m_gameScreen->getPlayerY();
-			clientUpdate += ",\"" + PLAYER_INDEX + playerIndex + DIRECTION + "\":" + m_gameScreen->getPlayerDirection();
-			clientUpdate += "}";
-
-			m_gameScreen->resetTimeSinceLastClientEvent();
-
-			m_winRtCallback->Invoke("SEND_CHAT", clientUpdate);
-		}
-		else if (m_gameScreen->isTimeToSendKeepAlive())
-		{
-			m_gameScreen->resetTimeSinceLastClientEvent();
-
-			m_winRtCallback->Invoke("SEND_CHAT", "KEEP_ALIVE");
+				m_winRtCallback->Invoke("SEND_CHAT", "KEEP_ALIVE");
+			}
 		}
 	}
 }
