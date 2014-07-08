@@ -33,6 +33,8 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
 	m_acceleration->set(0,0);
 	m_velocity->set(0, 0);
 
+	m_gridBounds = std::unique_ptr<Rectangle>(new Rectangle(getPosition().getX() - GRID_CELL_WIDTH * 3 / 10, getPosition().getY() - GRID_CELL_HEIGHT * 3 / 10, GRID_CELL_WIDTH * 3 / 5, GRID_CELL_HEIGHT * 3 / 5));
+
     resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
     
     m_bombOwner->onBombDropped(this);
@@ -181,6 +183,19 @@ void BombGameObject::onPickedUp()
 short BombGameObject::getPower()
 {
     return m_sPower;
+}
+
+void BombGameObject::updateBounds()
+{
+	GameObject::updateBounds();
+
+	Vector2D &lowerLeft = m_gridBounds->getLowerLeft();
+	lowerLeft.set(m_position->getX() - m_gridBounds->getWidth() / 2, m_position->getY() - m_gridBounds->getHeight() / 2);
+}
+
+Rectangle & BombGameObject::getBoundsForGridLogic()
+{
+	return *m_gridBounds;
 }
 
 #pragma mark <Private>

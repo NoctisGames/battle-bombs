@@ -40,9 +40,14 @@ public:
 	void onPickedUp();
     
     short getPower();
+
+	virtual void updateBounds();
+
+	virtual Rectangle & getBoundsForGridLogic();
     
 private:
     PlayerDynamicGameObject *m_bombOwner;
+	std::unique_ptr<Rectangle> m_gridBounds;
 	int m_iPushedDirection;
     float m_fStateTime;
     float m_fSizeScalar;
