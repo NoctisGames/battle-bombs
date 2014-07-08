@@ -242,7 +242,18 @@ bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explo
 
 bool PlayerDynamicGameObject::isBombInFrontOfPlayer(BombGameObject &bomb)
 {
-    return m_gridX == bomb.getGridX() && m_gridY == bomb.getGridY();
+    switch (m_iDirection)
+    {
+        case DIRECTION_RIGHT:
+            return m_gridY == bomb.getGridY() && (m_gridX == bomb.getGridX() || m_gridX == bomb.getGridX() - 1);
+        case DIRECTION_LEFT:
+            return m_gridY == bomb.getGridY() && (m_gridX == bomb.getGridX() || m_gridX == bomb.getGridX() + 1);
+        case DIRECTION_UP:
+            return m_gridX == bomb.getGridX() && (m_gridY == bomb.getGridY() || m_gridY == bomb.getGridY() - 1);
+        case DIRECTION_DOWN:
+        default:
+            return m_gridX == bomb.getGridX() && (m_gridY == bomb.getGridY() || m_gridY == bomb.getGridY() + 1);
+    }
 }
 
 void PlayerDynamicGameObject::onDeath()
