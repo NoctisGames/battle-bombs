@@ -26,6 +26,7 @@
 
 #define DEBUG_LISTS 0
 #define DEBUG_LIST_LENGTHS_ONLY 0
+#define DEBUG_AI 0
 
 BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction) : PlayerDynamicGameObject(playerIndex, gridX, gridY, gameListener, direction)
 {
@@ -52,64 +53,82 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 
 	if (m_playerState == ALIVE && m_playerActionState != WINNING)
 	{
-        for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
-        {
-            if (PathFinder::getInstance().isLocationOccupiedByBombOrExplosionPath(bombs, explosions, m_gridX, m_gridY))
-            {
-                cout << "isLocationOccupiedByBombOrExplosionPath = true" << endl;
-                
-                Node currentNode = Node(m_gridX, m_gridY);
-                if (PathFinder::calculateClosestSafeNodeFromStartingNode(bombs, explosions, players, this, m_badBombEscapeNodes, currentNode))
-                {
-                    cout << "calculateClosestSafeNodeFromStartingNode = true" << endl;
-                    
-                    if (calculatePathToTarget(currentNode.x, currentNode.y))
-                    {
-                        cout << "calculatePathTo Safe Node is good" << endl;
-                        m_badBombEscapeNodes.clear();
-                        m_exploredPath.clear();
-                    }
-                    else
-                    {
-                        cout << "calculatePathTo Safe Node is bad" << endl;
-                        m_badBombEscapeNodes.push_back(Node(currentNode.x, currentNode.y));
-                    }
-                    
-                    m_currentPathType = 1;
-                    m_fWaitTime = 0;
-                    m_fActionTime = 0;
-                }
-                else
-                {
-                    cout << "calculateClosestSafeNodeFromStartingNode = false" << endl;
-                }
-                
-                break;
-            }
-        }
-        
+		for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+		{
+			if (PathFinder::getInstance().isLocationOccupiedByBombOrExplosionPath(bombs, explosions, m_gridX, m_gridY))
+			{
+#if DEBUG_AI
+				cout << "isLocationOccupiedByBombOrExplosionPath = true" << endl;
+#endif // DEBUG_AI
+
+				Node currentNode = Node(m_gridX, m_gridY);
+				if (PathFinder::calculateClosestSafeNodeFromStartingNode(bombs, explosions, players, this, m_badBombEscapeNodes, currentNode))
+				{
+#if DEBUG_AI
+					cout << "calculateClosestSafeNodeFromStartingNode = true" << endl;
+#endif // DEBUG_AI
+
+					if (calculatePathToTarget(currentNode.x, currentNode.y))
+					{
+#if DEBUG_AI
+						cout << "calculatePathTo Safe Node is good" << endl;
+#endif // DEBUG_AI
+						m_badBombEscapeNodes.clear();
+						m_exploredPath.clear();
+					}
+					else
+					{
+#if DEBUG_AI
+						cout << "calculatePathTo Safe Node is bad" << endl;
+#endif // DEBUG_AI
+						m_badBombEscapeNodes.push_back(Node(currentNode.x, currentNode.y));
+					}
+
+					m_currentPathType = 1;
+					m_fWaitTime = 0;
+					m_fActionTime = 0;
+				}
+				else
+				{
+#if DEBUG_AI
+					cout << "calculateClosestSafeNodeFromStartingNode = false" << endl;
+#endif // DEBUG_AI
+				}
+
+				break;
+			}
+		}
+
 		if (m_fWaitTime > 0 && m_fActionTime < m_fWaitTime)
 		{
+#if DEBUG_AI
 			cout << "Waiting" << endl;
+#endif // DEBUG_AI
 			m_fActionTime += deltaTime;
 		}
 		else
 		{
 			if (m_currentPathType == 2 && isProposedNodeUnexplored(m_gridX, m_gridY))
 			{
+#if DEBUG_AI
 				cout << "isProposedNodeUnexplored = true" << endl;
+#endif // DEBUG_AI
 				m_exploredPath.push_back(Node(m_gridX, m_gridY));
 			}
 
 			if (m_currentPathType != 1)
 			{
+#if DEBUG_AI
 				cout << "determining Player Target..." << endl;
+#endif // DEBUG_AI
 				determinePlayerTarget(players);
 
-                bool isOnTopOfTarget = m_playerTarget->getGridX() == m_gridX && m_playerTarget->getGridY() == m_gridY;
+				bool isOnTopOfTarget = m_playerTarget->getGridX() == m_gridX && m_playerTarget->getGridY() == m_gridY;
 				if (!isOnTopOfTarget && calculatePathToTarget(m_playerTarget->getGridX(), m_playerTarget->getGridY()))
 				{
+#if DEBUG_AI
 					cout << "Player Target Path is good" << endl;
+#endif // DEBUG_AI
 					// Great, we have a path to the player, kick ass
 					m_currentPathType = 0;
 					m_exploredPath.clear();
@@ -117,7 +136,9 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 				}
 				else
 				{
+#if DEBUG_AI
 					cout << "Randomly traversing map" << endl;
+#endif // DEBUG_AI
 					// Let's randomly traverse the map
 					explore(players, bombs, breakableBlocks);
 					m_badBombEscapeNodes.clear();
@@ -129,11 +150,15 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 			{
 				if (m_currentPathIndex == m_currentPath.size())
 				{
+#if DEBUG_AI
 					cout << "We have reached the end of the path!" << endl;
+#endif // DEBUG_AI
 
 					if (m_currentPathType == 0)
 					{
+#if DEBUG_AI
 						cout << "We have reached the end of the path, type is 0" << endl;
+#endif // DEBUG_AI
 						// We were pursuing a player and caught up with them...
 						// This shouldn't happen since the bot will drop bombs ahead
 						// of time and then reroute itself to dodge the bomb
@@ -144,7 +169,9 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 					}
 					else if (m_currentPathType == 1)
 					{
+#if DEBUG_AI
 						cout << "We have reached the end of the path, type is 1" << endl;
+#endif // DEBUG_AI
 						m_fActionTime = 0;
 						m_fWaitTime = 3.2f - (m_currentPath.size() * 0.1f) + (m_firePower * 0.2f);
 						m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
@@ -158,7 +185,9 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 				}
 				else if (m_currentPathType != 1 && m_currentPathIndex < (m_currentPath.size() - 1) && PathFinder::getInstance().isLocationOccupiedByBombOrExplosionPath(bombs, explosions, m_currentPath.at(m_currentPathIndex).x, m_currentPath.at(m_currentPathIndex).y))
 				{
+#if DEBUG_AI
 					cout << "Stopping the player from moving due to bomb" << endl;
+#endif // DEBUG_AI
 					m_fActionTime = 0;
 					m_fWaitTime = 1;
 					m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
@@ -168,8 +197,9 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 					bool bombDropped = false;
 					if (PathFinder::shouldPlayerPlantBomb(breakableBlocks, players, this))
 					{
+#if DEBUG_AI
 						cout << "Bot wants to plant bomb" << endl;
-
+#endif // DEBUG_AI
 						// TODO, only drop bomb if bot is able to escape it
 
 						if (isAbleToDropAdditionalBomb(players, bombs))
@@ -181,29 +211,39 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 
 					if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
 					{
+#if DEBUG_AI
 						cout << "Node position reached : (" << m_gridX << ", " << m_gridY << ")" << endl;
+#endif // DEBUG_AI
 						m_currentPathIndex++;
 					}
 					else if (!bombDropped)
 					{
 						if (m_gridX < m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
 						{
+#if DEBUG_AI
 							cout << "Moving Right" << endl;
+#endif // DEBUG_AI
 							moveInDirection(DIRECTION_RIGHT);
 						}
 						else if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY < m_currentPath.at(m_currentPathIndex).y)
 						{
+#if DEBUG_AI
 							cout << "Moving Up" << endl;
+#endif // DEBUG_AI
 							moveInDirection(DIRECTION_UP);
 						}
 						else if (m_gridX > m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
 						{
+#if DEBUG_AI
 							cout << "Moving Left" << endl;
+#endif // DEBUG_AI
 							moveInDirection(DIRECTION_LEFT);
 						}
 						else if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY > m_currentPath.at(m_currentPathIndex).y)
 						{
+#if DEBUG_AI
 							cout << "Moving Down" << endl;
+#endif // DEBUG_AI
 							moveInDirection(DIRECTION_DOWN);
 						}
 					}
@@ -225,7 +265,7 @@ bool BotPlayerDynamicGameObject::isBot()
 
 PlayerDynamicGameObject * BotPlayerDynamicGameObject::getTarget()
 {
-    return m_playerTarget;
+	return m_playerTarget;
 }
 
 void BotPlayerDynamicGameObject::determinePlayerTarget(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
@@ -321,10 +361,12 @@ bool BotPlayerDynamicGameObject::calculatePathToTarget(int x, int y)
 #endif
 	} while (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING);
 
-    bool isSuccess = false;
+	bool isSuccess = false;
 	if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED)
 	{
-		cout << "Search found goal state\n";
+#if DEBUG_AI
+		cout << "Search found goal state" << endl;
+#endif // DEBUG_AI
 
 		MapSearchNode *node = astarsearch.GetSolutionStart();
 
@@ -333,7 +375,10 @@ bool BotPlayerDynamicGameObject::calculatePathToTarget(int x, int y)
 #endif
 		int steps = 0;
 
+#if DEBUG_AI
 		node->PrintNodeInfo();
+#endif // DEBUG_AI
+
 		for (;;)
 		{
 			node = astarsearch.GetSolutionNext();
@@ -343,27 +388,35 @@ bool BotPlayerDynamicGameObject::calculatePathToTarget(int x, int y)
 				break;
 			}
 
+#if DEBUG_AI
 			node->PrintNodeInfo();
+#endif // DEBUG_AI
 			m_currentPath.push_back(MapSearchNode(node->x, node->y));
 			steps++;
 		};
 
+#if DEBUG_AI
 		cout << "Solution steps " << steps << endl;
+#endif // DEBUG_AI
 
 		// Once you're done with the solution you can free the nodes up
 		astarsearch.FreeSolutionNodes();
-        
-        isSuccess = steps > 0;
+
+		isSuccess = steps > 0;
 	}
 	else if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED)
 	{
-		cout << "Search terminated. Did not find goal state\n";
-        
-        isSuccess = false;
+#if DEBUG_AI
+		cout << "Search terminated. Did not find goal state" << endl;
+#endif // DEBUG_AI
+
+		isSuccess = false;
 	}
 
 	// Display the number of loops the search went through
-	cout << "SearchSteps : " << SearchSteps << "\n";
+#if DEBUG_AI
+	cout << "SearchSteps : " << SearchSteps << endl;
+#endif // DEBUG_AI
 
 	astarsearch.EnsureMemoryFreed();
 
@@ -391,7 +444,9 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 
 	Vector2D vector = Vector2D(gridRightX, m_gridY);
 	float distance = vector.distSquared(vectorTarget);
+#if DEBUG_AI
 	cout << "[Exploring] distance is " << distance << ", shortestDistanceToPlayerTarget is " << shortestDistanceToPlayerTarget << endl;
+#endif // DEBUG_AI
 	if (distance < shortestDistanceToPlayerTarget || (distance == shortestDistanceToPlayerTarget && rand() % 2 == 1))
 	{
 		if (PathFinder::getInstance().getGridCellCost(gridRightX, m_gridY) == 1 && isProposedNodeUnexplored(gridRightX, m_gridY))
@@ -408,7 +463,9 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 
 	vector = Vector2D(gridLeftX, m_gridY);
 	distance = vector.distSquared(vectorTarget);
+#if DEBUG_AI
 	cout << "[Exploring] distance is " << distance << ", shortestDistanceToPlayerTarget is " << shortestDistanceToPlayerTarget << endl;
+#endif // DEBUG_AI
 	if (distance < shortestDistanceToPlayerTarget || (distance == shortestDistanceToPlayerTarget && rand() % 2 == 1))
 	{
 		if (PathFinder::getInstance().getGridCellCost(gridLeftX, m_gridY) == 1 && isProposedNodeUnexplored(gridLeftX, m_gridY))
@@ -425,7 +482,9 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 
 	vector = Vector2D(m_gridX, gridTopY);
 	distance = vector.distSquared(vectorTarget);
+#if DEBUG_AI
 	cout << "[Exploring] distance is " << distance << ", shortestDistanceToPlayerTarget is " << shortestDistanceToPlayerTarget << endl;
+#endif // DEBUG_AI
 	if (distance < shortestDistanceToPlayerTarget || (distance == shortestDistanceToPlayerTarget && rand() % 2 == 1))
 	{
 		if (PathFinder::getInstance().getGridCellCost(m_gridX, gridTopY) == 1 && isProposedNodeUnexplored(m_gridX, gridTopY))
@@ -442,7 +501,9 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 
 	vector = Vector2D(m_gridX, gridBottomY);
 	distance = vector.distSquared(vectorTarget);
+#if DEBUG_AI
 	cout << "[Exploring] distance is " << distance << ", shortestDistanceToPlayerTarget is " << shortestDistanceToPlayerTarget << endl;
+#endif // DEBUG_AI
 	if (distance < shortestDistanceToPlayerTarget || (distance == shortestDistanceToPlayerTarget && rand() % 2 == 1))
 	{
 		if (PathFinder::getInstance().getGridCellCost(m_gridX, gridBottomY) == 1 && isProposedNodeUnexplored(m_gridX, gridBottomY))
@@ -459,7 +520,10 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 
 	if (bestDirection == -1)
 	{
+#if DEBUG_AI
 		cout << "Exploring Complete, Dropping bomb" << endl;
+#endif // DEBUG_AI
+
 		m_exploredPath.clear();
 
 		if (isAbleToDropAdditionalBomb(players, bombs))
@@ -469,7 +533,10 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 	}
 	else
 	{
+#if DEBUG_AI
 		cout << "Exploring " << bestDirection << endl;
+#endif // DEBUG_AI
+
 		moveInDirection(bestDirection);
 	}
 }
