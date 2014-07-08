@@ -33,7 +33,7 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
 	m_acceleration->set(0,0);
 	m_velocity->set(0, 0);
 
-    resetBounds(GRID_CELL_WIDTH * 3 / 5, GRID_CELL_HEIGHT * 3 / 5);
+    resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
     
     m_bombOwner->onBombDropped(this);
 }

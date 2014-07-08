@@ -14,6 +14,9 @@
 #include "PlayerDynamicGameObject.h"
 #include "Vector2D.h"
 #include <iostream>
+// For Randomness
+#include <stdlib.h>
+#include <time.h>
 
 bool PathFinder::isLocationOccupiedByInsideBlock(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, int gridX, int gridY)
 {
@@ -85,6 +88,8 @@ bool PathFinder::isLocationOccupiedByBombOrExplosionPath(std::vector<std::unique
 
 bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, PlayerDynamicGameObject *player, std::vector<Node> &badBombEscapeNodes, Node &node)
 {
+    srand((int)time(NULL));
+    
     int gridRightX = node.x;
     int gridLeftX = node.x;
     int gridTopY = node.y;
@@ -94,6 +99,11 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
     bool proceedBottom = true;
     bool proceedLeft = true;
     bool proceedRight = true;
+    
+    // Obnoxiously high number, so that the first distance we calculate is definitely shorter than this one
+    float shortestDistanceSquared = 9000;
+    Vector2D vectorTarget = Vector2D(player->getGridX(), player->getGridY());
+    bool nodeUpdated = false;
     
     int searchDepth = 0;
     
@@ -129,13 +139,19 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             // tX is Traversal X
             for (int tX = gridLeftX; tX <= gridRightX; tX++)
             {
-                if(PathFinder::getInstance().getGridCellCost(tX, gridTopY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, tX, gridTopY) && !isLocationOccupiedByOtherPlayer(players, player, tX, gridTopY))
+                if(PathFinder::getInstance().getGridCellCost(tX, gridTopY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, tX, gridTopY))
                 {
                     if(!hasBombEscapeNodeBeenUsedAlready(badBombEscapeNodes, tX, gridTopY))
                     {
-                        node.x = tX;
-                        node.y = gridTopY;
-                        return true;
+                        Vector2D vector = Vector2D(tX, gridTopY);
+                        float distance = vector.distSquared(vectorTarget);
+                        if(distance < shortestDistanceSquared || (distance == shortestDistanceSquared && rand() % 2 == 1))
+                        {
+                            shortestDistanceSquared = distance;
+                            node.x = tX;
+                            node.y = gridTopY;
+                            nodeUpdated = true;
+                        }
                     }
                 }
             }
@@ -146,13 +162,19 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             // tX is Traversal X
             for (int tX = gridLeftX; tX <= gridRightX; tX++)
             {
-                if(PathFinder::getInstance().getGridCellCost(tX, gridBottomY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, tX, gridBottomY) && !isLocationOccupiedByOtherPlayer(players, player, tX, gridBottomY))
+                if(PathFinder::getInstance().getGridCellCost(tX, gridBottomY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, tX, gridBottomY))
                 {
                     if(!hasBombEscapeNodeBeenUsedAlready(badBombEscapeNodes, tX, gridBottomY))
                     {
-                        node.x = tX;
-                        node.y = gridBottomY;
-                        return true;
+                        Vector2D vector = Vector2D(tX, gridBottomY);
+                        float distance = vector.distSquared(vectorTarget);
+                        if(distance < shortestDistanceSquared || (distance == shortestDistanceSquared && rand() % 2 == 1))
+                        {
+                            shortestDistanceSquared = distance;
+                            node.x = tX;
+                            node.y = gridBottomY;
+                            nodeUpdated = true;
+                        }
                     }
                 }
             }
@@ -163,13 +185,19 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             // tY is Traversal Y
             for (int tY = gridBottomY; tY <= gridTopY; tY++)
             {
-                if(PathFinder::getInstance().getGridCellCost(gridLeftX, tY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, gridLeftX, tY) && !isLocationOccupiedByOtherPlayer(players, player, gridLeftX, tY))
+                if(PathFinder::getInstance().getGridCellCost(gridLeftX, tY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, gridLeftX, tY))
                 {
                     if(!hasBombEscapeNodeBeenUsedAlready(badBombEscapeNodes, gridLeftX, tY))
                     {
-                        node.x = gridLeftX;
-                        node.y = tY;
-                        return true;
+                        Vector2D vector = Vector2D(gridLeftX, tY);
+                        float distance = vector.distSquared(vectorTarget);
+                        if(distance < shortestDistanceSquared || (distance == shortestDistanceSquared && rand() % 2 == 1))
+                        {
+                            shortestDistanceSquared = distance;
+                            node.x = gridLeftX;
+                            node.y = tY;
+                            nodeUpdated = true;
+                        }
                     }
                 }
             }
@@ -180,13 +208,19 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             // tY is Traversal Y
             for (int tY = gridBottomY; tY <= gridTopY; tY++)
             {
-                if(PathFinder::getInstance().getGridCellCost(gridRightX, tY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, gridRightX, tY) && !isLocationOccupiedByOtherPlayer(players, player, gridRightX, tY))
+                if(PathFinder::getInstance().getGridCellCost(gridRightX, tY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, gridRightX, tY))
                 {
                     if(!hasBombEscapeNodeBeenUsedAlready(badBombEscapeNodes, gridRightX, tY))
                     {
-                        node.x = gridRightX;
-                        node.y = tY;
-                        return true;
+                        Vector2D vector = Vector2D(gridRightX, tY);
+                        float distance = vector.distSquared(vectorTarget);
+                        if(distance < shortestDistanceSquared || (distance == shortestDistanceSquared && rand() % 2 == 1))
+                        {
+                            shortestDistanceSquared = distance;
+                            node.x = gridRightX;
+                            node.y = tY;
+                            nodeUpdated = true;
+                        }
                     }
                 }
             }
@@ -196,12 +230,12 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
         
         if(searchDepth > 4)
         {
-            return false;
+            return nodeUpdated;
         }
     }
 }
 
-bool PathFinder::calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *player, Node &node)
+bool calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *player, Node &node)
 {
     int gridRightX = node.x;
     int gridLeftX = node.x;
@@ -211,7 +245,7 @@ bool PathFinder::calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *pla
     bool nodeUpdated = false;
     
     // Obnoxiously high number, so that the first distance we calculate is definitely shorter than this one
-    float shortestDistance = 9000;
+    float shortestDistanceSquared = 9000;
     Vector2D vectorTarget = Vector2D(player->getGridX(), player->getGridY());
     
     int searchDepth = 0;
@@ -229,10 +263,10 @@ bool PathFinder::calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *pla
             if(PathFinder::getInstance().getGridCellCost(tX, gridTopY))
             {
                 Vector2D vector = Vector2D(node.x, gridTopY);
-                float distance = vector.dist(vectorTarget);
-                if(distance < shortestDistance)
+                float distance = vector.distSquared(vectorTarget);
+                if(distance < shortestDistanceSquared)
                 {
-                    shortestDistance = distance;
+                    shortestDistanceSquared = distance;
                     node.x = tX;
                     node.y = gridTopY;
                     nodeUpdated = true;
@@ -246,10 +280,10 @@ bool PathFinder::calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *pla
             if(PathFinder::getInstance().getGridCellCost(tX, gridBottomY))
             {
                 Vector2D vector = Vector2D(node.x, gridBottomY);
-                float distance = vector.dist(vectorTarget);
-                if(distance < shortestDistance)
+                float distance = vector.distSquared(vectorTarget);
+                if(distance < shortestDistanceSquared)
                 {
-                    shortestDistance = distance;
+                    shortestDistanceSquared = distance;
                     node.x = tX;
                     node.y = gridBottomY;
                     nodeUpdated = true;
@@ -263,10 +297,10 @@ bool PathFinder::calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *pla
             if(PathFinder::getInstance().getGridCellCost(gridLeftX, tY))
             {
                 Vector2D vector = Vector2D(node.x, gridTopY);
-                float distance = vector.dist(vectorTarget);
-                if(distance < shortestDistance)
+                float distance = vector.distSquared(vectorTarget);
+                if(distance < shortestDistanceSquared)
                 {
-                    shortestDistance = distance;
+                    shortestDistanceSquared = distance;
                     node.x = gridLeftX;
                     node.y = tY;
                     nodeUpdated = true;
@@ -280,10 +314,10 @@ bool PathFinder::calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *pla
             if(PathFinder::getInstance().getGridCellCost(gridRightX, tY) != 9)
             {
                 Vector2D vector = Vector2D(node.x, gridTopY);
-                float distance = vector.dist(vectorTarget);
-                if(distance < shortestDistance)
+                float distance = vector.distSquared(vectorTarget);
+                if(distance < shortestDistanceSquared)
                 {
-                    shortestDistance = distance;
+                    shortestDistanceSquared = distance;
                     node.x = gridRightX;
                     node.y = tY;
                     nodeUpdated = true;
@@ -293,7 +327,7 @@ bool PathFinder::calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *pla
         
         searchDepth++;
         
-        if(searchDepth > 4)
+        if(searchDepth > 8)
         {
             break;
         }

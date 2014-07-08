@@ -41,8 +41,6 @@ public:
     // Store the result in the node param
     static bool calculateClosestSafeNodeFromStartingNode(std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, PlayerDynamicGameObject *player, std::vector<Node> &badBombEscapeNodes, Node &node);
     
-    static bool calculateClosestNodeToPlayerTarget(PlayerDynamicGameObject *player, Node &node);
-    
     static bool shouldPlayerPlantBomb(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, PlayerDynamicGameObject *player);
     
     int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS];

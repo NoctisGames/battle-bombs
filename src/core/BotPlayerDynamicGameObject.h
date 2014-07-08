@@ -28,6 +28,8 @@ public:
     
     virtual bool isBot();
     
+    PlayerDynamicGameObject * getTarget();
+    
 private:
 	std::vector<MapSearchNode> m_currentPath;
 	std::vector<Node> m_exploredPath;
