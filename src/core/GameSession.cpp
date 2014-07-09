@@ -509,6 +509,7 @@ void GameSession::pushBombForPlayer(PlayerDynamicGameObject *player)
         if(player->isBombInFrontOfPlayer(**itr))
         {
             (*itr)->pushed(player->getDirection());
+            player->onBombPushed((*itr).get());
         }
     }
 }
