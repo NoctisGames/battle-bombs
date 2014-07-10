@@ -17,7 +17,7 @@ extern "C"
 {
     JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_start(JNIEnv* env, jclass cls, jstring room_id);
 
-    JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_init(JNIEnv* env, jclass cls, jstring room_id, jint num_human_players);
+    JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_init(JNIEnv* env, jclass cls, jstring room_id, jint num_human_players, jint map_type);
 
     JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_handle_1server_1update(JNIEnv* env, jclass cls, jstring room_id, jstring message);
 
@@ -92,7 +92,7 @@ JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_start(JNIE
     roomIdGameSessionPairs.push_back(newRoomIdGameSessionPair);
 }
 
-JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_init(JNIEnv* env, jclass cls, jstring room_id, jint num_human_players)
+JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_init(JNIEnv* env, jclass cls, jstring room_id, jint num_human_players, jint map_type)
 {
     UNUSED(env);
     UNUSED(cls);
@@ -100,7 +100,7 @@ JNIEXPORT void JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_init(JNIEn
     ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
     if (gameSession != nullptr)
     {
-        gameSession->initWithNumHumanPlayers(num_human_players);
+        gameSession->initWithNumHumanPlayersAndMapType(num_human_players, map_type);
     }
 }
 

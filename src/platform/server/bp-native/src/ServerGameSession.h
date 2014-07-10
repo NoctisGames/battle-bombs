@@ -19,7 +19,7 @@ class ServerGameSession : public GameSession
 public:
     ServerGameSession();
     
-    void initWithNumHumanPlayers(int numHumanPlayers);
+    void initWithNumHumanPlayersAndMapType(int numHumanPlayers, int mapType);
 
     virtual void init();
 

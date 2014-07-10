@@ -24,11 +24,13 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     private static final String SERVER = "Server";
     private static final String EVENT_TYPE = "eventType";
     private static final String NUM_PLAYERS = "numPlayers";
+    private static final String MAP_TYPE = "mapType";
     private static final String EVENTS = "events";
     private static final String NUM_BREAKABLE_BLOCKS = "numBreakableBlocks";
     private static final String BREAKABLE_BLOCK_X_VALUES = "breakableBlockXValues";
     private static final String BREAKABLE_BLOCK_Y_VALUES = "breakableBlockYValues";
     private static final String BREAKABLE_BLOCK_POWER_UP_FLAGS = "breakableBlockPowerUpFlags";
+    private static final int NUM_MAPS = 4;
     private static final short BEGIN_SPECTATE = 1336;
     private static final short BEGIN_GAME = 1337;
     private static final short CLIENT_UPDATE = 1338;
@@ -56,6 +58,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     private float smoothedDeltaRealTime_ms = 17.5f; // initial value, Optionally you can save the new computed value (will change with each hardware) in Preferences to optimize the first drawing frames
     private float movAverageDeltaTime_ms = smoothedDeltaRealTime_ms; // mov Average start with default value
     private long lastRealTimeMeasurement_ms; // temporal storage for last time measurement
+    private int mapType = 0; // Increment this by 1 every time we start a new game
 
     public BpRoomAdaptor(IRoom room)
     {
@@ -265,7 +268,13 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                     i++;
                 }
 
-                init(_room.getId(), _inGameUserSessionDataMap.size());
+                mapType++;
+                if (mapType == NUM_MAPS)
+                {
+                    mapType = 0;
+                }
+
+                init(_room.getId(), _inGameUserSessionDataMap.size(), mapType);
 
                 String beginGameCommand = getGameStateCommand(BEGIN_GAME);
                 if (beginGameCommand != null)
@@ -309,6 +318,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
         {
             JSONObject tobeSent = new JSONObject();
             tobeSent.put(EVENT_TYPE, eventType);
+            tobeSent.put(MAP_TYPE, mapType);
             tobeSent.put(NUM_PLAYERS, get_num_players(_room.getId()));
 
             for (Map.Entry entry : _inGameUserSessionDataMap.entrySet())
@@ -453,7 +463,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 
     private static native void start(String roomId);
 
-    private static native void init(String roomId, int numHumanPlayers);
+    private static native void init(String roomId, int numHumanPlayers, int mapType);
 
     private static native void handle_server_update(String roomId, String message);
 

@@ -38,7 +38,7 @@ ServerGameSession::ServerGameSession()
     init();
 }
 
-void ServerGameSession::initWithNumHumanPlayers(int numHumanPlayers)
+void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, int mapType)
 {
     init();
     
