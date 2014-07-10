@@ -96,6 +96,13 @@
 		BB9948E219366E2900A8E599 /* GameListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9948E019366E2900A8E599 /* GameListener.cpp */; };
 		BB9D09AC19155C9E002CBFD3 /* map_grasslands.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB9D09AB19155C9E002CBFD3 /* map_grasslands.aifc */; };
 		BB9D93BE191FB4EC00AD9CCE /* PowerUp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */; };
+		BBA0A3FD196F549C00737A74 /* bot_black.png in Resources */ = {isa = PBXBuildFile; fileRef = BBA0A3F6196F549C00737A74 /* bot_black.png */; };
+		BBA0A3FE196F549C00737A74 /* bot_green.png in Resources */ = {isa = PBXBuildFile; fileRef = BBA0A3F7196F549C00737A74 /* bot_green.png */; };
+		BBA0A3FF196F549C00737A74 /* bot_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = BBA0A3F8196F549C00737A74 /* bot_orange.png */; };
+		BBA0A400196F549C00737A74 /* bot_pink.png in Resources */ = {isa = PBXBuildFile; fileRef = BBA0A3F9196F549C00737A74 /* bot_pink.png */; };
+		BBA0A401196F549C00737A74 /* bot_red.png in Resources */ = {isa = PBXBuildFile; fileRef = BBA0A3FA196F549C00737A74 /* bot_red.png */; };
+		BBA0A402196F549C00737A74 /* bot_white.png in Resources */ = {isa = PBXBuildFile; fileRef = BBA0A3FB196F549C00737A74 /* bot_white.png */; };
+		BBA0A403196F549C00737A74 /* bot_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = BBA0A3FC196F549C00737A74 /* bot_yellow.png */; };
 		BBA1CD531958B10A00AF2AD8 /* MapBorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */; };
 		BBB24BA219638A9300EF78B2 /* interface.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB24BA119638A9300EF78B2 /* interface.png */; };
 		BBB24BA51963AFFA00EF78B2 /* InterfaceOverlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */; };
@@ -280,6 +287,13 @@
 		BB9D09AB19155C9E002CBFD3 /* map_grasslands.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = map_grasslands.aifc; sourceTree = "<group>"; };
 		BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PowerUp.cpp; sourceTree = "<group>"; };
 		BB9D93BD191FB4EC00AD9CCE /* PowerUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerUp.h; sourceTree = "<group>"; };
+		BBA0A3F6196F549C00737A74 /* bot_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bot_black.png; sourceTree = "<group>"; };
+		BBA0A3F7196F549C00737A74 /* bot_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bot_green.png; sourceTree = "<group>"; };
+		BBA0A3F8196F549C00737A74 /* bot_orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bot_orange.png; sourceTree = "<group>"; };
+		BBA0A3F9196F549C00737A74 /* bot_pink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bot_pink.png; sourceTree = "<group>"; };
+		BBA0A3FA196F549C00737A74 /* bot_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bot_red.png; sourceTree = "<group>"; };
+		BBA0A3FB196F549C00737A74 /* bot_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bot_white.png; sourceTree = "<group>"; };
+		BBA0A3FC196F549C00737A74 /* bot_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bot_yellow.png; sourceTree = "<group>"; };
 		BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapBorder.cpp; sourceTree = "<group>"; };
 		BBA1CD521958B10A00AF2AD8 /* MapBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBorder.h; sourceTree = "<group>"; };
 		BBA1CD541958C8D700AF2AD8 /* MapBorderType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapBorderType.h; sourceTree = "<group>"; };
@@ -598,7 +612,14 @@
 			isa = PBXGroup;
 			children = (
 				BB82640E18C2F63200A24A7C /* bg_main.png */,
+				BBA0A3F6196F549C00737A74 /* bot_black.png */,
 				BB39D6E4196ED81400BC895B /* bot_blue.png */,
+				BBA0A3F7196F549C00737A74 /* bot_green.png */,
+				BBA0A3F8196F549C00737A74 /* bot_orange.png */,
+				BBA0A3F9196F549C00737A74 /* bot_pink.png */,
+				BBA0A3FA196F549C00737A74 /* bot_red.png */,
+				BBA0A3FB196F549C00737A74 /* bot_white.png */,
+				BBA0A3FC196F549C00737A74 /* bot_yellow.png */,
 				BBDE14AC195A2D7400A91FD7 /* char_black.png */,
 				BBBEC913194B425200AAB520 /* char_blue.png */,
 				BBDE14AD195A2D7400A91FD7 /* char_green.png */,
@@ -680,13 +701,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBDE14B5195A2D7400A91FD7 /* char_orange.png in Resources */,
+				BBA0A3FF196F549C00737A74 /* bot_orange.png in Resources */,
 				BBBEC914194B425200AAB520 /* char_blue.png in Resources */,
 				0ADF1886178E2185005DA99E /* InfoPlist.strings in Resources */,
 				BBDE14B8195A2D7400A91FD7 /* char_white.png in Resources */,
 				BBDE14B7195A2D7400A91FD7 /* char_red.png in Resources */,
+				BBA0A3FD196F549C00737A74 /* bot_black.png in Resources */,
 				BB71029E196E079500C7BA2F /* map_base.png in Resources */,
 				BBB24BA219638A9300EF78B2 /* interface.png in Resources */,
+				BBA0A401196F549C00737A74 /* bot_red.png in Resources */,
 				0ADF188E178E2185005DA99E /* Default.png in Resources */,
+				BBA0A3FE196F549C00737A74 /* bot_green.png in Resources */,
 				BBDE14B6195A2D7400A91FD7 /* char_pink.png in Resources */,
 				BB39D6E7196EFABD00BC895B /* map_space.aifc in Resources */,
 				BB39D6EA196F01CC00BC895B /* map_base.aifc in Resources */,
@@ -703,7 +728,10 @@
 				BB16D96C191987B80034BE67 /* death.caf in Resources */,
 				0ADF1892178E2185005DA99E /* Default-568h@2x.png in Resources */,
 				BB9D09AC19155C9E002CBFD3 /* map_grasslands.aifc in Resources */,
+				BBA0A402196F549C00737A74 /* bot_white.png in Resources */,
+				BBA0A403196F549C00737A74 /* bot_yellow.png in Resources */,
 				0ADF1895178E2185005DA99E /* MainStoryboard_iPhone.storyboard in Resources */,
+				BBA0A400196F549C00737A74 /* bot_pink.png in Resources */,
 				0ADF1898178E2185005DA99E /* MainStoryboard_iPad.storyboard in Resources */,
 				BB71029F196E079500C7BA2F /* map_grasslands.png in Resources */,
 				BBDE14B4195A2D7400A91FD7 /* char_green.png in Resources */,

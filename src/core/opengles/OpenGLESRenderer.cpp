@@ -58,14 +58,14 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     m_charWhiteTexture = load_png_asset_into_texture("char_white.png");
     m_charYellowTexture = load_png_asset_into_texture("char_yellow.png");
     
-//    m_botBlackTexture = load_png_asset_into_texture("bot_black.png");
+    m_botBlackTexture = load_png_asset_into_texture("bot_black.png");
     m_botBlueTexture = load_png_asset_into_texture("bot_blue.png");
-//    m_botGreenTexture = load_png_asset_into_texture("bot_green.png");
-//    m_botOrangeTexture = load_png_asset_into_texture("bot_orange.png");
-//    m_botPinkTexture = load_png_asset_into_texture("bot_pink.png");
-//    m_botRedTexture = load_png_asset_into_texture("bot_red.png");
-//    m_botWhiteTexture = load_png_asset_into_texture("bot_white.png");
-//    m_botYellowTexture = load_png_asset_into_texture("bot_yellow.png");
+    m_botGreenTexture = load_png_asset_into_texture("bot_green.png");
+    m_botOrangeTexture = load_png_asset_into_texture("bot_orange.png");
+    m_botPinkTexture = load_png_asset_into_texture("bot_pink.png");
+    m_botRedTexture = load_png_asset_into_texture("bot_red.png");
+    m_botWhiteTexture = load_png_asset_into_texture("bot_white.png");
+    m_botYellowTexture = load_png_asset_into_texture("bot_yellow.png");
 }
 
 OpenGLESRenderer::~OpenGLESRenderer()
@@ -158,28 +158,28 @@ void OpenGLESRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
             switch ((**itr).getPlayerIndex())
             {
                 case 0:
-                    m_spriteBatcher->endBatchWithTexture(m_charBlackTexture);
+                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botBlackTexture : m_charBlackTexture);
                     break;
                 case 1:
                     m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botBlueTexture : m_charBlueTexture);
                     break;
                 case 2:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botBlueTexture : m_charGreenTexture);
+                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botGreenTexture : m_charGreenTexture);
                     break;
                 case 3:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botBlueTexture : m_charOrangeTexture);
+                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botOrangeTexture : m_charOrangeTexture);
                     break;
                 case 4:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botBlueTexture : m_charPinkTexture);
+                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botPinkTexture : m_charPinkTexture);
                     break;
                 case 5:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botBlueTexture : m_charRedTexture);
+                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botRedTexture : m_charRedTexture);
                     break;
                 case 6:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botBlueTexture : m_charWhiteTexture);
+                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botWhiteTexture : m_charWhiteTexture);
                     break;
                 case 7:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botBlueTexture : m_charYellowTexture);
+                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botYellowTexture : m_charYellowTexture);
                     break;
                 default:
                     break;
@@ -272,14 +272,14 @@ void OpenGLESRenderer::cleanUp()
     glDeleteTextures(1, &m_charWhiteTexture);
     glDeleteTextures(1, &m_charYellowTexture);
     
-//    glDeleteTextures(1, &m_botBlackTexture);
+    glDeleteTextures(1, &m_botBlackTexture);
     glDeleteTextures(1, &m_botBlueTexture);
-//    glDeleteTextures(1, &m_botGreenTexture);
-//    glDeleteTextures(1, &m_botOrangeTexture);
-//    glDeleteTextures(1, &m_botPinkTexture);
-//    glDeleteTextures(1, &m_botRedTexture);
-//    glDeleteTextures(1, &m_botWhiteTexture);
-//    glDeleteTextures(1, &m_botYellowTexture);
+    glDeleteTextures(1, &m_botGreenTexture);
+    glDeleteTextures(1, &m_botOrangeTexture);
+    glDeleteTextures(1, &m_botPinkTexture);
+    glDeleteTextures(1, &m_botRedTexture);
+    glDeleteTextures(1, &m_botWhiteTexture);
+    glDeleteTextures(1, &m_botYellowTexture);
 }
 
 #pragma mark <Private>
