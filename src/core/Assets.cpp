@@ -409,7 +409,19 @@ TextureRegion Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
                 playerFrames.push_back(0.1f);
             }
             
-            return playerWinningTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+            static float cycleTimeForBot = 1.2f;
+            static std::vector<float> botFrames;
+            if (botFrames.size() == 0)
+            {
+                botFrames.push_back(0.2f);
+                botFrames.push_back(0.2f);
+                botFrames.push_back(0.2f);
+                botFrames.push_back(0.2f);
+                botFrames.push_back(0.2f);
+                botFrames.push_back(0.2f);
+            }
+            
+            return player.isBot() ? playerWinningTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTimeForBot, botFrames)) : playerWinningTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
         }
     }
     else

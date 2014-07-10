@@ -62,6 +62,15 @@ private:
     GLuint m_charWhiteTexture;
     GLuint m_charYellowTexture;
     
+    GLuint m_botBlackTexture;
+    GLuint m_botBlueTexture;
+    GLuint m_botGreenTexture;
+    GLuint m_botOrangeTexture;
+    GLuint m_botPinkTexture;
+    GLuint m_botRedTexture;
+    GLuint m_botWhiteTexture;
+    GLuint m_botYellowTexture;
+    
     virtual void renderGameObject(GameObject &go, TextureRegion tr);
     
     virtual void renderGameObjectWithRespectToPlayer(GameObject &go, TextureRegion tr);

@@ -255,20 +255,23 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
                 }
 				else if(m_activeButton->isPointInBounds(*m_touchPoint))
 				{
-					switch(m_player->getActivePowerUp())
-					{
-						case PUSH :
-							for(std::vector<std::unique_ptr<BombGameObject>>::iterator itr = m_bombs.begin(); itr != m_bombs.end(); itr++)
-							{
-								if(m_player->isBombInFrontOfPlayer(**itr))
-								{
-                                    m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PUSH_BOMB);
-								}
-							}
-                        default:
-                            break;
-                            // TODO!
-					}
+                    if(m_player->getPlayerState() == ALIVE && m_player->getPlayerActionState() != WINNING)
+                    {
+                        switch(m_player->getActivePowerUp())
+                        {
+                            case PUSH :
+                                for(std::vector<std::unique_ptr<BombGameObject>>::iterator itr = m_bombs.begin(); itr != m_bombs.end(); itr++)
+                                {
+                                    if(m_player->isBombInFrontOfPlayer(**itr))
+                                    {
+                                        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PUSH_BOMB);
+                                    }
+                                }
+                            default:
+                                break;
+                                // TODO!
+                        }
+                    }
 				}
                 else
                 {
@@ -490,7 +493,7 @@ void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)
     }
 }
 
-void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame)
+void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame)
 {
     if(isBeginGame && d.HasMember(keyIndex))
     {
@@ -504,7 +507,7 @@ void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *
     
     if(isBeginGame || m_gameState == SPECTATING || playerIndex != m_sPlayerIndex)
     {
-        handlePlayerDataUpdate(d, keyX, keyY, keyDirection, keyAlive, playerIndex);
+        handlePlayerDataUpdate(d, keyIsBot, keyX, keyY, keyDirection, keyAlive, playerIndex);
     }
     
     handleClientEventsArrayInDocument(d);

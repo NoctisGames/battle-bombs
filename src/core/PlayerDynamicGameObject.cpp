@@ -42,6 +42,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
 
     m_playerState = ALIVE;
     m_playerActionState = IDLE;
+    m_isBot = false;
 }
 
 void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
@@ -344,7 +345,12 @@ Rectangle & PlayerDynamicGameObject::getBoundsForGridLogic()
 
 bool PlayerDynamicGameObject::isBot()
 {
-    return false;
+    return m_isBot;
+}
+
+void PlayerDynamicGameObject::setIsBot(bool isBot)
+{
+    m_isBot = isBot;
 }
 
 // Private

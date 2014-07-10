@@ -215,6 +215,15 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
     static const char *playerIndex5Key = "playerIndex5";
     static const char *playerIndex6Key = "playerIndex6";
     static const char *playerIndex7Key = "playerIndex7";
+    
+    static const char *playerIndex0IsBotKey = "playerIndex0IsBot";
+    static const char *playerIndex1IsBotKey = "playerIndex1IsBot";
+    static const char *playerIndex2IsBotKey = "playerIndex2IsBot";
+    static const char *playerIndex3IsBotKey = "playerIndex3IsBot";
+    static const char *playerIndex4IsBotKey = "playerIndex4IsBot";
+    static const char *playerIndex5IsBotKey = "playerIndex5IsBot";
+    static const char *playerIndex6IsBotKey = "playerIndex6IsBot";
+    static const char *playerIndex7IsBotKey = "playerIndex7IsBot";
 
     static const char *playerIndex0XKey = "playerIndex0X";
     static const char *playerIndex1XKey = "playerIndex1X";
@@ -252,17 +261,17 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
     static const char *playerIndex6AliveKey = "playerIndex6Alive";
     static const char *playerIndex7AliveKey = "playerIndex7Alive";
 
-    clientUpdateForPlayerIndex(d, playerIndex0Key, playerIndex0XKey, playerIndex0YKey, playerIndex0DirectionKey, playerIndex0AliveKey, 0, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex1Key, playerIndex1XKey, playerIndex1YKey, playerIndex1DirectionKey, playerIndex1AliveKey, 1, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex2Key, playerIndex2XKey, playerIndex2YKey, playerIndex2DirectionKey, playerIndex2AliveKey, 2, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex3Key, playerIndex3XKey, playerIndex3YKey, playerIndex3DirectionKey, playerIndex3AliveKey, 3, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex4Key, playerIndex4XKey, playerIndex4YKey, playerIndex4DirectionKey, playerIndex4AliveKey, 4, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex5Key, playerIndex5XKey, playerIndex5YKey, playerIndex5DirectionKey, playerIndex5AliveKey, 5, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex6Key, playerIndex6XKey, playerIndex6YKey, playerIndex6DirectionKey, playerIndex6AliveKey, 6, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex7Key, playerIndex7XKey, playerIndex7YKey, playerIndex7DirectionKey, playerIndex7AliveKey, 7, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex0Key, playerIndex0IsBotKey, playerIndex0XKey, playerIndex0YKey, playerIndex0DirectionKey, playerIndex0AliveKey, 0, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex1Key, playerIndex1IsBotKey, playerIndex1XKey, playerIndex1YKey, playerIndex1DirectionKey, playerIndex1AliveKey, 1, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex2Key, playerIndex2IsBotKey, playerIndex2XKey, playerIndex2YKey, playerIndex2DirectionKey, playerIndex2AliveKey, 2, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex3Key, playerIndex3IsBotKey, playerIndex3XKey, playerIndex3YKey, playerIndex3DirectionKey, playerIndex3AliveKey, 3, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex4Key, playerIndex4IsBotKey, playerIndex4XKey, playerIndex4YKey, playerIndex4DirectionKey, playerIndex4AliveKey, 4, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex5Key, playerIndex5IsBotKey, playerIndex5XKey, playerIndex5YKey, playerIndex5DirectionKey, playerIndex5AliveKey, 5, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex6Key, playerIndex6IsBotKey, playerIndex6XKey, playerIndex6YKey, playerIndex6DirectionKey, playerIndex6AliveKey, 6, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex7Key, playerIndex7IsBotKey, playerIndex7XKey, playerIndex7YKey, playerIndex7DirectionKey, playerIndex7AliveKey, 7, isBeginGame);
 }
 
-void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex)
+void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex)
 {
     if (d.HasMember(keyX) && d.HasMember(keyY) && d.HasMember(keyDirection))
     {
@@ -283,6 +292,12 @@ void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *key
     {
         bool isPlayerAlive = d[keyAlive].GetBool();
         m_players.at(playerIndex).get()->setPlayerState(isPlayerAlive ? ALIVE : DEAD);
+    }
+    
+    if(d.HasMember(keyIsBot))
+    {
+        bool isBot = d[keyIsBot].GetBool();
+        m_players.at(playerIndex).get()->setIsBot(isBot);
     }
 }
 

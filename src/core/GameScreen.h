@@ -107,7 +107,7 @@ private:
     
     void handleBreakableBlocksArrayInDocument(rapidjson::Document &d);
     
-    virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame);
+    virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame);
 };
 
 #endif /* GAME_SCREEN_H */

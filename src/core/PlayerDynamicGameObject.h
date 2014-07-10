@@ -78,6 +78,8 @@ public:
     virtual Rectangle & getBoundsForGridLogic();
     
     virtual bool isBot();
+    
+    void setIsBot(bool isBot);
 
 protected:
     BombGameObject *lastBombDropped;
@@ -96,6 +98,8 @@ protected:
     GameListener *m_gameListener;
     
 private:
+    bool m_isBot;
+    
     bool isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
 };
 

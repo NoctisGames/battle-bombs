@@ -51,6 +51,7 @@
 		BB31AC9E18E05A6400E7369F /* InsideBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31AC9C18E05A6400E7369F /* InsideBlock.cpp */; };
 		BB34DC861925224F00E9AA8C /* GridGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB34DC841925224F00E9AA8C /* GridGameObject.cpp */; };
 		BB34DC89192523C000E9AA8C /* DynamicGridGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB34DC87192523C000E9AA8C /* DynamicGridGameObject.cpp */; };
+		BB39D6E5196ED81400BC895B /* bot_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39D6E4196ED81400BC895B /* bot_blue.png */; };
 		BB451A3718C30E810093E559 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB451A3618C30E810093E559 /* libz.dylib */; };
 		BB600760192958CB008C11CC /* ActiveButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB60075E192958CB008C11CC /* ActiveButton.cpp */; };
 		BB68B02A192A82EF0065CE1D /* OfflineGameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB68B029192A82EF0065CE1D /* OfflineGameViewController.mm */; };
@@ -176,6 +177,7 @@
 		BB34DC851925224F00E9AA8C /* GridGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridGameObject.h; sourceTree = "<group>"; };
 		BB34DC87192523C000E9AA8C /* DynamicGridGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicGridGameObject.cpp; sourceTree = "<group>"; };
 		BB34DC88192523C000E9AA8C /* DynamicGridGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicGridGameObject.h; sourceTree = "<group>"; };
+		BB39D6E4196ED81400BC895B /* bot_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bot_blue.png; sourceTree = "<group>"; };
 		BB430E1E189313C600E4EAE1 /* png.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = png.h; path = ../../3rdparty/libpng/png.h; sourceTree = "<group>"; };
 		BB430E1F189313C600E4EAE1 /* pngconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pngconf.h; path = ../../3rdparty/libpng/pngconf.h; sourceTree = "<group>"; };
 		BB430E20189313C600E4EAE1 /* pngdebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pngdebug.h; path = ../../3rdparty/libpng/pngdebug.h; sourceTree = "<group>"; };
@@ -591,6 +593,7 @@
 			children = (
 				BB9D09AB19155C9E002CBFD3 /* bg_game.aifc */,
 				BB82640E18C2F63200A24A7C /* bg_main.png */,
+				BB39D6E4196ED81400BC895B /* bot_blue.png */,
 				BBDE14AC195A2D7400A91FD7 /* char_black.png */,
 				BBBEC913194B425200AAB520 /* char_blue.png */,
 				BBDE14AD195A2D7400A91FD7 /* char_green.png */,
@@ -682,6 +685,7 @@
 				BBDE14B9195A2D7400A91FD7 /* char_yellow.png in Resources */,
 				BB7102A1196E079500C7BA2F /* map_space.png in Resources */,
 				BBDE14B3195A2D7400A91FD7 /* char_black.png in Resources */,
+				BB39D6E5196ED81400BC895B /* bot_blue.png in Resources */,
 				BB74E80718C2541F007C223E /* Localizable.strings in Resources */,
 				BB7102A0196E079500C7BA2F /* map_mountains.png in Resources */,
 				BB82640F18C2F63200A24A7C /* bg_main.png in Resources */,
