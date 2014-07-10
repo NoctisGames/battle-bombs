@@ -329,6 +329,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                 short playerIndex = userSessionData._playerIndex;
 
                 tobeSent.put("playerIndex" + playerIndex, user.getName());
+                tobeSent.put("playerIndex" + playerIndex + "IsBot", false);
                 tobeSent.put("playerIndex" + playerIndex + "X", get_player_x(_room.getId(), playerIndex));
                 tobeSent.put("playerIndex" + playerIndex + "Y", get_player_y(_room.getId(), playerIndex));
                 tobeSent.put("playerIndex" + playerIndex + "Direction", get_player_direction(_room.getId(), playerIndex));
@@ -377,6 +378,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
             if (is_player_bot(_room.getId(), playerIndex))
             {
                 tobeSent.put("playerIndex" + playerIndex, "Bot " + playerIndex);
+                tobeSent.put("playerIndex" + playerIndex + "IsBot", true);
                 tobeSent.put("playerIndex" + playerIndex + "X", get_player_x(_room.getId(), playerIndex));
                 tobeSent.put("playerIndex" + playerIndex + "Y", get_player_y(_room.getId(), playerIndex));
                 tobeSent.put("playerIndex" + playerIndex + "Direction", get_player_direction(_room.getId(), playerIndex));
