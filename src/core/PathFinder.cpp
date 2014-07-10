@@ -13,7 +13,8 @@
 #include "BreakableBlock.h"
 #include "PlayerDynamicGameObject.h"
 #include "Vector2D.h"
-#include <iostream>
+#include "GameEvent.h"
+
 // For Randomness
 #include <stdlib.h>
 #include <time.h>
@@ -412,7 +413,7 @@ void PathFinder::resetGameGrid()
     }
 }
 
-void PathFinder::initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
+void PathFinder::initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType)
 {
     for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
     {
@@ -450,8 +451,19 @@ void PathFinder::initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &
     game_grid[NUM_GRID_CELLS_PER_ROW - 2][2] = 9;
     game_grid[NUM_GRID_CELLS_PER_ROW - 1][2] = 9;
     
-    using namespace std;
-    cout << "game_grid size : (" << sizeof(game_grid) / sizeof(int) << ")" << endl;
+    if(mapType == MAP_MOUNTAINS)
+    {
+        game_grid[5][GRID_CELL_NUM_ROWS - 1] = 9;
+        game_grid[6][GRID_CELL_NUM_ROWS - 1] = 9;
+        game_grid[7][GRID_CELL_NUM_ROWS - 1] = 9;
+        game_grid[8][GRID_CELL_NUM_ROWS - 1] = 9;
+        game_grid[9][GRID_CELL_NUM_ROWS - 1] = 9;
+        game_grid[5][GRID_CELL_NUM_ROWS - 2] = 9;
+        game_grid[6][GRID_CELL_NUM_ROWS - 2] = 9;
+        game_grid[7][GRID_CELL_NUM_ROWS - 2] = 9;
+        game_grid[8][GRID_CELL_NUM_ROWS - 2] = 9;
+        game_grid[9][GRID_CELL_NUM_ROWS - 2] = 9;
+    }
 }
 
 void PathFinder::freeGameGridCell(int gridX, int gridY)

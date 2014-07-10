@@ -62,6 +62,8 @@ bool GameSession::isPlayerAliveAtIndex(short playerIndex)
 
 void GameSession::initializeInsideBlocksAndMapBordersForMapType(int mapType)
 {
+    m_iMapType = mapType;
+    
     m_mapBorders.clear();
     m_insideBlocks.clear();
     

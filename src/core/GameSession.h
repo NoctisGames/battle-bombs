@@ -59,6 +59,7 @@ protected:
     std::vector<std::unique_ptr<PowerUp >> m_powerUps;
     std::vector<short> m_sEventIds;
     Game_State m_gameState;
+    int m_iMapType;
 
     virtual void updateRunning(float deltaTime) = 0;
 
