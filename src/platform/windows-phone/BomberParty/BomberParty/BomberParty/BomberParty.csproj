@@ -140,9 +140,6 @@
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\bg_game.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets\bg_main.png" />
     <Content Include="Assets\bot_blue.dds" />
     <Content Include="Assets\char_black.dds">
@@ -181,15 +178,19 @@
     <Content Include="Assets\map_base.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\map_base.wav" />
     <Content Include="Assets\map_grasslands.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\map_grasslands.wav" />
     <Content Include="Assets\map_mountains.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\map_mountains.wav" />
     <Content Include="Assets\map_space.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\map_space.wav" />
     <Content Include="Assets\plant_bomb.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

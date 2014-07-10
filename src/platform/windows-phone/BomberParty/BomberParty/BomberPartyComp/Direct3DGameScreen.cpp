@@ -103,8 +103,20 @@ void Direct3DGameScreen::handleMusic()
 	case MUSIC_STOP:
 		m_mediaPlayer->Pause();
 		break;
-	case MUSIC_PLAY:
-		m_mediaPlayer->SetSource("assets\\bg_game.wav");
+	case MUSIC_PLAY_MAP_SPACE:
+		m_mediaPlayer->SetSource("assets\\map_space.wav");
+		m_mediaPlayer->Play();
+		break;
+	case MUSIC_PLAY_MAP_GRASSLANDS:
+		m_mediaPlayer->SetSource("assets\\map_grasslands.wav");
+		m_mediaPlayer->Play();
+		break;
+	case MUSIC_PLAY_MAP_MOUNTAINS:
+		m_mediaPlayer->SetSource("assets\\map_mountains.wav");
+		m_mediaPlayer->Play();
+		break;
+	case MUSIC_PLAY_MAP_BASE:
+		m_mediaPlayer->SetSource("assets\\map_base.wav");
 		m_mediaPlayer->Play();
 		break;
 	default:
