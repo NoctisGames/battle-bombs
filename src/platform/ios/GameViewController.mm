@@ -166,8 +166,6 @@ static Logger *logger = nil;
 {
     // TODO
     NSLog(@"%s",__FUNCTION__);
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)onDisconnectDone:(ConnectEvent*) event

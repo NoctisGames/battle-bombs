@@ -516,11 +516,10 @@ TextureRegion Assets::getBombTextureRegion(BombGameObject &bomb)
         bombFrames.push_back(0.42857142857143f);
     }
     
-    static float bombExplodingCycleTime = 0.3f;
+    static float bombExplodingCycleTime = 0.2f;
     static std::vector<float> bombExplodingFrames;
     if (bombExplodingFrames.size() == 0)
     {
-        bombExplodingFrames.push_back(0.1f);
         bombExplodingFrames.push_back(0.1f);
         bombExplodingFrames.push_back(0.1f);
     }
