@@ -52,6 +52,9 @@
 		BB34DC861925224F00E9AA8C /* GridGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB34DC841925224F00E9AA8C /* GridGameObject.cpp */; };
 		BB34DC89192523C000E9AA8C /* DynamicGridGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB34DC87192523C000E9AA8C /* DynamicGridGameObject.cpp */; };
 		BB39D6E5196ED81400BC895B /* bot_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39D6E4196ED81400BC895B /* bot_blue.png */; };
+		BB39D6E7196EFABD00BC895B /* map_space.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB39D6E6196EFABD00BC895B /* map_space.aifc */; };
+		BB39D6EA196F01CC00BC895B /* map_base.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB39D6E8196F01CC00BC895B /* map_base.aifc */; };
+		BB39D6EB196F01CC00BC895B /* map_mountains.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB39D6E9196F01CC00BC895B /* map_mountains.aifc */; };
 		BB451A3718C30E810093E559 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB451A3618C30E810093E559 /* libz.dylib */; };
 		BB600760192958CB008C11CC /* ActiveButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB60075E192958CB008C11CC /* ActiveButton.cpp */; };
 		BB68B02A192A82EF0065CE1D /* OfflineGameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB68B029192A82EF0065CE1D /* OfflineGameViewController.mm */; };
@@ -91,7 +94,7 @@
 		BB96EEF318B99A7100F7C356 /* texture.c in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEE918B99A7100F7C356 /* texture.c */; };
 		BB96EEF418B99A7100F7C356 /* Vertices2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEEB18B99A7100F7C356 /* Vertices2D.cpp */; };
 		BB9948E219366E2900A8E599 /* GameListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9948E019366E2900A8E599 /* GameListener.cpp */; };
-		BB9D09AC19155C9E002CBFD3 /* bg_game.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB9D09AB19155C9E002CBFD3 /* bg_game.aifc */; };
+		BB9D09AC19155C9E002CBFD3 /* map_grasslands.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB9D09AB19155C9E002CBFD3 /* map_grasslands.aifc */; };
 		BB9D93BE191FB4EC00AD9CCE /* PowerUp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */; };
 		BBA1CD531958B10A00AF2AD8 /* MapBorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */; };
 		BBB24BA219638A9300EF78B2 /* interface.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB24BA119638A9300EF78B2 /* interface.png */; };
@@ -178,6 +181,9 @@
 		BB34DC87192523C000E9AA8C /* DynamicGridGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicGridGameObject.cpp; sourceTree = "<group>"; };
 		BB34DC88192523C000E9AA8C /* DynamicGridGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicGridGameObject.h; sourceTree = "<group>"; };
 		BB39D6E4196ED81400BC895B /* bot_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bot_blue.png; sourceTree = "<group>"; };
+		BB39D6E6196EFABD00BC895B /* map_space.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = map_space.aifc; sourceTree = "<group>"; };
+		BB39D6E8196F01CC00BC895B /* map_base.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = map_base.aifc; sourceTree = "<group>"; };
+		BB39D6E9196F01CC00BC895B /* map_mountains.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = map_mountains.aifc; sourceTree = "<group>"; };
 		BB430E1E189313C600E4EAE1 /* png.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = png.h; path = ../../3rdparty/libpng/png.h; sourceTree = "<group>"; };
 		BB430E1F189313C600E4EAE1 /* pngconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pngconf.h; path = ../../3rdparty/libpng/pngconf.h; sourceTree = "<group>"; };
 		BB430E20189313C600E4EAE1 /* pngdebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pngdebug.h; path = ../../3rdparty/libpng/pngdebug.h; sourceTree = "<group>"; };
@@ -271,7 +277,7 @@
 		BB9948E019366E2900A8E599 /* GameListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameListener.cpp; sourceTree = "<group>"; };
 		BB9948E119366E2900A8E599 /* GameListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameListener.h; sourceTree = "<group>"; };
 		BB9948E31936736600A8E599 /* ResourceConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceConstants.h; sourceTree = "<group>"; };
-		BB9D09AB19155C9E002CBFD3 /* bg_game.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = bg_game.aifc; sourceTree = "<group>"; };
+		BB9D09AB19155C9E002CBFD3 /* map_grasslands.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = map_grasslands.aifc; sourceTree = "<group>"; };
 		BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PowerUp.cpp; sourceTree = "<group>"; };
 		BB9D93BD191FB4EC00AD9CCE /* PowerUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerUp.h; sourceTree = "<group>"; };
 		BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapBorder.cpp; sourceTree = "<group>"; };
@@ -591,7 +597,6 @@
 		BBD079F518AA879D00E010AF /* assets */ = {
 			isa = PBXGroup;
 			children = (
-				BB9D09AB19155C9E002CBFD3 /* bg_game.aifc */,
 				BB82640E18C2F63200A24A7C /* bg_main.png */,
 				BB39D6E4196ED81400BC895B /* bot_blue.png */,
 				BBDE14AC195A2D7400A91FD7 /* char_black.png */,
@@ -605,9 +610,13 @@
 				BB16D969191987B80034BE67 /* death.caf */,
 				BB16D96A191987B80034BE67 /* explosion.caf */,
 				BBB24BA119638A9300EF78B2 /* interface.png */,
+				BB39D6E8196F01CC00BC895B /* map_base.aifc */,
 				BB71029A196E079500C7BA2F /* map_base.png */,
+				BB9D09AB19155C9E002CBFD3 /* map_grasslands.aifc */,
 				BB71029B196E079500C7BA2F /* map_grasslands.png */,
+				BB39D6E9196F01CC00BC895B /* map_mountains.aifc */,
 				BB71029C196E079500C7BA2F /* map_mountains.png */,
+				BB39D6E6196EFABD00BC895B /* map_space.aifc */,
 				BB71029D196E079500C7BA2F /* map_space.png */,
 				BB16D96B191987B80034BE67 /* plant_bomb.caf */,
 			);
@@ -679,6 +688,8 @@
 				BBB24BA219638A9300EF78B2 /* interface.png in Resources */,
 				0ADF188E178E2185005DA99E /* Default.png in Resources */,
 				BBDE14B6195A2D7400A91FD7 /* char_pink.png in Resources */,
+				BB39D6E7196EFABD00BC895B /* map_space.aifc in Resources */,
+				BB39D6EA196F01CC00BC895B /* map_base.aifc in Resources */,
 				0ADF1890178E2185005DA99E /* Default@2x.png in Resources */,
 				BB16D96E191987B80034BE67 /* plant_bomb.caf in Resources */,
 				BB16D96D191987B80034BE67 /* explosion.caf in Resources */,
@@ -691,11 +702,12 @@
 				BB82640F18C2F63200A24A7C /* bg_main.png in Resources */,
 				BB16D96C191987B80034BE67 /* death.caf in Resources */,
 				0ADF1892178E2185005DA99E /* Default-568h@2x.png in Resources */,
-				BB9D09AC19155C9E002CBFD3 /* bg_game.aifc in Resources */,
+				BB9D09AC19155C9E002CBFD3 /* map_grasslands.aifc in Resources */,
 				0ADF1895178E2185005DA99E /* MainStoryboard_iPhone.storyboard in Resources */,
 				0ADF1898178E2185005DA99E /* MainStoryboard_iPad.storyboard in Resources */,
 				BB71029F196E079500C7BA2F /* map_grasslands.png in Resources */,
 				BBDE14B4195A2D7400A91FD7 /* char_green.png in Resources */,
+				BB39D6EB196F01CC00BC895B /* map_mountains.aifc in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

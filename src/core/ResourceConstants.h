@@ -13,7 +13,10 @@
 
 // Music Definitions
 #define MUSIC_STOP 1
-#define MUSIC_PLAY 2
+#define MUSIC_PLAY_MAP_SPACE 2
+#define MUSIC_PLAY_MAP_GRASSLANDS 3
+#define MUSIC_PLAY_MAP_MOUNTAINS 4
+#define MUSIC_PLAY_MAP_BASE 5
 
 // Sound Definitions
 #define SOUND_PLANT_BOMB 1

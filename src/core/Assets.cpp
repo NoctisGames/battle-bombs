@@ -306,13 +306,13 @@ TextureRegion Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
                 playerPlacingBombDownTextureRegions.push_back(TextureRegion(PLAYER_PLACE_BOMB_DOWN_FRAME_3_TEXTURE_REGION_X, PLAYER_PLACE_BOMB_DOWN_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
             }
             
-            static float cycleTime = 0.3f;
+            static float cycleTime = 0.15f;
             static std::vector<float> playerFrames;
             if (playerFrames.size() == 0)
             {
-                playerFrames.push_back(0.1f);
-                playerFrames.push_back(0.1f);
-                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.05f);
+                playerFrames.push_back(0.05f);
+                playerFrames.push_back(0.05f);
             }
             
             switch (player.getDirection())
@@ -362,13 +362,13 @@ TextureRegion Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
                 playerPushingBombDownTextureRegions.push_back(TextureRegion(PLAYER_PUSH_BOMB_DOWN_FRAME_3_TEXTURE_REGION_X, PLAYER_PUSH_BOMB_DOWN_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
             }
             
-            static float cycleTime = 0.3f;
+            static float cycleTime = 0.15f;
             static std::vector<float> playerFrames;
             if (playerFrames.size() == 0)
             {
-                playerFrames.push_back(0.1f);
-                playerFrames.push_back(0.1f);
-                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.05f);
+                playerFrames.push_back(0.05f);
+                playerFrames.push_back(0.05f);
             }
             
             switch (player.getDirection())

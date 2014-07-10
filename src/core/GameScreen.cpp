@@ -457,7 +457,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         PathFinder::getInstance().resetGameGrid();
         PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks, m_iMapType);
         
-        Assets::getInstance()->setMusicId(MUSIC_PLAY);
+        Assets::getInstance()->setMusicId(mapType + 2);
         
         return true;
     }

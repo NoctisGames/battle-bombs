@@ -490,20 +490,38 @@ static Logger *logger = nil;
 
 - (void)handleMusic
 {
+    bool loadedNewTrack = false;
     short musicId = get_current_music_id();
     switch (musicId)
     {
         case MUSIC_STOP:
             [self.bgm stop];
             break;
-        case MUSIC_PLAY:
-            self.bgm = [[Music alloc] initWithMusicNamed:@"bg_game" fromBundle:[NSBundle mainBundle]];
-            [self.bgm setLooping:true];
-            [self.bgm setVolume:1.0f];
-            [self.bgm play];
+        case MUSIC_PLAY_MAP_SPACE:
+            self.bgm = [[Music alloc] initWithMusicNamed:@"map_space" fromBundle:[NSBundle mainBundle]];
+            loadedNewTrack = true;
+            break;
+        case MUSIC_PLAY_MAP_GRASSLANDS:
+            self.bgm = [[Music alloc] initWithMusicNamed:@"map_grasslands" fromBundle:[NSBundle mainBundle]];
+            loadedNewTrack = true;
+            break;
+        case MUSIC_PLAY_MAP_MOUNTAINS:
+            self.bgm = [[Music alloc] initWithMusicNamed:@"map_mountains" fromBundle:[NSBundle mainBundle]];
+            loadedNewTrack = true;
+            break;
+        case MUSIC_PLAY_MAP_BASE:
+            self.bgm = [[Music alloc] initWithMusicNamed:@"map_base" fromBundle:[NSBundle mainBundle]];
+            loadedNewTrack = true;
             break;
         default:
             break;
+    }
+    
+    if(loadedNewTrack)
+    {
+        [self.bgm setLooping:true];
+        [self.bgm setVolume:1.0f];
+        [self.bgm play];
     }
 }
 
