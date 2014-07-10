@@ -42,6 +42,8 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
 {
     init();
     
+    initializeInsideBlocksAndMapBordersForMapType(mapType);
+    
     int playerStartingPositions[8][2] = {
         {PLAYER_1_GRID_X, PLAYER_1_GRID_Y},
         {PLAYER_2_GRID_X, PLAYER_2_GRID_Y},
@@ -103,6 +105,12 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
             {
                 continue;
             }
+            
+            // The Mountain map has a special DOOR border type
+            if(mapType == MAP_MOUNTAINS && i == GRID_CELL_NUM_ROWS - 1 && j >= 6 && j <= 8)
+            {
+                continue;
+            }
 
             // 70% chance there will be a breakable block at all
             if ((rand() % 100 + 1) < 71)
@@ -135,6 +143,9 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
             }
         }
     }
+    
+    PathFinder::getInstance().resetGameGrid();
+    PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks, mapType);
 }
 
 void ServerGameSession::init()
@@ -174,8 +185,6 @@ void ServerGameSession::update(float deltaTime)
             else if (eventType == BEGIN_GAME)
             {
                 m_gameState = RUNNING;
-                PathFinder::getInstance().resetGameGrid();
-                PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks);
             }
         }
     }
