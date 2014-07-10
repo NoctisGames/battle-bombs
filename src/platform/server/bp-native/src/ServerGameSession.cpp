@@ -245,9 +245,9 @@ void ServerGameSession::updateRunning(float deltaTime)
     updateCommon(deltaTime);
 }
 
-void ServerGameSession::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame)
+void ServerGameSession::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame)
 {
-    handlePlayerDataUpdate(d, keyX, keyY, keyDirection, keyAlive, playerIndex);
+    handlePlayerDataUpdate(d, keyIsBot, keyX, keyY, keyDirection, keyAlive, playerIndex);
 
     handleClientEventsArrayInDocument(d);
 }
