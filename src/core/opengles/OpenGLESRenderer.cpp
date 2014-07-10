@@ -22,6 +22,7 @@
 #include "PowerUp.h"
 #include "Vector2D.h"
 #include "Fire.h"
+#include "GameEvent.h"
 
 extern "C"
 {
@@ -44,7 +45,8 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     
     m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(4000, false));
     
-    m_gameTexture = load_png_asset_into_texture("game.png");
+    // TODO, this gameTexture loading is temporary
+    m_gameTexture = load_png_asset_into_texture("map_space.png");
     m_interfaceTexture = load_png_asset_into_texture("interface.png");
     
     m_charBlackTexture = load_png_asset_into_texture("char_black.png");
@@ -60,6 +62,28 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
 OpenGLESRenderer::~OpenGLESRenderer()
 {
     cleanUp();
+}
+
+void OpenGLESRenderer::loadMapType(int mapType)
+{
+    glDeleteTextures(1, &m_gameTexture);
+    
+    switch (mapType)
+    {
+        case MAP_SPACE:
+            m_gameTexture = load_png_asset_into_texture("map_space.png");
+            break;
+        case MAP_GRASSLANDS:
+            m_gameTexture = load_png_asset_into_texture("map_grasslands.png");
+            break;
+        case MAP_MOUNTAINS:
+            m_gameTexture = load_png_asset_into_texture("map_mountains.png");
+            break;
+        case MAP_BASE:
+        default:
+            m_gameTexture = load_png_asset_into_texture("map_base.png");
+            break;
+    }
 }
 
 void OpenGLESRenderer::clearScreenWithColor(float r, float g, float b, float a)

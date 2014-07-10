@@ -25,6 +25,8 @@ public:
     
     ~OpenGLESRenderer();
     
+    virtual void loadMapType(int mapType);
+    
     virtual void clearScreenWithColor(float r, float g, float b, float a);
     
     virtual void renderWorldBackground();

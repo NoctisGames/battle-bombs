@@ -54,6 +54,10 @@
 		BB451A3718C30E810093E559 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB451A3618C30E810093E559 /* libz.dylib */; };
 		BB600760192958CB008C11CC /* ActiveButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB60075E192958CB008C11CC /* ActiveButton.cpp */; };
 		BB68B02A192A82EF0065CE1D /* OfflineGameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB68B029192A82EF0065CE1D /* OfflineGameViewController.mm */; };
+		BB71029E196E079500C7BA2F /* map_base.png in Resources */ = {isa = PBXBuildFile; fileRef = BB71029A196E079500C7BA2F /* map_base.png */; };
+		BB71029F196E079500C7BA2F /* map_grasslands.png in Resources */ = {isa = PBXBuildFile; fileRef = BB71029B196E079500C7BA2F /* map_grasslands.png */; };
+		BB7102A0196E079500C7BA2F /* map_mountains.png in Resources */ = {isa = PBXBuildFile; fileRef = BB71029C196E079500C7BA2F /* map_mountains.png */; };
+		BB7102A1196E079500C7BA2F /* map_space.png in Resources */ = {isa = PBXBuildFile; fileRef = BB71029D196E079500C7BA2F /* map_space.png */; };
 		BB7305DA189C598D009F6DF4 /* AppPrefs.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7305D5189C598D009F6DF4 /* AppPrefs.m */; };
 		BB7305DB189C598D009F6DF4 /* Music.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7305D7189C598D009F6DF4 /* Music.m */; };
 		BB7305DC189C598D009F6DF4 /* Sound.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7305D9189C598D009F6DF4 /* Sound.m */; };
@@ -62,7 +66,6 @@
 		BB74E80718C2541F007C223E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BB74E80518C2541F007C223E /* Localizable.strings */; };
 		BB82640B18C288F200A24A7C /* AppWarp_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		BB82640F18C2F63200A24A7C /* bg_main.png in Resources */ = {isa = PBXBuildFile; fileRef = BB82640E18C2F63200A24A7C /* bg_main.png */; };
-		BB82641218C3025900A24A7C /* game.png in Resources */ = {isa = PBXBuildFile; fileRef = BB82641118C3025900A24A7C /* game.png */; };
 		BB9139C918BEFCC800E51FB5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9139C818BEFCC800E51FB5 /* MainViewController.m */; };
 		BB96EECE18B99A6900F7C356 /* Assets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEAE18B99A6900F7C356 /* Assets.cpp */; };
 		BB96EECF18B99A6900F7C356 /* DynamicGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEB118B99A6900F7C356 /* DynamicGameObject.cpp */; };
@@ -196,6 +199,10 @@
 		BB695E2718DB73FA0083C4E3 /* reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
 		BB695E2818DB73FA0083C4E3 /* stringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringbuffer.h; sourceTree = "<group>"; };
 		BB695E2918DB73FA0083C4E3 /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = writer.h; sourceTree = "<group>"; };
+		BB71029A196E079500C7BA2F /* map_base.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_base.png; sourceTree = "<group>"; };
+		BB71029B196E079500C7BA2F /* map_grasslands.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_grasslands.png; sourceTree = "<group>"; };
+		BB71029C196E079500C7BA2F /* map_mountains.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_mountains.png; sourceTree = "<group>"; };
+		BB71029D196E079500C7BA2F /* map_space.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_space.png; sourceTree = "<group>"; };
 		BB7305D4189C598C009F6DF4 /* AppPrefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppPrefs.h; sourceTree = "<group>"; };
 		BB7305D5189C598D009F6DF4 /* AppPrefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppPrefs.m; sourceTree = "<group>"; };
 		BB7305D6189C598D009F6DF4 /* Music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Music.h; sourceTree = "<group>"; };
@@ -207,7 +214,6 @@
 		BB74E80618C2541F007C223E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppWarp_iOS_SDK.framework; path = ../../3rdparty/AppWarp/AppWarp_iOS_SDK.framework; sourceTree = "<group>"; };
 		BB82640E18C2F63200A24A7C /* bg_main.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_main.png; sourceTree = "<group>"; };
-		BB82641118C3025900A24A7C /* game.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = game.png; sourceTree = "<group>"; };
 		BB90FA7818D50E4100733E9B /* GameEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameEvent.h; sourceTree = "<group>"; };
 		BB9139C718BEFCC800E51FB5 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		BB9139C818BEFCC800E51FB5 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
@@ -595,8 +601,11 @@
 				BBDE14B2195A2D7400A91FD7 /* char_yellow.png */,
 				BB16D969191987B80034BE67 /* death.caf */,
 				BB16D96A191987B80034BE67 /* explosion.caf */,
-				BB82641118C3025900A24A7C /* game.png */,
 				BBB24BA119638A9300EF78B2 /* interface.png */,
+				BB71029A196E079500C7BA2F /* map_base.png */,
+				BB71029B196E079500C7BA2F /* map_grasslands.png */,
+				BB71029C196E079500C7BA2F /* map_mountains.png */,
+				BB71029D196E079500C7BA2F /* map_space.png */,
 				BB16D96B191987B80034BE67 /* plant_bomb.caf */,
 			);
 			path = assets;
@@ -663,22 +672,25 @@
 				0ADF1886178E2185005DA99E /* InfoPlist.strings in Resources */,
 				BBDE14B8195A2D7400A91FD7 /* char_white.png in Resources */,
 				BBDE14B7195A2D7400A91FD7 /* char_red.png in Resources */,
+				BB71029E196E079500C7BA2F /* map_base.png in Resources */,
 				BBB24BA219638A9300EF78B2 /* interface.png in Resources */,
 				0ADF188E178E2185005DA99E /* Default.png in Resources */,
-				BB82641218C3025900A24A7C /* game.png in Resources */,
 				BBDE14B6195A2D7400A91FD7 /* char_pink.png in Resources */,
 				0ADF1890178E2185005DA99E /* Default@2x.png in Resources */,
 				BB16D96E191987B80034BE67 /* plant_bomb.caf in Resources */,
 				BB16D96D191987B80034BE67 /* explosion.caf in Resources */,
 				BBDE14B9195A2D7400A91FD7 /* char_yellow.png in Resources */,
+				BB7102A1196E079500C7BA2F /* map_space.png in Resources */,
 				BBDE14B3195A2D7400A91FD7 /* char_black.png in Resources */,
 				BB74E80718C2541F007C223E /* Localizable.strings in Resources */,
+				BB7102A0196E079500C7BA2F /* map_mountains.png in Resources */,
 				BB82640F18C2F63200A24A7C /* bg_main.png in Resources */,
 				BB16D96C191987B80034BE67 /* death.caf in Resources */,
 				0ADF1892178E2185005DA99E /* Default-568h@2x.png in Resources */,
 				BB9D09AC19155C9E002CBFD3 /* bg_game.aifc in Resources */,
 				0ADF1895178E2185005DA99E /* MainStoryboard_iPhone.storyboard in Resources */,
 				0ADF1898178E2185005DA99E /* MainStoryboard_iPad.storyboard in Resources */,
+				BB71029F196E079500C7BA2F /* map_grasslands.png in Resources */,
 				BBDE14B4195A2D7400A91FD7 /* char_green.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -42,6 +42,8 @@ public:
 
 	void calcScrollYForPlayer(PlayerDynamicGameObject &player);
     
+    virtual void loadMapType(int mapType) = 0;
+    
     virtual void clearScreenWithColor(float r, float g, float b, float a) = 0;
     
     virtual void renderWorldBackground() = 0;

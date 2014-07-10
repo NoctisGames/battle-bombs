@@ -422,10 +422,9 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
 {
     static const char *numPlayersKey = "numPlayers";
     static const char *numClientBotsKey = "numClientBots";
+    static const char *mapTypeKey = "mapType";
     
-    const bool hasNumPlayersKey = d.HasMember(numPlayersKey);
-    
-    if(hasNumPlayersKey)
+    if(d.HasMember(numPlayersKey))
     {
         init();
         
@@ -451,10 +450,15 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         PathFinder::getInstance().resetGameGrid();
         PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks);
         
+        int mapType = d[mapTypeKey].GetInt();
+        m_renderer->loadMapType(mapType);
+        
         Assets::getInstance()->setMusicId(MUSIC_PLAY);
+        
+        return true;
     }
     
-    return hasNumPlayersKey;
+    return false;
 }
 
 void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)

@@ -9,9 +9,16 @@
 #ifndef GAME_EVENT_H
 #define GAME_EVENT_H
 
+// Event Type
 #define BEGIN_SPECTATE 1336
 #define BEGIN_GAME 1337
 #define CLIENT_UPDATE 1338
+
+// Map Type
+#define MAP_SPACE 0
+#define MAP_GRASSLANDS 1
+#define MAP_MOUNTAINS 2
+#define MAP_BASE 3
 
 #define PLAYER_EVENT_BASE 100
 
