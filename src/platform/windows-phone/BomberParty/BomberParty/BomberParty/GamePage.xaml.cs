@@ -224,7 +224,14 @@ namespace BomberParty
             {
                 Debug.WriteLine("onChatReceived");
 
-                _page.m_d3dInterop.onChatReceived(eventObj.getMessage());
+                if (_page.m_d3dInterop != null)
+                {
+                    _page.m_d3dInterop.onChatReceived(eventObj.getMessage());
+                }
+                else
+                {
+                    Console.WriteLine("onChatReceived before m_d3dInterop was initialized!");
+                }
             }
 
             public void onGameStarted(string sender, string roomId, string nextTurn)

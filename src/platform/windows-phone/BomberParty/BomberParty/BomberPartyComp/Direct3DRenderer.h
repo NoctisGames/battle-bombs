@@ -22,6 +22,8 @@ class Direct3DRenderer : public Renderer
 public:
 	Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView, int deviceScreenWidth, int deviceScreenHeight);
 
+	virtual void loadMapType(int mapType); 
+	
 	virtual void clearScreenWithColor(float r, float g, float b, float a);
 
 	virtual void renderWorldBackground();

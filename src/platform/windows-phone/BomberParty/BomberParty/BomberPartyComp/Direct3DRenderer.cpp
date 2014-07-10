@@ -27,6 +27,7 @@
 #include "PowerUp.h"
 #include "Vector2D.h"
 #include "Fire.h"
+#include "GameEvent.h"
 
 using namespace DirectX;
 
@@ -41,7 +42,7 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 	m_spriteBatch = std::unique_ptr<SpriteBatch>(new SpriteBatch(d3dContext));
 
 	// Initialize Textures
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\game.dds", NULL, &m_gameShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
@@ -90,6 +91,28 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 	m_basicEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
 
 	d3dDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, shaderByteCode, byteCodeLength, &m_inputLayout);
+}
+
+void Direct3DRenderer::loadMapType(int mapType)
+{
+	m_gameShaderResourceView->Release();
+
+	switch (mapType)
+	{
+	case MAP_SPACE:
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
+		break;
+	case MAP_GRASSLANDS:
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\map_grasslands.dds", NULL, &m_gameShaderResourceView, NULL));
+		break;
+	case MAP_MOUNTAINS:
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\map_mountains.dds", NULL, &m_gameShaderResourceView, NULL));
+		break;
+	case MAP_BASE:
+	default:
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\map_base.dds", NULL, &m_gameShaderResourceView, NULL));
+		break;
+	}
 }
 
 void Direct3DRenderer::clearScreenWithColor(float r, float g, float b, float a)
