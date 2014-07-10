@@ -11,6 +11,7 @@
 
 typedef enum
 {
+    MOUNTAINS_DOOR,
     BORDER_TOP,
     BORDER_LEFT,
     BORDER_RIGHT,

@@ -64,6 +64,8 @@ protected:
 
     virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame) = 0;
     
+    void initializeInsideBlocksAndMapBordersForMapType(int mapType);
+    
     void updateCommon(float deltaTime);
 
     void clientUpdate(rapidjson::Document &d, bool isBeginGame);

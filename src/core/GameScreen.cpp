@@ -447,11 +447,12 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         
         handleBreakableBlocksArrayInDocument(d);
         
+        int mapType = d[mapTypeKey].GetInt();
+        initializeInsideBlocksAndMapBordersForMapType(mapType);
+        m_renderer->loadMapType(mapType);
+        
         PathFinder::getInstance().resetGameGrid();
         PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks);
-        
-        int mapType = d[mapTypeKey].GetInt();
-        m_renderer->loadMapType(mapType);
         
         Assets::getInstance()->setMusicId(MUSIC_PLAY);
         

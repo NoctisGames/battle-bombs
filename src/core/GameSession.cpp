@@ -27,6 +27,44 @@
 
 GameSession::GameSession()
 {
+    // I guess this is empty now
+}
+
+int GameSession::getNumPlayers()
+{
+    return (int) m_players.size();
+}
+
+bool GameSession::isPlayerBotAtIndex(short playerIndex)
+{
+    return m_players.at(playerIndex).get()->isBot();
+}
+
+float GameSession::getPlayerXAtIndex(short playerIndex)
+{
+    return m_players.at(playerIndex).get()->getPosition().getX();
+}
+
+float GameSession::getPlayerYAtIndex(short playerIndex)
+{
+    return m_players.at(playerIndex).get()->getPosition().getY();
+}
+
+int GameSession::getPlayerDirectionAtIndex(short playerIndex)
+{
+    return m_players.at(playerIndex).get()->getDirection();
+}
+
+bool GameSession::isPlayerAliveAtIndex(short playerIndex)
+{
+    return m_players.at(playerIndex).get()->getPlayerState() == Player_State::ALIVE;
+}
+
+void GameSession::initializeInsideBlocksAndMapBordersForMapType(int mapType)
+{
+    m_mapBorders.clear();
+    m_insideBlocks.clear();
+    
     // BEGIN MAP BORDER FAR
     m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_TOP, SCREEN_WIDTH / 2, SCREEN_HEIGHT_X2 - 0.73880597023028f, SCREEN_WIDTH, 1.47761194046056f)));
     m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_LEFT, 0.7388059701492f, 15.76119403157902f, 1.4776119402984f, 20.0597014947369f)));
@@ -34,6 +72,11 @@ GameSession::GameSession()
     m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_BOTTOM_LEFT, 2.865671641791f, 3.58208955263162f, 5.731343283582f, 4.29850746315789f)));
     m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_BOTTOM_RIGHT, 21.31343283582084f, 3.58208955263162f, 5.37313432835832f, 4.29850746315789f)));
     m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_BOTTOM, SCREEN_WIDTH / 2, 0.71641791052634f, SCREEN_WIDTH, 1.43283582105267f)));
+    
+    if(mapType == MAP_MOUNTAINS)
+    {
+        m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(MOUNTAINS_DOOR, GAME_X + GRID_CELL_WIDTH * 7 + GRID_CELL_WIDTH / 2.0f, GAME_Y + GRID_CELL_HEIGHT * GRID_CELL_NUM_ROWS + GRID_CELL_HEIGHT / 2.0f, GRID_CELL_WIDTH * 3, GRID_CELL_HEIGHT * 2)));
+    }
     
     // BEGIN BOTTOM CENTER
     m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock( 5, 0)));
@@ -71,39 +114,17 @@ GameSession::GameSession()
     {
         for (int j = 1; j < NUM_GRID_CELLS_PER_ROW; j += 2)
         {
+            if(mapType == MAP_MOUNTAINS)
+            {
+                if(i >= GRID_CELL_NUM_ROWS - 2 && j >= 5 && j <= 9)
+                {
+                    continue;
+                }
+            }
+            
             m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock(j, i)));
         }
     }
-}
-
-int GameSession::getNumPlayers()
-{
-    return (int) m_players.size();
-}
-
-bool GameSession::isPlayerBotAtIndex(short playerIndex)
-{
-    return m_players.at(playerIndex).get()->isBot();
-}
-
-float GameSession::getPlayerXAtIndex(short playerIndex)
-{
-    return m_players.at(playerIndex).get()->getPosition().getX();
-}
-
-float GameSession::getPlayerYAtIndex(short playerIndex)
-{
-    return m_players.at(playerIndex).get()->getPosition().getY();
-}
-
-int GameSession::getPlayerDirectionAtIndex(short playerIndex)
-{
-    return m_players.at(playerIndex).get()->getDirection();
-}
-
-bool GameSession::isPlayerAliveAtIndex(short playerIndex)
-{
-    return m_players.at(playerIndex).get()->getPlayerState() == Player_State::ALIVE;
 }
 
 void GameSession::updateCommon(float deltaTime)
