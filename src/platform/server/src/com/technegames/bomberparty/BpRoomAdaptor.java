@@ -159,8 +159,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
             if (_inRoomUserSessionDataMap.isEmpty())
             {
                 // No one is in the room, so let's reset it for the next person
-                _isGameRunning = false;
-                _stateTime = 0;
+                endGame();
             }
             else
             {
@@ -241,11 +240,8 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                 }
                 else
                 {
-                    // Game has ended
                     // TODO, send out a player won event
-
-                    _isGameRunning = false;
-                    _stateTime = 0;
+                    endGame();
                 }
             }
         }
@@ -411,6 +407,12 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
         handle_server_update(_room.getId(), message);
 
         _room.BroadcastChat(SERVER, message);
+    }
+
+    private void endGame()
+    {
+        _isGameRunning = false;
+        _stateTime = 0;
     }
 
     private void removeUser(IUser user, boolean onUserLeaveRequest)
