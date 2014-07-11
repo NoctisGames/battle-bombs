@@ -77,8 +77,7 @@ public final class RendererWrapper implements Renderer
                                              // measurement
     private boolean isInitialized;
 
-    public RendererWrapper(Activity activity, int deviceScreenWidth,
-            int deviceScreenHeight, String username)
+    public RendererWrapper(Activity activity, int deviceScreenWidth, int deviceScreenHeight, String username)
     {
         this.activity = activity;
         this.deviceScreenWidth = deviceScreenWidth;
@@ -154,14 +153,10 @@ public final class RendererWrapper implements Renderer
                                                            // time
         }
 
-        movAverageDeltaTime_ms = (realTimeElapsed_ms + movAverageDeltaTime_ms
-                * (movAveragePeriod - 1))
-                / movAveragePeriod;
+        movAverageDeltaTime_ms = (realTimeElapsed_ms + movAverageDeltaTime_ms * (movAveragePeriod - 1)) / movAveragePeriod;
 
         // Calc a better aproximation for smooth stepTime
-        smoothedDeltaRealTime_ms = smoothedDeltaRealTime_ms
-                + (movAverageDeltaTime_ms - smoothedDeltaRealTime_ms)
-                * smoothFactor;
+        smoothedDeltaRealTime_ms = smoothedDeltaRealTime_ms + (movAverageDeltaTime_ms - smoothedDeltaRealTime_ms) * smoothFactor;
 
         lastRealTimeMeasurement_ms = currTimePick_ms;
     }
