@@ -66,18 +66,16 @@ namespace BomberParty
 
             WarpClient.GetInstance().LeaveRoom(m_joinedRoomId);
             WarpClient.GetInstance().Disconnect();
-
-            NavigationService.GoBack();
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
             base.OnBackKeyPress(e);
 
-            if (m_d3dInterop.onBackPressed())
-            {
-                e.Cancel = true;
-            }
+            //if (m_d3dInterop.onBackPressed())
+            //{
+            //    e.Cancel = true;
+            //}
         }
 
         private void DrawingSurface_Loaded(object sender, RoutedEventArgs e)

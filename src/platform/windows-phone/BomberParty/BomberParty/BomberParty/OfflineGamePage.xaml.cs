@@ -32,21 +32,14 @@ namespace BomberParty
             PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            base.OnNavigatedFrom(e);
-
-            NavigationService.GoBack();
-        }
-
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
             base.OnBackKeyPress(e);
 
-            if (m_d3dInterop.onBackPressed())
-            {
-                e.Cancel = true;
-            }
+            //if (m_d3dinterop.onbackpressed())
+            //{
+            //    e.cancel = true;
+            //}
         }
 
         private void DrawingSurface_Loaded(object sender, RoutedEventArgs e)
