@@ -146,6 +146,13 @@ static NSString *username;
 - (void)onUserJoinedRoom:(RoomData *)roomData username:(NSString *)username
 {
     NSLog(@"%s",__FUNCTION__);
+    
+    if(roomData)
+    {
+        self.joinedRoomId = roomData.roomId;
+        
+        [self performSegueWithIdentifier:@"Main_To_Game" sender:self];
+    }
 }
 
 - (void)onUserLeftLobby:(LobbyData *)lobbyData username:(NSString *)username
@@ -218,13 +225,6 @@ static NSString *username;
 - (void)onJoinRoomDone:(RoomEvent *)roomEvent
 {
     NSLog(@"%s",__FUNCTION__);
-    
-    if(roomEvent.roomData)
-    {
-        self.joinedRoomId = roomEvent.roomData.roomId;
-        
-        [self performSegueWithIdentifier:@"Main_To_Game" sender:self];
-    }
 }
 
 - (void)onLeaveRoomDone:(RoomEvent *)roomEvent
