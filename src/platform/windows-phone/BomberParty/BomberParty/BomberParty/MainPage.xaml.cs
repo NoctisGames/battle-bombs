@@ -221,15 +221,15 @@ namespace BomberParty
             {
                 Debug.WriteLine("onUserJoinedRoom");
 
-                WarpClient.GetInstance().RemoveChatRequestListener(_page.m_chatRequestListener);
-                WarpClient.GetInstance().RemoveConnectionRequestListener(_page.m_connectionRequestListener);
-                WarpClient.GetInstance().RemoveLobbyRequestListener(_page.m_lobbyRequestListener);
-                WarpClient.GetInstance().RemoveNotificationListener(_page.m_notifyListener);
-                WarpClient.GetInstance().RemoveRoomRequestListener(_page.m_roomRequestListener);
-                WarpClient.GetInstance().RemoveZoneRequestListener(_page.m_zoneRequestListener);
-
                 if (eventObj != null)
                 {
+                    WarpClient.GetInstance().RemoveChatRequestListener(_page.m_chatRequestListener);
+                    WarpClient.GetInstance().RemoveConnectionRequestListener(_page.m_connectionRequestListener);
+                    WarpClient.GetInstance().RemoveLobbyRequestListener(_page.m_lobbyRequestListener);
+                    WarpClient.GetInstance().RemoveNotificationListener(_page.m_notifyListener);
+                    WarpClient.GetInstance().RemoveRoomRequestListener(_page.m_roomRequestListener);
+                    WarpClient.GetInstance().RemoveZoneRequestListener(_page.m_zoneRequestListener);
+
                     string joinedRoomId = eventObj.getId();
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -363,7 +363,7 @@ namespace BomberParty
             {
                 Debug.WriteLine("onInvokeZoneRPCDone");
             }
-            
+
             public void onSetCustomUserDataDone(LiveUserInfoEvent eventObj)
             {
                 Debug.WriteLine("onSetCustomUserDataDone");

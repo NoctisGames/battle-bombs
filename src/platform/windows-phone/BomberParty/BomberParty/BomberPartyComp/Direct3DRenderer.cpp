@@ -53,14 +53,14 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
 
-	//DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_black.dds", NULL, &m_botBlackShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_black.dds", NULL, &m_botBlackShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_blue.dds", NULL, &m_botBlueShaderResourceView, NULL));
-	//DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_green.dds", NULL, &m_botGreenShaderResourceView, NULL));
-	//DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_orange.dds", NULL, &m_botOrangeShaderResourceView, NULL));
-	//DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_pink.dds", NULL, &m_botPinkShaderResourceView, NULL));
-	//DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_red.dds", NULL, &m_botRedShaderResourceView, NULL));
-	//DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_white.dds", NULL, &m_botWhiteShaderResourceView, NULL));
-	//DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_yellow.dds", NULL, &m_botYellowShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_green.dds", NULL, &m_botGreenShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_orange.dds", NULL, &m_botOrangeShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_pink.dds", NULL, &m_botPinkShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_red.dds", NULL, &m_botRedShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_white.dds", NULL, &m_botWhiteShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_yellow.dds", NULL, &m_botYellowShaderResourceView, NULL));
 
 	// Clear the blend state description.
 	D3D11_BLEND_DESC blendDesc;
@@ -200,7 +200,6 @@ void Direct3DRenderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> 
 
 void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
-	m_spriteBatch->Begin();
 	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
 	{
 		if ((**itr).getPlayerState() != Player_State::DEAD)
@@ -208,37 +207,38 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 			switch ((**itr).getPlayerIndex())
 			{
 			case 0:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botBlueShaderResourceView : m_charBlackShaderResourceView;
+				m_currentShaderResourceView = (**itr).isBot() ? m_botBlackShaderResourceView : m_charBlackShaderResourceView;
 				break;
 			case 1:
 				m_currentShaderResourceView = (**itr).isBot() ? m_botBlueShaderResourceView : m_charBlueShaderResourceView;
 				break;
 			case 2:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botBlueShaderResourceView : m_charGreenShaderResourceView;
+				m_currentShaderResourceView = (**itr).isBot() ? m_botGreenShaderResourceView : m_charGreenShaderResourceView;
 				break;
 			case 3:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botBlueShaderResourceView : m_charOrangeShaderResourceView;
+				m_currentShaderResourceView = (**itr).isBot() ? m_botOrangeShaderResourceView : m_charOrangeShaderResourceView;
 				break;
 			case 4:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botBlueShaderResourceView : m_charPinkShaderResourceView;
+				m_currentShaderResourceView = (**itr).isBot() ? m_botPinkShaderResourceView : m_charPinkShaderResourceView;
 				break;
 			case 5:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botBlueShaderResourceView : m_charRedShaderResourceView;
+				m_currentShaderResourceView = (**itr).isBot() ? m_botRedShaderResourceView : m_charRedShaderResourceView;
 				break;
 			case 6:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botBlueShaderResourceView : m_charWhiteShaderResourceView;
+				m_currentShaderResourceView = (**itr).isBot() ? m_botWhiteShaderResourceView : m_charWhiteShaderResourceView;
 				break;
 			case 7:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botBlueShaderResourceView : m_charYellowShaderResourceView;
+				m_currentShaderResourceView = (**itr).isBot() ? m_botYellowShaderResourceView : m_charYellowShaderResourceView;
 				break;
 			default:
 				break;
 			}
-
+			
+			m_spriteBatch->Begin();
 			renderGameObjectWithRespectToPlayer((**itr), Assets::getPlayerTextureRegion((**itr)));
+			m_spriteBatch->End();
 		}
 	}
-	m_spriteBatch->End();
 }
 
 void Direct3DRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear)
@@ -301,6 +301,15 @@ void Direct3DRenderer::cleanUp()
 	m_charRedShaderResourceView->Release();
 	m_charWhiteShaderResourceView->Release();
 	m_charYellowShaderResourceView->Release();
+
+	m_botBlackShaderResourceView->Release();
+	m_botBlueShaderResourceView->Release();
+	m_botGreenShaderResourceView->Release();
+	m_botOrangeShaderResourceView->Release();
+	m_botPinkShaderResourceView->Release();
+	m_botRedShaderResourceView->Release();
+	m_botWhiteShaderResourceView->Release();
+	m_botYellowShaderResourceView->Release();
 }
 
 // Private
