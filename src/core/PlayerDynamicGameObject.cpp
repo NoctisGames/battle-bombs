@@ -53,7 +53,7 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
     {
         if(m_playerActionState == PLACING_BOMB || m_playerActionState == PUSHING_BOMB)
         {
-            if(m_fStateTime > 0.3f)
+            if(m_fStateTime > 0.15f)
             {
                 m_playerActionState = IDLE;
                 m_fStateTime = 0;
