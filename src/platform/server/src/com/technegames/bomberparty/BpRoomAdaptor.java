@@ -148,7 +148,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
         {
             IUser user = (IUser) entry.getKey();
             _inRoomUserSessionDataMap.get(user)._timeSinceLastChat += deltaTime;
-            if (_inRoomUserSessionDataMap.get(user)._timeSinceLastChat > 8)
+            if (_inRoomUserSessionDataMap.get(user)._timeSinceLastChat > 12)
             {
                 removeUser(user, false);
             }
