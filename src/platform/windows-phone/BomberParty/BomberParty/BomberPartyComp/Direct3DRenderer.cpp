@@ -261,6 +261,8 @@ void Direct3DRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorde
 
 void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 {
+	m_currentShaderResourceView = m_interfaceShaderResourceView;
+
 	m_spriteBatch->Begin();
 	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_OVERLAY_BACKGROUND_X, INTERFACE_OVERLAY_BACKGROUND_Y, INTERFACE_OVERLAY_BACKGROUND_WIDTH, INTERFACE_OVERLAY_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	renderGameObject(interfaceOverlay.getDPadControl(), Assets::getDPadControlTextureRegion(interfaceOverlay.getDPadControl()));
