@@ -16,7 +16,7 @@ namespace BomberPartyComp
 	{
 	}
 
-	IDrawingSurfaceContentProvider^ Direct3DInterop::CreateContentProvider(Platform::String^ username)
+	IDrawingSurfaceContentProvider^ Direct3DInterop::CreateContentProvider(int numberOfBots, Platform::String^ username)
 	{
 		std::wstring fooW(username->Begin());
 		std::string fooA(fooW.begin(), fooW.end());

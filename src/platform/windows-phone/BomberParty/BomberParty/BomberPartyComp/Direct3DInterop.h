@@ -18,7 +18,7 @@ namespace BomberPartyComp
 	public:
 		Direct3DInterop();
 
-		Windows::Phone::Graphics::Interop::IDrawingSurfaceContentProvider^ CreateContentProvider(Platform::String^ username);
+		Windows::Phone::Graphics::Interop::IDrawingSurfaceContentProvider^ CreateContentProvider(int numberOfBots, Platform::String^ username);
 
 		// IDrawingSurfaceManipulationHandler
 		virtual void SetManipulationHost(Windows::Phone::Input::Interop::DrawingSurfaceManipulationHost^ manipulationHost);
