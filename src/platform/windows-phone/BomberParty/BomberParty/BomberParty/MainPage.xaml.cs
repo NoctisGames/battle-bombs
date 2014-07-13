@@ -60,7 +60,7 @@ namespace BomberParty
 
         private void Start_Quick_Offline_Match(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/OfflineGamePage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/OptionsPage.xaml", UriKind.Relative));
         }
 
         private void initializeAppWarp()

@@ -20,6 +20,14 @@ namespace BomberParty
     {
         private Direct3DInterop m_d3dInterop = null;
 
+        private int numberOfBots;
+        private bool firepowerEnabled;
+        private bool bombsEnabled;
+        private bool speedEnabled;
+        private bool kickEnabled;
+        private bool throwEnabled;
+        private string mapSelection;
+
         public OfflineGamePage()
         {
             InitializeComponent();
@@ -30,6 +38,49 @@ namespace BomberParty
             base.OnNavigatedTo(e);
 
             PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
+
+            string str_numberOfBots;
+            string str_firepowerEnabled;
+            string str_bombsEnabled;
+            string str_speedEnabled;
+            string str_kickEnabled;
+            string str_throwEnabled;
+            string str_mapSelection;
+
+            if (NavigationContext.QueryString.TryGetValue("numberOfBots", out str_numberOfBots))
+            {
+                numberOfBots = Convert.ToInt32(str_numberOfBots);
+            }
+
+            if (NavigationContext.QueryString.TryGetValue("firepowerEnabled", out str_firepowerEnabled))
+            {
+                firepowerEnabled = Convert.ToBoolean(str_firepowerEnabled);
+            }
+
+            if (NavigationContext.QueryString.TryGetValue("bombsEnabled", out str_bombsEnabled))
+            {
+                bombsEnabled = Convert.ToBoolean(str_bombsEnabled);
+            }
+
+            if (NavigationContext.QueryString.TryGetValue("speedEnabled", out str_speedEnabled))
+            {
+                speedEnabled = Convert.ToBoolean(str_speedEnabled);
+            }
+
+            if (NavigationContext.QueryString.TryGetValue("kickEnabled", out str_kickEnabled))
+            {
+                kickEnabled = Convert.ToBoolean(str_kickEnabled);
+            }
+
+            if (NavigationContext.QueryString.TryGetValue("throwEnabled", out str_throwEnabled))
+            {
+                throwEnabled = Convert.ToBoolean(str_throwEnabled);
+            }
+
+            if (NavigationContext.QueryString.TryGetValue("mapSelection", out str_mapSelection))
+            {
+                mapSelection = str_mapSelection;
+            }
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -58,7 +109,7 @@ namespace BomberParty
                 m_d3dInterop.RenderResolution = m_d3dInterop.NativeResolution;
 
                 // Hook-up native component to DrawingSurface
-                DrawingSurface.SetContentProvider(m_d3dInterop.CreateContentProvider("Player_Offline"));
+                DrawingSurface.SetContentProvider(m_d3dInterop.CreateContentProvider(numberOfBots, "Player_Offline"));
                 DrawingSurface.SetManipulationHandler(m_d3dInterop);
 
                 m_d3dInterop.setWinRtCallback(new WinRtCallback(ProcessCallback));

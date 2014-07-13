@@ -94,7 +94,7 @@ namespace BomberParty
                 m_d3dInterop.RenderResolution = m_d3dInterop.NativeResolution;
 
                 // Hook-up native component to DrawingSurface
-                DrawingSurface.SetContentProvider(m_d3dInterop.CreateContentProvider(m_username));
+                DrawingSurface.SetContentProvider(m_d3dInterop.CreateContentProvider(0, m_username));
                 DrawingSurface.SetManipulationHandler(m_d3dInterop);
 
                 m_d3dInterop.setWinRtCallback(new WinRtCallback(ProcessCallback));
