@@ -28,6 +28,9 @@
 #include "Vector2D.h"
 #include "Fire.h"
 #include "GameEvent.h"
+#include "InterfaceOverlay.h"
+#include "PowerUpBarItem.h"
+#include "BombButton.h"
 
 using namespace DirectX;
 
@@ -256,11 +259,27 @@ void Direct3DRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorde
 	m_spriteBatch->End();
 }
 
-void Direct3DRenderer::renderInterface()
+void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 {
-	m_currentShaderResourceView = m_interfaceShaderResourceView;
 	m_spriteBatch->Begin();
 	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_OVERLAY_BACKGROUND_X, INTERFACE_OVERLAY_BACKGROUND_Y, INTERFACE_OVERLAY_BACKGROUND_WIDTH, INTERFACE_OVERLAY_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+	renderGameObject(interfaceOverlay.getDPadControl(), Assets::getDPadControlTextureRegion(interfaceOverlay.getDPadControl()));
+
+	for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
+	{
+		if ((**itr).getPowerUpType() != NONE)
+		{
+			renderGameObject((**itr), Assets::getPowerUpBarItemTextureRegion((**itr), interfaceOverlay.getPowerUpBarItemsStateTime()));
+		}
+	}
+
+	if (interfaceOverlay.getActiveButton().getPowerUpType() == PUSH)
+	{
+		renderGameObject(interfaceOverlay.getActiveButton(), Assets::getActiveButtonTextureRegion(interfaceOverlay.getActiveButton(), interfaceOverlay.getButtonsStateTime()));
+	}
+
+	renderGameObject(interfaceOverlay.getBombButton(), Assets::getBombButtonTextureRegion(interfaceOverlay.getBombButton(), interfaceOverlay.getButtonsStateTime()));
+
 	m_spriteBatch->End();
 }
 

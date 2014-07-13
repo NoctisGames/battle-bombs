@@ -38,7 +38,7 @@ public:
 
 	virtual void renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear);
 
-	virtual void renderInterface();
+	virtual void renderInterface(InterfaceOverlay &interfaceOverlay);
 
 	virtual void renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]);
 

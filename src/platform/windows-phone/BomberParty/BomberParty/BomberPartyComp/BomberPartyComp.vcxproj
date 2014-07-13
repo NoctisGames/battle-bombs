@@ -161,11 +161,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\core\ActiveButton.h" />
     <ClInclude Include="..\..\..\..\..\core\Assets.h" />
+    <ClInclude Include="..\..\..\..\..\core\BombButton.h" />
     <ClInclude Include="..\..\..\..\..\core\BombGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\BotPlayerDynamicGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\BreakableBlock.h" />
+    <ClInclude Include="..\..\..\..\..\core\ButtonState.h" />
     <ClInclude Include="..\..\..\..\..\core\Color.h" />
     <ClInclude Include="..\..\..\..\..\core\DPadControl.h" />
+    <ClInclude Include="..\..\..\..\..\core\DPadControlState.h" />
     <ClInclude Include="..\..\..\..\..\core\DynamicGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\DynamicGridGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\Explosion.h" />
@@ -196,6 +199,7 @@
     <ClInclude Include="..\..\..\..\..\core\PlayerActionState.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerDynamicGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\PowerUp.h" />
+    <ClInclude Include="..\..\..\..\..\core\PowerUpBarItem.h" />
     <ClInclude Include="..\..\..\..\..\core\Rectangle.h" />
     <ClInclude Include="..\..\..\..\..\core\Renderer.h" />
     <ClInclude Include="..\..\..\..\..\core\ResourceConstants.h" />
@@ -223,6 +227,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\core\ActiveButton.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Assets.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\BombButton.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BombGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BotPlayerDynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BreakableBlock.cpp" />
@@ -247,6 +252,7 @@
     <ClCompile Include="..\..\..\..\..\core\PathFinder.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PlayerDynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PowerUp.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\PowerUpBarItem.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Rectangle.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Renderer.cpp" />
     <ClCompile Include="..\..\..\..\..\core\TextureRegion.cpp" />
