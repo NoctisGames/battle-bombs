@@ -7,19 +7,42 @@
 //
 
 #include "ActiveButton.h"
-#include "OverlapTester.h"
 #include "Vector2D.h"
+#include "Rectangle.h"
 
 ActiveButton::ActiveButton(float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
 {
-	m_activeButtonBounds = std::unique_ptr<Rectangle>(new Rectangle(x, y, width, height));
+    m_powerUpType = NONE;
+    m_buttonState = DISABLED;
+    m_isPressed = false;
 }
 
-bool ActiveButton::isPointInBounds(Vector2D &touchPoint)
+void ActiveButton::setPowerUpType(Power_Up_Type powerUpType)
 {
-	if(OverlapTester::isPointInRectangle(touchPoint, *m_activeButtonBounds))
-	{
-		return true;
-	}
-	return false;
+    m_powerUpType = powerUpType;
+}
+
+Power_Up_Type ActiveButton::getPowerUpType()
+{
+    return m_powerUpType;
+}
+
+void ActiveButton::setButtonState(Button_State buttonState)
+{
+    m_buttonState = buttonState;
+}
+
+Button_State ActiveButton::getButtonState()
+{
+    return m_buttonState;
+}
+
+void ActiveButton::setIsPressed(bool isPressed)
+{
+    m_isPressed = isPressed;
+}
+
+bool ActiveButton::isPressed()
+{
+    return m_isPressed;
 }

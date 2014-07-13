@@ -27,11 +27,6 @@ Direct3DGameScreen::Direct3DGameScreen(const char *username, int deviceScreenWid
 	m_fDipToPixelRatio = deviceScreenHeight == 768 ? 1.6f : deviceScreenHeight == 720 ? 1.5f : 1.0f;
 }
 
-void Direct3DGameScreen::platformInit()
-{
-
-}
-
 void Direct3DGameScreen::load(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView)
 {
 	m_renderer = std::unique_ptr<Direct3DRenderer>(new Direct3DRenderer(d3dDevice, d3dContext, renderTargetView, depthStencilView, m_iDeviceScreenWidth, m_iDeviceScreenHeight));

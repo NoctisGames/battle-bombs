@@ -18,8 +18,6 @@ public:
 
 	void load(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView);
 
-	virtual void platformInit();
-
 	virtual void platformResume();
 
 	virtual void platformPause();

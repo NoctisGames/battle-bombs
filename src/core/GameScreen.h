@@ -18,6 +18,7 @@ class TouchEvent;
 class Vector2D;
 class Rectangle;
 class Renderer;
+class InterfaceOverlay;
 
 class GameScreen : public GameSession
 {
@@ -25,8 +26,6 @@ public:
 	GameScreen(const char *username);
     
     ~GameScreen();
-    
-    virtual void platformInit() = 0;
     
     virtual void touchToWorld(TouchEvent &touchEvent) = 0;
     
@@ -72,9 +71,6 @@ protected:
     PlayerDynamicGameObject *m_player; // Set once we figure out which player index we are.
     short m_sPlayerIndex;
 	std::unique_ptr<Vector2D> m_touchPoint;
-    std::unique_ptr<Rectangle> m_bombButtonBounds;
-	std::unique_ptr<ActiveButton> m_activeButton;
-    std::unique_ptr<DPadControl> m_dPad;
 	float m_fTimeSinceLastClientEvent;
     int m_iDeviceScreenWidth;
 	int m_iDeviceScreenHeight;
@@ -82,6 +78,7 @@ protected:
 
 private:
     std::unique_ptr<GameListener> m_gameListener;
+    std::unique_ptr<InterfaceOverlay> m_interfaceOverlay;
     
     virtual void updateRunning(float deltaTime);
     
@@ -92,8 +89,6 @@ private:
     void updateInputSpectating(std::vector<TouchEvent> &touchEvents);
     
     void spectateNextLivePlayer();
-    
-    void updatePlayerDirection();
     
     // Server Stuff
     

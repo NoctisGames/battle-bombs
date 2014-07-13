@@ -22,6 +22,10 @@ class BombGameObject;
 class Fire;
 class BreakableBlock;
 class PowerUp;
+class DPadControl;
+class PowerUpBarItem;
+class ActiveButton;
+class BombButton;
 
 class Assets
 {
@@ -41,6 +45,8 @@ public:
 	static TextureRegion getBreakableBlockTextureRegion(BreakableBlock &breakableBlock);
     
     static TextureRegion getInterfaceOverlayTextureRegion();
+    
+    static TextureRegion getDPadControlTextureRegion(DPadControl &dpadControl);
 
 	static TextureRegion getPowerUpTextureRegion(PowerUp &powerUp);
     
@@ -49,6 +55,12 @@ public:
     static TextureRegion getBombTextureRegion(BombGameObject &bomb);
     
     static TextureRegion getFireTextureRegion(Fire &fire);
+    
+    static TextureRegion getPowerUpBarItemTextureRegion(PowerUpBarItem &powerUpBarItem, float powerUpBarItemsStateTime);
+    
+    static TextureRegion getActiveButtonTextureRegion(ActiveButton &activeButton, float buttonsStateTime);
+    
+    static TextureRegion getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime);
     
     void setMusicId(short musicId);
     

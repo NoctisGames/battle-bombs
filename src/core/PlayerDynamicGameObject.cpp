@@ -30,8 +30,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
     m_fSpeed = 3;
     m_firePower = 1;
     m_iDirection = direction;
-    m_hasActivePowerUp = true;
-	m_activePowerUp = PUSH;
+	m_activePowerUp = NONE;
 
     m_iMaxBombCount = 1;
     m_iCurrentBombCount = 0;
@@ -100,7 +99,6 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
                         break;
                     case 4:
                         (*itr)->onPickedUp();
-                        m_hasActivePowerUp = true;
                         m_activePowerUp = PUSH;
                         break;
                     default:
@@ -297,6 +295,16 @@ bool PlayerDynamicGameObject::isAbleToDropAdditionalBomb(std::vector<std::unique
 short PlayerDynamicGameObject::getFirePower()
 {
     return m_firePower;
+}
+
+int PlayerDynamicGameObject::getMaxBombCount()
+{
+    return m_iMaxBombCount;
+}
+
+int PlayerDynamicGameObject::getSpeed()
+{
+    return m_fSpeed;
 }
 
 void PlayerDynamicGameObject::setPlayerState(Player_State playerState)

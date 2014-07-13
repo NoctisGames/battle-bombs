@@ -10,6 +10,7 @@
 #define __bomberparty__DPadControl__
 
 #include "GameObject.h"
+#include "DPadControlState.h"
 
 class Triangle;
 
@@ -19,12 +20,17 @@ public:
     DPadControl(float x, float y, float width, float height);
     
     int getDirectionForTouchPoint(Vector2D &touchPoint);
+    
+    void stop();
+    
+    DPad_Control_State getState();
 
 private:
     std::unique_ptr<Triangle> m_rightBounds;
     std::unique_ptr<Triangle> m_upBounds;
     std::unique_ptr<Triangle> m_leftBounds;
     std::unique_ptr<Triangle> m_downBounds;
+    DPad_Control_State m_state;
 };
 
 #endif /* defined(__bomberparty__DPadControl__) */

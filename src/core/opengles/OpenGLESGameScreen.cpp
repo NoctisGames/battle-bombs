@@ -21,11 +21,6 @@ OpenGLESGameScreen::OpenGLESGameScreen(const char *username) : GameScreen(userna
     // TODO
 }
 
-void OpenGLESGameScreen::platformInit()
-{
-    // TODO
-}
-
 void OpenGLESGameScreen::onSurfaceCreated(int width, int height)
 {
 	m_iDeviceScreenWidth = width;

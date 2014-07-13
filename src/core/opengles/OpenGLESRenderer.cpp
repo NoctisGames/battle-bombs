@@ -23,6 +23,9 @@
 #include "Vector2D.h"
 #include "Fire.h"
 #include "GameEvent.h"
+#include "InterfaceOverlay.h"
+#include "PowerUpBarItem.h"
+#include "BombButton.h"
 
 extern "C"
 {
@@ -224,10 +227,27 @@ void OpenGLESRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorde
     m_spriteBatcher->endBatchWithTexture(m_gameTexture);
 }
 
-void OpenGLESRenderer::renderInterface()
+void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 {
     m_spriteBatcher->beginBatch();
     m_spriteBatcher->drawSprite(INTERFACE_OVERLAY_BACKGROUND_X, INTERFACE_OVERLAY_BACKGROUND_Y, INTERFACE_OVERLAY_BACKGROUND_WIDTH, INTERFACE_OVERLAY_BACKGROUND_HEIGHT, 0, Assets::getInterfaceOverlayTextureRegion());
+    renderGameObject(interfaceOverlay.getDPadControl(), Assets::getDPadControlTextureRegion(interfaceOverlay.getDPadControl()));
+    
+    for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
+    {
+        if((**itr).getPowerUpType() != NONE)
+        {
+            renderGameObject((**itr), Assets::getPowerUpBarItemTextureRegion((**itr), interfaceOverlay.getPowerUpBarItemsStateTime()));
+        }
+    }
+    
+    if(interfaceOverlay.getActiveButton().getPowerUpType() == PUSH)
+    {
+        renderGameObject(interfaceOverlay.getActiveButton(), Assets::getActiveButtonTextureRegion(interfaceOverlay.getActiveButton(), interfaceOverlay.getButtonsStateTime()));
+    }
+    
+    renderGameObject(interfaceOverlay.getBombButton(), Assets::getBombButtonTextureRegion(interfaceOverlay.getBombButton(), interfaceOverlay.getButtonsStateTime()));
+    
     m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
 }
 

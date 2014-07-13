@@ -42,6 +42,8 @@
 		BB024B571955D99A0051C09E /* Fire.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB024B551955D99A0051C09E /* Fire.cpp */; };
 		BB06563C18E214B000076912 /* GameSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB06563A18E214B000076912 /* GameSession.cpp */; };
 		BB06563F18E24DA700076912 /* BreakableBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB06563D18E24DA700076912 /* BreakableBlock.cpp */; };
+		BB0BC0581970C7780092A968 /* BombButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0BC0561970C7780092A968 /* BombButton.cpp */; };
+		BB0BC05C1971B7810092A968 /* PowerUpBarItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0BC05A1971B7810092A968 /* PowerUpBarItem.cpp */; };
 		BB0CC4B61964F91600F770C4 /* PathFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0CC4B41964F91600F770C4 /* PathFinder.cpp */; };
 		BB0CC4B91964FAD100F770C4 /* MapSearchNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0CC4B71964FAD100F770C4 /* MapSearchNode.cpp */; };
 		BB16D96C191987B80034BE67 /* death.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB16D969191987B80034BE67 /* death.caf */; };
@@ -170,6 +172,13 @@
 		BB06563B18E214B000076912 /* GameSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSession.h; sourceTree = "<group>"; };
 		BB06563D18E24DA700076912 /* BreakableBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BreakableBlock.cpp; sourceTree = "<group>"; };
 		BB06563E18E24DA700076912 /* BreakableBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BreakableBlock.h; sourceTree = "<group>"; };
+		BB0A1FF119726CD30074D0BA /* ButtonState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ButtonState.h; sourceTree = "<group>"; };
+		BB0BC0561970C7780092A968 /* BombButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BombButton.cpp; sourceTree = "<group>"; };
+		BB0BC0571970C7780092A968 /* BombButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BombButton.h; sourceTree = "<group>"; };
+		BB0BC05919719ECB0092A968 /* DPadControlState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DPadControlState.h; sourceTree = "<group>"; };
+		BB0BC05A1971B7810092A968 /* PowerUpBarItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PowerUpBarItem.cpp; sourceTree = "<group>"; };
+		BB0BC05B1971B7810092A968 /* PowerUpBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerUpBarItem.h; sourceTree = "<group>"; };
+		BB0BC05D1971B7ED0092A968 /* PowerUpType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PowerUpType.h; sourceTree = "<group>"; };
 		BB0CC4B41964F91600F770C4 /* PathFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathFinder.cpp; sourceTree = "<group>"; };
 		BB0CC4B51964F91600F770C4 /* PathFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathFinder.h; sourceTree = "<group>"; };
 		BB0CC4B71964FAD100F770C4 /* MapSearchNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapSearchNode.cpp; sourceTree = "<group>"; };
@@ -367,6 +376,8 @@
 				BB60075F192958CB008C11CC /* ActiveButton.h */,
 				BB96EEAE18B99A6900F7C356 /* Assets.cpp */,
 				BB96EEAF18B99A6900F7C356 /* Assets.h */,
+				BB0BC0561970C7780092A968 /* BombButton.cpp */,
+				BB0BC0571970C7780092A968 /* BombButton.h */,
 				BBDF1A6A190F256300ECDBE2 /* BombGameObject.cpp */,
 				BBDF1A6B190F256300ECDBE2 /* BombGameObject.h */,
 				BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */,
@@ -374,9 +385,11 @@
 				BB06563D18E24DA700076912 /* BreakableBlock.cpp */,
 				BB06563E18E24DA700076912 /* BreakableBlock.h */,
 				BBF683EC1951509900EBD23E /* BreakableBlockState.h */,
+				BB0A1FF119726CD30074D0BA /* ButtonState.h */,
 				BB96EEB018B99A6900F7C356 /* Color.h */,
 				BBF7CC5C18CCA2B700B7CD15 /* DPadControl.cpp */,
 				BBF7CC5D18CCA2B700B7CD15 /* DPadControl.h */,
+				BB0BC05919719ECB0092A968 /* DPadControlState.h */,
 				BB96EEB118B99A6900F7C356 /* DynamicGameObject.cpp */,
 				BB96EEB218B99A6900F7C356 /* DynamicGameObject.h */,
 				BB34DC87192523C000E9AA8C /* DynamicGridGameObject.cpp */,
@@ -429,6 +442,9 @@
 				BB47C9BD18F326D4002ED03B /* PlayerState.h */,
 				BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */,
 				BB9D93BD191FB4EC00AD9CCE /* PowerUp.h */,
+				BB0BC05A1971B7810092A968 /* PowerUpBarItem.cpp */,
+				BB0BC05B1971B7810092A968 /* PowerUpBarItem.h */,
+				BB0BC05D1971B7ED0092A968 /* PowerUpType.h */,
 				BB96EEC218B99A6900F7C356 /* Rectangle.cpp */,
 				BB96EEC318B99A6900F7C356 /* Rectangle.h */,
 				BB96EEC418B99A6900F7C356 /* Renderer.cpp */,
@@ -755,6 +771,7 @@
 				BB9D93BE191FB4EC00AD9CCE /* PowerUp.cpp in Sources */,
 				BB96EEDB18B99A6900F7C356 /* Vector2D.cpp in Sources */,
 				BB96EED918B99A6900F7C356 /* TouchEvent.cpp in Sources */,
+				BB0BC0581970C7780092A968 /* BombButton.cpp in Sources */,
 				0A8FBF8E179E07440039BA29 /* AppDelegate.m in Sources */,
 				BBCCF55E193847A0000F509A /* BotPlayerDynamicGameObject.cpp in Sources */,
 				BB96EED118B99A6900F7C356 /* GameButton.cpp in Sources */,
@@ -768,6 +785,7 @@
 				BB96EEF218B99A7100F7C356 /* SpriteBatcher.cpp in Sources */,
 				BB96EEED18B99A7100F7C356 /* asset_utils.c in Sources */,
 				0A8FBF7C179E07320039BA29 /* png.c in Sources */,
+				BB0BC05C1971B7810092A968 /* PowerUpBarItem.cpp in Sources */,
 				0A8FBF7D179E07320039BA29 /* pngerror.c in Sources */,
 				BBDF1A6C190F256300ECDBE2 /* BombGameObject.cpp in Sources */,
 				BBA1CD531958B10A00AF2AD8 /* MapBorder.cpp in Sources */,

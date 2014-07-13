@@ -18,8 +18,6 @@ class OpenGLESGameScreen : public GameScreen
 public:
     OpenGLESGameScreen(const char *username);
     
-    virtual void platformInit();
-    
     virtual void touchToWorld(TouchEvent &touchEvent);
     
     virtual void platformResume();

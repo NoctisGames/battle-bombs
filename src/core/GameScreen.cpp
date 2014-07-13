@@ -29,6 +29,9 @@
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "PathFinder.h"
+#include "InterfaceOverlay.h"
+#include "BombButton.h"
+#include "PowerUpBarItem.h"
 
 GameScreen::GameScreen(const char *username) : GameSession()
 {
@@ -38,14 +41,6 @@ GameScreen::GameScreen(const char *username) : GameSession()
     
     std::strncpy(m_username, username, usernameLength);
     m_username[usernameLength] = '\0';
-    
-    m_bombButtonBounds = std::unique_ptr<Rectangle>(new Rectangle(21.1343282f, 2.46268653, 2.59701504f, 2.59701504f));
-
-	m_activeButton = std::unique_ptr<ActiveButton>(new ActiveButton(19.2089551f, 0.35820895f, 2.3283582f, 2.3283582f));
-    
-    m_dPad = std::unique_ptr<DPadControl>(new DPadControl(2.95522392f, 2.95522392f, 5.91044784f, 5.91044784f));
-    
-    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
     
     init();
 }
@@ -64,6 +59,8 @@ void GameScreen::handleServerUpdate(const char *message)
 void GameScreen::init()
 {
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
+    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
+    m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
     
     m_player = nullptr;
     m_sPlayerIndex = -1;
@@ -103,7 +100,10 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
     switch (m_gameState)
     {
         case RUNNING:
-            updateInputRunning(touchEvents);
+            if(m_player->getPlayerState() == ALIVE && m_player->getPlayerActionState() != WINNING)
+            {
+                updateInputRunning(touchEvents);
+            }
             updateRunning(deltaTime);
             break;
         case SPECTATING:
@@ -126,11 +126,23 @@ void GameScreen::present()
             
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
             m_renderer->renderMapBordersNear(m_mapBorders);
-            m_renderer->renderInterface();
             
             m_renderer->endFrame();
             break;
         case RUNNING:
+            m_renderer->calcScrollYForPlayer(*m_player);
+            
+            m_renderer->renderWorldBackground();
+            
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
+            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderExplosions(m_explosions);
+            m_renderer->renderPlayers(m_players);
+            m_renderer->renderMapBordersNear(m_mapBorders);
+            m_renderer->renderInterface(*m_interfaceOverlay);
+            
+            m_renderer->endFrame();
+            break;
         case SPECTATING:
             m_renderer->calcScrollYForPlayer(*m_player);
             
@@ -141,8 +153,6 @@ void GameScreen::present()
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
-            m_renderer->renderInterface();
-//            m_renderer->renderGameGrid(PathFinder::getInstance().game_grid);
             
             m_renderer->endFrame();
             break;
@@ -234,6 +244,8 @@ void GameScreen::updateRunning(float deltaTime)
     
     m_sEventIds.clear();
     
+    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs);
+    
     updateCommon(deltaTime);
 }
 
@@ -246,52 +258,13 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 		switch (itr->getTouchType())
 		{
             case DOWN:
-                if(OverlapTester::isPointInRectangle(*m_touchPoint, *m_bombButtonBounds))
-                {
-                    if(m_player->isAbleToDropAdditionalBomb(m_players, m_bombs))
-                    {
-                        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
-                    }
-                }
-				else if(m_activeButton->isPointInBounds(*m_touchPoint))
-				{
-                    if(m_player->getPlayerState() == ALIVE && m_player->getPlayerActionState() != WINNING)
-                    {
-                        switch(m_player->getActivePowerUp())
-                        {
-                            case PUSH :
-                                for(std::vector<std::unique_ptr<BombGameObject>>::iterator itr = m_bombs.begin(); itr != m_bombs.end(); itr++)
-                                {
-                                    if(m_player->isBombInFrontOfPlayer(**itr))
-                                    {
-                                        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PUSH_BOMB);
-                                    }
-                                }
-                            default:
-                                break;
-                                // TODO!
-                        }
-                    }
-				}
-                else
-                {
-                    updatePlayerDirection();
-                }
+                m_interfaceOverlay->handleTouchDownInput(*m_touchPoint, *m_player, m_players, m_bombs);
                 continue;
             case DRAGGED:
-                if(!OverlapTester::isPointInRectangle(*m_touchPoint, *m_bombButtonBounds) && !m_activeButton->isPointInBounds(*m_touchPoint))
-                {
-                    updatePlayerDirection();
-                }
+                m_interfaceOverlay->handleTouchDraggedInput(*m_touchPoint, *m_player);
                 continue;
             case UP:
-                if(!OverlapTester::isPointInRectangle(*m_touchPoint, *m_bombButtonBounds) && !m_activeButton->isPointInBounds(*m_touchPoint))
-                {
-                    if(m_player->getPlayerState() == ALIVE)
-                    {
-                        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
-                    }
-                }
+                m_interfaceOverlay->handleTouchUpInput(*m_touchPoint, *m_player);
                 return;
 		}
 	}
@@ -350,19 +323,6 @@ void GameScreen::spectateNextLivePlayer()
     m_sPlayerIndex = playerIndex >= m_players.size() || playerIndex < 0 ? 0 : playerIndex;
     
     m_player = m_players.at(m_sPlayerIndex).get();
-}
-
-void GameScreen::updatePlayerDirection()
-{
-    if(m_player->getPlayerState() == ALIVE && m_player->getPlayerActionState() != WINNING)
-    {
-        int directionInput = m_dPad->getDirectionForTouchPoint(*m_touchPoint);
-        
-        if(m_player->getDirection() != directionInput || !m_player->isMoving())
-        {
-            m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + directionInput + 1);
-        }
-    }
 }
 
 // Server Stuff

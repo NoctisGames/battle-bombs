@@ -38,6 +38,10 @@ public:
     int getDirection();
 
     short getFirePower();
+    
+    int getMaxBombCount();
+    
+    int getSpeed();
 
     void setDirection(int direction);
 
@@ -56,8 +60,6 @@ public:
     void onDeath();
 
     bool isAbleToDropAdditionalBomb(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
-
-    bool hasActivePowerUp();
 
 	bool isBombInFrontOfPlayer(BombGameObject &bomb);
     
@@ -86,12 +88,11 @@ protected:
     Player_State m_playerState;
     Player_Action_State m_playerActionState;
     float m_fStateTime;
-    float m_fSpeed;
+    int m_fSpeed;
     int m_iDirection;
     int m_iMaxBombCount;
     int m_iCurrentBombCount;
     short m_firePower;
-    bool m_hasActivePowerUp;
     int m_activePowerUpIndex;
     Power_Up_Type m_activePowerUp;
     short m_sPlayerIndex;
