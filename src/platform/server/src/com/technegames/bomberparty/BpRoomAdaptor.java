@@ -36,7 +36,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     private static final short BEGIN_GAME = 1337;
     private static final short CLIENT_UPDATE = 1338;
     private static final short PLAYER_DEATH = 9;
-    private static final short PLAYER_EVENT_BASE = 100;
+    private static final int PLAYER_EVENT_BASE = 1000000;
 
     // smooth constant elements to play with
     private static final float movAveragePeriod = 40; // #frames involved in average calc (suggested values 5-100)
