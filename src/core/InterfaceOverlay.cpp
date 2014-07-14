@@ -45,6 +45,7 @@ InterfaceOverlay::InterfaceOverlay(GameListener *gameListener)
     m_gameListener = gameListener;
     m_fPowerUpBarItemsStateTime = 0;
     m_fButtonsStateTime = 0;
+    m_fCountdownStateTime = 0;
     m_iNumSecondsLeft = 120;
 }
 
