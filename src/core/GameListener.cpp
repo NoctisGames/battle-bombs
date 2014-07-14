@@ -32,7 +32,7 @@ int GameListener::popOldestEventId()
 {
     if(m_sLocalConsumedEventIds.size() > 0)
     {
-		short oldestEvent = m_sLocalConsumedEventIds.front();
+		int oldestEvent = m_sLocalConsumedEventIds.front();
         
         m_sLocalConsumedEventIds.erase(m_sLocalConsumedEventIds.begin());
         
