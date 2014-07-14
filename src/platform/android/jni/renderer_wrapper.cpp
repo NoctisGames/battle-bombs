@@ -39,7 +39,7 @@ JNIEXPORT short JNICALL Java_com_technegames_bomberparty_RendererWrapper_get_1cu
 
 JNIEXPORT short JNICALL Java_com_technegames_bomberparty_RendererWrapper_get_1current_1sound_1id(JNIEnv* env, jclass cls);
 
-JNIEXPORT short JNICALL Java_com_technegames_bomberparty_RendererWrapper_get_1oldest_1event_1id(JNIEnv* env, jclass cls);
+JNIEXPORT int JNICALL Java_com_technegames_bomberparty_RendererWrapper_get_1oldest_1event_1id(JNIEnv* env, jclass cls);
 
 JNIEXPORT bool JNICALL Java_com_technegames_bomberparty_RendererWrapper_is_1time_1to_1send_1keep_1alive(JNIEnv* env, jclass cls);
 
@@ -155,7 +155,7 @@ JNIEXPORT short JNICALL Java_com_technegames_bomberparty_RendererWrapper_get_1cu
 	return get_current_sound_id();
 }
 
-JNIEXPORT short JNICALL Java_com_technegames_bomberparty_RendererWrapper_get_1oldest_1event_1id(JNIEnv* env, jclass cls)
+JNIEXPORT int JNICALL Java_com_technegames_bomberparty_RendererWrapper_get_1oldest_1event_1id(JNIEnv* env, jclass cls)
 {
 	UNUSED(env);
 	UNUSED(cls);

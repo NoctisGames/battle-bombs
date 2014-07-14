@@ -59,7 +59,7 @@ public:
     
     int getPlayerDirection();
     
-    short popOldestEventId();
+    int popOldestEventId();
     
     bool isTimeToSendKeepAlive();
 

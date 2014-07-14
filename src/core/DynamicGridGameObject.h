@@ -24,7 +24,11 @@ public:
     
     void updateGrid();
     
+    void setGridX(int gridX);
+    
     int getGridX();
+    
+    void setGridY(int gridY);
     
     int getGridY();
 };

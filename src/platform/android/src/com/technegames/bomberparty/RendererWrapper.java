@@ -208,7 +208,7 @@ public final class RendererWrapper implements Renderer
         {
             try
             {
-                short eventId = get_oldest_event_id();
+                int eventId = get_oldest_event_id();
 
                 if (eventId > 0)
                 {
@@ -223,9 +223,6 @@ public final class RendererWrapper implements Renderer
                     JSONObject tobeSent = new JSONObject();
                     tobeSent.put(EVENT_TYPE, CLIENT_UPDATE);
                     tobeSent.put(EVENTS, eventsMessage);
-                    tobeSent.put(PLAYER_INDEX + get_player_index() + X, get_player_x());
-                    tobeSent.put(PLAYER_INDEX + get_player_index() + Y, get_player_y());
-                    tobeSent.put(PLAYER_INDEX + get_player_index() + DIRECTION, get_player_direction());
 
                     reset_time_since_last_client_event();
 
@@ -334,7 +331,7 @@ public final class RendererWrapper implements Renderer
 
     private static native short get_current_sound_id();
 
-    private static native short get_oldest_event_id();
+    private static native int get_oldest_event_id();
 
     private static native boolean is_time_to_send_keep_alive();
 

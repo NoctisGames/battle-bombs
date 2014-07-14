@@ -164,7 +164,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 						// of time and then reroute itself to dodge the bomb
 						if (isAbleToDropAdditionalBomb(players, bombs))
 						{
-							m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+							m_gameListener->addLocalEventForPlayer(PLAYER_PLANT_BOMB, *this);
 						}
 					}
 					else if (m_currentPathType == 1)
@@ -174,7 +174,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 #endif // DEBUG_AI
 						m_fActionTime = 0;
 						m_fWaitTime = 3.2f - (m_currentPath.size() * 0.1f) + (m_firePower * 0.2f);
-						m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
+						m_gameListener->addLocalEventForPlayer(PLAYER_MOVE_STOP, *this);
 					}
 
 					m_playerTarget = nullptr;
@@ -190,7 +190,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 #endif // DEBUG_AI
 					m_fActionTime = 0;
 					m_fWaitTime = 1;
-					m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
+					m_gameListener->addLocalEventForPlayer(PLAYER_MOVE_STOP, *this);
 				}
 				else
 				{
@@ -205,7 +205,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 						if (isAbleToDropAdditionalBomb(players, bombs))
 						{
 							bombDropped = true;
-							m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+							m_gameListener->addLocalEventForPlayer(PLAYER_PLANT_BOMB, *this);
 						}
 					}
 
@@ -254,7 +254,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 
 	if (isHitByExplosion(explosions, bombs))
 	{
-		m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
+		m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *this);
 	}
 }
 
@@ -427,7 +427,7 @@ void BotPlayerDynamicGameObject::moveInDirection(int direction)
 {
 	if (getDirection() != direction || !isMoving())
 	{
-		m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + direction + 1);
+		m_gameListener->addLocalEventForPlayer(direction + 1, *this);
 	}
 }
 
@@ -528,7 +528,7 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 
 		if (isAbleToDropAdditionalBomb(players, bombs))
 		{
-			m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+			m_gameListener->addLocalEventForPlayer(PLAYER_PLANT_BOMB, *this);
 		}
 	}
 	else

@@ -145,7 +145,7 @@ short get_current_sound_id()
     return playThisSound;
 }
 
-short get_oldest_event_id()
+int get_oldest_event_id()
 {
     return gameScreen->popOldestEventId();
 }

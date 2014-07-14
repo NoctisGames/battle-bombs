@@ -283,9 +283,6 @@ void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *key
 
         int playerDirection = d[keyDirection].GetInt();
         m_players.at(playerIndex).get()->setDirection(playerDirection);
-        
-        m_players.at(playerIndex).get()->updateBounds();
-        m_players.at(playerIndex).get()->updateGrid();
     }
     
     if(d.HasMember(keyAlive))
@@ -305,14 +302,14 @@ void GameSession::handleClientEventsArrayInDocument(rapidjson::Document &d)
 {
     static const char *eventsKey = "events";
 
-    handleShortArrayInDocument(d, eventsKey, m_sEventIds, 0);
+    handleIntArrayInDocument(d, eventsKey, m_sEventIds, 0);
 }
 
-void GameSession::handleShortArrayInDocument(rapidjson::Document &d, const char *shortArrayKey, std::vector<short> &shortArray, short sentinelValue)
+void GameSession::handleIntArrayInDocument(rapidjson::Document &d, const char *intArrayKey, std::vector<int> &intArray, int sentinelValue)
 {
-    if (d.HasMember(shortArrayKey))
+    if (d.HasMember(intArrayKey))
     {
-        const char *charArray = d[shortArrayKey].GetString();
+        const char *charArray = d[intArrayKey].GetString();
 
         char *copy = strdup(charArray);
 
@@ -320,10 +317,10 @@ void GameSession::handleShortArrayInDocument(rapidjson::Document &d, const char 
 
         while (value != NULL)
         {
-            short shortValue = atoi(value);
-            if (shortValue != sentinelValue)
+            int intValue = atoi(value);
+            if (intValue != sentinelValue)
             {
-                shortArray.push_back(shortValue);
+                intArray.push_back(intValue);
             }
 
             value = strtok(NULL, ","); // Get next event
@@ -334,201 +331,71 @@ void GameSession::handleShortArrayInDocument(rapidjson::Document &d, const char 
     }
 }
 
-void GameSession::handlePlayerEvent(short event)
+void GameSession::handlePlayerEvent(int event)
 {
+    int playerIndex = 0;
+    
+    while(event > PLAYER_EVENT_BASE)
+    {
+        event -= PLAYER_EVENT_BASE;
+        playerIndex++;
+    }
+    
+    int direction = 0;
+    
+    while (event >= PLAYER_EVENT_DIRECTION_BASE)
+    {
+        event -= PLAYER_EVENT_DIRECTION_BASE;
+        direction++;
+    }
+    
+    int gridX = 0;
+    
+    while (event >= PLAYER_EVENT_GRID_X_BASE)
+    {
+        event -= PLAYER_EVENT_GRID_X_BASE;
+        gridX++;
+    }
+    
+    int gridY = 0;
+    
+    while (event >= PLAYER_EVENT_GRID_Y_BASE)
+    {
+        event -= PLAYER_EVENT_GRID_Y_BASE;
+        gridY++;
+    }
+    
+    m_players.at(playerIndex).get()->setDirection(direction);
+    m_players.at(playerIndex).get()->setGridX(gridX);
+    m_players.at(playerIndex).get()->setGridY(gridY);
+    m_players.at(playerIndex).get()->getPosition().setX(GAME_X + GRID_CELL_WIDTH * gridX + GRID_CELL_WIDTH / 2.0f);
+    m_players.at(playerIndex).get()->getPosition().setY(GAME_Y + GRID_CELL_HEIGHT * gridY + GRID_CELL_HEIGHT / 2.0f);
+    
     switch (event)
     {
-        case PLAYER_0_MOVE_RIGHT:
-            m_players.at(0).get()->moveInDirection(DIRECTION_RIGHT);
+        case PLAYER_MOVE_RIGHT:
+            m_players.at(playerIndex).get()->moveInDirection(DIRECTION_RIGHT);
             break;
-        case PLAYER_0_MOVE_UP:
-            m_players.at(0).get()->moveInDirection(DIRECTION_UP);
+        case PLAYER_MOVE_UP:
+            m_players.at(playerIndex).get()->moveInDirection(DIRECTION_UP);
             break;
-        case PLAYER_0_MOVE_LEFT:
-            m_players.at(0).get()->moveInDirection(DIRECTION_LEFT);
+        case PLAYER_MOVE_LEFT:
+            m_players.at(playerIndex).get()->moveInDirection(DIRECTION_LEFT);
             break;
-        case PLAYER_0_MOVE_DOWN:
-            m_players.at(0).get()->moveInDirection(DIRECTION_DOWN);
+        case PLAYER_MOVE_DOWN:
+            m_players.at(playerIndex).get()->moveInDirection(DIRECTION_DOWN);
             break;
-        case PLAYER_0_MOVE_STOP:
-            m_players.at(0).get()->moveInDirection(-1);
+        case PLAYER_MOVE_STOP:
+            m_players.at(playerIndex).get()->moveInDirection(-1);
             break;
-        case PLAYER_0_PLANT_BOMB:
-            layBombForPlayer(m_players.at(0).get());
+        case PLAYER_PLANT_BOMB:
+            layBombForPlayer(m_players.at(playerIndex).get());
             break;
-        case PLAYER_0_PUSH_BOMB:
-            pushBombForPlayer(m_players.at(0).get());
+        case PLAYER_PUSH_BOMB:
+            pushBombForPlayer(m_players.at(playerIndex).get());
             break;
-        case PLAYER_0_DEATH:
-            m_players.at(0).get()->onDeath();
-            break;
-        case PLAYER_1_MOVE_RIGHT:
-            m_players.at(1).get()->moveInDirection(DIRECTION_RIGHT);
-            break;
-        case PLAYER_1_MOVE_UP:
-            m_players.at(1).get()->moveInDirection(DIRECTION_UP);
-            break;
-        case PLAYER_1_MOVE_LEFT:
-            m_players.at(1).get()->moveInDirection(DIRECTION_LEFT);
-            break;
-        case PLAYER_1_MOVE_DOWN:
-            m_players.at(1).get()->moveInDirection(DIRECTION_DOWN);
-            break;
-        case PLAYER_1_MOVE_STOP:
-            m_players.at(1).get()->moveInDirection(-1);
-            break;
-        case PLAYER_1_PLANT_BOMB:
-            layBombForPlayer(m_players.at(1).get());
-            break;
-        case PLAYER_1_PUSH_BOMB:
-            pushBombForPlayer(m_players.at(1).get());
-            break;
-        case PLAYER_1_DEATH:
-            m_players.at(1).get()->onDeath();
-            break;
-        case PLAYER_2_MOVE_RIGHT:
-            m_players.at(2).get()->moveInDirection(DIRECTION_RIGHT);
-            break;
-        case PLAYER_2_MOVE_UP:
-            m_players.at(2).get()->moveInDirection(DIRECTION_UP);
-            break;
-        case PLAYER_2_MOVE_LEFT:
-            m_players.at(2).get()->moveInDirection(DIRECTION_LEFT);
-            break;
-        case PLAYER_2_MOVE_DOWN:
-            m_players.at(2).get()->moveInDirection(DIRECTION_DOWN);
-            break;
-        case PLAYER_2_MOVE_STOP:
-            m_players.at(2).get()->moveInDirection(-1);
-            break;
-        case PLAYER_2_PLANT_BOMB:
-            layBombForPlayer(m_players.at(2).get());
-            break;
-        case PLAYER_2_PUSH_BOMB:
-            pushBombForPlayer(m_players.at(2).get());
-            break;
-        case PLAYER_2_DEATH:
-            m_players.at(2).get()->onDeath();
-            break;
-        case PLAYER_3_MOVE_RIGHT:
-            m_players.at(3).get()->moveInDirection(DIRECTION_RIGHT);
-            break;
-        case PLAYER_3_MOVE_UP:
-            m_players.at(3).get()->moveInDirection(DIRECTION_UP);
-            break;
-        case PLAYER_3_MOVE_LEFT:
-            m_players.at(3).get()->moveInDirection(DIRECTION_LEFT);
-            break;
-        case PLAYER_3_MOVE_DOWN:
-            m_players.at(3).get()->moveInDirection(DIRECTION_DOWN);
-            break;
-        case PLAYER_3_MOVE_STOP:
-            m_players.at(3).get()->moveInDirection(-1);
-            break;
-        case PLAYER_3_PLANT_BOMB:
-            layBombForPlayer(m_players.at(3).get());
-            break;
-        case PLAYER_3_PUSH_BOMB:
-            pushBombForPlayer(m_players.at(3).get());
-            break;
-        case PLAYER_3_DEATH:
-            m_players.at(3).get()->onDeath();
-            break;
-        case PLAYER_4_MOVE_RIGHT:
-            m_players.at(4).get()->moveInDirection(DIRECTION_RIGHT);
-            break;
-        case PLAYER_4_MOVE_UP:
-            m_players.at(4).get()->moveInDirection(DIRECTION_UP);
-            break;
-        case PLAYER_4_MOVE_LEFT:
-            m_players.at(4).get()->moveInDirection(DIRECTION_LEFT);
-            break;
-        case PLAYER_4_MOVE_DOWN:
-            m_players.at(4).get()->moveInDirection(DIRECTION_DOWN);
-            break;
-        case PLAYER_4_MOVE_STOP:
-            m_players.at(4).get()->moveInDirection(-1);
-            break;
-        case PLAYER_4_PLANT_BOMB:
-            layBombForPlayer(m_players.at(4).get());
-            break;
-        case PLAYER_4_PUSH_BOMB:
-            pushBombForPlayer(m_players.at(4).get());
-            break;
-        case PLAYER_4_DEATH:
-            m_players.at(4).get()->onDeath();
-            break;
-        case PLAYER_5_MOVE_RIGHT:
-            m_players.at(5).get()->moveInDirection(DIRECTION_RIGHT);
-            break;
-        case PLAYER_5_MOVE_UP:
-            m_players.at(5).get()->moveInDirection(DIRECTION_UP);
-            break;
-        case PLAYER_5_MOVE_LEFT:
-            m_players.at(5).get()->moveInDirection(DIRECTION_LEFT);
-            break;
-        case PLAYER_5_MOVE_DOWN:
-            m_players.at(5).get()->moveInDirection(DIRECTION_DOWN);
-            break;
-        case PLAYER_5_MOVE_STOP:
-            m_players.at(5).get()->moveInDirection(-1);
-            break;
-        case PLAYER_5_PLANT_BOMB:
-            layBombForPlayer(m_players.at(5).get());
-            break;
-        case PLAYER_5_PUSH_BOMB:
-            pushBombForPlayer(m_players.at(5).get());
-            break;
-        case PLAYER_5_DEATH:
-            m_players.at(5).get()->onDeath();
-            break;
-        case PLAYER_6_MOVE_RIGHT:
-            m_players.at(6).get()->moveInDirection(DIRECTION_RIGHT);
-            break;
-        case PLAYER_6_MOVE_UP:
-            m_players.at(6).get()->moveInDirection(DIRECTION_UP);
-            break;
-        case PLAYER_6_MOVE_LEFT:
-            m_players.at(6).get()->moveInDirection(DIRECTION_LEFT);
-            break;
-        case PLAYER_6_MOVE_DOWN:
-            m_players.at(6).get()->moveInDirection(DIRECTION_DOWN);
-            break;
-        case PLAYER_6_MOVE_STOP:
-            m_players.at(6).get()->moveInDirection(-1);
-            break;
-        case PLAYER_6_PLANT_BOMB:
-            layBombForPlayer(m_players.at(6).get());
-            break;
-        case PLAYER_6_PUSH_BOMB:
-            pushBombForPlayer(m_players.at(6).get());
-            break;
-        case PLAYER_6_DEATH:
-            m_players.at(6).get()->onDeath();
-            break;
-        case PLAYER_7_MOVE_RIGHT:
-            m_players.at(7).get()->moveInDirection(DIRECTION_RIGHT);
-            break;
-        case PLAYER_7_MOVE_UP:
-            m_players.at(7).get()->moveInDirection(DIRECTION_UP);
-            break;
-        case PLAYER_7_MOVE_LEFT:
-            m_players.at(7).get()->moveInDirection(DIRECTION_LEFT);
-            break;
-        case PLAYER_7_MOVE_DOWN:
-            m_players.at(7).get()->moveInDirection(DIRECTION_DOWN);
-            break;
-        case PLAYER_7_MOVE_STOP:
-            m_players.at(7).get()->moveInDirection(-1);
-            break;
-        case PLAYER_7_PLANT_BOMB:
-            layBombForPlayer(m_players.at(7).get());
-            break;
-        case PLAYER_7_PUSH_BOMB:
-            pushBombForPlayer(m_players.at(7).get());
-            break;
-        case PLAYER_7_DEATH:
-            m_players.at(7).get()->onDeath();
+        case PLAYER_DEATH:
+            m_players.at(playerIndex).get()->onDeath();
             break;
         default:
             break;

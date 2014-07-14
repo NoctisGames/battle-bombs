@@ -49,9 +49,19 @@ void DynamicGridGameObject::updateGrid()
     }
 }
 
+void DynamicGridGameObject::setGridX(int gridX)
+{
+    m_gridX = gridX;
+}
+
 int DynamicGridGameObject::getGridX()
 {
     return m_gridX;
+}
+
+void DynamicGridGameObject::setGridY(int gridY)
+{
+    m_gridY = gridY;
 }
 
 int DynamicGridGameObject::getGridY()

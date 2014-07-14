@@ -57,7 +57,7 @@ protected:
     std::vector<std::unique_ptr<BombGameObject >> m_bombs;
     std::vector<std::unique_ptr<Explosion >> m_explosions;
     std::vector<std::unique_ptr<PowerUp >> m_powerUps;
-    std::vector<short> m_sEventIds;
+    std::vector<int> m_sEventIds;
     Game_State m_gameState;
     int m_iMapType;
 
@@ -75,9 +75,9 @@ protected:
 
     void handleClientEventsArrayInDocument(rapidjson::Document &d);
 
-    void handleShortArrayInDocument(rapidjson::Document &d, const char *shortArrayKey, std::vector<short> &shortArray, short sentinelValue);
+    void handleIntArrayInDocument(rapidjson::Document &d, const char *intArrayKey, std::vector<int> &intArray, int sentinelValue);
 
-    void handlePlayerEvent(short event);
+    void handlePlayerEvent(int event);
 
 private:
     void layBombForPlayer(PlayerDynamicGameObject *player);

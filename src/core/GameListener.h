@@ -15,18 +15,20 @@
 
 #include <vector>
 
+class PlayerDynamicGameObject;
+
 class GameListener
 {
 public:
     GameListener();
 
-    void addLocalEvent(short eventId);
+    void addLocalEventForPlayer(int eventId, PlayerDynamicGameObject &player);
 
-    short popOldestEventId();
+    int popOldestEventId();
 
     void addServerMessage(const char *serverMessage);
 
-    std::vector<short> & freeLocalEventIds();
+    std::vector<int> & freeLocalEventIds();
 
     std::vector<const char *> & freeServerMessages();
 
@@ -35,8 +37,8 @@ public:
 private:
     std::vector<const char *> m_serverMessages;
     std::vector<const char *> m_serverMessagesBuffer;
-    std::vector<short> m_sLocalEventIds;
-    std::vector<short> m_sLocalConsumedEventIds;
+    std::vector<int> m_sLocalEventIds;
+    std::vector<int> m_sLocalConsumedEventIds;
 };
 
 #endif /* defined(__bomberparty__GameListener__) */

@@ -101,7 +101,7 @@ void InterfaceOverlay::handleTouchDownInput(Vector2D &touchPoint, PlayerDynamicG
     {
         if(player.isAbleToDropAdditionalBomb(players, bombs))
         {
-            m_gameListener->addLocalEvent(player.getPlayerIndex() * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
+            m_gameListener->addLocalEventForPlayer(PLAYER_PLANT_BOMB, player);
         }
     }
     else if(OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
@@ -114,7 +114,7 @@ void InterfaceOverlay::handleTouchDownInput(Vector2D &touchPoint, PlayerDynamicG
                 {
                     if(player.isBombInFrontOfPlayer(**itr))
                     {
-                        m_gameListener->addLocalEvent(player.getPlayerIndex() * PLAYER_EVENT_BASE + PLAYER_PUSH_BOMB);
+                        m_gameListener->addLocalEventForPlayer(PLAYER_PUSH_BOMB, player);
                     }
                 }
             default:
@@ -127,7 +127,7 @@ void InterfaceOverlay::handleTouchDownInput(Vector2D &touchPoint, PlayerDynamicG
         
         if(player.getDirection() != directionInput || !player.isMoving())
         {
-            m_gameListener->addLocalEvent(player.getPlayerIndex() * PLAYER_EVENT_BASE + directionInput + 1);
+            m_gameListener->addLocalEventForPlayer(directionInput + 1, player);
         }
     }
 }
@@ -140,7 +140,7 @@ void InterfaceOverlay::handleTouchDraggedInput(Vector2D &touchPoint, PlayerDynam
         
         if(player.getDirection() != directionInput || !player.isMoving())
         {
-            m_gameListener->addLocalEvent(player.getPlayerIndex() * PLAYER_EVENT_BASE + directionInput + 1);
+            m_gameListener->addLocalEventForPlayer(directionInput + 1, player);
         }
     }
 }
@@ -150,7 +150,7 @@ void InterfaceOverlay::handleTouchUpInput(Vector2D &touchPoint, PlayerDynamicGam
     if(!OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()) && !OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
     {
         m_dPad->stop();
-        m_gameListener->addLocalEvent(player.getPlayerIndex() * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
+        m_gameListener->addLocalEventForPlayer(PLAYER_MOVE_STOP, player);
     }
 }
 

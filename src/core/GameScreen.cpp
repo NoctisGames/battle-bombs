@@ -191,7 +191,7 @@ int GameScreen::getPlayerDirection()
     return getPlayerDirectionAtIndex(m_sPlayerIndex);
 }
 
-short GameScreen::popOldestEventId()
+int GameScreen::popOldestEventId()
 {
     return m_gameListener->popOldestEventId();
 }
@@ -212,22 +212,22 @@ void GameScreen::updateRunning(float deltaTime)
 {
     if(m_player->isHitByExplosion(m_explosions, m_bombs))
     {
-        m_gameListener->addLocalEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
+        m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *m_player);
         
         m_gameState = SPECTATING;
     }
     
-    std::vector<short> localConsumedEventIds = m_gameListener->freeLocalEventIds();
+    std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
     
-    for (std::vector<short>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)
+    for (std::vector<int>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)
 	{
         handlePlayerEvent((*itr));
 	}
     
-    for (std::vector<short>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
+    for (std::vector<int>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
     {
-        short eventId = (*itr);
-        short derivedPlayerIndexFromEvent = 0;
+        int eventId = (*itr);
+        int derivedPlayerIndexFromEvent = 0;
         
         while(eventId > PLAYER_EVENT_BASE)
         {
@@ -272,14 +272,14 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 
 void GameScreen::updateSpectating(float deltaTime)
 {
-    std::vector<short> localConsumedEventIds = m_gameListener->freeLocalEventIds();
+    std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
     
-    for (std::vector<short>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)
+    for (std::vector<int>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)
 	{
         handlePlayerEvent((*itr));
 	}
     
-    for (std::vector<short>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
+    for (std::vector<int>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
     {
         handlePlayerEvent((*itr));
     }
@@ -437,13 +437,13 @@ void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)
         static const char *breakableBlockYValuesKey = "breakableBlockYValues";
         static const char *breakableBlockPowerUpFlagsKey = "breakableBlockPowerUpFlags";
         
-        std::vector<short> breakableBlockXValues;
-        std::vector<short> breakableBlockYValues;
-        std::vector<short> breakableBlockPowerUpFlags;
+        std::vector<int> breakableBlockXValues;
+        std::vector<int> breakableBlockYValues;
+        std::vector<int> breakableBlockPowerUpFlags;
         
-        handleShortArrayInDocument(d, breakableBlockXValuesKey, breakableBlockXValues, -1);
-        handleShortArrayInDocument(d, breakableBlockYValuesKey, breakableBlockYValues, -1);
-        handleShortArrayInDocument(d, breakableBlockPowerUpFlagsKey, breakableBlockPowerUpFlags, -1);
+        handleIntArrayInDocument(d, breakableBlockXValuesKey, breakableBlockXValues, -1);
+        handleIntArrayInDocument(d, breakableBlockYValuesKey, breakableBlockYValues, -1);
+        handleIntArrayInDocument(d, breakableBlockPowerUpFlagsKey, breakableBlockPowerUpFlags, -1);
         
         int numBreakableBlocks = d[numBreakableBlocksKey].GetInt();
         for(int i = 0; i < numBreakableBlocks; i++)

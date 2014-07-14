@@ -35,7 +35,7 @@ short get_current_music_id();
 
 short get_current_sound_id();
 
-short get_oldest_event_id();
+int get_oldest_event_id();
 
 bool is_time_to_send_keep_alive();
 
