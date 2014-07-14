@@ -32,6 +32,8 @@
 #include "InterfaceOverlay.h"
 #include "BombButton.h"
 #include "PowerUpBarItem.h"
+#include "PlayerAvatar.h"
+#include "Font.h"
 
 GameScreen::GameScreen(const char *username) : GameSession()
 {
@@ -386,6 +388,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
     static const char *numPlayersKey = "numPlayers";
     static const char *numClientBotsKey = "numClientBots";
     static const char *mapTypeKey = "mapType";
+    static const char *numSecondsLeftForRoundKey = "numSecondsLeftForRound";
     
     if(d.HasMember(numPlayersKey))
     {
@@ -412,7 +415,13 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         
         int mapType = d[mapTypeKey].GetInt();
         initializeInsideBlocksAndMapBordersForMapType(mapType);
-        m_renderer->loadMapType(mapType);
+        m_renderer->loadMapType(mapType, m_players);
+        
+        if(d.HasMember(numSecondsLeftForRoundKey))
+        {
+            int numSecondsLeftForRound = d[numSecondsLeftForRoundKey].GetInt();
+            m_interfaceOverlay->setNumSecondsLeft(numSecondsLeftForRound);
+        }
         
         PathFinder::getInstance().resetGameGrid();
         PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks, m_iMapType);

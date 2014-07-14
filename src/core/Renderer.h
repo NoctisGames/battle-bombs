@@ -35,6 +35,7 @@ class BombGameObject;
 class Explosion;
 class PowerUp;
 class InterfaceOverlay;
+class Font;
 
 class Renderer
 {
@@ -43,7 +44,7 @@ public:
 
 	void calcScrollYForPlayer(PlayerDynamicGameObject &player);
     
-    virtual void loadMapType(int mapType) = 0;
+    virtual void loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players) = 0;
     
     virtual void clearScreenWithColor(float r, float g, float b, float a) = 0;
     
@@ -68,6 +69,7 @@ public:
 	virtual void cleanUp() = 0;
     
 protected:
+    std::unique_ptr<Font> m_font;
     float m_fScrollY;
     
     virtual void renderGameObject(GameObject &go, TextureRegion tr) = 0;

@@ -112,6 +112,7 @@
 		BBCCF55E193847A0000F509A /* BotPlayerDynamicGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */; };
 		BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32418BFC8E1003A4EED /* Logger.m */; };
 		BBCDD32918BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32818BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m */; };
+		BBD0A2C3197420C900804A7C /* PlayerAvatar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD0A2C1197420C900804A7C /* PlayerAvatar.cpp */; };
 		BBDE14B3195A2D7400A91FD7 /* char_black.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14AC195A2D7400A91FD7 /* char_black.png */; };
 		BBDE14B4195A2D7400A91FD7 /* char_green.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14AD195A2D7400A91FD7 /* char_green.png */; };
 		BBDE14B5195A2D7400A91FD7 /* char_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14AE195A2D7400A91FD7 /* char_orange.png */; };
@@ -316,6 +317,8 @@
 		BBCDD32418BFC8E1003A4EED /* Logger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Logger.m; sourceTree = "<group>"; };
 		BBCDD32718BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
 		BBCDD32818BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
+		BBD0A2C1197420C900804A7C /* PlayerAvatar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerAvatar.cpp; sourceTree = "<group>"; };
+		BBD0A2C2197420C900804A7C /* PlayerAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerAvatar.h; sourceTree = "<group>"; };
 		BBDE14AC195A2D7400A91FD7 /* char_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_black.png; sourceTree = "<group>"; };
 		BBDE14AD195A2D7400A91FD7 /* char_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_green.png; sourceTree = "<group>"; };
 		BBDE14AE195A2D7400A91FD7 /* char_orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_orange.png; sourceTree = "<group>"; };
@@ -437,6 +440,8 @@
 				BB0CC4B51964F91600F770C4 /* PathFinder.h */,
 				BB96EEC118B99A6900F7C356 /* pch.h */,
 				BBF67CBF195C7AAB00587AB6 /* PlayerActionState.h */,
+				BBD0A2C1197420C900804A7C /* PlayerAvatar.cpp */,
+				BBD0A2C2197420C900804A7C /* PlayerAvatar.h */,
 				BB1B8C7F18C8B13300C72D2D /* PlayerDynamicGameObject.cpp */,
 				BB1B8C8018C8B13300C72D2D /* PlayerDynamicGameObject.h */,
 				BB47C9BD18F326D4002ED03B /* PlayerState.h */,
@@ -814,6 +819,7 @@
 				BB7305DC189C598D009F6DF4 /* Sound.m in Sources */,
 				0A8FBF85179E07320039BA29 /* pngset.c in Sources */,
 				BB96EEEF18B99A7100F7C356 /* image.c in Sources */,
+				BBD0A2C3197420C900804A7C /* PlayerAvatar.cpp in Sources */,
 				BB96EED818B99A6900F7C356 /* TextureRegion.cpp in Sources */,
 				BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */,
 				BB0CC4B91964FAD100F770C4 /* MapSearchNode.cpp in Sources */,

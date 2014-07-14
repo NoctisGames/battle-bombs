@@ -25,7 +25,7 @@ public:
     
     ~OpenGLESRenderer();
     
-    virtual void loadMapType(int mapType);
+    virtual void loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
     
     virtual void clearScreenWithColor(float r, float g, float b, float a);
     
@@ -51,6 +51,7 @@ public:
     
 private:
     std::unique_ptr<SpriteBatcher> m_spriteBatcher;
+    std::unique_ptr<SpriteBatcher> m_spriteBatcherWithColor;
     GLuint m_gameTexture;
     GLuint m_interfaceTexture;
     GLuint m_charBlackTexture;
@@ -61,15 +62,6 @@ private:
     GLuint m_charRedTexture;
     GLuint m_charWhiteTexture;
     GLuint m_charYellowTexture;
-    
-    GLuint m_botBlackTexture;
-    GLuint m_botBlueTexture;
-    GLuint m_botGreenTexture;
-    GLuint m_botOrangeTexture;
-    GLuint m_botPinkTexture;
-    GLuint m_botRedTexture;
-    GLuint m_botWhiteTexture;
-    GLuint m_botYellowTexture;
     
     virtual void renderGameObject(GameObject &go, TextureRegion tr);
     

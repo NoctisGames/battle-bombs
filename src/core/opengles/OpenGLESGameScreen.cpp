@@ -15,6 +15,7 @@
 #include "GameButton.h"
 #include "OpenGLESRenderer.h"
 #include "GameConstants.h"
+#include "Font.h"
 
 OpenGLESGameScreen::OpenGLESGameScreen(const char *username) : GameScreen(username)
 {

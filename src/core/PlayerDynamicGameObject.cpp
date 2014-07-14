@@ -73,11 +73,6 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
         
         updateGrid();
         
-        if(lastBombDropped != nullptr && !(lastBombDropped->getGridX() == m_gridX && lastBombDropped->getGridY() == m_gridY))
-        {
-            lastBombDropped = nullptr;
-        }
-        
         for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
         {
             if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
@@ -210,6 +205,11 @@ void PlayerDynamicGameObject::onBombExploded()
     m_iCurrentBombCount--;
 
     m_gameListener->playSound(SOUND_EXPLOSION);
+    
+    if(m_iCurrentBombCount == 0)
+    {
+        lastBombDropped = nullptr;
+    }
 }
 
 bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs)
@@ -370,7 +370,8 @@ bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder 
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
     {
         bool isOnTopOfBomb = m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY();
-        if (!isOnTopOfBomb && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        bool isLastBombDropped = (*itr).get() == lastBombDropped;
+        if (!isOnTopOfBomb && !isLastBombDropped && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
         {
             return true;
         }

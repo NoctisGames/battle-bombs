@@ -22,6 +22,7 @@ class BombGameObject;
 class Fire;
 class BreakableBlock;
 class PowerUp;
+class PlayerAvatar;
 class DPadControl;
 class PowerUpBarItem;
 class ActiveButton;
@@ -45,6 +46,8 @@ public:
 	static TextureRegion getBreakableBlockTextureRegion(BreakableBlock &breakableBlock);
     
     static TextureRegion getInterfaceOverlayTextureRegion();
+    
+    static TextureRegion getPlayerAvatarTextureRegion(PlayerAvatar &playerAvatar);
     
     static TextureRegion getDPadControlTextureRegion(DPadControl &dpadControl);
 

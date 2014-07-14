@@ -26,6 +26,10 @@
 #include "InterfaceOverlay.h"
 #include "PowerUpBarItem.h"
 #include "BombButton.h"
+#include "PlayerAvatar.h"
+#include "Font.h"
+
+#include <sstream>
 
 extern "C"
 {
@@ -47,9 +51,11 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
     m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(4000, false));
+    m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(1000, true));
     
     // TODO, this gameTexture loading is temporary
     m_gameTexture = load_png_asset_into_texture("map_space.png");
+    
     m_interfaceTexture = load_png_asset_into_texture("interface.png");
     
     m_charBlackTexture = load_png_asset_into_texture("char_black.png");
@@ -60,15 +66,6 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     m_charRedTexture = load_png_asset_into_texture("char_red.png");
     m_charWhiteTexture = load_png_asset_into_texture("char_white.png");
     m_charYellowTexture = load_png_asset_into_texture("char_yellow.png");
-    
-    m_botBlackTexture = load_png_asset_into_texture("bot_black.png");
-    m_botBlueTexture = load_png_asset_into_texture("bot_blue.png");
-    m_botGreenTexture = load_png_asset_into_texture("bot_green.png");
-    m_botOrangeTexture = load_png_asset_into_texture("bot_orange.png");
-    m_botPinkTexture = load_png_asset_into_texture("bot_pink.png");
-    m_botRedTexture = load_png_asset_into_texture("bot_red.png");
-    m_botWhiteTexture = load_png_asset_into_texture("bot_white.png");
-    m_botYellowTexture = load_png_asset_into_texture("bot_yellow.png");
 }
 
 OpenGLESRenderer::~OpenGLESRenderer()
@@ -76,7 +73,7 @@ OpenGLESRenderer::~OpenGLESRenderer()
     cleanUp();
 }
 
-void OpenGLESRenderer::loadMapType(int mapType)
+void OpenGLESRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
     glDeleteTextures(1, &m_gameTexture);
     
@@ -96,6 +93,26 @@ void OpenGLESRenderer::loadMapType(int mapType)
             m_gameTexture = load_png_asset_into_texture("map_base.png");
             break;
     }
+    
+    // TODO, optimize this so that only textures that NEED to change are deleted
+    
+    glDeleteTextures(1, &m_charBlackTexture);
+    glDeleteTextures(1, &m_charBlueTexture);
+    glDeleteTextures(1, &m_charGreenTexture);
+    glDeleteTextures(1, &m_charOrangeTexture);
+    glDeleteTextures(1, &m_charPinkTexture);
+    glDeleteTextures(1, &m_charRedTexture);
+    glDeleteTextures(1, &m_charWhiteTexture);
+    glDeleteTextures(1, &m_charYellowTexture);
+    
+    m_charBlackTexture = load_png_asset_into_texture(players.at(0)->isBot() ? "bot_black.png" : "char_black.png");
+    m_charBlueTexture = load_png_asset_into_texture(players.at(1)->isBot() ? "bot_blue.png" : "char_blue.png");
+    m_charGreenTexture = load_png_asset_into_texture(players.at(2)->isBot() ? "bot_green.png" : "char_green.png");
+    m_charOrangeTexture = load_png_asset_into_texture(players.at(3)->isBot() ? "bot_orange.png" : "char_orange.png");
+    m_charPinkTexture = load_png_asset_into_texture(players.at(4)->isBot() ? "bot_pink.png" : "char_pink.png");
+    m_charRedTexture = load_png_asset_into_texture(players.at(5)->isBot() ? "bot_red.png" : "char_red.png");
+    m_charWhiteTexture = load_png_asset_into_texture(players.at(6)->isBot() ? "bot_white.png" : "char_white.png");
+    m_charYellowTexture = load_png_asset_into_texture(players.at(7)->isBot() ? "bot_yellow.png" : "char_yellow.png");
 }
 
 void OpenGLESRenderer::clearScreenWithColor(float r, float g, float b, float a)
@@ -161,28 +178,28 @@ void OpenGLESRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
             switch ((**itr).getPlayerIndex())
             {
                 case 0:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botBlackTexture : m_charBlackTexture);
+                    m_spriteBatcher->endBatchWithTexture(m_charBlackTexture);
                     break;
                 case 1:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botBlueTexture : m_charBlueTexture);
+                    m_spriteBatcher->endBatchWithTexture(m_charBlueTexture);
                     break;
                 case 2:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botGreenTexture : m_charGreenTexture);
+                    m_spriteBatcher->endBatchWithTexture(m_charGreenTexture);
                     break;
                 case 3:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botOrangeTexture : m_charOrangeTexture);
+                    m_spriteBatcher->endBatchWithTexture(m_charOrangeTexture);
                     break;
                 case 4:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botPinkTexture : m_charPinkTexture);
+                    m_spriteBatcher->endBatchWithTexture(m_charPinkTexture);
                     break;
                 case 5:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botRedTexture : m_charRedTexture);
+                    m_spriteBatcher->endBatchWithTexture(m_charRedTexture);
                     break;
                 case 6:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botWhiteTexture : m_charWhiteTexture);
+                    m_spriteBatcher->endBatchWithTexture(m_charWhiteTexture);
                     break;
                 case 7:
-                    m_spriteBatcher->endBatchWithTexture((**itr).isBot() ? m_botYellowTexture : m_charYellowTexture);
+                    m_spriteBatcher->endBatchWithTexture(m_charYellowTexture);
                     break;
                 default:
                     break;
@@ -231,6 +248,12 @@ void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 {
     m_spriteBatcher->beginBatch();
     m_spriteBatcher->drawSprite(INTERFACE_OVERLAY_BACKGROUND_X, INTERFACE_OVERLAY_BACKGROUND_Y, INTERFACE_OVERLAY_BACKGROUND_WIDTH, INTERFACE_OVERLAY_BACKGROUND_HEIGHT, 0, Assets::getInterfaceOverlayTextureRegion());
+    
+    for (std::vector<std::unique_ptr<PlayerAvatar>>::iterator itr = interfaceOverlay.getPlayerAvatars().begin(); itr != interfaceOverlay.getPlayerAvatars().end(); itr++)
+    {
+        renderGameObject((**itr), Assets::getPlayerAvatarTextureRegion((**itr)));
+    }
+    
     renderGameObject(interfaceOverlay.getDPadControl(), Assets::getDPadControlTextureRegion(interfaceOverlay.getDPadControl()));
     
     for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
@@ -249,6 +272,29 @@ void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     renderGameObject(interfaceOverlay.getBombButton(), Assets::getBombButtonTextureRegion(interfaceOverlay.getBombButton(), interfaceOverlay.getButtonsStateTime()));
     
     m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
+    
+    std::stringstream ss;
+    ss << interfaceOverlay.getNumMinutesLeft() << ":" << interfaceOverlay.getNumSecondsLeftFirstColumn() << interfaceOverlay.getNumSecondsLeftSecondColumn();
+    std::string timeRemaining = ss.str();
+    static Color interfaceColor = { 1, 1, 1, 1 };
+    
+    m_spriteBatcherWithColor->beginBatch();
+    m_font->renderText(*m_spriteBatcherWithColor, timeRemaining, 0.3554104477903f, 12.9738805984375f, 0.40298507462688f, 0.425373134375f, interfaceColor);
+    
+    for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
+    {
+        if((**itr).getPowerUpType() != NONE)
+        {
+            std::stringstream ss2;
+            ss2 << (*itr)->getLevel();
+            std::string powerUpStack = ss2.str();
+            float x = (*itr)->getPosition().getX() + (*itr)->getWidth() / 2;
+            float y = (*itr)->getPosition().getY() - (*itr)->getHeight() / 2;
+            m_font->renderText(*m_spriteBatcherWithColor, powerUpStack, x, y, 0.36f, 0.32f, interfaceColor);
+        }
+    }
+    
+    m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
 }
 
 void OpenGLESRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
@@ -291,15 +337,6 @@ void OpenGLESRenderer::cleanUp()
     glDeleteTextures(1, &m_charRedTexture);
     glDeleteTextures(1, &m_charWhiteTexture);
     glDeleteTextures(1, &m_charYellowTexture);
-    
-    glDeleteTextures(1, &m_botBlackTexture);
-    glDeleteTextures(1, &m_botBlueTexture);
-    glDeleteTextures(1, &m_botGreenTexture);
-    glDeleteTextures(1, &m_botOrangeTexture);
-    glDeleteTextures(1, &m_botPinkTexture);
-    glDeleteTextures(1, &m_botRedTexture);
-    glDeleteTextures(1, &m_botWhiteTexture);
-    glDeleteTextures(1, &m_botYellowTexture);
 }
 
 #pragma mark <Private>

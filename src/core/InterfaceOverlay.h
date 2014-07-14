@@ -20,6 +20,7 @@ class PlayerDynamicGameObject;
 class BombGameObject;
 class GameListener;
 class PowerUpBarItem;
+class PlayerAvatar;
 
 class InterfaceOverlay
 {
@@ -34,6 +35,8 @@ public:
     
     void handleTouchUpInput(Vector2D &touchPoint, PlayerDynamicGameObject &player);
     
+    std::vector<std::unique_ptr<PlayerAvatar>> & getPlayerAvatars();
+    
     DPadControl & getDPadControl();
     
     std::vector<std::unique_ptr<PowerUpBarItem>> & getPowerUpBarItems();
@@ -46,7 +49,16 @@ public:
     
     float getButtonsStateTime();
     
+    void setNumSecondsLeft(int numSecondsLeft);
+    
+    int getNumMinutesLeft();
+    
+    int getNumSecondsLeftFirstColumn();
+    
+    int getNumSecondsLeftSecondColumn();
+    
 private:
+    std::vector<std::unique_ptr<PlayerAvatar>> m_playerAvatars;
     std::unique_ptr<DPadControl> m_dPad;
     std::vector<std::unique_ptr<PowerUpBarItem>> m_powerUpBarItems;
     std::unique_ptr<ActiveButton> m_activeButton;
@@ -54,6 +66,8 @@ private:
     GameListener *m_gameListener;
     float m_fPowerUpBarItemsStateTime;
     float m_fButtonsStateTime;
+    float m_fCountdownStateTime;
+    int m_iNumSecondsLeft;
 };
 
 #endif /* defined(__bomberparty__InterfaceOverlay__) */
