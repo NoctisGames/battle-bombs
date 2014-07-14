@@ -440,16 +440,19 @@ static Logger *logger = nil;
 
 - (void)pushEvents
 {
-    short eventId = get_oldest_event_id();
+    int eventId = get_oldest_event_id();
     if(eventId > 0)
     {
-        NSString *eventsMessage = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%hd,", EVENT_TYPE, CLIENT_UPDATE, EVENTS, eventId];
+        NSString *eventsMessage = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%i,", EVENT_TYPE, CLIENT_UPDATE, EVENTS, eventId];
         while ((eventId = get_oldest_event_id()) > 0)
         {
-            eventsMessage = [eventsMessage stringByAppendingFormat:@"%hd,", eventId];
+            eventsMessage = [eventsMessage stringByAppendingFormat:@"%i,", eventId];
         }
         eventsMessage = [eventsMessage stringByAppendingFormat:@"%i\"", 0]; // Terminate with 0
-        eventsMessage = [eventsMessage stringByAppendingString:@"}"];
+        
+        eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%f", PLAYER_INDEX, get_player_index(), X, get_player_x()];
+        eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%f", PLAYER_INDEX, get_player_index(), Y, get_player_y()];
+        eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%i}", PLAYER_INDEX, get_player_index(), DIRECTION, get_player_direction()];
         
         reset_time_since_last_client_event();
         

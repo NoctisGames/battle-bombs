@@ -223,6 +223,9 @@ public final class RendererWrapper implements Renderer
                     JSONObject tobeSent = new JSONObject();
                     tobeSent.put(EVENT_TYPE, CLIENT_UPDATE);
                     tobeSent.put(EVENTS, eventsMessage);
+                    tobeSent.put(PLAYER_INDEX + get_player_index() + X, get_player_x());
+                    tobeSent.put(PLAYER_INDEX + get_player_index() + Y, get_player_y());
+                    tobeSent.put(PLAYER_INDEX + get_player_index() + DIRECTION, get_player_direction());
 
                     reset_time_since_last_client_event();
 
