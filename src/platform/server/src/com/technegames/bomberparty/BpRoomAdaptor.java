@@ -210,7 +210,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 
                     update(_room.getId(), deltaTime);
 
-                    short eventId = get_oldest_event_id(_room.getId());
+                    int eventId = get_oldest_event_id(_room.getId());
 
                     if (eventId > 0)
                     {
@@ -512,5 +512,5 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 
     private static native int get_breakable_block_power_up_flag(String roomId, int breakable_block_index);
 
-    private static native short get_oldest_event_id(String roomId);
+    private static native int get_oldest_event_id(String roomId);
 }

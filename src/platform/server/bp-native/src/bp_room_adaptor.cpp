@@ -43,7 +43,7 @@ extern "C"
 
     JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1breakable_1block_1power_1up_1flag(JNIEnv* env, jclass cls, jstring room_id, jshort breakable_block_index);
 
-    JNIEXPORT short JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1oldest_1event_1id(JNIEnv* env, jclass cls, jstring room_id);
+    JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1oldest_1event_1id(JNIEnv* env, jclass cls, jstring room_id);
 };
 
 struct RoomIdGameSessionPair
@@ -269,7 +269,7 @@ JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1breaka
     return 0;
 }
 
-JNIEXPORT short JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1oldest_1event_1id(JNIEnv* env, jclass cls, jstring room_id)
+JNIEXPORT int JNICALL Java_com_technegames_bomberparty_BpRoomAdaptor_get_1oldest_1event_1id(JNIEnv* env, jclass cls, jstring room_id)
 {
     UNUSED(env);
     UNUSED(cls);

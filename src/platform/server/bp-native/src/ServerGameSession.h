@@ -35,7 +35,7 @@ public:
 
     int getBreakableBlockPowerUpFlag(short breakableBlockIndex);
     
-    short popOldestEventId();
+    int popOldestEventId();
 
 private:
     std::unique_ptr<GameListener> m_gameListener;

@@ -219,7 +219,7 @@ int ServerGameSession::getBreakableBlockPowerUpFlag(short breakableBlockIndex)
     return m_breakableBlocks.at(breakableBlockIndex).get()->getPowerUpFlag();
 }
 
-short ServerGameSession::popOldestEventId()
+int ServerGameSession::popOldestEventId()
 {
     return m_gameListener->popOldestEventId();
 }
@@ -228,14 +228,14 @@ short ServerGameSession::popOldestEventId()
 
 void ServerGameSession::updateRunning(float deltaTime)
 {
-    std::vector<short> localConsumedEventIds = m_gameListener->freeLocalEventIds();
+    std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
 
-    for (std::vector<short>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)
+    for (std::vector<int>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)
     {
         handlePlayerEvent((*itr));
     }
 
-    for (std::vector<short>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
+    for (std::vector<int>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
     {
         handlePlayerEvent((*itr));
     }

@@ -9,18 +9,25 @@
 #include "pch.h"
 #include "string.h"
 #include "GameListener.h"
+#include "PlayerDynamicGameObject.h"
+#include "GameEvent.h"
 
 GameListener::GameListener()
 {
     // No setup required
 }
 
-void GameListener::addLocalEvent(short eventId)
+void GameListener::addLocalEventForPlayer(int eventId, PlayerDynamicGameObject &player)
 {
+    eventId += PLAYER_EVENT_BASE * player.getPlayerIndex();
+    eventId += PLAYER_EVENT_DIRECTION_BASE * player.getDirection();
+    eventId += PLAYER_EVENT_GRID_X_BASE * player.getGridX();
+    eventId += PLAYER_EVENT_GRID_Y_BASE * player.getGridY();
+
     m_sLocalEventIds.push_back(eventId);
 }
 
-short GameListener::popOldestEventId()
+int GameListener::popOldestEventId()
 {
     if (m_sLocalConsumedEventIds.size() > 0)
     {
@@ -40,7 +47,7 @@ void GameListener::addServerMessage(const char *serverMessage)
     m_serverMessagesBuffer.push_back(copy);
 }
 
-std::vector<short> & GameListener::freeLocalEventIds()
+std::vector<int> & GameListener::freeLocalEventIds()
 {
     m_sLocalConsumedEventIds.clear();
     m_sLocalConsumedEventIds.swap(m_sLocalEventIds);
@@ -60,5 +67,5 @@ std::vector<const char *> & GameListener::freeServerMessages()
 
 void GameListener::playSound(short soundId)
 {
-    // No Sound
+    // No Sound on Server
 }
