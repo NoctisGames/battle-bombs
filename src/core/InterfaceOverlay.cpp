@@ -242,6 +242,7 @@ float InterfaceOverlay::getButtonsStateTime()
 void InterfaceOverlay::setNumSecondsLeft(int numSecondsLeft)
 {
     m_iNumSecondsLeft = numSecondsLeft;
+	m_fCountdownStateTime = 0;
 }
 
 int InterfaceOverlay::getNumMinutesLeft()
