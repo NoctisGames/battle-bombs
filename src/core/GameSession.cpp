@@ -342,43 +342,28 @@ void GameSession::handlePlayerEvent(int event)
     }
     
     int direction = 0;
-    
-    if (event > PLAYER_EVENT_DIRECTION_BASE)
+    while (event > PLAYER_EVENT_DIRECTION_BASE)
     {
-        while (event > PLAYER_EVENT_DIRECTION_BASE)
-        {
-            event -= PLAYER_EVENT_DIRECTION_BASE;
-            direction++;
-        }
-        
-        m_players.at(playerIndex).get()->setDirection(direction);
+        event -= PLAYER_EVENT_DIRECTION_BASE;
+        direction++;
     }
+    m_players.at(playerIndex).get()->setDirection(direction);
     
     int gridX = 0;
-    
-    if (event > PLAYER_EVENT_GRID_X_BASE)
+    while (event > PLAYER_EVENT_GRID_X_BASE)
     {
-        while (event > PLAYER_EVENT_GRID_X_BASE)
-        {
-            event -= PLAYER_EVENT_GRID_X_BASE;
-            gridX++;
-        }
-        
-        m_players.at(playerIndex).get()->setGridX(gridX);
+        event -= PLAYER_EVENT_GRID_X_BASE;
+        gridX++;
     }
+    m_players.at(playerIndex).get()->setGridX(gridX);
     
     int gridY = 0;
-    
-    if (event > PLAYER_EVENT_GRID_Y_BASE)
+    while (event > PLAYER_EVENT_GRID_Y_BASE)
     {
-        while (event > PLAYER_EVENT_GRID_Y_BASE)
-        {
-            event -= PLAYER_EVENT_GRID_Y_BASE;
-            gridY++;
-        }
-        
-        m_players.at(playerIndex).get()->setGridY(gridY);
+        event -= PLAYER_EVENT_GRID_Y_BASE;
+        gridY++;
     }
+    m_players.at(playerIndex).get()->setGridY(gridY);
     
     switch (event)
     {
