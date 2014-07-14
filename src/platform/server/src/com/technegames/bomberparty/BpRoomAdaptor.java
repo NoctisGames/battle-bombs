@@ -99,7 +99,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                     _stateTime = 0;
 
                     _playerSpotsOccupied[i] = true;
-                    _inRoomUserSessionDataMap.put(user, new UserSessionData(0f, i));
+                    _inRoomUserSessionDataMap.put(user, new UserSessionData(0, i));
 
                     System.out.println(user.getName() + " joined the room");
 
@@ -124,7 +124,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
             System.out.println(sender.getName() + " says " + message);
 
             // Sending just a blank message serves as a keep alive
-            _inRoomUserSessionDataMap.get(sender)._timeSinceLastChat = 0f;
+            _inRoomUserSessionDataMap.get(sender)._timeSinceLastChat = 0;
 
             if (_inGameUserSessionDataMap.containsKey(sender) && message != null && message.contains("{") && message.contains(","))
             {
@@ -143,17 +143,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     public void onTimerTick(long time)
     {
         float deltaTime = smoothedDeltaRealTime_ms / 1000;
-
-        for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
-        {
-            IUser user = (IUser) entry.getKey();
-            _inRoomUserSessionDataMap.get(user)._timeSinceLastChat += deltaTime;
-            if (_inRoomUserSessionDataMap.get(user)._timeSinceLastChat > 7)
-            {
-                removeUser(user, false);
-            }
-        }
-
+        
         if (_isGameRunning)
         {
             if (_inRoomUserSessionDataMap.isEmpty())
@@ -175,12 +165,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                 {
                     if (is_player_alive(_room.getId(), playerIndex))
                     {
-                        System.out.println("Player " + playerIndex + " is alive");
                         numAlive++;
-                    }
-                    else
-                    {
-                        System.out.println("Player " + playerIndex + " is NOT alive");
                     }
                 }
 
@@ -189,13 +174,11 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                     for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
                     {
                         IUser user = (IUser) entry.getKey();
-                        if (_inRoomUserSessionDataMap.get(user)._timeSinceLastChat > 1)
+                        if (_inRoomUserSessionDataMap.get(user)._timeSinceLastChat > 1000)
                         {
                             short playerIndex = _inRoomUserSessionDataMap.get(user)._playerIndex;
                             if (!_playerSpotsReceivedGameStateCommand[playerIndex])
                             {
-                                System.out.println("SENDING BEGIN_SPECTATE event to player so that he/she can spectate!");
-
                                 String beginGameCommand = getGameStateCommand(BEGIN_SPECTATE);
                                 if (beginGameCommand != null)
                                 {
@@ -324,6 +307,16 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
         smoothedDeltaRealTime_ms = smoothedDeltaRealTime_ms + (movAverageDeltaTime_ms - smoothedDeltaRealTime_ms) * smoothFactor;
 
         lastRealTimeMeasurement_ms = currTimePick_ms;
+        
+        for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
+        {
+            IUser user = (IUser) entry.getKey();
+            _inRoomUserSessionDataMap.get(user)._timeSinceLastChat += realTimeElapsed_ms;
+            if (_inRoomUserSessionDataMap.get(user)._timeSinceLastChat > 7000)
+            {
+                removeUser(user, false);
+            }
+        }
     }
 
     private String getGameStateCommand(short eventType)

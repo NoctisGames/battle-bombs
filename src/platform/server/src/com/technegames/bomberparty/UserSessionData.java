@@ -6,10 +6,10 @@ package com.technegames.bomberparty;
  */
 public final class UserSessionData
 {
-    public float _timeSinceLastChat;
+    public long _timeSinceLastChat;
     public short _playerIndex;
     
-    public UserSessionData(float timeSinceLastChat, short playerIndex)
+    public UserSessionData(long timeSinceLastChat, short playerIndex)
     {
         _timeSinceLastChat = timeSinceLastChat;
         _playerIndex = playerIndex;
