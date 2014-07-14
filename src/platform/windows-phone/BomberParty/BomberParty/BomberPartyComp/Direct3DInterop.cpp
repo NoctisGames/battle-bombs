@@ -160,7 +160,7 @@ namespace BomberPartyComp
 	{
 		if (m_isOnline)
 		{
-			short eventId = m_gameScreen->popOldestEventId();
+			int eventId = m_gameScreen->popOldestEventId();
 			if (eventId > 0)
 			{
 				Platform::String^ eventsMessage = eventId + ",";
