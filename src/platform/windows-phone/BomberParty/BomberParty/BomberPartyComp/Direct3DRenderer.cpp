@@ -31,6 +31,10 @@
 #include "InterfaceOverlay.h"
 #include "PowerUpBarItem.h"
 #include "BombButton.h"
+#include "Font.h"
+#include "PlayerAvatar.h"
+
+#include <string>
 
 using namespace DirectX;
 
@@ -47,23 +51,6 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 	// Initialize Textures
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_red.dds", NULL, &m_charRedShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
-
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_black.dds", NULL, &m_botBlackShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_blue.dds", NULL, &m_botBlueShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_green.dds", NULL, &m_botGreenShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_orange.dds", NULL, &m_botOrangeShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_pink.dds", NULL, &m_botPinkShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_red.dds", NULL, &m_botRedShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_white.dds", NULL, &m_botWhiteShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\bot_yellow.dds", NULL, &m_botYellowShaderResourceView, NULL));
 
 	// Clear the blend state description.
 	D3D11_BLEND_DESC blendDesc;
@@ -105,7 +92,7 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 	d3dDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, shaderByteCode, byteCodeLength, &m_inputLayout);
 }
 
-void Direct3DRenderer::loadMapType(int mapType)
+void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
 	m_gameShaderResourceView->Release();
 
@@ -125,6 +112,26 @@ void Direct3DRenderer::loadMapType(int mapType)
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\map_base.dds", NULL, &m_gameShaderResourceView, NULL));
 		break;
 	}
+
+	// TODO, optimize this so that only textures that NEED to change are deleted
+
+	m_charBlackShaderResourceView->Release();
+	m_charBlueShaderResourceView->Release();
+	m_charGreenShaderResourceView->Release();
+	m_charOrangeShaderResourceView->Release();
+	m_charPinkShaderResourceView->Release();
+	m_charRedShaderResourceView->Release();
+	m_charWhiteShaderResourceView->Release();
+	m_charYellowShaderResourceView->Release();
+
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(0)->isBot() ? L"Assets\\bot_black.dds" : L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(1)->isBot() ? L"Assets\\bot_blue.dds" : L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(2)->isBot() ? L"Assets\\bot_green.dds" : L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(3)->isBot() ? L"Assets\\bot_orange.dds" : L"Assets\\char_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(4)->isBot() ? L"Assets\\bot_pink.dds" : L"Assets\\char_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(5)->isBot() ? L"Assets\\bot_red.dds" : L"Assets\\char_red.dds", NULL, &m_charRedShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(6)->isBot() ? L"Assets\\bot_white.dds" : L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
 }
 
 void Direct3DRenderer::clearScreenWithColor(float r, float g, float b, float a)
@@ -210,33 +217,33 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 			switch ((**itr).getPlayerIndex())
 			{
 			case 0:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botBlackShaderResourceView : m_charBlackShaderResourceView;
+				m_currentShaderResourceView = m_charBlackShaderResourceView;
 				break;
 			case 1:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botBlueShaderResourceView : m_charBlueShaderResourceView;
+				m_currentShaderResourceView = m_charBlueShaderResourceView;
 				break;
 			case 2:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botGreenShaderResourceView : m_charGreenShaderResourceView;
+				m_currentShaderResourceView = m_charGreenShaderResourceView;
 				break;
 			case 3:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botOrangeShaderResourceView : m_charOrangeShaderResourceView;
+				m_currentShaderResourceView = m_charOrangeShaderResourceView;
 				break;
 			case 4:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botPinkShaderResourceView : m_charPinkShaderResourceView;
+				m_currentShaderResourceView = m_charPinkShaderResourceView;
 				break;
 			case 5:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botRedShaderResourceView : m_charRedShaderResourceView;
+				m_currentShaderResourceView = m_charRedShaderResourceView;
 				break;
 			case 6:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botWhiteShaderResourceView : m_charWhiteShaderResourceView;
+				m_currentShaderResourceView = m_charWhiteShaderResourceView;
 				break;
 			case 7:
-				m_currentShaderResourceView = (**itr).isBot() ? m_botYellowShaderResourceView : m_charYellowShaderResourceView;
+				m_currentShaderResourceView = m_charYellowShaderResourceView;
 				break;
 			default:
 				break;
 			}
-			
+
 			m_spriteBatch->Begin();
 			renderGameObjectWithRespectToPlayer((**itr), Assets::getPlayerTextureRegion((**itr)));
 			m_spriteBatch->End();
@@ -265,6 +272,12 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 
 	m_spriteBatch->Begin();
 	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_OVERLAY_BACKGROUND_X, INTERFACE_OVERLAY_BACKGROUND_Y, INTERFACE_OVERLAY_BACKGROUND_WIDTH, INTERFACE_OVERLAY_BACKGROUND_HEIGHT, false), &Assets::getInterfaceOverlayTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+
+	for (std::vector<std::unique_ptr<PlayerAvatar>>::iterator itr = interfaceOverlay.getPlayerAvatars().begin(); itr != interfaceOverlay.getPlayerAvatars().end(); itr++)
+	{
+		renderGameObject((**itr), Assets::getPlayerAvatarTextureRegion((**itr)));
+	}
+
 	renderGameObject(interfaceOverlay.getDPadControl(), Assets::getDPadControlTextureRegion(interfaceOverlay.getDPadControl()));
 
 	for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
@@ -281,6 +294,27 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 	}
 
 	renderGameObject(interfaceOverlay.getBombButton(), Assets::getBombButtonTextureRegion(interfaceOverlay.getBombButton(), interfaceOverlay.getButtonsStateTime()));
+
+	m_spriteBatch->End();
+
+	// TODO, this isn't Direct3D
+
+	std::string timeRemaining = std::to_string(interfaceOverlay.getNumMinutesLeft()) + ":" + std::to_string(interfaceOverlay.getNumSecondsLeftFirstColumn()) + std::to_string(interfaceOverlay.getNumSecondsLeftSecondColumn());
+	static DirectX::XMVECTORF32 interfaceColor = { 1, 1, 1, 1 };
+
+	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
+	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, timeRemaining, 0.3554104477903f, 12.9738805984375f, 0.40298507462688f, 0.425373134375f, interfaceColor);
+
+	for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
+	{
+		if ((**itr).getPowerUpType() != NONE)
+		{
+			std::string powerUpStack = std::to_string((*itr)->getLevel());
+			float x = (*itr)->getPosition().getX() + (*itr)->getWidth() / 2;
+			float y = (*itr)->getPosition().getY() - (*itr)->getHeight() / 2;
+			m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, powerUpStack, x, y, 0.36f, 0.32f, interfaceColor);
+		}
+	}
 
 	m_spriteBatch->End();
 }
@@ -314,6 +348,7 @@ void Direct3DRenderer::endFrame()
 void Direct3DRenderer::cleanUp()
 {
 	m_gameShaderResourceView->Release();
+	m_interfaceShaderResourceView->Release();
 	m_charBlackShaderResourceView->Release();
 	m_charBlueShaderResourceView->Release();
 	m_charGreenShaderResourceView->Release();
@@ -322,15 +357,6 @@ void Direct3DRenderer::cleanUp()
 	m_charRedShaderResourceView->Release();
 	m_charWhiteShaderResourceView->Release();
 	m_charYellowShaderResourceView->Release();
-
-	m_botBlackShaderResourceView->Release();
-	m_botBlueShaderResourceView->Release();
-	m_botGreenShaderResourceView->Release();
-	m_botOrangeShaderResourceView->Release();
-	m_botPinkShaderResourceView->Release();
-	m_botRedShaderResourceView->Release();
-	m_botWhiteShaderResourceView->Release();
-	m_botYellowShaderResourceView->Release();
 }
 
 // Private

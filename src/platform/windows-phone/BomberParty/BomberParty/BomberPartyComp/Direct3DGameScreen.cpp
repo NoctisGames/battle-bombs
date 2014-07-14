@@ -17,6 +17,7 @@
 #include "Assets.h"
 #include "GameConstants.h"
 #include "Vector2D.h"
+#include "Font.h"
 
 Direct3DGameScreen::Direct3DGameScreen(const char *username, int deviceScreenWidth, int deviceScreenHeight) : GameScreen(username)
 {

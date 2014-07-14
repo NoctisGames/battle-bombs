@@ -22,7 +22,7 @@ class Direct3DRenderer : public Renderer
 public:
 	Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView, int deviceScreenWidth, int deviceScreenHeight);
 
-	virtual void loadMapType(int mapType); 
+	virtual void loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
 	
 	virtual void clearScreenWithColor(float r, float g, float b, float a);
 
@@ -62,15 +62,6 @@ private:
 	ID3D11ShaderResourceView *m_charRedShaderResourceView;
 	ID3D11ShaderResourceView *m_charWhiteShaderResourceView;
 	ID3D11ShaderResourceView *m_charYellowShaderResourceView;
-
-	ID3D11ShaderResourceView *m_botBlackShaderResourceView;
-	ID3D11ShaderResourceView *m_botBlueShaderResourceView;
-	ID3D11ShaderResourceView *m_botGreenShaderResourceView;
-	ID3D11ShaderResourceView *m_botOrangeShaderResourceView;
-	ID3D11ShaderResourceView *m_botPinkShaderResourceView;
-	ID3D11ShaderResourceView *m_botRedShaderResourceView;
-	ID3D11ShaderResourceView *m_botWhiteShaderResourceView;
-	ID3D11ShaderResourceView *m_botYellowShaderResourceView;
 
 	ID3D11ShaderResourceView *m_currentShaderResourceView;
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;

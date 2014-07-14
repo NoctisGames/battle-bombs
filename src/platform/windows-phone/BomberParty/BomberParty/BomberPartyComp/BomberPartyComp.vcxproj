@@ -197,6 +197,7 @@
     <ClInclude Include="..\..\..\..\..\core\PathFinder.h" />
     <ClInclude Include="..\..\..\..\..\core\pch.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerActionState.h" />
+    <ClInclude Include="..\..\..\..\..\core\PlayerAvatar.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerDynamicGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\PowerUp.h" />
     <ClInclude Include="..\..\..\..\..\core\PowerUpBarItem.h" />
@@ -250,6 +251,7 @@
     <ClCompile Include="..\..\..\..\..\core\MapSearchNode.cpp" />
     <ClCompile Include="..\..\..\..\..\core\OverlapTester.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PathFinder.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\PlayerAvatar.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PlayerDynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PowerUp.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PowerUpBarItem.cpp" />
