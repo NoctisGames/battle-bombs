@@ -83,7 +83,7 @@ void Font::renderText(DirectX::SpriteBatch &spriteBatcher, ID3D11ShaderResourceV
 
 	for (unsigned int i = 0; i < text.length(); i++)
 	{
-		int c = ((int)text.at(i)) - 16;
+		int c = ((int)text.at(i));
 
 		if (c < 0 || c > 127)
 		{

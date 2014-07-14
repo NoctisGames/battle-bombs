@@ -115,15 +115,6 @@ void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
 
 	// TODO, optimize this so that only textures that NEED to change are deleted
 
-	m_charBlackShaderResourceView->Release();
-	m_charBlueShaderResourceView->Release();
-	m_charGreenShaderResourceView->Release();
-	m_charOrangeShaderResourceView->Release();
-	m_charPinkShaderResourceView->Release();
-	m_charRedShaderResourceView->Release();
-	m_charWhiteShaderResourceView->Release();
-	m_charYellowShaderResourceView->Release();
-
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(0)->isBot() ? L"Assets\\bot_black.dds" : L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(1)->isBot() ? L"Assets\\bot_blue.dds" : L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(2)->isBot() ? L"Assets\\bot_green.dds" : L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
