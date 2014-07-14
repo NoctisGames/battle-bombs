@@ -148,7 +148,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
         {
             IUser user = (IUser) entry.getKey();
             _inRoomUserSessionDataMap.get(user)._timeSinceLastChat += deltaTime;
-            if (_inRoomUserSessionDataMap.get(user)._timeSinceLastChat > 16)
+            if (_inRoomUserSessionDataMap.get(user)._timeSinceLastChat > 7)
             {
                 removeUser(user, false);
             }
@@ -424,7 +424,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 
             if (is_player_alive(_room.getId(), playerIndex))
             {
-                short playerDeathEvent = (short) (playerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
+                int playerDeathEvent = (int) (playerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
                 String playerDeathEventString = String.valueOf(playerDeathEvent);
                 playerDeathEventString = playerDeathEventString.concat(",0");
 
