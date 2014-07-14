@@ -294,7 +294,7 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 	static DirectX::XMVECTORF32 interfaceColor = { 1, 1, 1, 1 };
 
 	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
-	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, timeRemaining, 0.3554104477903f, 12.9738805984375f, 0.40298507462688f, 0.425373134375f, interfaceColor);
+	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, timeRemaining, 0.3554104477903f, 13.0589552253125f, 0.40298507462688f, 0.425373134375f, interfaceColor);
 
 	for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
 	{
@@ -307,6 +307,15 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 		}
 	}
 
+	m_spriteBatch->End();
+}
+
+void Direct3DRenderer::renderSpectatorInterface()
+{
+	m_currentShaderResourceView = m_interfaceShaderResourceView;
+
+	m_spriteBatch->Begin();
+	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_X, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_Y, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_WIDTH, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_HEIGHT, false), &Assets::getSpectatorInterfaceOverlayTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	m_spriteBatch->End();
 }
 
