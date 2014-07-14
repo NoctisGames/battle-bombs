@@ -23,14 +23,14 @@
 
 InterfaceOverlay::InterfaceOverlay(GameListener *gameListener)
 {
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  8.67761194125f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  7.99701492625f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  7.31641791125f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  6.63582089625f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 8.67761194125f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 7.99701492625f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 7.31641791125f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 6.63582089625f, 1.43283582089544f, 1.36119403f)));
+    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  9.1880597025f, 1.43283582089544f, 1.36119403f)));
+    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  8.5074626875f, 1.43283582089544f, 1.36119403f)));
+    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  7.8268656725f, 1.43283582089544f, 1.36119403f)));
+    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  7.1462686575f, 1.43283582089544f, 1.36119403f)));
+    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 9.1880597025f, 1.43283582089544f, 1.36119403f)));
+    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 8.5074626875f, 1.43283582089544f, 1.36119403f)));
+    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 7.8268656725f, 1.43283582089544f, 1.36119403f)));
+    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 7.1462686575f, 1.43283582089544f, 1.36119403f)));
     
     m_dPad = std::unique_ptr<DPadControl>(new DPadControl(2.95522388059704f, 3.0626865675f, 5.91044776119408f, 6.125373135f));
     

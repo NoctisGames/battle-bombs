@@ -47,6 +47,8 @@ public:
     
     static TextureRegion getInterfaceOverlayTextureRegion();
     
+    static TextureRegion getSpectatorInterfaceOverlayTextureRegion();
+    
     static TextureRegion getPlayerAvatarTextureRegion(PlayerAvatar &playerAvatar);
     
     static TextureRegion getDPadControlTextureRegion(DPadControl &dpadControl);

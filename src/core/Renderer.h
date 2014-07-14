@@ -19,6 +19,11 @@
 #define INTERFACE_OVERLAY_BACKGROUND_WIDTH SCREEN_WIDTH
 #define INTERFACE_OVERLAY_BACKGROUND_HEIGHT SCREEN_HEIGHT
 
+#define INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_X SCREEN_WIDTH / 2
+#define INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_Y 0.8932835821875
+#define INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_WIDTH SCREEN_WIDTH
+#define INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_HEIGHT 1.786567164375
+
 #include <memory>
 #include <vector>
 #include "PowerUpType.h"
@@ -61,6 +66,8 @@ public:
     virtual void renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear) = 0;
     
     virtual void renderInterface(InterfaceOverlay &interfaceOverlay) = 0;
+    
+    virtual void renderSpectatorInterface() = 0;
     
     virtual void renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]) = 0;
     

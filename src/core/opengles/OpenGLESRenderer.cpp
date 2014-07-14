@@ -279,7 +279,7 @@ void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     static Color interfaceColor = { 1, 1, 1, 1 };
     
     m_spriteBatcherWithColor->beginBatch();
-    m_font->renderText(*m_spriteBatcherWithColor, timeRemaining, 0.3554104477903f, 12.9738805984375f, 0.40298507462688f, 0.425373134375f, interfaceColor);
+    m_font->renderText(*m_spriteBatcherWithColor, timeRemaining, 0.3554104477903f, 13.0589552253125f, 0.40298507462688f, 0.425373134375f, interfaceColor);
     
     for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
     {
@@ -295,6 +295,13 @@ void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     }
     
     m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
+}
+
+void OpenGLESRenderer::renderSpectatorInterface()
+{
+    m_spriteBatcher->beginBatch();
+    m_spriteBatcher->drawSprite(INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_X, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_Y, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_WIDTH, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_HEIGHT, 0, Assets::getSpectatorInterfaceOverlayTextureRegion());
+    m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
 }
 
 void OpenGLESRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
