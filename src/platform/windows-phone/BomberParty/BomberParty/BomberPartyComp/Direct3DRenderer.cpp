@@ -52,6 +52,24 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL));
 
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\bot_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\bot_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\bot_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\bot_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\bot_red.dds", NULL, &m_charRedShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\bot_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\bot_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
+
+	player_sprites_loaded[0] = true;
+	player_sprites_loaded[1] = false;
+	player_sprites_loaded[2] = false;
+	player_sprites_loaded[3] = false;
+	player_sprites_loaded[4] = false;
+	player_sprites_loaded[5] = false;
+	player_sprites_loaded[6] = false;
+	player_sprites_loaded[7] = false;
+
 	// Clear the blend state description.
 	D3D11_BLEND_DESC blendDesc;
 	ZeroMemory(&blendDesc, sizeof(D3D11_BLEND_DESC));
@@ -113,16 +131,54 @@ void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
 		break;
 	}
 
-	// TODO, optimize this so that only textures that NEED to change are deleted
+	if ((players.at(0)->isBot() && player_sprites_loaded[0]) || (!players.at(0)->isBot() && !player_sprites_loaded[0]))
+	{
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(0)->isBot() ? L"Assets\\bot_black.dds" : L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
+	}
 
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(0)->isBot() ? L"Assets\\bot_black.dds" : L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(1)->isBot() ? L"Assets\\bot_blue.dds" : L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(2)->isBot() ? L"Assets\\bot_green.dds" : L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(3)->isBot() ? L"Assets\\bot_orange.dds" : L"Assets\\char_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(4)->isBot() ? L"Assets\\bot_pink.dds" : L"Assets\\char_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(5)->isBot() ? L"Assets\\bot_red.dds" : L"Assets\\char_red.dds", NULL, &m_charRedShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(6)->isBot() ? L"Assets\\bot_white.dds" : L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
+	if ((players.at(1)->isBot() && player_sprites_loaded[1]) || (!players.at(1)->isBot() && !player_sprites_loaded[1]))
+	{
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(1)->isBot() ? L"Assets\\bot_blue.dds" : L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
+	}
+
+	if ((players.at(2)->isBot() && player_sprites_loaded[2]) || (!players.at(2)->isBot() && !player_sprites_loaded[2]))
+	{
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(2)->isBot() ? L"Assets\\bot_green.dds" : L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
+	}
+
+	if ((players.at(3)->isBot() && player_sprites_loaded[3]) || (!players.at(3)->isBot() && !player_sprites_loaded[3]))
+	{
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(3)->isBot() ? L"Assets\\bot_orange.dds" : L"Assets\\char_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
+	}
+
+	if ((players.at(4)->isBot() && player_sprites_loaded[4]) || (!players.at(4)->isBot() && !player_sprites_loaded[4]))
+	{
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(4)->isBot() ? L"Assets\\bot_pink.dds" : L"Assets\\char_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
+	}
+
+	if ((players.at(5)->isBot() && player_sprites_loaded[5]) || (!players.at(5)->isBot() && !player_sprites_loaded[5]))
+	{
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(5)->isBot() ? L"Assets\\bot_red.dds" : L"Assets\\char_red.dds", NULL, &m_charRedShaderResourceView, NULL));
+	}
+
+	if ((players.at(6)->isBot() && player_sprites_loaded[6]) || (!players.at(6)->isBot() && !player_sprites_loaded[6]))
+	{
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(6)->isBot() ? L"Assets\\bot_white.dds" : L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
+	}
+
+	if ((players.at(7)->isBot() && player_sprites_loaded[7]) || (!players.at(7)->isBot() && !player_sprites_loaded[7]))
+	{
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
+	}
+
+	player_sprites_loaded[0] = !players.at(0)->isBot();
+	player_sprites_loaded[1] = !players.at(1)->isBot();
+	player_sprites_loaded[2] = !players.at(2)->isBot();
+	player_sprites_loaded[3] = !players.at(3)->isBot();
+	player_sprites_loaded[4] = !players.at(4)->isBot();
+	player_sprites_loaded[5] = !players.at(5)->isBot();
+	player_sprites_loaded[6] = !players.at(6)->isBot();
+	player_sprites_loaded[7] = !players.at(7)->isBot();
 }
 
 void Direct3DRenderer::clearScreenWithColor(float r, float g, float b, float a)
