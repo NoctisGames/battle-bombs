@@ -28,6 +28,10 @@
 #include "BombButton.h"
 #include "PlayerAvatar.h"
 #include "Font.h"
+#include "OpenGLESRectangleRenderer.h"
+#include "MiniMapGridType.h"
+#include "Rectangle.h"
+#include "Vertices2D.h"
 
 #include <sstream>
 
@@ -52,6 +56,7 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     
     m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(4000, false));
     m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(1000, true));
+    m_rectangleRenderer = std::unique_ptr<OpenGLESRectangleRenderer>(new OpenGLESRectangleRenderer(true, true));
     
     // TODO, this gameTexture loading is temporary
     m_gameTexture = load_png_asset_into_texture("map_space.png");
@@ -341,6 +346,25 @@ void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     }
     
     m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
+    
+    for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
+    {
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            int miniMapGridType = interfaceOverlay.getMiniMapGridType(j, i);
+            if(miniMapGridType != MINI_MAP_FREE_SPACE)
+            {
+                static const float miniMapLeftX = 0.35820895522392f;
+                static const float miniMapBottomY = 10.464179105625f;
+                static const float miniMapGridWidth = 0.08955223880597f;
+                static const float miniMapGridHeight = 0.085074626875f;
+                
+                float leftX = miniMapLeftX + miniMapGridWidth * j;
+                float bottomY = miniMapBottomY + miniMapGridHeight * i;
+                m_rectangleRenderer->renderRectangle(leftX, bottomY, leftX + miniMapGridWidth, bottomY + miniMapGridHeight, interfaceOverlay.getColorForMiniMapGridType(miniMapGridType));
+            }
+        }
+    }
 }
 
 void OpenGLESRenderer::renderSpectatorInterface()

@@ -9,6 +9,8 @@
 #ifndef __bomberparty__InterfaceOverlay__
 #define __bomberparty__InterfaceOverlay__
 
+#include "GameConstants.h"
+#include "Color.h"
 #include <vector>
 #include <memory>
 
@@ -18,16 +20,22 @@ class ActiveButton;
 class BombButton;
 class PlayerDynamicGameObject;
 class BombGameObject;
+class Explosion;
 class GameListener;
 class PowerUpBarItem;
 class PlayerAvatar;
+class InsideBlock;
+class BreakableBlock;
+class Rectangle;
 
 class InterfaceOverlay
 {
 public:
 	InterfaceOverlay(GameListener *gameListener);
     
-    void update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
+    void initializeMiniMap(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType);
+    
+    void update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType);
     
     void handleTouchDownInput(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     
@@ -57,6 +65,10 @@ public:
     
     int getNumSecondsLeftSecondColumn();
     
+    int getMiniMapGridType(int x, int y);
+    
+    Color & getColorForMiniMapGridType(int miniMapGridType);
+    
 private:
     std::vector<std::unique_ptr<PlayerAvatar>> m_playerAvatars;
     std::unique_ptr<DPadControl> m_dPad;
@@ -64,6 +76,7 @@ private:
     std::unique_ptr<ActiveButton> m_activeButton;
     std::unique_ptr<BombButton> m_bombButton;
     GameListener *m_gameListener;
+    int m_miniMap[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS];
     float m_fPowerUpBarItemsStateTime;
     float m_fButtonsStateTime;
     float m_fCountdownStateTime;

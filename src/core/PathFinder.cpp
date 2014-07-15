@@ -453,16 +453,9 @@ void PathFinder::initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &
     
     if(mapType == MAP_MOUNTAINS)
     {
-        game_grid[5][GRID_CELL_NUM_ROWS - 1] = 9;
         game_grid[6][GRID_CELL_NUM_ROWS - 1] = 9;
         game_grid[7][GRID_CELL_NUM_ROWS - 1] = 9;
         game_grid[8][GRID_CELL_NUM_ROWS - 1] = 9;
-        game_grid[9][GRID_CELL_NUM_ROWS - 1] = 9;
-        game_grid[5][GRID_CELL_NUM_ROWS - 2] = 9;
-        game_grid[6][GRID_CELL_NUM_ROWS - 2] = 9;
-        game_grid[7][GRID_CELL_NUM_ROWS - 2] = 9;
-        game_grid[8][GRID_CELL_NUM_ROWS - 2] = 9;
-        game_grid[9][GRID_CELL_NUM_ROWS - 2] = 9;
     }
 }
 

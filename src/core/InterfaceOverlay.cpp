@@ -13,6 +13,8 @@
 #include "OverlapTester.h"
 #include "PlayerDynamicGameObject.h"
 #include "BombGameObject.h"
+#include "Explosion.h"
+#include "Fire.h"
 #include "GameListener.h"
 #include "GameEvent.h"
 #include "Vector2D.h"
@@ -20,6 +22,9 @@
 #include "Triangle.h"
 #include "PowerUpBarItem.h"
 #include "PlayerAvatar.h"
+#include "InsideBlock.h"
+#include "BreakableBlock.h"
+#include "MiniMapGridType.h"
 
 InterfaceOverlay::InterfaceOverlay(GameListener *gameListener)
 {
@@ -49,7 +54,61 @@ InterfaceOverlay::InterfaceOverlay(GameListener *gameListener)
     m_iNumSecondsLeft = 120;
 }
 
-void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+void InterfaceOverlay::initializeMiniMap(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType)
+{
+    for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
+    {
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            m_miniMap[j][i] = MINI_MAP_FREE_SPACE;
+        }
+    }
+    
+    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
+    {
+        int gridX = (*itr)->getGridX();
+        int gridY = (*itr)->getGridY();
+        m_miniMap[gridX][gridY] = MINI_MAP_INSIDE_BLOCK;
+    }
+    
+    for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
+    {
+        int gridX = (*itr)->getGridX();
+        int gridY = (*itr)->getGridY();
+        m_miniMap[gridX][gridY] = MINI_MAP_BREAKABLE_BLOCK;
+    }
+    
+    // For Map Borders
+    
+    m_miniMap[0][0] = MINI_MAP_MAP_BORDER;
+    m_miniMap[1][0] = MINI_MAP_MAP_BORDER;
+    m_miniMap[2][0] = MINI_MAP_MAP_BORDER;
+    m_miniMap[0][1] = MINI_MAP_MAP_BORDER;
+    m_miniMap[1][1] = MINI_MAP_MAP_BORDER;
+    m_miniMap[2][1] = MINI_MAP_MAP_BORDER;
+    m_miniMap[0][2] = MINI_MAP_MAP_BORDER;
+    m_miniMap[1][2] = MINI_MAP_MAP_BORDER;
+    m_miniMap[2][2] = MINI_MAP_MAP_BORDER;
+    
+    m_miniMap[NUM_GRID_CELLS_PER_ROW - 3][0] = MINI_MAP_MAP_BORDER;
+    m_miniMap[NUM_GRID_CELLS_PER_ROW - 2][0] = MINI_MAP_MAP_BORDER;
+    m_miniMap[NUM_GRID_CELLS_PER_ROW - 1][0] = MINI_MAP_MAP_BORDER;
+    m_miniMap[NUM_GRID_CELLS_PER_ROW - 3][1] = MINI_MAP_MAP_BORDER;
+    m_miniMap[NUM_GRID_CELLS_PER_ROW - 2][1] = MINI_MAP_MAP_BORDER;
+    m_miniMap[NUM_GRID_CELLS_PER_ROW - 1][1] = MINI_MAP_MAP_BORDER;
+    m_miniMap[NUM_GRID_CELLS_PER_ROW - 3][2] = MINI_MAP_MAP_BORDER;
+    m_miniMap[NUM_GRID_CELLS_PER_ROW - 2][2] = MINI_MAP_MAP_BORDER;
+    m_miniMap[NUM_GRID_CELLS_PER_ROW - 1][2] = MINI_MAP_MAP_BORDER;
+    
+    if(mapType == MAP_MOUNTAINS)
+    {
+        m_miniMap[6][GRID_CELL_NUM_ROWS - 1] = MINI_MAP_MAP_BORDER;
+        m_miniMap[7][GRID_CELL_NUM_ROWS - 1] = MINI_MAP_MAP_BORDER;
+        m_miniMap[8][GRID_CELL_NUM_ROWS - 1] = MINI_MAP_MAP_BORDER;
+    }
+}
+
+void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType)
 {
     m_fPowerUpBarItemsStateTime += deltaTime;
     m_fButtonsStateTime += deltaTime;
@@ -143,6 +202,35 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
         m_bombButton->setIsPressed(false);
         m_bombButton->setButtonState(player.isAbleToDropAdditionalBomb(players, bombs) ? ENABLED : DISABLED);
     }
+    
+    initializeMiniMap(insideBlocks, breakableBlocks, mapType);
+    
+    for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
+    {
+        for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
+        {
+            int x = (*itr2)->getGridX();
+            int y = (*itr2)->getGridY();
+            if(x >= 0 && x <= NUM_GRID_CELLS_PER_ROW && y >= 0 && y <= GRID_CELL_NUM_ROWS)
+            {
+                m_miniMap[x][y] = MINI_MAP_FIRE;
+            }
+        }
+    }
+    
+    for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+    {
+        m_miniMap[(*itr)->getGridX()][(*itr)->getGridY()] = MINI_MAP_BOMB;
+    }
+    
+    m_miniMap[players.at(0)->getGridX()][players.at(0)->getGridY()] = players.at(0)->getPlayerState() == ALIVE ? MINI_MAP_PLAYER_ONE : m_miniMap[players.at(0)->getGridX()][players.at(0)->getGridY()];
+    m_miniMap[players.at(1)->getGridX()][players.at(1)->getGridY()] = players.at(1)->getPlayerState() == ALIVE ? MINI_MAP_PLAYER_TWO : m_miniMap[players.at(1)->getGridX()][players.at(1)->getGridY()];
+    m_miniMap[players.at(2)->getGridX()][players.at(2)->getGridY()] = players.at(2)->getPlayerState() == ALIVE ? MINI_MAP_PLAYER_THREE : m_miniMap[players.at(2)->getGridX()][players.at(2)->getGridY()];
+    m_miniMap[players.at(3)->getGridX()][players.at(3)->getGridY()] = players.at(3)->getPlayerState() == ALIVE ? MINI_MAP_PLAYER_FOUR : m_miniMap[players.at(3)->getGridX()][players.at(3)->getGridY()];
+    m_miniMap[players.at(4)->getGridX()][players.at(4)->getGridY()] = players.at(4)->getPlayerState() == ALIVE ? MINI_MAP_PLAYER_FIVE : m_miniMap[players.at(4)->getGridX()][players.at(4)->getGridY()];
+    m_miniMap[players.at(5)->getGridX()][players.at(5)->getGridY()] = players.at(5)->getPlayerState() == ALIVE ? MINI_MAP_PLAYER_SIX : m_miniMap[players.at(5)->getGridX()][players.at(5)->getGridY()];
+    m_miniMap[players.at(6)->getGridX()][players.at(6)->getGridY()] = players.at(6)->getPlayerState() == ALIVE ? MINI_MAP_PLAYER_SEVEN : m_miniMap[players.at(6)->getGridX()][players.at(6)->getGridY()];
+    m_miniMap[players.at(7)->getGridX()][players.at(7)->getGridY()] = players.at(7)->getPlayerState() == ALIVE ? MINI_MAP_PLAYER_EIGHT : m_miniMap[players.at(7)->getGridX()][players.at(7)->getGridY()];
 }
 
 void InterfaceOverlay::handleTouchDownInput(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
@@ -290,4 +378,59 @@ int InterfaceOverlay::getNumSecondsLeftSecondColumn()
     }
     
     return numSecondsLeft;
+}
+
+int InterfaceOverlay::getMiniMapGridType(int x, int y)
+{
+    return m_miniMap[x][y];
+}
+
+Color & InterfaceOverlay::getColorForMiniMapGridType(int miniMapGridType)
+{
+    static Color fireColor = Color { 0.85490196078431f, 0.62352941176471f, 0.08627450980392f, 1 };
+    static Color bombColor = Color { 0.61960784313725f, 0.08627450980392f, 0.10588235294118f, 1 };
+    
+    static Color player1Color = Color { 0.22745098039216f, 0.22745098039216f, 0.22745098039216f, 1 };
+    static Color player2Color = Color { 0.4f, 0.4f, 0.8f, 1 };
+    static Color player3Color = Color { 0, 0.60392156862745f, 0.05098039215686f, 1 };
+    static Color player4Color = Color { 1, 0.35686274509804f, 0.08235294117647f, 1 };
+    static Color player5Color = Color { 0.98823529411765f, 0.21176470588235f, 0.52941176470588f, 1 };
+    static Color player6Color = Color { 1, 0, 0, 1 };
+    static Color player7Color = Color { 0.68235294117647f, 0.68235294117647f, 0.68235294117647f, 1 };
+    static Color player8Color = Color { 0.97647058823529f, 0.74509803921569f, 0.10588235294118f, 1 };
+    
+    static Color insideBlockColor = Color { 0.4f, 0.4f, 0.4f, 1 };
+    static Color breakableBlockColor = Color { 0.6f, 0.6f, 0.6f, 1 };
+    static Color mapBorderColor = Color { 0.4f, 0.4f, 0.4f, 1 };
+    
+    switch (miniMapGridType)
+    {
+        case MINI_MAP_FIRE:
+            return fireColor;
+        case MINI_MAP_BOMB:
+            return bombColor;
+        case MINI_MAP_PLAYER_ONE:
+            return player1Color;
+        case MINI_MAP_PLAYER_TWO:
+            return player2Color;
+        case MINI_MAP_PLAYER_THREE:
+            return player3Color;
+        case MINI_MAP_PLAYER_FOUR:
+            return player4Color;
+        case MINI_MAP_PLAYER_FIVE:
+            return player5Color;
+        case MINI_MAP_PLAYER_SIX:
+            return player6Color;
+        case MINI_MAP_PLAYER_SEVEN:
+            return player7Color;
+        case MINI_MAP_PLAYER_EIGHT:
+            return player8Color;
+        case MINI_MAP_INSIDE_BLOCK:
+            return insideBlockColor;
+        case MINI_MAP_BREAKABLE_BLOCK:
+            return breakableBlockColor;
+        case MINI_MAP_MAP_BORDER:
+        default:
+            return mapBorderColor;
+    }
 }

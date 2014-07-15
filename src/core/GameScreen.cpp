@@ -247,7 +247,7 @@ void GameScreen::updateRunning(float deltaTime)
     
     m_sEventIds.clear();
     
-    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs);
+    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType);
     
     updateCommon(deltaTime);
 }
@@ -426,6 +426,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         
         PathFinder::getInstance().resetGameGrid();
         PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks, m_iMapType);
+        m_interfaceOverlay->initializeMiniMap(m_insideBlocks, m_breakableBlocks, m_iMapType);
         
         Assets::getInstance()->setMusicId(mapType + 2);
         

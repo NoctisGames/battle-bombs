@@ -93,12 +93,12 @@ void Vertices2D::unbind()
 
 void Vertices2D::drawPrimitiveType(GLenum mode, int offset, GLshort *indices, int numVertices)
 {
-    if (indices != nullptr)
+    if (indices == nullptr)
     {
-        glDrawElements(mode, numVertices, GL_UNSIGNED_SHORT, indices);
+        glDrawArrays(mode, offset, numVertices);
     }
     else
     {
-        glDrawArrays(mode, offset, numVertices);
+        glDrawElements(mode, numVertices, GL_UNSIGNED_SHORT, indices);
     }
 }
