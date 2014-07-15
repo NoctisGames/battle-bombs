@@ -77,6 +77,7 @@ public:
     
 protected:
     std::unique_ptr<Font> m_font;
+    bool player_sprites_loaded[8];
     float m_fScrollY;
     
     virtual void renderGameObject(GameObject &go, TextureRegion tr) = 0;

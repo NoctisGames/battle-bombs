@@ -59,13 +59,22 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     m_interfaceTexture = load_png_asset_into_texture("interface.png");
     
     m_charBlackTexture = load_png_asset_into_texture("char_black.png");
-    m_charBlueTexture = load_png_asset_into_texture("char_blue.png");
-    m_charGreenTexture = load_png_asset_into_texture("char_green.png");
-    m_charOrangeTexture = load_png_asset_into_texture("char_orange.png");
-    m_charPinkTexture = load_png_asset_into_texture("char_pink.png");
-    m_charRedTexture = load_png_asset_into_texture("char_red.png");
-    m_charWhiteTexture = load_png_asset_into_texture("char_white.png");
-    m_charYellowTexture = load_png_asset_into_texture("char_yellow.png");
+    m_charBlueTexture = load_png_asset_into_texture("bot_blue.png");
+    m_charGreenTexture = load_png_asset_into_texture("bot_green.png");
+    m_charOrangeTexture = load_png_asset_into_texture("bot_orange.png");
+    m_charPinkTexture = load_png_asset_into_texture("bot_pink.png");
+    m_charRedTexture = load_png_asset_into_texture("bot_red.png");
+    m_charWhiteTexture = load_png_asset_into_texture("bot_white.png");
+    m_charYellowTexture = load_png_asset_into_texture("bot_yellow.png");
+    
+    player_sprites_loaded[0] = true;
+    player_sprites_loaded[1] = false;
+    player_sprites_loaded[2] = false;
+    player_sprites_loaded[3] = false;
+    player_sprites_loaded[4] = false;
+    player_sprites_loaded[5] = false;
+    player_sprites_loaded[6] = false;
+    player_sprites_loaded[7] = false;
 }
 
 OpenGLESRenderer::~OpenGLESRenderer()
@@ -94,25 +103,62 @@ void OpenGLESRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
             break;
     }
     
-    // TODO, optimize this so that only textures that NEED to change are deleted
+    if((players.at(0)->isBot() && player_sprites_loaded[0]) || (!players.at(0)->isBot() && !player_sprites_loaded[0]))
+    {
+        glDeleteTextures(1, &m_charBlackTexture);
+        m_charBlackTexture = load_png_asset_into_texture(players.at(0)->isBot() ? "bot_black.png" : "char_black.png");
+    }
     
-    glDeleteTextures(1, &m_charBlackTexture);
-    glDeleteTextures(1, &m_charBlueTexture);
-    glDeleteTextures(1, &m_charGreenTexture);
-    glDeleteTextures(1, &m_charOrangeTexture);
-    glDeleteTextures(1, &m_charPinkTexture);
-    glDeleteTextures(1, &m_charRedTexture);
-    glDeleteTextures(1, &m_charWhiteTexture);
-    glDeleteTextures(1, &m_charYellowTexture);
+    if((players.at(1)->isBot() && player_sprites_loaded[1]) || (!players.at(1)->isBot() && !player_sprites_loaded[1]))
+    {
+        glDeleteTextures(1, &m_charBlueTexture);
+        m_charBlueTexture = load_png_asset_into_texture(players.at(1)->isBot() ? "bot_blue.png" : "char_blue.png");
+    }
     
-    m_charBlackTexture = load_png_asset_into_texture(players.at(0)->isBot() ? "bot_black.png" : "char_black.png");
-    m_charBlueTexture = load_png_asset_into_texture(players.at(1)->isBot() ? "bot_blue.png" : "char_blue.png");
-    m_charGreenTexture = load_png_asset_into_texture(players.at(2)->isBot() ? "bot_green.png" : "char_green.png");
-    m_charOrangeTexture = load_png_asset_into_texture(players.at(3)->isBot() ? "bot_orange.png" : "char_orange.png");
-    m_charPinkTexture = load_png_asset_into_texture(players.at(4)->isBot() ? "bot_pink.png" : "char_pink.png");
-    m_charRedTexture = load_png_asset_into_texture(players.at(5)->isBot() ? "bot_red.png" : "char_red.png");
-    m_charWhiteTexture = load_png_asset_into_texture(players.at(6)->isBot() ? "bot_white.png" : "char_white.png");
-    m_charYellowTexture = load_png_asset_into_texture(players.at(7)->isBot() ? "bot_yellow.png" : "char_yellow.png");
+    if((players.at(2)->isBot() && player_sprites_loaded[2]) || (!players.at(2)->isBot() && !player_sprites_loaded[2]))
+    {
+        glDeleteTextures(1, &m_charGreenTexture);
+        m_charGreenTexture = load_png_asset_into_texture(players.at(2)->isBot() ? "bot_green.png" : "char_green.png");
+    }
+    
+    if((players.at(3)->isBot() && player_sprites_loaded[3]) || (!players.at(3)->isBot() && !player_sprites_loaded[3]))
+    {
+        glDeleteTextures(1, &m_charOrangeTexture);
+        m_charOrangeTexture = load_png_asset_into_texture(players.at(3)->isBot() ? "bot_orange.png" : "char_orange.png");
+    }
+    
+    if((players.at(4)->isBot() && player_sprites_loaded[4]) || (!players.at(4)->isBot() && !player_sprites_loaded[4]))
+    {
+        glDeleteTextures(1, &m_charPinkTexture);
+        m_charPinkTexture = load_png_asset_into_texture(players.at(4)->isBot() ? "bot_pink.png" : "char_pink.png");
+    }
+    
+    if((players.at(5)->isBot() && player_sprites_loaded[5]) || (!players.at(5)->isBot() && !player_sprites_loaded[5]))
+    {
+        glDeleteTextures(1, &m_charRedTexture);
+        m_charRedTexture = load_png_asset_into_texture(players.at(5)->isBot() ? "bot_red.png" : "char_red.png");
+    }
+    
+    if((players.at(6)->isBot() && player_sprites_loaded[6]) || (!players.at(6)->isBot() && !player_sprites_loaded[6]))
+    {
+        glDeleteTextures(1, &m_charWhiteTexture);
+        m_charWhiteTexture = load_png_asset_into_texture(players.at(6)->isBot() ? "bot_white.png" : "char_white.png");
+    }
+    
+    if((players.at(7)->isBot() && player_sprites_loaded[7]) || (!players.at(7)->isBot() && !player_sprites_loaded[7]))
+    {
+        glDeleteTextures(1, &m_charYellowTexture);
+        m_charYellowTexture = load_png_asset_into_texture(players.at(7)->isBot() ? "bot_yellow.png" : "char_yellow.png");
+    }
+    
+    player_sprites_loaded[0] = !players.at(0)->isBot();
+    player_sprites_loaded[1] = !players.at(1)->isBot();
+    player_sprites_loaded[2] = !players.at(2)->isBot();
+    player_sprites_loaded[3] = !players.at(3)->isBot();
+    player_sprites_loaded[4] = !players.at(4)->isBot();
+    player_sprites_loaded[5] = !players.at(5)->isBot();
+    player_sprites_loaded[6] = !players.at(6)->isBot();
+    player_sprites_loaded[7] = !players.at(7)->isBot();
 }
 
 void OpenGLESRenderer::clearScreenWithColor(float r, float g, float b, float a)
