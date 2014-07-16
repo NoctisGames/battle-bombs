@@ -153,7 +153,6 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
     {
         m_activeButton->setIsPressed(false);
         m_activeButton->setPowerUpType(player.getActivePowerUp());
-        
         m_activeButton->setButtonState(DISABLED);
         
         if(m_activeButton->getPowerUpType() == PUSH)
@@ -417,7 +416,7 @@ Color & InterfaceOverlay::getColorForMiniMapGridType(int miniMapGridType)
 
 void InterfaceOverlay::updateMiniMap(int x, int y, int miniMapGridType)
 {
-    if(x >= 0 && x <= NUM_GRID_CELLS_PER_ROW && y >= 0 && y <= GRID_CELL_NUM_ROWS)
+    if(x >= 0 && x < NUM_GRID_CELLS_PER_ROW && y >= 0 && y < GRID_CELL_NUM_ROWS)
     {
         m_miniMap[x][y] = miniMapGridType;
     }
