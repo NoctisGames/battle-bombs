@@ -394,21 +394,21 @@ int InterfaceOverlay::getMiniMapGridType(int x, int y)
 
 Color & InterfaceOverlay::getColorForMiniMapGridType(int miniMapGridType)
 {
-    static Color fireColor = Color { 0.85490196078431f, 0.62352941176471f, 0.08627450980392f, 1 };
-    static Color bombColor = Color { 0.61960784313725f, 0.08627450980392f, 0.10588235294118f, 1 };
+    static Color fireColor = Color(0.85490196078431f, 0.62352941176471f, 0.08627450980392f, 1);
+    static Color bombColor = Color(0.61960784313725f, 0.08627450980392f, 0.10588235294118f, 1);
     
-    static Color player1Color = Color { 0, 0, 0, 1 };
-    static Color player2Color = Color { 0.4f, 0.4f, 0.8f, 1 };
-    static Color player3Color = Color { 0, 0.60392156862745f, 0.05098039215686f, 1 };
-    static Color player4Color = Color { 1, 0.35686274509804f, 0.08235294117647f, 1 };
-    static Color player5Color = Color { 0.98823529411765f, 0.21176470588235f, 0.52941176470588f, 1 };
-    static Color player6Color = Color { 1, 0, 0, 1 };
-    static Color player7Color = Color { 1, 1, 1, 1 };
-    static Color player8Color = Color { 0.97647058823529f, 0.74509803921569f, 0.10588235294118f, 1 };
+    static Color player1Color = Color(0, 0, 0, 1);
+    static Color player2Color = Color(0.4f, 0.4f, 0.8f, 1);
+    static Color player3Color = Color(0, 0.60392156862745f, 0.05098039215686f, 1);
+    static Color player4Color = Color(1, 0.35686274509804f, 0.08235294117647f, 1);
+    static Color player5Color = Color(0.98823529411765f, 0.21176470588235f, 0.52941176470588f, 1);
+    static Color player6Color = Color(1, 0, 0, 1);
+    static Color player7Color = Color(1, 1, 1, 1);
+    static Color player8Color = Color(0.97647058823529f, 0.74509803921569f, 0.10588235294118f, 1);
     
-    static Color insideBlockColor = Color { 0.4f, 0.4f, 0.4f, 1 };
-    static Color breakableBlockColor = Color { 0.6f, 0.6f, 0.6f, 1 };
-    static Color mapBorderColor = Color { 0.4f, 0.4f, 0.4f, 1 };
+    static Color insideBlockColor = Color(0.4f, 0.4f, 0.4f, 1);
+    static Color breakableBlockColor = Color(0.6f, 0.6f, 0.6f, 1);
+    static Color mapBorderColor = Color(0.4f, 0.4f, 0.4f, 1);
     
     switch (miniMapGridType)
     {
