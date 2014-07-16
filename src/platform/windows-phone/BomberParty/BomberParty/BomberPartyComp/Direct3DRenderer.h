@@ -19,6 +19,7 @@
 #include "Color.h"
 
 class Line;
+class Rectangle;
 
 class Direct3DRenderer : public Renderer
 {
