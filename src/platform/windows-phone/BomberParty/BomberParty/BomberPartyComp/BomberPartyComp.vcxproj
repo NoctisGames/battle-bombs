@@ -192,6 +192,7 @@
     <ClInclude Include="..\..\..\..\..\core\MapBorder.h" />
     <ClInclude Include="..\..\..\..\..\core\MapBorderType.h" />
     <ClInclude Include="..\..\..\..\..\core\MapSearchNode.h" />
+    <ClInclude Include="..\..\..\..\..\core\MiniMapGridType.h" />
     <ClInclude Include="..\..\..\..\..\core\Node.h" />
     <ClInclude Include="..\..\..\..\..\core\OverlapTester.h" />
     <ClInclude Include="..\..\..\..\..\core\PathFinder.h" />

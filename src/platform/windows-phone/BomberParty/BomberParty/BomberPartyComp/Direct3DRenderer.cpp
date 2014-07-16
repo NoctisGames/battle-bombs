@@ -33,6 +33,7 @@
 #include "BombButton.h"
 #include "Font.h"
 #include "PlayerAvatar.h"
+#include "MiniMapGridType.h"
 
 #include <string>
 
@@ -364,6 +365,25 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 	}
 
 	m_spriteBatch->End();
+
+	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
+	{
+		for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+		{
+			int miniMapGridType = interfaceOverlay.getMiniMapGridType(j, i);
+			if (miniMapGridType != MINI_MAP_FREE_SPACE)
+			{
+				static const float miniMapLeftX = 0.35820895522392f;
+				static const float miniMapBottomY = 10.464179105625f;
+				static const float miniMapGridWidth = 0.08955223880597f;
+				static const float miniMapGridHeight = 0.085074626875f;
+
+				float leftX = miniMapLeftX + miniMapGridWidth * j;
+				float bottomY = miniMapBottomY + miniMapGridHeight * i;
+				//m_rectangleRenderer->renderRectangle(leftX, bottomY, leftX + miniMapGridWidth, bottomY + miniMapGridHeight, interfaceOverlay.getColorForMiniMapGridType(miniMapGridType));
+			}
+		}
+	}
 }
 
 void Direct3DRenderer::renderSpectatorInterface()

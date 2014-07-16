@@ -9,11 +9,17 @@
 #ifndef __bomber_party__Color__
 #define __bomber_party__Color__
 
-typedef struct {
+struct Color
+{
     float red;
     float green;
     float blue;
     float alpha;
-} Color;
+
+	Color(float redIn, float greenIn, float blueIn, float alphaIn) : red(redIn), green(greenIn), blue(blueIn), alpha(alphaIn)
+	{
+		// Empty
+	}
+};
 
 #endif /* defined(__bomber_party__Color__) */
