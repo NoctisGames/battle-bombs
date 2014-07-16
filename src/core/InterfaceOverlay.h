@@ -11,6 +11,8 @@
 
 #include "GameConstants.h"
 #include "Color.h"
+#include "GameState.h"
+#include "SpectatorControlState.h"
 #include <vector>
 #include <memory>
 
@@ -27,6 +29,7 @@ class PlayerAvatar;
 class InsideBlock;
 class BreakableBlock;
 class Rectangle;
+class SpectatorControls;
 
 class InterfaceOverlay
 {
@@ -35,13 +38,19 @@ public:
     
     void initializeMiniMap(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType);
     
-    void update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType);
+    void update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType, Game_State gameState);
     
-    void handleTouchDownInput(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
+    void handleTouchDownInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     
-    void handleTouchDraggedInput(Vector2D &touchPoint, PlayerDynamicGameObject &player);
+    void handleTouchDraggedInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player);
     
-    void handleTouchUpInput(Vector2D &touchPoint, PlayerDynamicGameObject &player);
+    void handleTouchUpInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player);
+    
+    bool handleTouchDownInputSpectating(Vector2D &touchPoint);
+    
+    bool handleTouchDraggedInputSpectating(Vector2D &touchPoint);
+    
+    Spectator_Control_State handleTouchUpInputSpectating(Vector2D &touchPoint);
     
     std::vector<std::unique_ptr<PlayerAvatar>> & getPlayerAvatars();
     
@@ -52,6 +61,8 @@ public:
     ActiveButton & getActiveButton();
     
     BombButton & getBombButton();
+    
+    SpectatorControls & getSpectatorControls();
     
     float getPowerUpBarItemsStateTime();
     
@@ -75,6 +86,7 @@ private:
     std::vector<std::unique_ptr<PowerUpBarItem>> m_powerUpBarItems;
     std::unique_ptr<ActiveButton> m_activeButton;
     std::unique_ptr<BombButton> m_bombButton;
+    std::unique_ptr<SpectatorControls> m_spectatorControls;
     GameListener *m_gameListener;
     int m_miniMap[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS];
     float m_fPowerUpBarItemsStateTime;

@@ -24,6 +24,7 @@
 #include "ActiveButton.h"
 #include "BombButton.h"
 #include "PlayerAvatar.h"
+#include "SpectatorControls.h"
 #include <list>
 
 Assets * Assets::getInstance()
@@ -665,6 +666,24 @@ TextureRegion Assets::getBombTextureRegion(BombGameObject &bomb)
     else
     {
         return bombTextureRegions.at(getKeyFrameNumber(bomb.getStateTime(), cycleTime, bombFrames));
+    }
+}
+
+TextureRegion Assets::getSpectatorControlsTextureRegion(SpectatorControls &spectatorControls)
+{
+    static TextureRegion TR_LEFT_ARROW_HIGHLIGHTED = TextureRegion(SPECTATOR_CONTROLS_LEFT_ARROW_HIGHLIGHTED_TEXTURE_REGION_X, SPECTATOR_CONTROLS_LEFT_ARROW_HIGHLIGHTED_TEXTURE_REGION_Y, SPECTATOR_CONTROLS_TEXTURE_REGION_WIDTH, SPECTATOR_CONTROLS_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion TR_RIGHT_ARROW_HIGHLIGHTED = TextureRegion(SPECTATOR_CONTROLS_RIGHT_ARROW_HIGHLIGHTED_TEXTURE_REGION_X, SPECTATOR_CONTROLS_RIGHT_ARROW_HIGHLIGHTED_TEXTURE_REGION_Y, SPECTATOR_CONTROLS_TEXTURE_REGION_WIDTH, SPECTATOR_CONTROLS_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion TR_NOTHING_HIGHLIGHTED = TextureRegion(SPECTATOR_CONTROLS_NOTHING_HIGHLIGHTED_TEXTURE_REGION_X, SPECTATOR_CONTROLS_NOTHING_HIGHLIGHTED_TEXTURE_REGION_Y, SPECTATOR_CONTROLS_TEXTURE_REGION_WIDTH, SPECTATOR_CONTROLS_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    switch(spectatorControls.getState())
+    {
+        case LEFT_ARROW_HIGHLIGHTED:
+            return TR_LEFT_ARROW_HIGHLIGHTED;
+        case RIGHT_ARROW_HIGHLIGHTED:
+            return TR_RIGHT_ARROW_HIGHLIGHTED;
+        case NOTHING_HIGHLIGHTED:
+        default:
+            return TR_NOTHING_HIGHLIGHTED;
     }
 }
 

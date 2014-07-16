@@ -90,6 +90,8 @@ private:
     
     void spectateNextLivePlayer();
     
+    void spectatePreviousLivePlayer();
+    
     // Server Stuff
     
     void processServerMessages();

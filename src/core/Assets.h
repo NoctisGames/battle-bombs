@@ -27,6 +27,7 @@ class DPadControl;
 class PowerUpBarItem;
 class ActiveButton;
 class BombButton;
+class SpectatorControls;
 
 class Assets
 {
@@ -66,6 +67,8 @@ public:
     static TextureRegion getActiveButtonTextureRegion(ActiveButton &activeButton, float buttonsStateTime);
     
     static TextureRegion getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime);
+    
+    static TextureRegion getSpectatorControlsTextureRegion(SpectatorControls &spectatorControls);
     
     void setMusicId(short musicId);
     

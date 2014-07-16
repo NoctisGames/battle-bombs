@@ -32,6 +32,7 @@
 #include "MiniMapGridType.h"
 #include "Rectangle.h"
 #include "Vertices2D.h"
+#include "SpectatorControls.h"
 
 #include <sstream>
 
@@ -326,8 +327,13 @@ void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     std::string timeRemaining = ss.str();
     static Color interfaceColor = { 1, 1, 1, 1 };
     
+    static const float timerX = 0.3554104477903f;
+    static const float timerY = 13.0589552253125f;
+    static const float timerWidth = 0.40298507462688f;
+    static const float timerHeight = 0.425373134375f;
+    
     m_spriteBatcherWithColor->beginBatch();
-    m_font->renderText(*m_spriteBatcherWithColor, timeRemaining, 0.3554104477903f, 13.0589552253125f, 0.40298507462688f, 0.425373134375f, interfaceColor);
+    m_font->renderText(*m_spriteBatcherWithColor, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
     
     for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
     {
@@ -364,11 +370,45 @@ void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     }
 }
 
-void OpenGLESRenderer::renderSpectatorInterface()
+void OpenGLESRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverlay)
 {
     m_spriteBatcher->beginBatch();
     m_spriteBatcher->drawSprite(INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_X, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_Y, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_WIDTH, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_HEIGHT, 0, Assets::getSpectatorInterfaceOverlayTextureRegion());
+    renderGameObject(interfaceOverlay.getSpectatorControls(), Assets::getSpectatorControlsTextureRegion(interfaceOverlay.getSpectatorControls()));
     m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
+    
+    std::stringstream ss;
+    ss << interfaceOverlay.getNumMinutesLeft() << ":" << interfaceOverlay.getNumSecondsLeftFirstColumn() << interfaceOverlay.getNumSecondsLeftSecondColumn();
+    std::string timeRemaining = ss.str();
+    static Color interfaceColor = { 1, 1, 1, 1 };
+    
+    static const float timerX = 3.43731343283576f;
+    static const float timerY = 0.71044776125f;
+    static const float timerWidth = 0.40298507462688f;
+    static const float timerHeight = 0.425373134375f;
+    
+    m_spriteBatcherWithColor->beginBatch();
+    m_font->renderText(*m_spriteBatcherWithColor, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
+    m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
+    
+    for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
+    {
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            int miniMapGridType = interfaceOverlay.getMiniMapGridType(j, i);
+            if(miniMapGridType != MINI_MAP_FREE_SPACE)
+            {
+                static const float miniMapLeftX = 0.7611940298508f;
+                static const float miniMapBottomY = 0.085074626875f;
+                static const float miniMapGridWidth = 0.08955223880597f;
+                static const float miniMapGridHeight = 0.085074626875f;
+                
+                float leftX = miniMapLeftX + miniMapGridWidth * j;
+                float bottomY = miniMapBottomY + miniMapGridHeight * i;
+                m_rectangleRenderer->renderRectangle(leftX, bottomY, leftX + miniMapGridWidth, bottomY + miniMapGridHeight, interfaceOverlay.getColorForMiniMapGridType(miniMapGridType));
+            }
+        }
+    }
 }
 
 void OpenGLESRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])

@@ -34,6 +34,7 @@
 #include "PowerUpBarItem.h"
 #include "PlayerAvatar.h"
 #include "Font.h"
+#include "SpectatorControls.h"
 
 GameScreen::GameScreen(const char *username) : GameSession()
 {
@@ -155,7 +156,7 @@ void GameScreen::present()
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
-            m_renderer->renderSpectatorInterface();
+            m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
             
             m_renderer->endFrame();
             break;
@@ -247,7 +248,7 @@ void GameScreen::updateRunning(float deltaTime)
     
     m_sEventIds.clear();
     
-    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType);
+    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_gameState);
     
     updateCommon(deltaTime);
 }
@@ -261,13 +262,13 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 		switch (itr->getTouchType())
 		{
             case DOWN:
-                m_interfaceOverlay->handleTouchDownInput(*m_touchPoint, *m_player, m_players, m_bombs);
+                m_interfaceOverlay->handleTouchDownInputRunning(*m_touchPoint, *m_player, m_players, m_bombs);
                 continue;
             case DRAGGED:
-                m_interfaceOverlay->handleTouchDraggedInput(*m_touchPoint, *m_player);
+                m_interfaceOverlay->handleTouchDraggedInputRunning(*m_touchPoint, *m_player);
                 continue;
             case UP:
-                m_interfaceOverlay->handleTouchUpInput(*m_touchPoint, *m_player);
+                m_interfaceOverlay->handleTouchUpInputRunning(*m_touchPoint, *m_player);
                 return;
 		}
 	}
@@ -289,6 +290,8 @@ void GameScreen::updateSpectating(float deltaTime)
     
     m_sEventIds.clear();
     
+    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_gameState);
+    
     updateCommon(deltaTime);
 }
 
@@ -301,11 +304,33 @@ void GameScreen::updateInputSpectating(std::vector<TouchEvent> &touchEvents)
 		switch (itr->getTouchType())
 		{
             case DOWN:
+                if(m_interfaceOverlay->handleTouchDownInputSpectating(*m_touchPoint))
+                {
+                    continue;
+                }
+                
+                // Basically, if the user isn't touching the arrows,
+                // assume they want to pan the game world using their finger
                 continue;
             case DRAGGED:
+                if(m_interfaceOverlay->handleTouchDraggedInputSpectating(*m_touchPoint))
+                {
+                    continue;
+                }
+                
+                // Basically, if the user isn't touching the arrows,
+                // assume they want to pan the game world using their finger
                 continue;
             case UP:
-                spectateNextLivePlayer();
+                Spectator_Control_State spectatorControlState = m_interfaceOverlay->handleTouchUpInputSpectating(*m_touchPoint);
+                if(spectatorControlState == LEFT_ARROW_HIGHLIGHTED)
+                {
+                    spectatePreviousLivePlayer();
+                }
+                else if(spectatorControlState == RIGHT_ARROW_HIGHLIGHTED)
+                {
+                    spectateNextLivePlayer();
+                }
                 return;
 		}
 	}
@@ -314,16 +339,43 @@ void GameScreen::updateInputSpectating(std::vector<TouchEvent> &touchEvents)
 void GameScreen::spectateNextLivePlayer()
 {
     short playerIndex = m_sPlayerIndex >= 0 ? m_sPlayerIndex : 0;
-    playerIndex++;
-    if (playerIndex < m_players.size())
+    for(int i = 0; i < m_players.size(); i++)
     {
-        while (playerIndex < m_players.size() && m_players.at(playerIndex)->getPlayerState() != ALIVE)
+        playerIndex++;
+        if(playerIndex == 8)
         {
-            playerIndex++;
+            playerIndex = 0;
+        }
+        
+        if(m_players.at(playerIndex)->getPlayerState() == ALIVE)
+        {
+            break;
         }
     }
     
-    m_sPlayerIndex = playerIndex >= m_players.size() || playerIndex < 0 ? 0 : playerIndex;
+    m_sPlayerIndex = playerIndex;
+    
+    m_player = m_players.at(m_sPlayerIndex).get();
+}
+
+void GameScreen::spectatePreviousLivePlayer()
+{
+    short playerIndex = m_sPlayerIndex >= 0 ? m_sPlayerIndex : 0;
+    for(int i = 0; i < m_players.size(); i++)
+    {
+        playerIndex--;
+        if(playerIndex <= 0)
+        {
+            playerIndex = m_players.size() - 1;
+        }
+        
+        if(m_players.at(playerIndex)->getPlayerState() == ALIVE)
+        {
+            break;
+        }
+    }
+    
+    m_sPlayerIndex = playerIndex;
     
     m_player = m_players.at(m_sPlayerIndex).get();
 }

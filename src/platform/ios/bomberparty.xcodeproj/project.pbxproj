@@ -123,6 +123,7 @@
 		BBDE14B9195A2D7400A91FD7 /* char_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14B2195A2D7400A91FD7 /* char_yellow.png */; };
 		BBDF1A6C190F256300ECDBE2 /* BombGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBDF1A6A190F256300ECDBE2 /* BombGameObject.cpp */; };
 		BBE6F98A19112D3E00062B8E /* Explosion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBE6F98819112D3E00062B8E /* Explosion.cpp */; };
+		BBF5DE2519770CE500759BB1 /* SpectatorControls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF5DE2319770CE500759BB1 /* SpectatorControls.cpp */; };
 		BBF7CC5E18CCA2B700B7CD15 /* DPadControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF7CC5C18CCA2B700B7CD15 /* DPadControl.cpp */; };
 /* End PBXBuildFile section */
 
@@ -336,6 +337,9 @@
 		BBE6F98919112D3E00062B8E /* Explosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Explosion.h; sourceTree = "<group>"; };
 		BBE6F98B1911301100062B8E /* FireType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FireType.h; sourceTree = "<group>"; };
 		BBED327B1966271D0023B758 /* Node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
+		BBF5DE2319770CE500759BB1 /* SpectatorControls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpectatorControls.cpp; sourceTree = "<group>"; };
+		BBF5DE2419770CE500759BB1 /* SpectatorControls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpectatorControls.h; sourceTree = "<group>"; };
+		BBF5DE2619770DCD00759BB1 /* SpectatorControlState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpectatorControlState.h; sourceTree = "<group>"; };
 		BBF67CBF195C7AAB00587AB6 /* PlayerActionState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerActionState.h; sourceTree = "<group>"; };
 		BBF683EC1951509900EBD23E /* BreakableBlockState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BreakableBlockState.h; sourceTree = "<group>"; };
 		BBF7CC5C18CCA2B700B7CD15 /* DPadControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DPadControl.cpp; sourceTree = "<group>"; };
@@ -460,6 +464,9 @@
 				BB96EEC418B99A6900F7C356 /* Renderer.cpp */,
 				BB96EEC518B99A6900F7C356 /* Renderer.h */,
 				BB9948E31936736600A8E599 /* ResourceConstants.h */,
+				BBF5DE2319770CE500759BB1 /* SpectatorControls.cpp */,
+				BBF5DE2419770CE500759BB1 /* SpectatorControls.h */,
+				BBF5DE2619770DCD00759BB1 /* SpectatorControlState.h */,
 				BB0CC4BB1964FB6F00F770C4 /* stlastar.h */,
 				BB96EEC618B99A6900F7C356 /* TextureRegion.cpp */,
 				BB96EEC718B99A6900F7C356 /* TextureRegion.h */,
@@ -797,6 +804,7 @@
 				BB96EEF218B99A7100F7C356 /* SpriteBatcher.cpp in Sources */,
 				BB96EEED18B99A7100F7C356 /* asset_utils.c in Sources */,
 				0A8FBF7C179E07320039BA29 /* png.c in Sources */,
+				BBF5DE2519770CE500759BB1 /* SpectatorControls.cpp in Sources */,
 				BB0BC05C1971B7810092A968 /* PowerUpBarItem.cpp in Sources */,
 				0A8FBF7D179E07320039BA29 /* pngerror.c in Sources */,
 				BBDF1A6C190F256300ECDBE2 /* BombGameObject.cpp in Sources */,
