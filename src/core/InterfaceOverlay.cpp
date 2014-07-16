@@ -59,56 +59,56 @@ InterfaceOverlay::InterfaceOverlay(GameListener *gameListener)
 
 void InterfaceOverlay::initializeMiniMap(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType)
 {
-    for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
-    {
-        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
-        {
-            updateMiniMap(j, i, MINI_MAP_FREE_SPACE);
-        }
-    }
-    
-    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
-    {
-        int gridX = (*itr)->getGridX();
-        int gridY = (*itr)->getGridY();
-        updateMiniMap(gridX, gridY, MINI_MAP_INSIDE_BLOCK);
-    }
-    
-    for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
-    {
-        int gridX = (*itr)->getGridX();
-        int gridY = (*itr)->getGridY();
-        updateMiniMap(gridX, gridY, MINI_MAP_BREAKABLE_BLOCK);
-    }
-    
-    // For Map Borders
-    
-    updateMiniMap(0, 0, MINI_MAP_MAP_BORDER);
-    updateMiniMap(1, 0, MINI_MAP_MAP_BORDER);
-    updateMiniMap(2, 0, MINI_MAP_MAP_BORDER);
-    updateMiniMap(0, 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(1, 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(2, 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(0, 2, MINI_MAP_MAP_BORDER);
-    updateMiniMap(1, 2, MINI_MAP_MAP_BORDER);
-    updateMiniMap(2, 2, MINI_MAP_MAP_BORDER);
-    
-    updateMiniMap(NUM_GRID_CELLS_PER_ROW - 3, 0, MINI_MAP_MAP_BORDER);
-    updateMiniMap(NUM_GRID_CELLS_PER_ROW - 2, 0, MINI_MAP_MAP_BORDER);
-    updateMiniMap(NUM_GRID_CELLS_PER_ROW - 1, 0, MINI_MAP_MAP_BORDER);
-    updateMiniMap(NUM_GRID_CELLS_PER_ROW - 3, 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(NUM_GRID_CELLS_PER_ROW - 2, 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(NUM_GRID_CELLS_PER_ROW - 1, 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(NUM_GRID_CELLS_PER_ROW - 3, 2, MINI_MAP_MAP_BORDER);
-    updateMiniMap(NUM_GRID_CELLS_PER_ROW - 2, 2, MINI_MAP_MAP_BORDER);
-    updateMiniMap(NUM_GRID_CELLS_PER_ROW - 1, 2, MINI_MAP_MAP_BORDER);
-    
-    if(mapType == MAP_MOUNTAINS)
-    {
-        updateMiniMap(6, GRID_CELL_NUM_ROWS - 1, MINI_MAP_MAP_BORDER);
-        updateMiniMap(7, GRID_CELL_NUM_ROWS - 1, MINI_MAP_MAP_BORDER);
-        updateMiniMap(8, GRID_CELL_NUM_ROWS - 1, MINI_MAP_MAP_BORDER);
-    }
+	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
+	{
+		for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+		{
+			updateMiniMap(j, i, MINI_MAP_FREE_SPACE);
+		}
+	}
+
+	for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
+	{
+		int gridX = (*itr)->getGridX();
+		int gridY = (*itr)->getGridY();
+		updateMiniMap(gridX, gridY, MINI_MAP_INSIDE_BLOCK);
+	}
+
+	for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
+	{
+		int gridX = (*itr)->getGridX();
+		int gridY = (*itr)->getGridY();
+		updateMiniMap(gridX, gridY, MINI_MAP_BREAKABLE_BLOCK);
+	}
+
+	// For Map Borders
+
+	updateMiniMap(0, 0, MINI_MAP_MAP_BORDER);
+	updateMiniMap(1, 0, MINI_MAP_MAP_BORDER);
+	updateMiniMap(2, 0, MINI_MAP_MAP_BORDER);
+	updateMiniMap(0, 1, MINI_MAP_MAP_BORDER);
+	updateMiniMap(1, 1, MINI_MAP_MAP_BORDER);
+	updateMiniMap(2, 1, MINI_MAP_MAP_BORDER);
+	updateMiniMap(0, 2, MINI_MAP_MAP_BORDER);
+	updateMiniMap(1, 2, MINI_MAP_MAP_BORDER);
+	updateMiniMap(2, 2, MINI_MAP_MAP_BORDER);
+
+	updateMiniMap(NUM_GRID_CELLS_PER_ROW - 3, 0, MINI_MAP_MAP_BORDER);
+	updateMiniMap(NUM_GRID_CELLS_PER_ROW - 2, 0, MINI_MAP_MAP_BORDER);
+	updateMiniMap(NUM_GRID_CELLS_PER_ROW - 1, 0, MINI_MAP_MAP_BORDER);
+	updateMiniMap(NUM_GRID_CELLS_PER_ROW - 3, 1, MINI_MAP_MAP_BORDER);
+	updateMiniMap(NUM_GRID_CELLS_PER_ROW - 2, 1, MINI_MAP_MAP_BORDER);
+	updateMiniMap(NUM_GRID_CELLS_PER_ROW - 1, 1, MINI_MAP_MAP_BORDER);
+	updateMiniMap(NUM_GRID_CELLS_PER_ROW - 3, 2, MINI_MAP_MAP_BORDER);
+	updateMiniMap(NUM_GRID_CELLS_PER_ROW - 2, 2, MINI_MAP_MAP_BORDER);
+	updateMiniMap(NUM_GRID_CELLS_PER_ROW - 1, 2, MINI_MAP_MAP_BORDER);
+
+	if (mapType == MAP_MOUNTAINS)
+	{
+		updateMiniMap(6, GRID_CELL_NUM_ROWS - 1, MINI_MAP_MAP_BORDER);
+		updateMiniMap(7, GRID_CELL_NUM_ROWS - 1, MINI_MAP_MAP_BORDER);
+		updateMiniMap(8, GRID_CELL_NUM_ROWS - 1, MINI_MAP_MAP_BORDER);
+	}
 }
 
 void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType, Game_State gameState)
@@ -222,61 +222,61 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
 
 void InterfaceOverlay::handleTouchDownInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
-    if(OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()))
-    {
-        if(player.isAbleToDropAdditionalBomb(players, bombs))
-        {
-            m_gameListener->addLocalEventForPlayer(PLAYER_PLANT_BOMB, player);
-        }
-    }
-    else if(OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
-    {
-        // TODO, handle more actions like Shield, Throw, etc.
-        switch(player.getActivePowerUp())
-        {
-            case PUSH :
-                for(std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
-                {
-                    if(player.isBombInFrontOfPlayer(**itr))
-                    {
-                        m_gameListener->addLocalEventForPlayer(PLAYER_PUSH_BOMB, player);
-                    }
-                }
-            default:
-                break;
-        }
-    }
-    else
-    {
-        int directionInput = m_dPad->getDirectionForTouchPoint(touchPoint);
-        
-        if(player.getDirection() != directionInput || !player.isMoving())
-        {
-            m_gameListener->addLocalEventForPlayer(directionInput + 1, player);
-        }
-    }
+	if (OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()))
+	{
+		if (player.isAbleToDropAdditionalBomb(players, bombs))
+		{
+			m_gameListener->addLocalEventForPlayer(PLAYER_PLANT_BOMB, player);
+		}
+	}
+	else if (OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
+	{
+		// TODO, handle more actions like Shield, Throw, etc.
+		switch (player.getActivePowerUp())
+		{
+		case PUSH:
+			for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+			{
+				if (player.isBombInFrontOfPlayer(**itr))
+				{
+					m_gameListener->addLocalEventForPlayer(PLAYER_PUSH_BOMB, player);
+				}
+			}
+		default:
+			break;
+		}
+	}
+	else
+	{
+		int directionInput = m_dPad->getDirectionForTouchPoint(touchPoint);
+
+		if (player.getDirection() != directionInput || !player.isMoving())
+		{
+			m_gameListener->addLocalEventForPlayer(directionInput + 1, player);
+		}
+	}
 }
 
 void InterfaceOverlay::handleTouchDraggedInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player)
 {
-    if(!OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()) && !OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
-    {
-        int directionInput = m_dPad->getDirectionForTouchPoint(touchPoint);
-        
-        if(player.getDirection() != directionInput || !player.isMoving())
-        {
-            m_gameListener->addLocalEventForPlayer(directionInput + 1, player);
-        }
-    }
+	if (!OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()) && !OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
+	{
+		int directionInput = m_dPad->getDirectionForTouchPoint(touchPoint);
+
+		if (player.getDirection() != directionInput || !player.isMoving())
+		{
+			m_gameListener->addLocalEventForPlayer(directionInput + 1, player);
+		}
+	}
 }
 
 void InterfaceOverlay::handleTouchUpInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player)
 {
-    if(!OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()) && !OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
-    {
-        m_dPad->stop();
-        m_gameListener->addLocalEventForPlayer(PLAYER_MOVE_STOP, player);
-    }
+	if (!OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()) && !OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
+	{
+		m_dPad->stop();
+		m_gameListener->addLocalEventForPlayer(PLAYER_MOVE_STOP, player);
+	}
 }
 
 bool InterfaceOverlay::handleTouchDownInputSpectating(Vector2D &touchPoint)
@@ -296,27 +296,27 @@ Spectator_Control_State InterfaceOverlay::handleTouchUpInputSpectating(Vector2D 
 
 std::vector<std::unique_ptr<PlayerAvatar>> & InterfaceOverlay::getPlayerAvatars()
 {
-    return m_playerAvatars;
+	return m_playerAvatars;
 }
 
 DPadControl & InterfaceOverlay::getDPadControl()
 {
-    return *m_dPad;
+	return *m_dPad;
 }
 
 std::vector<std::unique_ptr<PowerUpBarItem>> & InterfaceOverlay::getPowerUpBarItems()
 {
-    return m_powerUpBarItems;
+	return m_powerUpBarItems;
 }
 
 ActiveButton & InterfaceOverlay::getActiveButton()
 {
-    return *m_activeButton;
+	return *m_activeButton;
 }
 
 BombButton & InterfaceOverlay::getBombButton()
 {
-    return *m_bombButton;
+	return *m_bombButton;
 }
 
 SpectatorControls & InterfaceOverlay::getSpectatorControls()
@@ -326,70 +326,70 @@ SpectatorControls & InterfaceOverlay::getSpectatorControls()
 
 float InterfaceOverlay::getPowerUpBarItemsStateTime()
 {
-    return m_fPowerUpBarItemsStateTime;
+	return m_fPowerUpBarItemsStateTime;
 }
 
 float InterfaceOverlay::getButtonsStateTime()
 {
-    return m_fButtonsStateTime;
+	return m_fButtonsStateTime;
 }
 
 void InterfaceOverlay::setNumSecondsLeft(int numSecondsLeft)
 {
-    m_iNumSecondsLeft = numSecondsLeft;
+	m_iNumSecondsLeft = numSecondsLeft;
 	m_fCountdownStateTime = 0;
 }
 
 int InterfaceOverlay::getNumMinutesLeft()
 {
-    int numMinutes = 0;
-    int numSecondsLeft = m_iNumSecondsLeft;
-    while (numSecondsLeft >= 60)
-    {
-        numSecondsLeft -= 60;
-        numMinutes++;
-    }
-    
-    return numMinutes;
+	int numMinutes = 0;
+	int numSecondsLeft = m_iNumSecondsLeft;
+	while (numSecondsLeft >= 60)
+	{
+		numSecondsLeft -= 60;
+		numMinutes++;
+	}
+
+	return numMinutes;
 }
 
 int InterfaceOverlay::getNumSecondsLeftFirstColumn()
 {
-    int numSecondsLeft = m_iNumSecondsLeft;
-    while (numSecondsLeft >= 60)
-    {
-        numSecondsLeft -= 60;
-    }
-    
-    int numSecondsLeftFirstColumn = 0;
-    while (numSecondsLeft >= 10)
-    {
-        numSecondsLeft -= 10;
-        numSecondsLeftFirstColumn++;
-    }
-    
-    return numSecondsLeftFirstColumn;
+	int numSecondsLeft = m_iNumSecondsLeft;
+	while (numSecondsLeft >= 60)
+	{
+		numSecondsLeft -= 60;
+	}
+
+	int numSecondsLeftFirstColumn = 0;
+	while (numSecondsLeft >= 10)
+	{
+		numSecondsLeft -= 10;
+		numSecondsLeftFirstColumn++;
+	}
+
+	return numSecondsLeftFirstColumn;
 }
 
 int InterfaceOverlay::getNumSecondsLeftSecondColumn()
 {
-    int numSecondsLeft = m_iNumSecondsLeft;
-    while (numSecondsLeft >= 60)
-    {
-        numSecondsLeft -= 60;
-    }
-    
-    while (numSecondsLeft >= 10)
-    {
-        numSecondsLeft -= 10;
-    }
-    
-    return numSecondsLeft;
+	int numSecondsLeft = m_iNumSecondsLeft;
+	while (numSecondsLeft >= 60)
+	{
+		numSecondsLeft -= 60;
+	}
+
+	while (numSecondsLeft >= 10)
+	{
+		numSecondsLeft -= 10;
+	}
+
+	return numSecondsLeft;
 }
 
 int InterfaceOverlay::getMiniMapGridType(int x, int y)
 {
-    return m_miniMap[x][y];
+	return m_miniMap[x][y];
 }
 
 Color & InterfaceOverlay::getColorForMiniMapGridType(int miniMapGridType)
@@ -446,8 +446,8 @@ Color & InterfaceOverlay::getColorForMiniMapGridType(int miniMapGridType)
 
 void InterfaceOverlay::updateMiniMap(int x, int y, int miniMapGridType)
 {
-    if(x >= 0 && x < NUM_GRID_CELLS_PER_ROW && y >= 0 && y < GRID_CELL_NUM_ROWS)
-    {
-        m_miniMap[x][y] = miniMapGridType;
-    }
+	if (x >= 0 && x < NUM_GRID_CELLS_PER_ROW && y >= 0 && y < GRID_CELL_NUM_ROWS)
+	{
+		m_miniMap[x][y] = miniMapGridType;
+	}
 }

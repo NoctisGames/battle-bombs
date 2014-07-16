@@ -16,6 +16,10 @@
 #include "VertexTypes.h"
 #include "PowerUpType.h"
 #include <Effects.h>
+#include "Color.h"
+
+class Line;
+class Rectangle;
 
 class Direct3DRenderer : public Renderer
 {
@@ -77,4 +81,10 @@ private:
 	virtual void renderGameObject(GameObject &go, TextureRegion tr);
 
 	virtual void renderGameObjectWithRespectToPlayer(GameObject &go, TextureRegion tr);
+
+	void renderLine(Line &line, Color &color);
+
+	void renderRectangleStroke(Rectangle &rectangle, Color &color);
+
+	void renderRectangleFill(Rectangle &rectangle, Color &color);
 };
