@@ -205,6 +205,8 @@
     <ClInclude Include="..\..\..\..\..\core\Rectangle.h" />
     <ClInclude Include="..\..\..\..\..\core\Renderer.h" />
     <ClInclude Include="..\..\..\..\..\core\ResourceConstants.h" />
+    <ClInclude Include="..\..\..\..\..\core\SpectatorControls.h" />
+    <ClInclude Include="..\..\..\..\..\core\SpectatorControlState.h" />
     <ClInclude Include="..\..\..\..\..\core\stlastar.h" />
     <ClInclude Include="..\..\..\..\..\core\TextureRegion.h" />
     <ClInclude Include="..\..\..\..\..\core\TouchEvent.h" />
@@ -258,6 +260,7 @@
     <ClCompile Include="..\..\..\..\..\core\PowerUpBarItem.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Rectangle.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Renderer.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\SpectatorControls.cpp" />
     <ClCompile Include="..\..\..\..\..\core\TextureRegion.cpp" />
     <ClCompile Include="..\..\..\..\..\core\TouchEvent.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Triangle.cpp" />

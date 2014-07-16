@@ -36,6 +36,7 @@
 #include "MiniMapGridType.h"
 #include "Line.h"
 #include "Rectangle.h"
+#include "SpectatorControls.h"
 
 #include <string>
 
@@ -347,13 +348,16 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 
 	m_spriteBatch->End();
 
-	// TODO, this isn't Direct3D
-
 	std::string timeRemaining = std::to_string(interfaceOverlay.getNumMinutesLeft()) + ":" + std::to_string(interfaceOverlay.getNumSecondsLeftFirstColumn()) + std::to_string(interfaceOverlay.getNumSecondsLeftSecondColumn());
 	static DirectX::XMVECTORF32 interfaceColor = { 1, 1, 1, 1 };
 
+	static const float timerX = 0.3554104477903f;
+	static const float timerY = 13.0589552253125f;
+	static const float timerWidth = 0.40298507462688f;
+	static const float timerHeight = 0.425373134375f;
+
 	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
-	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, timeRemaining, 0.3554104477903f, 13.0589552253125f, 0.40298507462688f, 0.425373134375f, interfaceColor);
+	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
 
 	for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
 	{
@@ -389,13 +393,46 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 	}
 }
 
-void Direct3DRenderer::renderSpectatorInterface()
+void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverlay)
 {
 	m_currentShaderResourceView = m_interfaceShaderResourceView;
 
 	m_spriteBatch->Begin();
 	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_X, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_Y, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_WIDTH, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_HEIGHT, false), &Assets::getSpectatorInterfaceOverlayTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+	renderGameObject(interfaceOverlay.getSpectatorControls(), Assets::getSpectatorControlsTextureRegion(interfaceOverlay.getSpectatorControls()));
 	m_spriteBatch->End();
+
+	std::string timeRemaining = std::to_string(interfaceOverlay.getNumMinutesLeft()) + ":" + std::to_string(interfaceOverlay.getNumSecondsLeftFirstColumn()) + std::to_string(interfaceOverlay.getNumSecondsLeftSecondColumn());
+	static DirectX::XMVECTORF32 interfaceColor = { 1, 1, 1, 1 };
+
+	static const float timerX = 3.43731343283576f;
+	static const float timerY = 0.71044776125f;
+	static const float timerWidth = 0.40298507462688f;
+	static const float timerHeight = 0.425373134375f;
+
+	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
+	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
+	m_spriteBatch->End();
+
+	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
+	{
+		for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+		{
+			int miniMapGridType = interfaceOverlay.getMiniMapGridType(j, i);
+			if (miniMapGridType != MINI_MAP_FREE_SPACE)
+			{
+				static const float miniMapLeftX = 0.7611940298508f;
+				static const float miniMapBottomY = 0.085074626875f;
+				static const float miniMapGridWidth = 0.08955223880597f;
+				static const float miniMapGridHeight = 0.085074626875f;
+
+				float leftX = miniMapLeftX + miniMapGridWidth * j;
+				float bottomY = miniMapBottomY + miniMapGridHeight * i;
+				Rectangle miniMapGridCell = Rectangle(leftX, bottomY, miniMapGridWidth, miniMapGridHeight);
+				renderRectangleFill(miniMapGridCell, interfaceOverlay.getColorForMiniMapGridType(miniMapGridType));
+			}
+		}
+	}
 }
 
 void Direct3DRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
