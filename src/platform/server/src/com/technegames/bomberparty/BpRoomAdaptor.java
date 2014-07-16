@@ -35,8 +35,11 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     private static final short BEGIN_SPECTATE = 1336;
     private static final short BEGIN_GAME = 1337;
     private static final short CLIENT_UPDATE = 1338;
-    private static final short PLAYER_DEATH = 9;
+    private static final int PLAYER_DEATH = 9;
     private static final int PLAYER_EVENT_BASE = 1000000;
+    private static final int PLAYER_EVENT_DIRECTION_BASE = 100000;
+    private static final int PLAYER_EVENT_GRID_X_BASE = 1000;
+    private static final int PLAYER_EVENT_GRID_Y_BASE = 10;
 
     // smooth constant elements to play with
     private static final float movAveragePeriod = 40; // #frames involved in average calc (suggested values 5-100)
@@ -143,7 +146,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     public void onTimerTick(long time)
     {
         float deltaTime = smoothedDeltaRealTime_ms / 1000;
-        
+
         if (_isGameRunning)
         {
             if (_inRoomUserSessionDataMap.isEmpty())
@@ -307,7 +310,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
         smoothedDeltaRealTime_ms = smoothedDeltaRealTime_ms + (movAverageDeltaTime_ms - smoothedDeltaRealTime_ms) * smoothFactor;
 
         lastRealTimeMeasurement_ms = currTimePick_ms;
-        
+
         for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
         {
             IUser user = (IUser) entry.getKey();
@@ -417,8 +420,13 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 
             if (is_player_alive(_room.getId(), playerIndex))
             {
-                int playerDeathEvent = (int) (playerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
-                String playerDeathEventString = String.valueOf(playerDeathEvent);
+                int eventId = PLAYER_DEATH;
+                eventId += PLAYER_EVENT_BASE * playerIndex;
+                eventId += PLAYER_EVENT_DIRECTION_BASE * get_player_direction(_room.getId(), playerIndex);
+                eventId += PLAYER_EVENT_GRID_X_BASE * get_player_x(_room.getId(), playerIndex);
+                eventId += PLAYER_EVENT_GRID_Y_BASE * get_player_y(_room.getId(), playerIndex);
+                
+                String playerDeathEventString = String.valueOf(eventId);
                 playerDeathEventString = playerDeathEventString.concat(",0");
 
                 try
