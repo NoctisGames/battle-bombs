@@ -186,35 +186,32 @@ void OpenGLESRenderer::renderWorldForeground(std::vector<std::unique_ptr<MapBord
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    if(insideBlocks.size() > 0)
+    m_spriteBatcher->beginBatch();
+    
+    for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersFar.begin(); itr != mapBordersFar.end(); itr++)
     {
-        m_spriteBatcher->beginBatch();
-        
-        for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersFar.begin(); itr != mapBordersFar.end(); itr++)
+        if(!(*itr)->isNearFront())
         {
-            if(!(*itr)->isNearFront())
-            {
-                renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
-            }
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
         }
-        
-        for (std::vector<std::unique_ptr<InsideBlock>>::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
-        {
-            renderGameObjectWithRespectToPlayer((**itr), Assets::getInsideBlockTextureRegion());
-        }
-        
-        for (std::vector<std::unique_ptr<BreakableBlock>>::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
-        {
-            renderGameObjectWithRespectToPlayer((**itr), Assets::getBreakableBlockTextureRegion((**itr)));
-        }
-        
-        for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
-		{
-			renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((**itr)));
-		}
-        
-        m_spriteBatcher->endBatchWithTexture(m_gameTexture);
     }
+    
+    for (std::vector<std::unique_ptr<InsideBlock>>::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getInsideBlockTextureRegion());
+    }
+    
+    for (std::vector<std::unique_ptr<BreakableBlock>>::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getBreakableBlockTextureRegion((**itr)));
+    }
+    
+    for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((**itr)));
+    }
+    
+    m_spriteBatcher->endBatchWithTexture(m_gameTexture);
 }
 
 void OpenGLESRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)

@@ -81,6 +81,8 @@ private:
     float m_fButtonsStateTime;
     float m_fCountdownStateTime;
     int m_iNumSecondsLeft;
+    
+    void updateMiniMap(int x, int y, int miniMapGridType);
 };
 
 #endif /* defined(__bomberparty__InterfaceOverlay__) */
