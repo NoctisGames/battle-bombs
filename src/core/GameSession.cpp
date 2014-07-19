@@ -24,6 +24,7 @@
 #include "PlayerDynamicGameObject.h"
 #include "Fire.h"
 #include "PathFinder.h"
+#include <iostream>
 
 GameSession::GameSession()
 {
@@ -269,6 +270,8 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
     clientUpdateForPlayerIndex(d, playerIndex5Key, playerIndex5IsBotKey, playerIndex5XKey, playerIndex5YKey, playerIndex5DirectionKey, playerIndex5AliveKey, 5, isBeginGame);
     clientUpdateForPlayerIndex(d, playerIndex6Key, playerIndex6IsBotKey, playerIndex6XKey, playerIndex6YKey, playerIndex6DirectionKey, playerIndex6AliveKey, 6, isBeginGame);
     clientUpdateForPlayerIndex(d, playerIndex7Key, playerIndex7IsBotKey, playerIndex7XKey, playerIndex7YKey, playerIndex7DirectionKey, playerIndex7AliveKey, 7, isBeginGame);
+    
+    handleClientEventsArrayInDocument(d);
 }
 
 void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex)
@@ -315,6 +318,9 @@ void GameSession::handleIntArrayInDocument(rapidjson::Document &d, const char *i
 
         char *value = std::strtok(copy, ",");
 
+        int i = 0;
+        
+        std::cout << "Processing charArray: " << charArray << std::endl;
         while (value != NULL)
         {
             int intValue = atoi(value);
@@ -324,6 +330,8 @@ void GameSession::handleIntArrayInDocument(rapidjson::Document &d, const char *i
             }
 
             value = strtok(NULL, ","); // Get next event
+            i++;
+            std::cout << "Number of times while loop iterated: " << i << std::endl;
         }
 
         free(copy);
