@@ -256,6 +256,32 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 	{
 		m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *this);
 	}
+    
+    for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
+    {
+        if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        {
+            int type = (*itr)->getPowerUpFlag();
+            switch (type)
+            {
+                case 1:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_BOMB, *this);
+                    break;
+                case 2:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_FIRE, *this);
+                    break;
+                case 3:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_SPEED, *this);
+                    break;
+                case 4:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_PUSH, *this);
+                    break;
+            }
+            
+            (*itr)->onPickedUp();
+            break;
+        }
+    }
 }
 
 bool BotPlayerDynamicGameObject::isBot()

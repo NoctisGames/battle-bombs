@@ -221,6 +221,32 @@ void GameScreen::updateRunning(float deltaTime)
         m_gameState = SPECTATING;
     }
     
+    for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end(); itr++)
+    {
+        if (OverlapTester::doRectanglesOverlap(m_player->getBounds(), (*itr)->getBounds()))
+        {
+            int type = (*itr)->getPowerUpFlag();
+            switch (type)
+            {
+                case 1:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_BOMB, *m_player);
+                    break;
+                case 2:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_FIRE, *m_player);
+                    break;
+                case 3:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_SPEED, *m_player);
+                    break;
+                case 4:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_PUSH, *m_player);
+                    break;
+            }
+            
+            (*itr)->onPickedUp();
+            break;
+        }
+    }
+    
     std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
     
     for (std::vector<int>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)
