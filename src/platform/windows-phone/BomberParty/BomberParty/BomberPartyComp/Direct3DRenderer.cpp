@@ -402,16 +402,26 @@ void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
 	renderGameObject(interfaceOverlay.getSpectatorControls(), Assets::getSpectatorControlsTextureRegion(interfaceOverlay.getSpectatorControls()));
 	m_spriteBatch->End();
 
-	std::string timeRemaining = std::to_string(interfaceOverlay.getNumMinutesLeft()) + ":" + std::to_string(interfaceOverlay.getNumSecondsLeftFirstColumn()) + std::to_string(interfaceOverlay.getNumSecondsLeftSecondColumn());
 	static DirectX::XMVECTORF32 interfaceColor = { 1, 1, 1, 1 };
+
+	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
+
+	std::string timeRemaining = std::to_string(interfaceOverlay.getNumMinutesLeft()) + ":" + std::to_string(interfaceOverlay.getNumSecondsLeftFirstColumn()) + std::to_string(interfaceOverlay.getNumSecondsLeftSecondColumn());
 
 	static const float timerX = 3.43731343283576f;
 	static const float timerY = 0.71044776125f;
 	static const float timerWidth = 0.40298507462688f;
 	static const float timerHeight = 0.425373134375f;
 
-	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
 	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
+
+	static const float spectatingWhoX = 12.17910447761184f;
+	static const float spectatingWhoY = 0.51044776125f;
+	static const float spectatingWhoWidth = 0.52611940298496f;
+	static const float spectatingWhoHeight = 0.680597015f;
+
+	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, interfaceOverlay.getSpectatingUsername(), spectatingWhoX, spectatingWhoY, spectatingWhoWidth, spectatingWhoHeight, interfaceColor, true);
+
 	m_spriteBatch->End();
 
 	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
