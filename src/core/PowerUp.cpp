@@ -33,6 +33,8 @@ PowerUp::PowerUp(int gridX, int gridY, int powerUpIndex) : GridGameObject(gridX,
 		default: m_powerUpType = NONE;
 				break;
 	}
+    
+    resetBounds(GRID_CELL_WIDTH * 2 / 5, GRID_CELL_HEIGHT * 2 / 5);
 }
 
 void PowerUp::update(float deltaTime)
