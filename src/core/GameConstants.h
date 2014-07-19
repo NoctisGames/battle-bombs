@@ -61,6 +61,6 @@
 #define DIRECTION_LEFT 2
 #define DIRECTION_DOWN 3
 
-#define FRICTION_FACTOR 0.0015f
+#define FRICTION_FACTOR 6.4f
 
 #endif /* GAME_CONSTANTS_H */

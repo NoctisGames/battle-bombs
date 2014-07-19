@@ -27,7 +27,7 @@ class BombGameObject : public DynamicGridGameObject
 public:
     BombGameObject(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY, float width = GRID_CELL_WIDTH * 8 / 5, float height = GRID_CELL_HEIGHT * 8 / 5);
     
-    void update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+    void update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     
     float getStateTime();
     
@@ -48,10 +48,9 @@ public:
 private:
     PlayerDynamicGameObject *m_bombOwner;
 	std::unique_ptr<Rectangle> m_gridBounds;
-	int m_iPushedDirection;
     float m_fStateTime;
     float m_fSizeScalar;
-	float m_fPushSpeed;
+    int m_iPushedDirection;
     short m_sPower;
     bool m_isExploding;
     bool m_isDestroyed;
@@ -59,13 +58,7 @@ private:
 	bool m_isPickedUp;
 	bool m_isRebounding;
 
-	bool willHitBreakableBlock(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
-
-	bool willHitInsideBlock(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);
-
-	bool willTravelOffGameField(std::vector<std::unique_ptr<MapBorder >> &mapBorders);
-
-	bool canContinueMoving(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);
+	bool isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
 };
 
 #endif /* defined(__bomberparty__BombGameObject__) */

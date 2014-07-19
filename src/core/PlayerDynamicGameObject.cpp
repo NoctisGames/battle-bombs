@@ -28,9 +28,9 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
 {
     resetBounds(width * 5 / 32, height / 12);
 
-    lastBombDropped = nullptr;
+    m_lastBombDropped = nullptr;
     m_fStateTime = 0;
-    m_fSpeed = 3;
+    m_iSpeed = 3;
     m_firePower = 1;
     m_iDirection = direction;
 	m_activePowerUp = NONE;
@@ -67,6 +67,11 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
 
         m_position->add(deltaX, deltaY);
         updateBounds();
+        
+        if(m_lastBombDropped != nullptr && !OverlapTester::doRectanglesOverlap(*m_bounds, m_lastBombDropped->getBounds()))
+        {
+            m_lastBombDropped = nullptr;
+        }
         
         if (isCollision(mapBorders, insideBlocks, breakableBlocks, players, bombs))
         {
@@ -128,17 +133,17 @@ void PlayerDynamicGameObject::moveInDirection(int direction)
         switch (m_iDirection)
         {
             case DIRECTION_RIGHT:
-                m_velocity->set(m_fSpeed, 0);
+                m_velocity->set(m_iSpeed, 0);
                 break;
             case DIRECTION_UP:
-                m_velocity->set(0, m_fSpeed);
+                m_velocity->set(0, m_iSpeed);
                 break;
             case DIRECTION_LEFT:
-                m_velocity->set(-m_fSpeed, 0);
+                m_velocity->set(-m_iSpeed, 0);
                 break;
             case DIRECTION_DOWN:
             default:
-                m_velocity->set(0, -m_fSpeed);
+                m_velocity->set(0, -m_iSpeed);
                 break;
         }
     }
@@ -156,7 +161,7 @@ bool PlayerDynamicGameObject::isMoving()
 
 void PlayerDynamicGameObject::onBombDropped(BombGameObject *bomb)
 {
-    lastBombDropped = bomb;
+    m_lastBombDropped = bomb;
     
     m_iCurrentBombCount++;
 
@@ -180,7 +185,7 @@ void PlayerDynamicGameObject::onBombExploded()
     
     if(m_iCurrentBombCount == 0)
     {
-        lastBombDropped = nullptr;
+        m_lastBombDropped = nullptr;
     }
 }
 
@@ -308,7 +313,7 @@ int PlayerDynamicGameObject::getMaxBombCount()
 
 int PlayerDynamicGameObject::getSpeed()
 {
-    return m_fSpeed;
+    return m_iSpeed;
 }
 
 void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
@@ -322,7 +327,7 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
             m_firePower++;
             break;
         case 3:
-            m_fSpeed++;
+            m_iSpeed++;
             break;
         case 4:
             m_activePowerUp = PUSH;
@@ -406,7 +411,8 @@ bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder 
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
     {
         bool isOnTopOfBomb = m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY();
-        if (!isOnTopOfBomb && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        bool ism_lastBombDropped = m_lastBombDropped != nullptr && (*itr).get() == m_lastBombDropped;
+        if (!isOnTopOfBomb && !ism_lastBombDropped && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
         {
             return true;
         }

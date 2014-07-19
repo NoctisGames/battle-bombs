@@ -134,7 +134,7 @@ void GameSession::updateCommon(float deltaTime)
 {
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = m_bombs.begin(); itr != m_bombs.end();)
     {
-        (**itr).update(deltaTime, m_explosions, m_mapBorders, m_insideBlocks, m_breakableBlocks);
+        (**itr).update(deltaTime, m_explosions, m_mapBorders, m_insideBlocks, m_breakableBlocks, m_players, m_bombs);
 
         if ((**itr).isDestroyed())
         {

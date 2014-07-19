@@ -92,11 +92,11 @@ public:
     void setIsBot(bool isBot);
 
 protected:
-    BombGameObject *lastBombDropped;
+    BombGameObject *m_lastBombDropped;
     Player_State m_playerState;
     Player_Action_State m_playerActionState;
     float m_fStateTime;
-    int m_fSpeed;
+    int m_iSpeed;
     int m_iDirection;
     int m_iMaxBombCount;
     int m_iCurrentBombCount;
