@@ -22,6 +22,8 @@
 #include "Fire.h"
 #include "GameEvent.h"
 
+#include <cstring>
+
 PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
 {
     resetBounds(width * 5 / 32, height / 12);
