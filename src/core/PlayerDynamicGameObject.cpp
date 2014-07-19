@@ -406,8 +406,7 @@ bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder 
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
     {
         bool isOnTopOfBomb = m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY();
-        bool isLastBombDropped = (*itr).get() == lastBombDropped;
-        if (!isOnTopOfBomb && !isLastBombDropped && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        if (!isOnTopOfBomb && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
         {
             return true;
         }

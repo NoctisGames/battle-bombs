@@ -436,7 +436,17 @@ void GameSession::handlePlayerEvent(int event)
 
 void GameSession::layBombForPlayer(PlayerDynamicGameObject *player)
 {
-    m_bombs.push_back(std::unique_ptr<BombGameObject>(new BombGameObject(player, player->getFirePower(), player->getGridX(), player->getGridY())));
+    BombGameObject *bomb = new BombGameObject(player, player->getFirePower(), player->getGridX(), player->getGridY());
+    m_bombs.push_back(std::unique_ptr<BombGameObject>(bomb));
+    
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        if(OverlapTester::doRectanglesOverlap(bomb->getBounds(), (*itr)->getBounds()))
+        {
+            (*itr)->setGridX(bomb->getGridX());
+            (*itr)->setGridY(bomb->getGridY());
+        }
+    }
 }
 
 void GameSession::pushBombForPlayer(PlayerDynamicGameObject *player)
