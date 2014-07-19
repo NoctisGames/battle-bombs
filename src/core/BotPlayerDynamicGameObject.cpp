@@ -279,7 +279,6 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
                     break;
             }
             
-            (*itr)->onPickedUp();
             break;
         }
     }

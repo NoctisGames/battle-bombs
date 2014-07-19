@@ -153,7 +153,7 @@ void GameSession::updateCommon(float deltaTime)
         {
             if ((**itr).hasPowerUp())
             {
-                m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp((**itr).getX(), (**itr).getY(), (**itr).getPowerUpFlag())));
+                m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp((**itr).getGridX(), (**itr).getGridY(), (**itr).getPowerUpFlag())));
             }
             
             PathFinder::getInstance().freeGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
@@ -405,6 +405,26 @@ void GameSession::handlePlayerEvent(int event)
             break;
         default:
             break;
+    }
+    
+    if(event >= PLAYER_PU_BOMB)
+    {
+        for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end();)
+        {
+            if((*itr)->getGridX() == gridX && (*itr)->getGridY() == gridY)
+            {
+                (*itr)->onPickedUp();
+            }
+            
+            if ((**itr).isPickedUp())
+            {
+                itr = m_powerUps.erase(itr);
+            }
+            else
+            {
+                itr++;
+            }
+        }
     }
 }
 

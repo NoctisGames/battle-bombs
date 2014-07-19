@@ -242,7 +242,6 @@ void GameScreen::updateRunning(float deltaTime)
                     break;
             }
             
-            (*itr)->onPickedUp();
             break;
         }
     }

@@ -9,13 +9,13 @@
 #ifndef __bomberparty__PowerUp__
 #define __bomberparty__PowerUp__
 
-#include "GameObject.h"
+#include "GridGameObject.h"
 #include "PowerUpType.h"
 
-class PowerUp : public GameObject
+class PowerUp : public GridGameObject
 {
 public:
-	PowerUp(float x, float y, int powerUpFlag);
+	PowerUp(int gridX, int gridY, int powerUpFlag);
     
     void update(float deltaTime);
 
