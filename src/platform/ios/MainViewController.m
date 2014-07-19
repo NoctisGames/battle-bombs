@@ -26,7 +26,7 @@ static NSString *username;
     logger = [[Logger alloc] initWithClass:[MainViewController class]];
     
     NSString *UUID = [[NSUUID UUID] UUIDString];
-    UUID = [UUID substringToIndex:16];
+    UUID = [UUID substringToIndex:8];
     username = [@"Player_" stringByAppendingString:UUID];
 }
 

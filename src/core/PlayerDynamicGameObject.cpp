@@ -215,7 +215,7 @@ void PlayerDynamicGameObject::handlePowerUps(std::vector<std::unique_ptr<PowerUp
 {
     for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
     {
-        if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
         {
             int type = (*itr)->getPowerUpFlag();
             switch (type)

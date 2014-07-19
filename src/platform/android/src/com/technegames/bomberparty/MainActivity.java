@@ -39,7 +39,7 @@ public final class MainActivity extends Activity implements ChatRequestListener,
     static
     {
         UUID uuid = UUID.randomUUID();
-        username = "Player_" + uuid.toString().toUpperCase(Locale.US).substring(0, 16);
+        username = "Player_" + uuid.toString().toUpperCase(Locale.US).substring(0, 8);
 
         WarpClient.initialize(AppWarpConstants.APPWARP_APP_KEY, AppWarpConstants.APPWARP_HOST_ADDRESS);
     }

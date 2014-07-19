@@ -320,7 +320,6 @@ void GameSession::handleIntArrayInDocument(rapidjson::Document &d, const char *i
 
         int i = 0;
         
-        std::cout << "Processing charArray: " << charArray << std::endl;
         while (value != NULL)
         {
             int intValue = atoi(value);
@@ -331,7 +330,6 @@ void GameSession::handleIntArrayInDocument(rapidjson::Document &d, const char *i
 
             value = strtok(NULL, ","); // Get next event
             i++;
-            std::cout << "Number of times while loop iterated: " << i << std::endl;
         }
 
         free(copy);
