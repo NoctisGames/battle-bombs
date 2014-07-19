@@ -19,6 +19,7 @@
 #include "BombGameObject.h"
 #include "MapSearchNode.h"
 #include "PathFinder.h"
+#include "OverlapTester.h"
 
 // For Randomness
 #include <stdlib.h>
