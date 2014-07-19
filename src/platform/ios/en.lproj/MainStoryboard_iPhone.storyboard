@@ -23,6 +23,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="AgV-Z7-lgi"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="568" height="320"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
             </objects>
@@ -104,7 +106,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bg_main.png" width="568" height="320"/>
+        <image name="bg_main.png" width="1136" height="640"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

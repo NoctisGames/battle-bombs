@@ -377,18 +377,28 @@ void OpenGLESRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
     renderGameObject(interfaceOverlay.getSpectatorControls(), Assets::getSpectatorControlsTextureRegion(interfaceOverlay.getSpectatorControls()));
     m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
     
+    static Color interfaceColor = { 1, 1, 1, 1 };
+    
+    m_spriteBatcherWithColor->beginBatch();
+    
     std::stringstream ss;
     ss << interfaceOverlay.getNumMinutesLeft() << ":" << interfaceOverlay.getNumSecondsLeftFirstColumn() << interfaceOverlay.getNumSecondsLeftSecondColumn();
     std::string timeRemaining = ss.str();
-    static Color interfaceColor = { 1, 1, 1, 1 };
     
     static const float timerX = 3.43731343283576f;
     static const float timerY = 0.71044776125f;
     static const float timerWidth = 0.40298507462688f;
     static const float timerHeight = 0.425373134375f;
     
-    m_spriteBatcherWithColor->beginBatch();
     m_font->renderText(*m_spriteBatcherWithColor, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
+    
+    static const float spectatingWhoX = 12.17910447761184f;
+    static const float spectatingWhoY = 0.51044776125f;
+    static const float spectatingWhoWidth = 0.52611940298496f;
+    static const float spectatingWhoHeight = 0.680597015f;
+    
+    m_font->renderText(*m_spriteBatcherWithColor, interfaceOverlay.getSpectatingUsername(), spectatingWhoX, spectatingWhoY, spectatingWhoWidth, spectatingWhoHeight, interfaceColor, true);
+    
     m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
     
     for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)

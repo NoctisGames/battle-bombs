@@ -111,7 +111,7 @@ void InterfaceOverlay::initializeMiniMap(std::vector<std::unique_ptr<InsideBlock
 	}
 }
 
-void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType, Game_State gameState)
+void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType, int playerIndex, Game_State gameState)
 {
     // Update Timer
     
@@ -186,6 +186,10 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
             m_bombButton->setIsPressed(false);
             m_bombButton->setButtonState(player.isAbleToDropAdditionalBomb(players, bombs) ? ENABLED : DISABLED);
         }
+    }
+    else if(gameState == SPECTATING)
+    {
+        m_spectatingWho = std::string(players.at(playerIndex)->getUsername());
     }
     
     // Update Mini Map
@@ -440,6 +444,11 @@ Color & InterfaceOverlay::getColorForMiniMapGridType(int miniMapGridType)
         default:
             return mapBorderColor;
     }
+}
+
+std::string & InterfaceOverlay::getSpectatingUsername()
+{
+    return m_spectatingWho;
 }
 
 #pragma mark <Private>

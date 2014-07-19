@@ -42,6 +42,8 @@ public:
     int getMaxBombCount();
     
     int getSpeed();
+    
+    void collectPowerUp(int powerUpFlag);
 
     void setDirection(int direction);
 
@@ -81,6 +83,10 @@ public:
     
     virtual bool isBot();
     
+    char * getUsername();
+    
+    void setUsername(const char *username);
+    
     void setIsBot(bool isBot);
 
 protected:
@@ -99,6 +105,7 @@ protected:
     GameListener *m_gameListener;
     
 private:
+    char *m_username;
     bool m_isBot;
     
     bool isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);

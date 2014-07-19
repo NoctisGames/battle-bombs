@@ -15,6 +15,7 @@
 #include "SpectatorControlState.h"
 #include <vector>
 #include <memory>
+#include <string>
 
 class Vector2D;
 class DPadControl;
@@ -38,7 +39,7 @@ public:
     
     void initializeMiniMap(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType);
     
-    void update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType, Game_State gameState);
+    void update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType, int playerIndex, Game_State gameState);
     
     void handleTouchDownInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     
@@ -80,6 +81,8 @@ public:
     
     Color & getColorForMiniMapGridType(int miniMapGridType);
     
+    std::string & getSpectatingUsername();
+    
 private:
     std::vector<std::unique_ptr<PlayerAvatar>> m_playerAvatars;
     std::unique_ptr<DPadControl> m_dPad;
@@ -88,6 +91,7 @@ private:
     std::unique_ptr<BombButton> m_bombButton;
     std::unique_ptr<SpectatorControls> m_spectatorControls;
     GameListener *m_gameListener;
+    std::string m_spectatingWho;
     int m_miniMap[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS];
     float m_fPowerUpBarItemsStateTime;
     float m_fButtonsStateTime;

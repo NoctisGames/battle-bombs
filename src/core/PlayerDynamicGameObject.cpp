@@ -20,6 +20,7 @@
 #include "ResourceConstants.h"
 #include "GameListener.h"
 #include "Fire.h"
+#include "GameEvent.h"
 
 PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
 {
@@ -81,25 +82,20 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
                 switch (type)
                 {
                     case 1:
-                        (*itr)->onPickedUp();
-                        ++m_iMaxBombCount;
+                        m_gameListener->addLocalEventForPlayer(PLAYER_PU_BOMB, *this);
                         break;
                     case 2:
-                        (*itr)->onPickedUp();
-                        ++m_firePower;
+                        m_gameListener->addLocalEventForPlayer(PLAYER_PU_FIRE, *this);
                         break;
                     case 3:
-                        (*itr)->onPickedUp();
-                        ++m_fSpeed;
+                        m_gameListener->addLocalEventForPlayer(PLAYER_PU_SPEED, *this);
                         break;
                     case 4:
-                        (*itr)->onPickedUp();
-                        m_activePowerUp = PUSH;
-                        break;
-                    default:
-                        (*itr)->onPickedUp();
+                        m_gameListener->addLocalEventForPlayer(PLAYER_PU_PUSH, *this);
                         break;
                 }
+                
+                (*itr)->onPickedUp();
                 break;
             }
         }
@@ -307,6 +303,25 @@ int PlayerDynamicGameObject::getSpeed()
     return m_fSpeed;
 }
 
+void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
+{
+    switch (powerUpFlag)
+    {
+        case 1:
+            m_iMaxBombCount++;
+            break;
+        case 2:
+            m_firePower++;
+            break;
+        case 3:
+            m_fSpeed++;
+            break;
+        case 4:
+            m_activePowerUp = PUSH;
+            break;
+    }
+}
+
 void PlayerDynamicGameObject::setPlayerState(Player_State playerState)
 {
     m_playerState = playerState;
@@ -359,6 +374,21 @@ bool PlayerDynamicGameObject::isBot()
 void PlayerDynamicGameObject::setIsBot(bool isBot)
 {
     m_isBot = isBot;
+}
+
+char * PlayerDynamicGameObject::getUsername()
+{
+    return m_username;
+}
+
+void PlayerDynamicGameObject::setUsername(const char *username)
+{
+    int usernameLength = (int) strlen(username);
+    
+    m_username = new char[usernameLength];
+    
+    std::strncpy(m_username, username, usernameLength);
+    m_username[usernameLength] = '\0';
 }
 
 // Private

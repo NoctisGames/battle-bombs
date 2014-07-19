@@ -248,7 +248,7 @@ void GameScreen::updateRunning(float deltaTime)
     
     m_sEventIds.clear();
     
-    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_gameState);
+    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
     
     updateCommon(deltaTime);
 }
@@ -290,7 +290,7 @@ void GameScreen::updateSpectating(float deltaTime)
     
     m_sEventIds.clear();
     
-    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_gameState);
+    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
     
     updateCommon(deltaTime);
 }
@@ -427,7 +427,7 @@ void GameScreen::beginGame(rapidjson::Document &d)
 
 void GameScreen::beginSpectate(rapidjson::Document &d)
 {
-    if(beginCommon(d, false))
+    if(beginCommon(d, true))
     {
         m_sPlayerIndex = 0;
         m_player = m_players.at(m_sPlayerIndex).get();
@@ -526,9 +526,11 @@ void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *
             // Now we know which player index the user is
             m_sPlayerIndex = playerIndex;
         }
+        
+        m_players.at(playerIndex)->setUsername(username);
     }
     
-    if(isBeginGame || m_gameState == SPECTATING || playerIndex != m_sPlayerIndex)
+    if(isBeginGame || playerIndex != m_sPlayerIndex)
     {
         handlePlayerDataUpdate(d, keyIsBot, keyX, keyY, keyDirection, keyAlive, playerIndex);
     }
