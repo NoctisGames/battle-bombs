@@ -214,36 +214,13 @@ void GameScreen::resetTimeSinceLastClientEvent()
 
 void GameScreen::updateRunning(float deltaTime)
 {
+    m_player->handlePowerUps(m_powerUps);
+    
     if(m_player->isHitByExplosion(m_explosions, m_bombs))
     {
         m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *m_player);
         
         m_gameState = SPECTATING;
-    }
-    
-    for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end(); itr++)
-    {
-        if (OverlapTester::doRectanglesOverlap(m_player->getBounds(), (*itr)->getBounds()))
-        {
-            int type = (*itr)->getPowerUpFlag();
-            switch (type)
-            {
-                case 1:
-                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_BOMB, *m_player);
-                    break;
-                case 2:
-                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_FIRE, *m_player);
-                    break;
-                case 3:
-                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_SPEED, *m_player);
-                    break;
-                case 4:
-                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_PUSH, *m_player);
-                    break;
-            }
-            
-            break;
-        }
     }
     
     std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();

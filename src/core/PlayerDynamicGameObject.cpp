@@ -211,6 +211,38 @@ bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explo
     return false;
 }
 
+void PlayerDynamicGameObject::handlePowerUps(std::vector<std::unique_ptr<PowerUp >> &powerUps)
+{
+    for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
+    {
+        if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        {
+            int type = (*itr)->getPowerUpFlag();
+            switch (type)
+            {
+                case 1:
+                    (*itr)->onPickedUp();
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_BOMB, *this);
+                    break;
+                case 2:
+                    (*itr)->onPickedUp();
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_FIRE, *this);
+                    break;
+                case 3:
+                    (*itr)->onPickedUp();
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_SPEED, *this);
+                    break;
+                case 4:
+                    (*itr)->onPickedUp();
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_PUSH, *this);
+                    break;
+            }
+            
+            break;
+        }
+    }
+}
+
 bool PlayerDynamicGameObject::isBombInFrontOfPlayer(BombGameObject &bomb)
 {
     switch (m_iDirection)
