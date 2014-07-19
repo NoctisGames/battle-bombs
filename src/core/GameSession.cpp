@@ -419,11 +419,6 @@ void GameSession::handlePlayerEvent(int event)
         {
             if((*itr)->getGridX() == gridX && (*itr)->getGridY() == gridY)
             {
-                (*itr)->onPickedUp();
-            }
-            
-            if ((**itr).isPickedUp())
-            {
                 itr = m_powerUps.erase(itr);
             }
             else
