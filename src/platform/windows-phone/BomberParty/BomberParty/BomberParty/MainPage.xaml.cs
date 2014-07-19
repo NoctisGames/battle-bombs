@@ -22,7 +22,7 @@ namespace BomberParty
         static MainPage()
         {
             String UUID = Guid.NewGuid().ToString();
-            username = "Player_" + UUID.ToUpper().Substring(0, 16);
+            username = "Player_" + UUID.ToUpper().Substring(0, 8);
         }
 
         private com.shephertz.app42.gaming.multiplayer.client.listener.ChatRequestListener m_chatRequestListener;
