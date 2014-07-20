@@ -37,29 +37,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bg_main.png" translatesAutoresizingMaskIntoConstraints="NO" id="kzJ-Vo-pgX">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="kzJ-Vo-pgX">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pwJ-dG-H1l">
-                                <rect key="frame" x="64" y="585" width="349" height="53"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9GA-B5-viV">
+                                <rect key="frame" x="20" y="572" width="435" height="84"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
-                                <state key="normal" title="QUICK MATCH">
+                                <state key="normal" backgroundImage="quick_match_normal.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="startQuickMatch:" destination="zRN-Dk-nWe" eventType="touchUpInside" id="jpY-Px-CtM"/>
-                                </connections>
+                                <state key="selected" backgroundImage="quick_match_pressed.png"/>
+                                <state key="highlighted" backgroundImage="quick_match_highlighted.png"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dka-F1-NIV">
-                                <rect key="frame" x="45" y="653" width="387" height="59"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xcu-H4-kSD">
+                                <rect key="frame" x="20" y="664" width="435" height="84"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
-                                <state key="normal" title="OFFLINE MATCH">
+                                <state key="normal" backgroundImage="offline_match_normal.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="startQuickOfflineMatch:" destination="zRN-Dk-nWe" eventType="touchUpInside" id="Hzc-Fe-0LH"/>
-                                </connections>
+                                <state key="selected" backgroundImage="offline_match_pressed.png"/>
+                                <state key="highlighted" backgroundImage="offline_match_highlighted.png"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -108,7 +106,13 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bg_main.png" width="568" height="320"/>
+        <image name="bg.png" width="1024" height="768"/>
+        <image name="offline_match_highlighted.png" width="870" height="170"/>
+        <image name="offline_match_normal.png" width="870" height="170"/>
+        <image name="offline_match_pressed.png" width="870" height="170"/>
+        <image name="quick_match_highlighted.png" width="870" height="170"/>
+        <image name="quick_match_normal.png" width="870" height="170"/>
+        <image name="quick_match_pressed.png" width="870" height="170"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

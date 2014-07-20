@@ -38,26 +38,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_main.png" id="2lE-1n-Jx3">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg.png" id="2lE-1n-Jx3">
                                 <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LQT-UP-Bkz">
-                                <rect key="frame" x="24" y="240" width="213" height="32"/>
+                                <rect key="frame" x="24" y="208" width="217" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
-                                <state key="normal" title="QUICK MATCH">
+                                <state key="normal" backgroundImage="quick_match_normal.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <state key="selected" backgroundImage="quick_match_pressed.png"/>
+                                <state key="highlighted" backgroundImage="quick_match_highlighted.png"/>
                                 <connections>
                                     <action selector="startQuickMatch:" destination="peB-3Z-xcJ" eventType="touchUpInside" id="VKx-xv-w78"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="pyj-UX-jIY">
-                                <rect key="frame" x="20" y="268" width="221" height="32"/>
+                                <rect key="frame" x="24" y="258" width="217" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
-                                <state key="normal" title="OFFLINE MATCH">
+                                <state key="normal" backgroundImage="offline_match_normal.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <state key="selected" backgroundImage="offline_match_pressed.png"/>
+                                <state key="highlighted" backgroundImage="offline_match_highlighted.png"/>
                                 <connections>
                                     <action selector="startQuickOfflineMatch:" destination="peB-3Z-xcJ" eventType="touchUpInside" id="BFh-GY-w2S"/>
                                 </connections>
@@ -106,7 +110,13 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bg_main.png" width="1136" height="640"/>
+        <image name="bg.png" width="480" height="320"/>
+        <image name="offline_match_highlighted.png" width="870" height="170"/>
+        <image name="offline_match_normal.png" width="870" height="170"/>
+        <image name="offline_match_pressed.png" width="870" height="170"/>
+        <image name="quick_match_highlighted.png" width="870" height="170"/>
+        <image name="quick_match_normal.png" width="870" height="170"/>
+        <image name="quick_match_pressed.png" width="870" height="170"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
