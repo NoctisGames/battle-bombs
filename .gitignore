@@ -46,6 +46,7 @@ xcshareddata/
 *.suo
 ARM/
 Debug/
+Release/
 
 # NetBeans
 dist/

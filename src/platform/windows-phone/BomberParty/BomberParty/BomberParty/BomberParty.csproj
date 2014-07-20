@@ -93,6 +93,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ButtonImage.xaml.cs" />
     <Compile Include="OfflineGamePage.xaml.cs">
       <DependentUpon>OfflineGamePage.xaml</DependentUpon>
     </Compile>
@@ -119,6 +120,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="ButtonImage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="OfflineGamePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -221,9 +226,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\map_space.wav" />
+    <Content Include="Assets\offline_match_highlighted.png" />
+    <Content Include="Assets\offline_match_normal.png" />
+    <Content Include="Assets\offline_match_pressed.png" />
     <Content Include="Assets\plant_bomb.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\quick_match_highlighted.png" />
+    <Content Include="Assets\quick_match_normal.png" />
+    <Content Include="Assets\quick_match_pressed.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

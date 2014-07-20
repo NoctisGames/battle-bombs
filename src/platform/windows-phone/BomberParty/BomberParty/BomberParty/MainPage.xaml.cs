@@ -51,6 +51,9 @@ namespace BomberParty
             WarpClient.GetInstance().AddNotificationListener(m_notifyListener);
             WarpClient.GetInstance().AddRoomRequestListener(m_roomRequestListener);
             WarpClient.GetInstance().AddZoneRequestListener(m_zoneRequestListener);
+
+            StartQuickMatch.IsEnabled = true;
+            StartQuickOfflineMatch.IsEnabled = true;
         }
 
         private void Start_Quick_Match(object sender, RoutedEventArgs e)

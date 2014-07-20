@@ -6,12 +6,42 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:BomberParty="clr-namespace:BomberParty"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Landscape" Orientation="Landscape"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
+
+    <phone:PhoneApplicationPage.Resources>
+    <Style x:Key="ButtonImageStyle"
+               TargetType="BomberParty:ButtonImage">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="BomberParty:ButtonImage">
+                    <Grid Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Pressed" />
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="ButtonBackground">
+                            <ContentControl
+                                x:Name="ContentContainer"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Content="{TemplateBinding Content}" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot">
@@ -25,8 +55,26 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button x:Name="StartQuickMatch" Content="Start a Quick Match" HorizontalAlignment="Center" Margin="10,326,426,82" VerticalAlignment="Center" Width="340" Click="Start_Quick_Match"/>
-            <Button x:Name="StartQuickOfflineMatch" Content="Start a Quick Offline Match" HorizontalAlignment="Center" Margin="10,398,426,10" VerticalAlignment="Center" Width="340" Click="Start_Quick_Offline_Match" Height="72"/>
+            <BomberParty:ButtonImage ImageSource="/Assets/quick_match_normal.png"
+                                     ImageDisabledSource="/Assets/quick_match_normal.png"
+                                     ImagePressedSource="/Assets/quick_match_highlighted.png"
+                                     Style="{StaticResource ButtonImageStyle}"
+                                     Height="42"
+                                     Margin="10,326,426,82"
+                                     VerticalAlignment="Center"
+                                     Width="217"
+                                     Click="Start_Quick_Match"
+                                     x:Name="StartQuickMatch" />
+            <BomberParty:ButtonImage ImageSource="/Assets/offline_match_normal.png"
+                                     ImageDisabledSource="/Assets/offline_match_normal.png"
+                                     ImagePressedSource="/Assets/offline_match_highlighted.png"
+                                     Style="{StaticResource ButtonImageStyle}"
+                                     Height="42"
+                                     Margin="10,398,426,10"
+                                     VerticalAlignment="Center"
+                                     Width="217"
+                                     Click="Start_Quick_Offline_Match"
+                                     x:Name="StartQuickOfflineMatch" />
         </Grid>
     </Grid>
 
