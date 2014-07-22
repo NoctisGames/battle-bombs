@@ -49,6 +49,9 @@
                                 </state>
                                 <state key="selected" backgroundImage="quick_match_pressed.png"/>
                                 <state key="highlighted" backgroundImage="quick_match_highlighted.png"/>
+                                <connections>
+                                    <action selector="startQuickMatch:" destination="zRN-Dk-nWe" eventType="touchUpInside" id="IVm-AH-lxr"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xcu-H4-kSD">
                                 <rect key="frame" x="20" y="664" width="435" height="84"/>
@@ -58,6 +61,9 @@
                                 </state>
                                 <state key="selected" backgroundImage="offline_match_pressed.png"/>
                                 <state key="highlighted" backgroundImage="offline_match_highlighted.png"/>
+                                <connections>
+                                    <action selector="startQuickOfflineMatch:" destination="zRN-Dk-nWe" eventType="touchUpInside" id="ULl-2z-Orb"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
