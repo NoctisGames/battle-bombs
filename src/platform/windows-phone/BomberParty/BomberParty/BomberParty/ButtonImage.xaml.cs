@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace BomberParty
+namespace BattleBombs
 {
     public partial class ButtonImage
     {

@@ -1,6 +1,6 @@
 //
 //  PlayerState.h
-//  battle-bombs
+//  battlebombs
 //
 //  Created by Stephen Gowen on 6/26/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.

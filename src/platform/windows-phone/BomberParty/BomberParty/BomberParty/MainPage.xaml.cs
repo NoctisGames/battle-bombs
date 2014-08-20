@@ -13,7 +13,7 @@ using System.IO.IsolatedStorage;
 using com.shephertz.app42.gaming.multiplayer.client;
 using com.shephertz.app42.gaming.multiplayer.client.events;
 
-namespace BomberParty
+namespace BattleBombs
 {
     public partial class MainPage : PhoneApplicationPage
     {

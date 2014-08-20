@@ -10,7 +10,7 @@ using namespace Microsoft::WRL;
 using namespace Windows::Phone::Graphics::Interop;
 using namespace Windows::Phone::Input::Interop;
 
-namespace BomberPartyComp
+namespace BattleBombsComp
 {
 	Direct3DInterop::Direct3DInterop() : m_timer(ref new BasicTimer())
 	{

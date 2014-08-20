@@ -12,9 +12,9 @@ using System.Diagnostics;
 using System.IO.IsolatedStorage;
 using com.shephertz.app42.gaming.multiplayer.client;
 using com.shephertz.app42.gaming.multiplayer.client.events;
-using BomberPartyComp;
+using BattleBombsComp;
 
-namespace BomberParty
+namespace BattleBombs
 {
     public partial class GamePage : PhoneApplicationPage
     {

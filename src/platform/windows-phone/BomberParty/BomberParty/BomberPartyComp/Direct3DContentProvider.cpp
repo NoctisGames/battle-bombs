@@ -2,7 +2,7 @@
 #include "GameButton.h"
 #include "Direct3DContentProvider.h"
 
-using namespace BomberPartyComp;
+using namespace BattleBombsComp;
 
 Direct3DContentProvider::Direct3DContentProvider(Direct3DInterop^ controller) : m_controller(controller)
 {

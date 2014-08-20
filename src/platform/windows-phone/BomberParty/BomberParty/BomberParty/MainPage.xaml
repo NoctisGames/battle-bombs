@@ -1,12 +1,12 @@
 ﻿<phone:PhoneApplicationPage
-    x:Class="BomberParty.MainPage"
+    x:Class="BattleBombs.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:BomberParty="clr-namespace:BomberParty"
+    xmlns:BattleBombs="clr-namespace:BattleBombs"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -16,10 +16,10 @@
 
     <phone:PhoneApplicationPage.Resources>
     <Style x:Key="ButtonImageStyle"
-               TargetType="BomberParty:ButtonImage">
+               TargetType="BattleBombs:ButtonImage">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="BomberParty:ButtonImage">
+                <ControlTemplate TargetType="BattleBombs:ButtonImage">
                     <Grid Background="Transparent">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
@@ -55,7 +55,7 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <BomberParty:ButtonImage ImageSource="/Assets/quick_match_normal.png"
+            <BattleBombs:ButtonImage ImageSource="/Assets/quick_match_normal.png"
                                      ImageDisabledSource="/Assets/quick_match_normal.png"
                                      ImagePressedSource="/Assets/quick_match_highlighted.png"
                                      Style="{StaticResource ButtonImageStyle}"
@@ -65,7 +65,7 @@
                                      Width="217"
                                      Click="Start_Quick_Match"
                                      x:Name="StartQuickMatch" />
-            <BomberParty:ButtonImage ImageSource="/Assets/offline_match_normal.png"
+            <BattleBombs:ButtonImage ImageSource="/Assets/offline_match_normal.png"
                                      ImageDisabledSource="/Assets/offline_match_normal.png"
                                      ImagePressedSource="/Assets/offline_match_highlighted.png"
                                      Style="{StaticResource ButtonImageStyle}"

@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using com.shephertz.app42.gaming.multiplayer.client;
 
-namespace BomberParty
+namespace BattleBombs
 {
     public class AppWarpConstants
     {

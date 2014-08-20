@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Phone
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BomberParty", "BomberParty\BomberParty\BomberParty.csproj", "{6C0DB09E-49D9-4F26-83B2-1A4F0B616A0C}"
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleBombs", "BomberParty\BomberParty\BattleBombs.csproj", "{6C0DB09E-49D9-4F26-83B2-1A4F0B616A0C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BomberPartyComp", "BomberParty\BomberPartyComp\BomberPartyComp.vcxproj", "{C0F94AFA-466F-4FC4-B5C1-6CD955F3FF88}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BattleBombsComp", "BomberParty\BomberPartyComp\BomberPartyComp.vcxproj", "{C0F94AFA-466F-4FC4-B5C1-6CD955F3FF88}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTK_WindowsPhone8", "..\..\..\3rdparty\DirectXTK\DirectXTK_WindowsPhone8.vcxproj", "{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}"
 EndProject

@@ -1,6 +1,6 @@
-﻿using BomberParty.Resources;
+﻿using BattleBombs.Resources;
 
-namespace BomberParty
+namespace BattleBombs
 {
     /// <summary>
     /// Provides access to string resources.

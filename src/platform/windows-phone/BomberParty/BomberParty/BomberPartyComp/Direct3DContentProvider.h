@@ -13,7 +13,7 @@ class Direct3DContentProvider : public Microsoft::WRL::RuntimeClass<
 		IDrawingSurfaceContentProviderNative>
 {
 public:
-	Direct3DContentProvider(BomberPartyComp::Direct3DInterop^ controller);
+	Direct3DContentProvider(BattleBombsComp::Direct3DInterop^ controller);
 
 	void ReleaseD3DResources();
 
@@ -27,7 +27,7 @@ public:
 private:
 	HRESULT InitializeTexture(_In_ const DrawingSurfaceSizeF* size);
 
-	BomberPartyComp::Direct3DInterop^ m_controller;
+	BattleBombsComp::Direct3DInterop^ m_controller;
 	Microsoft::WRL::ComPtr<IDrawingSurfaceRuntimeHostNative> m_host;
 	Microsoft::WRL::ComPtr<IDrawingSurfaceSynchronizedTextureNative> m_synchronizedTexture;
 };

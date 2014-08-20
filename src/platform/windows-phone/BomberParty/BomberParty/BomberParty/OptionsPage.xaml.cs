@@ -8,7 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace BomberParty
+namespace BattleBombs
 {
     public partial class Page1 : PhoneApplicationPage
     {

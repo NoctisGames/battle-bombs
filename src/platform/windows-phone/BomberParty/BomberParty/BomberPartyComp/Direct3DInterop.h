@@ -6,7 +6,7 @@
 #include "Direct3DGameScreen.h"
 #include <DrawingSurfaceNative.h>
 
-namespace BomberPartyComp
+namespace BattleBombsComp
 {
 	public delegate void RequestAdditionalFrameHandler();
 	public delegate void RecreateSynchronizedTextureHandler();

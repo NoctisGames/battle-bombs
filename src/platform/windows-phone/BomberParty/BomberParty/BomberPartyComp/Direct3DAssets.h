@@ -1,6 +1,6 @@
 //
 //  Direct3DAssets.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/1/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
