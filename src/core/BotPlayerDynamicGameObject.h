@@ -1,13 +1,13 @@
 //
 //  BotPlayerDynamicGameObject.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 5/28/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__BotPlayerDynamicGameObject__
-#define __bomberparty__BotPlayerDynamicGameObject__
+#ifndef __battlebombs__BotPlayerDynamicGameObject__
+#define __battlebombs__BotPlayerDynamicGameObject__
 
 #include "PlayerDynamicGameObject.h"
 #include "Node.h"
@@ -51,4 +51,4 @@ private:
     bool isProposedNodeUnexplored(int x, int y);
 };
 
-#endif /* defined(__bomberparty__BotPlayerDynamicGameObject__) */
+#endif /* defined(__battlebombs__BotPlayerDynamicGameObject__) */

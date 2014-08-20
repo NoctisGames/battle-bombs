@@ -1,13 +1,13 @@
 //
 //  OpenGLESRectangleRenderer.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 7/15/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__OpenGLESRectangleRenderer__
-#define __bomberparty__OpenGLESRectangleRenderer__
+#ifndef __battlebombs__OpenGLESRectangleRenderer__
+#define __battlebombs__OpenGLESRectangleRenderer__
 
 #include <memory>
 #include "Color.h"
@@ -32,4 +32,4 @@ private:
     void addColorCoordinates(Color &color);
 };
 
-#endif /* defined(__bomberparty__OpenGLESRectangleRenderer__) */
+#endif /* defined(__battlebombs__OpenGLESRectangleRenderer__) */

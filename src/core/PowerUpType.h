@@ -1,14 +1,14 @@
 //
 //  PowerUpType.h
-//  bomber-party
+//  battle-bombs
 //
 //  Created by Mikel Adkins	 on 5/16/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
 
-#ifndef __bomberparty__PowerUpType__
-#define __bomberparty__PowerUpType__
+#ifndef __battlebombs__PowerUpType__
+#define __battlebombs__PowerUpType__
 
 typedef enum
 {

@@ -1,13 +1,13 @@
 //
 //  Font.h
-//  bomber-party
+//  battle-bombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__Font__
-#define __bomber_party__Font__
+#ifndef __battle_bombs__Font__
+#define __battle_bombs__Font__
 
 #ifdef TECHNE_GAMES_OPENGL_ES
 class SpriteBatcher;
@@ -37,4 +37,4 @@ private:
     std::vector<std::unique_ptr<TextureRegion>> m_glyphs;
 };
 
-#endif /* defined(__bomber_party__Font__) */
+#endif /* defined(__battle_bombs__Font__) */

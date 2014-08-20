@@ -1,13 +1,13 @@
 //
 //  Explosion.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 4/30/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__Explosion__
-#define __bomberparty__Explosion__
+#ifndef __battlebombs__Explosion__
+#define __battlebombs__Explosion__
 
 #include "GridGameObject.h"
 #include "GameConstants.h"
@@ -61,4 +61,4 @@ private:
     void runPostBlockLogic();
 };
 
-#endif /* defined(__bomberparty__Explosion__) */
+#endif /* defined(__battlebombs__Explosion__) */

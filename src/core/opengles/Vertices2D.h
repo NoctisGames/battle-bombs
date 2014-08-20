@@ -1,13 +1,13 @@
 //
 //  Vertices2D.h
-//  bomber-party
+//  battle-bombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__Vertices2D__
-#define __bomber_party__Vertices2D__
+#ifndef __battle_bombs__Vertices2D__
+#define __battle_bombs__Vertices2D__
 
 extern "C"
 {
@@ -50,4 +50,4 @@ private:
     bool m_hasTextureCoordinates;
 };
 
-#endif /* defined(__bomber_party__Vertices2D__) */
+#endif /* defined(__battle_bombs__Vertices2D__) */

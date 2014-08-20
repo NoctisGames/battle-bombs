@@ -1,13 +1,13 @@
 //
 //  InterfaceOverlay.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 7/1/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__InterfaceOverlay__
-#define __bomberparty__InterfaceOverlay__
+#ifndef __battlebombs__InterfaceOverlay__
+#define __battlebombs__InterfaceOverlay__
 
 #include "GameConstants.h"
 #include "Color.h"
@@ -101,4 +101,4 @@ private:
     void updateMiniMap(int x, int y, int miniMapGridType);
 };
 
-#endif /* defined(__bomberparty__InterfaceOverlay__) */
+#endif /* defined(__battlebombs__InterfaceOverlay__) */

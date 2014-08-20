@@ -1,4 +1,4 @@
-package com.technegames.bomberparty;
+package com.technegames.battlebombs;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -10,7 +10,7 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.os.SystemClock;
 
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
-import com.technegames.bomberparty.platform.PlatformFileUtils;
+import com.technegames.battlebombs.platform.PlatformFileUtils;
 
 public final class RendererWrapper implements Renderer
 {

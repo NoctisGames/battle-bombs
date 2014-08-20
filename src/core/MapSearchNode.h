@@ -1,13 +1,13 @@
 //
 //  MapSearchNode.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 7/2/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__MapSearchNode__
-#define __bomberparty__MapSearchNode__
+#ifndef __battlebombs__MapSearchNode__
+#define __battlebombs__MapSearchNode__
 
 #include "stlastar.h" // See header for copyright and usage information
 
@@ -29,4 +29,4 @@ public:
 	void PrintNodeInfo();
 };
 
-#endif /* defined(__bomberparty__MapSearchNode__) */
+#endif /* defined(__battlebombs__MapSearchNode__) */

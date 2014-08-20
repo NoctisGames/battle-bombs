@@ -1,4 +1,4 @@
-package com.technegames.bomberparty;
+package com.technegames.battlebombs;
 
 import java.util.Map;
 import java.util.Set;

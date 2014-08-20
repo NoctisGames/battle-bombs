@@ -1,13 +1,13 @@
 //
 //  SpriteBatcher.h
-//  bomber-party
+//  battle-bombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__SpriteBatcher__
-#define __bomber_party__SpriteBatcher__
+#ifndef __battle_bombs__SpriteBatcher__
+#define __battle_bombs__SpriteBatcher__
 
 #include <memory>
 #include "Color.h"
@@ -49,4 +49,4 @@ private:
     void generateIndices(int maxSprites);
 };
 
-#endif /* defined(__bomber_party__SpriteBatcher__) */
+#endif /* defined(__battle_bombs__SpriteBatcher__) */

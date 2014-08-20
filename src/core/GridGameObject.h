@@ -1,13 +1,13 @@
 //
 //  GridGameObject.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 5/15/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__GridGameObject__
-#define __bomberparty__GridGameObject__
+#ifndef __battlebombs__GridGameObject__
+#define __battlebombs__GridGameObject__
 
 #include "GameObject.h"
 
@@ -25,4 +25,4 @@ public:
     int getGridY();
 };
 
-#endif /* defined(__bomberparty__GridGameObject__) */
+#endif /* defined(__battlebombs__GridGameObject__) */

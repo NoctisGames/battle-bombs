@@ -1,13 +1,13 @@
 //
 //  ActiveButton.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Mikel Adkins on 5/18/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__ActiveButton__
-#define __bomber_party__ActiveButton__
+#ifndef __battle_bombs__ActiveButton__
+#define __battle_bombs__ActiveButton__
 
 #include "GameObject.h"
 #include "PowerUpType.h"

@@ -1,13 +1,13 @@
 //
 //  PlayerAvatar.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 7/14/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__PlayerAvatar__
-#define __bomberparty__PlayerAvatar__
+#ifndef __battlebombs__PlayerAvatar__
+#define __battlebombs__PlayerAvatar__
 
 #include "GameObject.h"
 #include "PlayerState.h"
@@ -35,4 +35,4 @@ private:
     bool m_isBot;
 };
 
-#endif /* defined(__bomberparty__PlayerAvatar__) */
+#endif /* defined(__battlebombs__PlayerAvatar__) */

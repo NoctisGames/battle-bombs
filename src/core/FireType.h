@@ -1,13 +1,13 @@
 //
 //  FireType.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 6/21/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__FireType__
-#define __bomberparty__FireType__
+#ifndef __battlebombs__FireType__
+#define __battlebombs__FireType__
 
 typedef enum
 {
@@ -40,4 +40,4 @@ typedef enum
     NECK_AND_BODY_END
 } Fire_Type;
 
-#endif /* defined(__bomberparty__FireType__) */
+#endif /* defined(__battlebombs__FireType__) */

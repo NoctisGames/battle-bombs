@@ -1,13 +1,13 @@
 //
 //  PathFinder.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 7/2/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__PathFinder__
-#define __bomberparty__PathFinder__
+#ifndef __battlebombs__PathFinder__
+#define __battlebombs__PathFinder__
 
 #include "GameConstants.h"
 #include "Node.h"
@@ -65,4 +65,4 @@ private:
     void operator=(PathFinder const&); // Don't implement
 };
 
-#endif /* defined(__bomberparty__PathFinder__) */
+#endif /* defined(__battlebombs__PathFinder__) */

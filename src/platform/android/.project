@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>bomber-party</name>
+	<name>battle-bombs</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -30,7 +30,7 @@
 			<arguments>
 				<dictionary>
 					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/Bomber Party NDK Builder.launch</value>
+					<value>&lt;project&gt;/.externalToolBuilders/Battle Bombs NDK Builder.launch</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>

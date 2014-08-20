@@ -1,13 +1,13 @@
 //
 //  SpectatorControls.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 7/16/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__SpectatorControls__
-#define __bomberparty__SpectatorControls__
+#ifndef __battlebombs__SpectatorControls__
+#define __battlebombs__SpectatorControls__
 
 #include "GameObject.h"
 #include "SpectatorControlState.h"
@@ -27,4 +27,4 @@ private:
     Spectator_Control_State m_state;
 };
 
-#endif /* defined(__bomberparty__SpectatorControls__) */
+#endif /* defined(__battlebombs__SpectatorControls__) */

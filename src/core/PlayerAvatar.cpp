@@ -1,6 +1,6 @@
 //
 //  PlayerAvatar.cpp
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 7/14/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.

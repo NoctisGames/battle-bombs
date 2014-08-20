@@ -166,7 +166,7 @@
 		0ADF187B178E2185005DA99E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		0ADF187D178E2185005DA99E /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		0ADF187F178E2185005DA99E /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		0ADF1883178E2185005DA99E /* bomberparty-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "bomberparty-Info.plist"; sourceTree = "<group>"; };
+		0ADF1883178E2185005DA99E /* battlebombs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "battlebombs-Info.plist"; sourceTree = "<group>"; };
 		0ADF1885178E2185005DA99E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0ADF1887178E2185005DA99E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0ADF188A178E2185005DA99E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -599,7 +599,7 @@
 			isa = PBXGroup;
 			children = (
 				BBD079F518AA879D00E010AF /* assets */,
-				0ADF1883178E2185005DA99E /* bomberparty-Info.plist */,
+				0ADF1883178E2185005DA99E /* battlebombs-Info.plist */,
 				0ADF1884178E2185005DA99E /* InfoPlist.strings */,
 				BB74E80518C2541F007C223E /* Localizable.strings */,
 				0ADF1887178E2185005DA99E /* main.m */,
@@ -709,9 +709,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0ADF1873178E2185005DA99E /* bomberparty */ = {
+		0ADF1873178E2185005DA99E /* battlebombs */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0ADF18A2178E2185005DA99E /* Build configuration list for PBXNativeTarget "bomberparty" */;
+			buildConfigurationList = 0ADF18A2178E2185005DA99E /* Build configuration list for PBXNativeTarget "battlebombs" */;
 			buildPhases = (
 				0ADF1870178E2185005DA99E /* Sources */,
 				0ADF1871178E2185005DA99E /* Frameworks */,
@@ -721,7 +721,7 @@
 			);
 			dependencies = (
 			);
-			name = bomberparty;
+			name = battlebombs;
 			productName = airhockey;
 			productReference = 0ADF1874178E2185005DA99E /* Battle Bombs.app */;
 			productType = "com.apple.product-type.application";
@@ -740,7 +740,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 0ADF186F178E2185005DA99E /* Build configuration list for PBXProject "bomberparty" */;
+			buildConfigurationList = 0ADF186F178E2185005DA99E /* Build configuration list for PBXProject "battlebombs" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -752,7 +752,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0ADF1873178E2185005DA99E /* bomberparty */,
+				0ADF1873178E2185005DA99E /* battlebombs */,
 			);
 		};
 /* End PBXProject section */
@@ -1001,7 +1001,7 @@
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty\"/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "bomberparty-Prefix.pch";
+				GCC_PREFIX_HEADER = "battlebombs-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					TECHNE_GAMES_OPENGL_ES,
 					"DEBUG=1",
@@ -1012,7 +1012,7 @@
 					"\"$(SRCROOT)/../common\"",
 					"\"$(SRCROOT)/../../3rdparty\"/**",
 				);
-				INFOPLIST_FILE = "bomberparty-Info.plist";
+				INFOPLIST_FILE = "battlebombs-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1038,7 +1038,7 @@
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty\"/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "bomberparty-Prefix.pch";
+				GCC_PREFIX_HEADER = "battlebombs-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					TECHNE_GAMES_OPENGL_ES,
 					TECHNE_GAMES_IOS,
@@ -1048,7 +1048,7 @@
 					"\"$(SRCROOT)/../common\"",
 					"\"$(SRCROOT)/../../3rdparty\"/**",
 				);
-				INFOPLIST_FILE = "bomberparty-Info.plist";
+				INFOPLIST_FILE = "battlebombs-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = NO;
@@ -1068,7 +1068,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0ADF186F178E2185005DA99E /* Build configuration list for PBXProject "bomberparty" */ = {
+		0ADF186F178E2185005DA99E /* Build configuration list for PBXProject "battlebombs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0ADF18A0178E2185005DA99E /* Debug */,
@@ -1077,7 +1077,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0ADF18A2178E2185005DA99E /* Build configuration list for PBXNativeTarget "bomberparty" */ = {
+		0ADF18A2178E2185005DA99E /* Build configuration list for PBXNativeTarget "battlebombs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0ADF18A3178E2185005DA99E /* Debug */,

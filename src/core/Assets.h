@@ -1,13 +1,13 @@
 //
 //  Assets.h
-//  bomber-party
+//  battle-bombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__Assets__
-#define __bomber_party__Assets__
+#ifndef __battle_bombs__Assets__
+#define __battle_bombs__Assets__
 
 #include "ResourceConstants.h"
 #include "PowerUpType.h"
@@ -89,4 +89,4 @@ private:
     short m_sMusicId;
 };
 
-#endif /* defined(__bomber_party__Assets__) */
+#endif /* defined(__battle_bombs__Assets__) */

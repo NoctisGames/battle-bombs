@@ -1,6 +1,6 @@
 //
 //  GameSession.cpp
-//  bomber-party
+//  battle-bombs
 //
 //  Created by Stephen Gowen on 3/21/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.

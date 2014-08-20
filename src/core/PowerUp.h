@@ -1,13 +1,13 @@
 //
 //  PowerUp.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Mikel Adkins on 5/10/2014.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__PowerUp__
-#define __bomberparty__PowerUp__
+#ifndef __battlebombs__PowerUp__
+#define __battlebombs__PowerUp__
 
 #include "GridGameObject.h"
 #include "PowerUpType.h"
@@ -36,4 +36,4 @@ private:
 	Power_Up_Type m_powerUpType;
 };
 
-#endif /* defined (__bomberparty__PowerUp__) */
+#endif /* defined (__battlebombs__PowerUp__) */

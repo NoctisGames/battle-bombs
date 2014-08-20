@@ -1,4 +1,4 @@
-package com.technegames.bomberparty;
+package com.technegames.battlebombs;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -28,6 +28,7 @@ import com.shephertz.app42.gaming.multiplayer.client.listener.LobbyRequestListen
 import com.shephertz.app42.gaming.multiplayer.client.listener.NotifyListener;
 import com.shephertz.app42.gaming.multiplayer.client.listener.RoomRequestListener;
 import com.shephertz.app42.gaming.multiplayer.client.listener.ZoneRequestListener;
+import com.technegames.battlebombs.R;
 
 public final class MainActivity extends Activity implements ChatRequestListener, ConnectionRequestListener, LobbyRequestListener, NotifyListener, RoomRequestListener, ZoneRequestListener
 {

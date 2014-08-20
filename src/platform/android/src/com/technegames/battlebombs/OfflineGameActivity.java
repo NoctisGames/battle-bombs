@@ -1,4 +1,6 @@
-package com.technegames.bomberparty;
+package com.technegames.battlebombs;
+
+import com.technegames.battlebombs.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

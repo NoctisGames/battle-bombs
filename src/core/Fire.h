@@ -1,13 +1,13 @@
 //
 //  Fire.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 6/21/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__Fire__
-#define __bomberparty__Fire__
+#ifndef __battlebombs__Fire__
+#define __battlebombs__Fire__
 
 #include "GridGameObject.h"
 #include "GameConstants.h"
@@ -31,4 +31,4 @@ private:
     bool m_isExhausted;
 };
 
-#endif /* defined(__bomberparty__Fire__) */
+#endif /* defined(__battlebombs__Fire__) */

@@ -1,13 +1,13 @@
 //
 //  MapBorder.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 6/23/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__MapBorder__
-#define __bomberparty__MapBorder__
+#ifndef __battlebombs__MapBorder__
+#define __battlebombs__MapBorder__
 
 #include "GameObject.h"
 #include "MapBorderType.h"
@@ -25,4 +25,4 @@ private:
     Map_Border_Type m_type;
 };
 
-#endif /* defined(__bomberparty__MapBorder__) */
+#endif /* defined(__battlebombs__MapBorder__) */

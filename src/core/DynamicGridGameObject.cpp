@@ -1,6 +1,6 @@
 //
 //  DynamicGridGameObject.cpp
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 5/15/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.

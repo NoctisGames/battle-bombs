@@ -1,13 +1,13 @@
 //
 //  Renderer.h
-//  bomber-party
+//  battle-bombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__Renderer__
-#define __bomber_party__Renderer__
+#ifndef __battle_bombs__Renderer__
+#define __battle_bombs__Renderer__
 
 #define WORLD_BACKGROUND_X SCREEN_WIDTH / 2
 #define WORLD_BACKGROUND_Y SCREEN_HEIGHT
@@ -85,4 +85,4 @@ protected:
     virtual void renderGameObjectWithRespectToPlayer(GameObject &go, TextureRegion tr) = 0;
 };
 
-#endif /* defined(__bomber_party__Renderer__) */
+#endif /* defined(__battle_bombs__Renderer__) */

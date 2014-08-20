@@ -1,13 +1,13 @@
 //
 //  Color.h
-//  bomber-party
+//  battle-bombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__Color__
-#define __bomber_party__Color__
+#ifndef __battle_bombs__Color__
+#define __battle_bombs__Color__
 
 struct Color
 {
@@ -22,4 +22,4 @@ struct Color
 	}
 };
 
-#endif /* defined(__bomber_party__Color__) */
+#endif /* defined(__battle_bombs__Color__) */

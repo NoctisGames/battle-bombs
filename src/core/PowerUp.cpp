@@ -1,6 +1,6 @@
 //
 //  PowerUp.cpp
-//  bomberparty
+//  battlebombs
 //
 //  Created by Mikel Adkins on 5/10/2014.
 //  Copyright (c) 2014 Techne Games. All rights reserved.

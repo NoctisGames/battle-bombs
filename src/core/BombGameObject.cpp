@@ -1,6 +1,6 @@
 //
 //  BombGameObject.cpp
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 4/28/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.

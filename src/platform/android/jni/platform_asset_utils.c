@@ -1,6 +1,6 @@
 //
 //  platform_asset_utils.c
-//  bomberparty
+//  battle-bombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -14,7 +14,7 @@
 
 static AAssetManager *asset_manager;
 
-JNIEXPORT void JNICALL Java_com_technegames_bomberparty_platform_PlatformFileUtils_init_1asset_1manager(JNIEnv * env, jclass jclazz, jobject java_asset_manager)
+JNIEXPORT void JNICALL Java_com_technegames_battlebombs_platform_PlatformFileUtils_init_1asset_1manager(JNIEnv * env, jclass jclazz, jobject java_asset_manager)
 {
 	UNUSED(jclazz);
 	asset_manager = AAssetManager_fromJava(env, java_asset_manager);

@@ -1,13 +1,13 @@
 //
 //  DPadControlState.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 7/12/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef bomberparty_DPadControlState_h
-#define bomberparty_DPadControlState_h
+#ifndef battlebombs_DPadControlState_h
+#define battlebombs_DPadControlState_h
 
 typedef enum
 {

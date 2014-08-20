@@ -1,13 +1,13 @@
 //
 //  DPadControl.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 3/9/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__DPadControl__
-#define __bomberparty__DPadControl__
+#ifndef __battlebombs__DPadControl__
+#define __battlebombs__DPadControl__
 
 #include "GameObject.h"
 #include "DPadControlState.h"
@@ -33,4 +33,4 @@ private:
     DPad_Control_State m_state;
 };
 
-#endif /* defined(__bomberparty__DPadControl__) */
+#endif /* defined(__battlebombs__DPadControl__) */

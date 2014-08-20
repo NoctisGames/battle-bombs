@@ -1,13 +1,13 @@
 //
 //  GameButton.h
-//  bomber-party
+//  battle-bombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__GameButton__
-#define __bomber_party__GameButton__
+#ifndef __battle_bombs__GameButton__
+#define __battle_bombs__GameButton__
 
 #include "GameObject.h"
 
@@ -17,4 +17,4 @@ public:
     GameButton(float x, float y, float width, float height);
 };
 
-#endif /* defined(__bomber_party__GameButton__) */
+#endif /* defined(__battle_bombs__GameButton__) */

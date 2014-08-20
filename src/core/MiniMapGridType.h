@@ -1,13 +1,13 @@
 //
 //  MiniMapGridType.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 7/15/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef bomberparty_MiniMapGridType_h
-#define bomberparty_MiniMapGridType_h
+#ifndef battlebombs_MiniMapGridType_h
+#define battlebombs_MiniMapGridType_h
 
 #define MINI_MAP_FREE_SPACE 0
 #define MINI_MAP_INSIDE_BLOCK 1
