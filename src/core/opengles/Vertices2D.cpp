@@ -1,6 +1,6 @@
 //
 //  Vertices2D.cpp
-//  battle-bombs
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.

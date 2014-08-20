@@ -1,6 +1,6 @@
 //
 //  PowerUpType.h
-//  battle-bombs
+//  battlebombs
 //
 //  Created by Mikel Adkins	 on 5/16/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
