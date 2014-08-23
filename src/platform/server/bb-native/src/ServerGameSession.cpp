@@ -116,6 +116,7 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
             if ((rand() % 100 + 1) < 71)
             {
                 int flag = 0;
+                
                 // Generate a random number from 1 - 100
                 // This will be used to determine which type of powerups will appear
                 int flagRange = (rand() % 100 + 1);
@@ -124,18 +125,18 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
                 // Some Power Up are more rare than others,
                 // so that should be reflected here
 
-                // 40% chance of a random passive powerup
+                // 50% chance of a random passive powerup
                 // These all have an equal chance of showing up
-                if (flagRange < 41)
+                if (flagRange <= 50)
                 {
-                    flag = rand() % 3 + 1;
+                    flag = rand() % 4 + 1;
                 }
-                else if (flagRange > 40 && flagRange < 61)
+                else if (flagRange > 50 && flagRange < 70)
                 {
                     // 20% chance of an active powerup
                     // We'll determine the weight of these once we get them created and play with them a bit
-                    // Right now, it just sets the flag to 4 as a placeholder value for the Kick
-                    flag = 4;
+                    // Right now, it just sets the flag to 5 as a placeholder value for the Push
+                    flag = 5;
                 }
 
                 // If these two blocks don't get caught, the flag remains 0 and no powerup will be created
