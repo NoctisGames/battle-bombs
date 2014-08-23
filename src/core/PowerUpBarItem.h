@@ -17,16 +17,16 @@ class PowerUpBarItem : public GameObject
 public:
     PowerUpBarItem(float x, float y, float width, float height);
     
-    void setPowerUpType(Power_Up_Type powerUpType);
+    void setPowerUpType(int powerUpType);
     
-    Power_Up_Type getPowerUpType();
+    int getPowerUpType();
     
     void setLevel(int level);
     
     int getLevel();
     
 private:
-    Power_Up_Type m_powerUpType;
+    int m_powerUpType;
     int m_iLevel;
 };
 

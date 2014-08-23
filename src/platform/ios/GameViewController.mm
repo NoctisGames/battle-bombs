@@ -79,12 +79,14 @@ static Logger *logger = nil;
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
     
-    [[WarpClient getInstance] addChatRequestListener:self];
-    [[WarpClient getInstance] addConnectionRequestListener:self];
-    [[WarpClient getInstance] addLobbyRequestListener:self];
-    [[WarpClient getInstance] addNotificationListener:self];
-    [[WarpClient getInstance] addRoomRequestListener:self];
-    [[WarpClient getInstance] addZoneRequestListener:self];
+    WarpClient *warpClient = [WarpClient getInstance];
+    
+    [warpClient addChatRequestListener:self];
+    [warpClient addConnectionRequestListener:self];
+    [warpClient addLobbyRequestListener:self];
+    [warpClient addNotificationListener:self];
+    [warpClient addRoomRequestListener:self];
+    [warpClient addZoneRequestListener:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -456,13 +458,15 @@ static Logger *logger = nil;
         
         reset_time_since_last_client_event();
         
-        [[WarpClient getInstance] sendChat:eventsMessage];
+        WarpClient *warpClient = [WarpClient getInstance];
+        [warpClient sendChat:eventsMessage];
     }
     else if(is_time_to_send_keep_alive())
     {
         reset_time_since_last_client_event();
         
-        [[WarpClient getInstance] sendChat:KEEP_ALIVE];
+        WarpClient *warpClient = [WarpClient getInstance];
+        [warpClient sendChat:KEEP_ALIVE];
     }
 }
 
@@ -545,8 +549,8 @@ static Logger *logger = nil;
     [warpClient removeRoomRequestListener:self];
     [warpClient removeZoneRequestListener:self];
     
-    [[WarpClient getInstance] leaveRoom:self.joinedRoomId];
-    [[WarpClient getInstance] disconnect];
+    [warpClient leaveRoom:self.joinedRoomId];
+    [warpClient disconnect];
     
     if (![self.presentedViewController isBeingDismissed])
     {

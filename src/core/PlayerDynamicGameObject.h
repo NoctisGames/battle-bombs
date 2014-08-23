@@ -73,7 +73,7 @@ public:
     
     Player_Action_State getPlayerActionState();
 
-    Power_Up_Type getActivePowerUp();
+    int getActivePowerUp();
 
     short getPlayerIndex();
     
@@ -102,8 +102,10 @@ protected:
     int m_iCurrentBombCount;
     short m_firePower;
     int m_activePowerUpIndex;
-    Power_Up_Type m_activePowerUp;
+    int m_activePowerUp;
     short m_sPlayerIndex;
+    int m_iPlayerForceFieldState;
+    float m_fPlayerForceFieldStateTime;
     GameListener *m_gameListener;
     
 private:
@@ -111,6 +113,8 @@ private:
     bool m_isBot;
     
     bool isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
+    
+    void setPlayerForceFieldState(int playerForceFieldState);
 };
 
 #endif /* defined(__battlebombs__PlayerDynamicGameObject__) */

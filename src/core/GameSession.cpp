@@ -398,16 +398,19 @@ void GameSession::handlePlayerEvent(int event)
             m_players.at(playerIndex).get()->onDeath();
             break;
         case PLAYER_PU_BOMB:
-            m_players.at(playerIndex).get()->collectPowerUp(1);
+            m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_BOMB);
             break;
         case PLAYER_PU_FIRE:
-            m_players.at(playerIndex).get()->collectPowerUp(2);
+            m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_FIRE);
+            break;
+        case PLAYER_PU_FORCE_FIELD:
+            m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_FORCE_FIELD);
             break;
         case PLAYER_PU_SPEED:
-            m_players.at(playerIndex).get()->collectPowerUp(3);
+            m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_SPEED);
             break;
         case PLAYER_PU_PUSH:
-            m_players.at(playerIndex).get()->collectPowerUp(4);
+            m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_PUSH);
             break;
         default:
             break;

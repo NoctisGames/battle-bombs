@@ -21,6 +21,7 @@
 #include "GameListener.h"
 #include "Fire.h"
 #include "GameEvent.h"
+#include "PlayerForceFieldState.h"
 
 #include <cstring>
 
@@ -33,10 +34,11 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
     m_iSpeed = 3;
     m_firePower = 1;
     m_iDirection = direction;
-	m_activePowerUp = NONE;
+	m_activePowerUp = POWER_UP_TYPE_NONE;
 
     m_iMaxBombCount = 1;
     m_iCurrentBombCount = 0;
+    setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_OFF);
 
     m_sPlayerIndex = playerIndex;
 
@@ -193,13 +195,15 @@ bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explo
 {
     if (m_playerState == ALIVE && m_playerActionState != WINNING)
     {
+        bool isHitByExplosion = false;
+        
         for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
         {
             for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
             {
                 if ((*itr2)->isDeadly() && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr2)->getBounds()))
                 {
-                    return true;
+                    isHitByExplosion = true;
                 }
             }
         }
@@ -208,9 +212,17 @@ bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explo
         {
             if ((*itr)->isExploding() && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
             {
-                return true;
+                isHitByExplosion = true;
             }
         }
+        
+        if(isHitByExplosion && m_iPlayerForceFieldState != PLAYER_FORCE_FIELD_STATE_OFF)
+        {
+            setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN);
+            isHitByExplosion = false;
+        }
+        
+        return isHitByExplosion;
     }
 
     return false;
@@ -222,23 +234,24 @@ void PlayerDynamicGameObject::handlePowerUps(std::vector<std::unique_ptr<PowerUp
     {
         if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
         {
-            int type = (*itr)->getPowerUpFlag();
+            (*itr)->onPickedUp();
+            
+            int type = (*itr)->getType();
             switch (type)
             {
-                case 1:
-                    (*itr)->onPickedUp();
+                case POWER_UP_TYPE_BOMB:
                     m_gameListener->addLocalEventForPlayer(PLAYER_PU_BOMB, *this);
                     break;
-                case 2:
-                    (*itr)->onPickedUp();
+                case POWER_UP_TYPE_FIRE:
                     m_gameListener->addLocalEventForPlayer(PLAYER_PU_FIRE, *this);
                     break;
-                case 3:
-                    (*itr)->onPickedUp();
+                case POWER_UP_TYPE_FORCE_FIELD:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_FORCE_FIELD, *this);
+                    break;
+                case POWER_UP_TYPE_SPEED:
                     m_gameListener->addLocalEventForPlayer(PLAYER_PU_SPEED, *this);
                     break;
-                case 4:
-                    (*itr)->onPickedUp();
+                case POWER_UP_TYPE_PUSH:
                     m_gameListener->addLocalEventForPlayer(PLAYER_PU_PUSH, *this);
                     break;
             }
@@ -320,17 +333,23 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
 {
     switch (powerUpFlag)
     {
-        case 1:
+        case POWER_UP_TYPE_BOMB:
             m_iMaxBombCount++;
             break;
-        case 2:
+        case POWER_UP_TYPE_FIRE:
             m_firePower++;
             break;
-        case 3:
+        case POWER_UP_TYPE_FORCE_FIELD:
+            if(m_iPlayerForceFieldState != PLAYER_FORCE_FIELD_STATE_ON)
+            {
+                setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_TURNING_ON);
+            }
+            break;
+        case POWER_UP_TYPE_SPEED:
             m_iSpeed++;
             break;
-        case 4:
-            m_activePowerUp = PUSH;
+        case POWER_UP_TYPE_PUSH:
+            m_activePowerUp = POWER_UP_TYPE_PUSH;
             break;
     }
 }
@@ -350,7 +369,7 @@ Player_Action_State PlayerDynamicGameObject::getPlayerActionState()
     return m_playerActionState;
 }
 
-Power_Up_Type PlayerDynamicGameObject::getActivePowerUp()
+int PlayerDynamicGameObject::getActivePowerUp()
 {
     return m_activePowerUp;
 }
@@ -443,4 +462,10 @@ bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder 
     }
     
     return false;
+}
+
+void PlayerDynamicGameObject::setPlayerForceFieldState(int playerForceFieldState)
+{
+    m_iPlayerForceFieldState = playerForceFieldState;
+    m_fPlayerForceFieldStateTime = 0;
 }

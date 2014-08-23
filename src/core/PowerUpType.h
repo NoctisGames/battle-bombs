@@ -10,14 +10,11 @@
 #ifndef __battlebombs__PowerUpType__
 #define __battlebombs__PowerUpType__
 
-typedef enum
-{
-	NONE,
-	FIRE,
-	BOMB,
-	SPEED,		
-	PUSH,
-	THROW
-} Power_Up_Type;
+#define POWER_UP_TYPE_NONE 0
+#define POWER_UP_TYPE_BOMB 1
+#define POWER_UP_TYPE_FIRE 2
+#define POWER_UP_TYPE_FORCE_FIELD 3
+#define POWER_UP_TYPE_SPEED 4
+#define POWER_UP_TYPE_PUSH 5
 
 #endif

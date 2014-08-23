@@ -18,9 +18,9 @@ class ActiveButton : public GameObject
 public:
 	ActiveButton(float x, float y, float width, float height);
     
-    void setPowerUpType(Power_Up_Type powerUpType);
+    void setPowerUpType(int powerUpType);
     
-    Power_Up_Type getPowerUpType();
+    int getPowerUpType();
     
     void setButtonState(Button_State buttonState);
     
@@ -31,7 +31,7 @@ public:
     bool isPressed();
     
 private:
-    Power_Up_Type m_powerUpType;
+    int m_powerUpType;
     Button_State m_buttonState;
     bool m_isPressed;
 };

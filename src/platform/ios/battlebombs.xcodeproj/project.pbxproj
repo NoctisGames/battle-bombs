@@ -252,6 +252,7 @@
 		BB71029B196E079500C7BA2F /* map_grasslands.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_grasslands.png; sourceTree = "<group>"; };
 		BB71029C196E079500C7BA2F /* map_mountains.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_mountains.png; sourceTree = "<group>"; };
 		BB71029D196E079500C7BA2F /* map_space.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_space.png; sourceTree = "<group>"; };
+		BB724A9319A93FE80050859C /* PlayerForceFieldState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerForceFieldState.h; sourceTree = "<group>"; };
 		BB7305D4189C598C009F6DF4 /* AppPrefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppPrefs.h; sourceTree = "<group>"; };
 		BB7305D5189C598D009F6DF4 /* AppPrefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppPrefs.m; sourceTree = "<group>"; };
 		BB7305D6189C598D009F6DF4 /* Music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Music.h; sourceTree = "<group>"; };
@@ -471,6 +472,7 @@
 				BBD0A2C2197420C900804A7C /* PlayerAvatar.h */,
 				BB1B8C7F18C8B13300C72D2D /* PlayerDynamicGameObject.cpp */,
 				BB1B8C8018C8B13300C72D2D /* PlayerDynamicGameObject.h */,
+				BB724A9319A93FE80050859C /* PlayerForceFieldState.h */,
 				BB47C9BD18F326D4002ED03B /* PlayerState.h */,
 				BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */,
 				BB9D93BD191FB4EC00AD9CCE /* PowerUp.h */,

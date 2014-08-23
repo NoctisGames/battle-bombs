@@ -12,15 +12,15 @@
 
 PowerUpBarItem::PowerUpBarItem(float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
 {
-    m_powerUpType = NONE;
+    m_powerUpType = POWER_UP_TYPE_NONE;
 }
 
-void PowerUpBarItem::setPowerUpType(Power_Up_Type powerUpType)
+void PowerUpBarItem::setPowerUpType(int powerUpType)
 {
     m_powerUpType = powerUpType;
 }
 
-Power_Up_Type PowerUpBarItem::getPowerUpType()
+int PowerUpBarItem::getPowerUpType()
 {
     return m_powerUpType;
 }

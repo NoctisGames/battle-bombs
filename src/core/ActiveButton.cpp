@@ -12,17 +12,17 @@
 
 ActiveButton::ActiveButton(float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
 {
-    m_powerUpType = NONE;
+    m_powerUpType = POWER_UP_TYPE_NONE;
     m_buttonState = DISABLED;
     m_isPressed = false;
 }
 
-void ActiveButton::setPowerUpType(Power_Up_Type powerUpType)
+void ActiveButton::setPowerUpType(int powerUpType)
 {
     m_powerUpType = powerUpType;
 }
 
-Power_Up_Type ActiveButton::getPowerUpType()
+int ActiveButton::getPowerUpType()
 {
     return m_powerUpType;
 }

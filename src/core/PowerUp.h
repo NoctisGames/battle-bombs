@@ -15,7 +15,7 @@
 class PowerUp : public GridGameObject
 {
 public:
-	PowerUp(int gridX, int gridY, int powerUpFlag);
+	PowerUp(int gridX, int gridY, int m_powerUpType);
     
     void update(float deltaTime);
 
@@ -25,15 +25,12 @@ public:
     
     float getStateTime();
 
-	int getPowerUpFlag();
-
-	Power_Up_Type getType();
+	int getType();
 
 private:
     float m_fStateTime;
-	int m_powerUpFlag;
     bool m_isPickedUp;
-	Power_Up_Type m_powerUpType;
+	int m_powerUpType;
 };
 
 #endif /* defined (__battlebombs__PowerUp__) */

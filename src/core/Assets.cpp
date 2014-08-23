@@ -834,12 +834,12 @@ TextureRegion Assets::getPowerUpBarItemTextureRegion(PowerUpBarItem &powerUpBarI
     
     switch (powerUpBarItem.getPowerUpType())
     {
-        case FIRE:
+        case POWER_UP_TYPE_FIRE:
             return powerUpFireTextureRegions.at(getKeyFrameNumber(powerUpBarItemsStateTime, cycleTime, frames));
-        case SPEED:
+        case POWER_UP_TYPE_SPEED:
             return powerUpSpeedTextureRegions.at(getKeyFrameNumber(powerUpBarItemsStateTime, cycleTime, frames));
-        case BOMB:
-        case NONE:
+        case POWER_UP_TYPE_BOMB:
+        case POWER_UP_TYPE_NONE:
         default:
             return powerUpBombTextureRegions.at(getKeyFrameNumber(powerUpBarItemsStateTime, cycleTime, frames));
     }
@@ -847,7 +847,7 @@ TextureRegion Assets::getPowerUpBarItemTextureRegion(PowerUpBarItem &powerUpBarI
 
 TextureRegion Assets::getActiveButtonTextureRegion(ActiveButton &activeButton, float buttonsStateTime)
 {
-    if(activeButton.getPowerUpType() == PUSH)
+    if(activeButton.getPowerUpType() == POWER_UP_TYPE_PUSH)
     {
         static TextureRegion TR_BUTTON_PUSH_ENABLED_TEXTURE_REGION = TextureRegion(BUTTON_PUSH_ENABLED_TEXTURE_REGION_X, BUTTON_PUSH_ENABLED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
         static TextureRegion TR_BUTTON_PUSH_HIGHLIGHTED_TEXTURE_REGION = TextureRegion(BUTTON_PUSH_HIGHLIGHTED_TEXTURE_REGION_X, BUTTON_PUSH_HIGHLIGHTED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
@@ -954,6 +954,19 @@ TextureRegion Assets::getPowerUpTextureRegion(PowerUp &powerUp)
         powerUpFireTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_8_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
     }
     
+    static std::vector<TextureRegion> powerUpForceFieldTextureRegions;
+    if (powerUpForceFieldTextureRegions.size() == 0)
+    {
+        powerUpForceFieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpForceFieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_2_TEXTURE_REGION_X, POWER_UP_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpForceFieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_3_TEXTURE_REGION_X, POWER_UP_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpForceFieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_4_TEXTURE_REGION_X, POWER_UP_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpForceFieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_5_TEXTURE_REGION_X, POWER_UP_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpForceFieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_6_TEXTURE_REGION_X, POWER_UP_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpForceFieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_7_TEXTURE_REGION_X, POWER_UP_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpForceFieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_8_TEXTURE_REGION_X, POWER_UP_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+    }
+    
     static std::vector<TextureRegion> powerUpSpeedTextureRegions;
     if (powerUpSpeedTextureRegions.size() == 0)
     {
@@ -996,16 +1009,16 @@ TextureRegion Assets::getPowerUpTextureRegion(PowerUp &powerUp)
 
     switch (powerUp.getType())
     {
-        case FIRE:
-            return powerUpFireTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
-        case SPEED:
-            return powerUpSpeedTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
-        case PUSH:
-            return powerUpPushTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
-        case BOMB:
-        case NONE:
-        default:
+        case POWER_UP_TYPE_BOMB:
             return powerUpBombTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
+        case POWER_UP_TYPE_FIRE:
+            return powerUpFireTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
+        case POWER_UP_TYPE_FORCE_FIELD:
+            return powerUpForceFieldTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
+        case POWER_UP_TYPE_SPEED:
+            return powerUpSpeedTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
+        case POWER_UP_TYPE_PUSH:
+            return powerUpPushTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
     }
 }
 

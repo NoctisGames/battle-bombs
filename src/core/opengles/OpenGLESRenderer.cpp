@@ -307,13 +307,13 @@ void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     
     for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
     {
-        if((**itr).getPowerUpType() != NONE)
+        if((**itr).getPowerUpType() != POWER_UP_TYPE_NONE)
         {
             renderGameObject((**itr), Assets::getPowerUpBarItemTextureRegion((**itr), interfaceOverlay.getPowerUpBarItemsStateTime()));
         }
     }
     
-    if(interfaceOverlay.getActiveButton().getPowerUpType() == PUSH)
+    if(interfaceOverlay.getActiveButton().getPowerUpType() == POWER_UP_TYPE_PUSH)
     {
         renderGameObject(interfaceOverlay.getActiveButton(), Assets::getActiveButtonTextureRegion(interfaceOverlay.getActiveButton(), interfaceOverlay.getButtonsStateTime()));
     }
@@ -337,7 +337,7 @@ void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     
     for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
     {
-        if((**itr).getPowerUpType() != NONE)
+        if((**itr).getPowerUpType() != POWER_UP_TYPE_NONE)
         {
             std::stringstream ss2;
             ss2 << (*itr)->getLevel();

@@ -138,19 +138,19 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
         
         if(player.getMaxBombCount() > 1)
         {
-            m_powerUpBarItems.at(0).get()->setPowerUpType(BOMB);
+            m_powerUpBarItems.at(0).get()->setPowerUpType(POWER_UP_TYPE_BOMB);
             m_powerUpBarItems.at(0).get()->setLevel(player.getMaxBombCount() - 1);
         }
         
         if(player.getFirePower() > 1)
         {
-            m_powerUpBarItems.at(1).get()->setPowerUpType(FIRE);
+            m_powerUpBarItems.at(1).get()->setPowerUpType(POWER_UP_TYPE_FIRE);
             m_powerUpBarItems.at(1).get()->setLevel(player.getFirePower() - 1);
         }
         
         if(player.getSpeed() > 3)
         {
-            m_powerUpBarItems.at(2).get()->setPowerUpType(SPEED);
+            m_powerUpBarItems.at(2).get()->setPowerUpType(POWER_UP_TYPE_SPEED);
             m_powerUpBarItems.at(2).get()->setLevel(player.getSpeed() - 3);
         }
         
@@ -164,7 +164,7 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
             m_activeButton->setPowerUpType(player.getActivePowerUp());
             m_activeButton->setButtonState(DISABLED);
             
-            if(m_activeButton->getPowerUpType() == PUSH)
+            if(m_activeButton->getPowerUpType() == POWER_UP_TYPE_PUSH)
             {
                 for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
                 {
@@ -238,7 +238,7 @@ void InterfaceOverlay::handleTouchDownInputRunning(Vector2D &touchPoint, PlayerD
 		// TODO, handle more actions like Shield, Throw, etc.
 		switch (player.getActivePowerUp())
 		{
-		case PUSH:
+		case POWER_UP_TYPE_PUSH:
 			for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
 			{
 				if (player.isBombInFrontOfPlayer(**itr))

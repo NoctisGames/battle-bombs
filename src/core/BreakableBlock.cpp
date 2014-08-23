@@ -40,7 +40,7 @@ void BreakableBlock::onDestroy()
 
 bool BreakableBlock::hasPowerUp()
 {
-    return m_powerUpFlag > 0;
+    return m_powerUpFlag != POWER_UP_TYPE_NONE;
 }
 
 float BreakableBlock::getX()
