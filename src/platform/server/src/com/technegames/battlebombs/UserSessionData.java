@@ -1,4 +1,4 @@
-package com.technegames.bomberparty;
+package com.technegames.battlebombs;
 
 /**
  *
@@ -8,7 +8,7 @@ public final class UserSessionData
 {
     public long _timeSinceLastChat;
     public short _playerIndex;
-    
+
     public UserSessionData(long timeSinceLastChat, short playerIndex)
     {
         _timeSinceLastChat = timeSinceLastChat;

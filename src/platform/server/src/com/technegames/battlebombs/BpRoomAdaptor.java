@@ -1,4 +1,4 @@
-package com.technegames.bomberparty;
+package com.technegames.battlebombs;
 
 import com.shephertz.app42.server.idomain.BaseRoomAdaptor;
 import com.shephertz.app42.server.idomain.HandlingResult;
@@ -17,7 +17,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
 {
     static
     {
-        System.load("C:\\Users\\sgowen\\Documents\\GitHub\\bomber-party\\src\\platform\\server\\bp-native\\dist\\libBpNative.dll");
+        System.load("C:\\Users\\sgowen\\Documents\\GitHub\\battle-bombs\\src\\platform\\server\\bb-native\\dist\\libBbNative.dll");
     }
 
     private static final String GAME_BEGIN_LOG = "~~~~~~~~~~~~~~~~~~~ GAME BEGIN ~~~~~~~~~~~~~~~~~~~";
@@ -425,7 +425,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                 eventId += PLAYER_EVENT_DIRECTION_BASE * get_player_direction(_room.getId(), playerIndex);
                 eventId += PLAYER_EVENT_GRID_X_BASE * get_player_x(_room.getId(), playerIndex);
                 eventId += PLAYER_EVENT_GRID_Y_BASE * get_player_y(_room.getId(), playerIndex);
-                
+
                 String playerDeathEventString = String.valueOf(eventId);
                 playerDeathEventString = playerDeathEventString.concat(",0");
 
