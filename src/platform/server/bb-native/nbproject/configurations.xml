@@ -27,6 +27,7 @@
       <itemPath>../../../core/OverlapTester.h</itemPath>
       <itemPath>../../../core/PathFinder.h</itemPath>
       <itemPath>../../../core/PlayerDynamicGameObject.h</itemPath>
+      <itemPath>../../../core/PlayerForceFieldState.h</itemPath>
       <itemPath>../../../core/PlayerState.h</itemPath>
       <itemPath>../../../core/PowerUp.h</itemPath>
       <itemPath>../../../core/PowerUpType.h</itemPath>
@@ -225,6 +226,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../../../core/PlayerForceFieldState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../../../core/PlayerState.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/PowerUp.cpp" ex="false" tool="1" flavor2="0">
@@ -398,6 +404,11 @@
             flavor2="0">
       </item>
       <item path="../../../core/PlayerDynamicGameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/PlayerForceFieldState.h"
             ex="false"
             tool="3"
             flavor2="0">
