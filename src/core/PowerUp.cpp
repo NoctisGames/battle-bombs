@@ -11,11 +11,11 @@
 #include "Rectangle.h"
 #include "GameConstants.h"
 
-PowerUp::PowerUp(int gridX, int gridY, int m_powerUpType) : GridGameObject(gridX, gridY, GRID_CELL_WIDTH * 4 / 5, GRID_CELL_HEIGHT * 4 / 5, 0)
+PowerUp::PowerUp(int gridX, int gridY, int powerUpType) : GridGameObject(gridX, gridY, GRID_CELL_WIDTH * 4 / 5, GRID_CELL_HEIGHT * 4 / 5, 0)
 {
     m_fStateTime = 0;
 	m_isPickedUp = false;
-	m_powerUpType = m_powerUpType;
+	m_powerUpType = powerUpType;
 }
 
 void PowerUp::update(float deltaTime)

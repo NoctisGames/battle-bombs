@@ -36,6 +36,10 @@ public:
     float getStateTime();
 
     int getDirection();
+    
+    float getPlayerForceFieldStateTime();
+    
+    int getPlayerForceFieldState();
 
     short getFirePower();
     

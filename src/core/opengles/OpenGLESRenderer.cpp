@@ -32,6 +32,7 @@
 #include "MiniMapGridType.h"
 #include "Rectangle.h"
 #include "Vertices2D.h"
+#include "PlayerForceFieldState.h"
 #include "SpectatorControls.h"
 
 #include <sstream>
@@ -255,6 +256,18 @@ void OpenGLESRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
             }
         }
     }
+    
+    m_spriteBatcher->beginBatch();
+    
+    for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
+    {
+        if((**itr).getPlayerState() != Player_State::DEAD && (**itr).getPlayerForceFieldState() != PLAYER_FORCE_FIELD_STATE_OFF)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getForceFieldTextureRegion((**itr).getPlayerForceFieldState(), (**itr).getPlayerForceFieldStateTime()));
+        }
+    }
+    
+    m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
 }
 
 void OpenGLESRenderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)

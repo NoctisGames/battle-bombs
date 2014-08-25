@@ -15,7 +15,7 @@
 class PowerUp : public GridGameObject
 {
 public:
-	PowerUp(int gridX, int gridY, int m_powerUpType);
+	PowerUp(int gridX, int gridY, int powerUpType);
     
     void update(float deltaTime);
 

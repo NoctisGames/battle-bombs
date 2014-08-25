@@ -62,6 +62,8 @@ public:
     
     static TextureRegion getFireTextureRegion(Fire &fire);
     
+    static TextureRegion getForceFieldTextureRegion(int forceFieldState, float forceFieldStateTime);
+    
     static TextureRegion getPowerUpBarItemTextureRegion(PowerUpBarItem &powerUpBarItem, float powerUpBarItemsStateTime);
     
     static TextureRegion getActiveButtonTextureRegion(ActiveButton &activeButton, float buttonsStateTime);

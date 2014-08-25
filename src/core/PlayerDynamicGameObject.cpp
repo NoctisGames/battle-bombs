@@ -64,6 +64,26 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
             }
         }
         
+        if(m_iPlayerForceFieldState != PLAYER_FORCE_FIELD_STATE_OFF)
+        {
+            m_fPlayerForceFieldStateTime += deltaTime;
+            
+            if(m_iPlayerForceFieldState == PLAYER_FORCE_FIELD_STATE_TURNING_ON)
+            {
+                if(m_fPlayerForceFieldStateTime > 0.5f)
+                {
+                    m_iPlayerForceFieldState = PLAYER_FORCE_FIELD_STATE_ON;
+                }
+            }
+            else if(m_iPlayerForceFieldState == PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN)
+            {
+                if(m_fPlayerForceFieldStateTime > 0.7f)
+                {
+                    m_iPlayerForceFieldState = PLAYER_FORCE_FIELD_STATE_OFF;
+                }
+            }
+        }
+        
         float deltaX = m_velocity->getX() * deltaTime;
         float deltaY = m_velocity->getY() * deltaTime;
 
@@ -116,6 +136,16 @@ float PlayerDynamicGameObject::getStateTime()
 int PlayerDynamicGameObject::getDirection()
 {
     return m_iDirection;
+}
+
+float PlayerDynamicGameObject::getPlayerForceFieldStateTime()
+{
+    return m_fPlayerForceFieldStateTime;
+}
+
+int PlayerDynamicGameObject::getPlayerForceFieldState()
+{
+    return m_iPlayerForceFieldState;
 }
 
 void PlayerDynamicGameObject::setDirection(int direction)

@@ -25,6 +25,7 @@
 #include "BombButton.h"
 #include "PlayerAvatar.h"
 #include "SpectatorControls.h"
+#include "PlayerForceFieldState.h"
 #include <list>
 
 Assets * Assets::getInstance()
@@ -774,6 +775,93 @@ TextureRegion Assets::getFireTextureRegion(Fire &fire)
         case NECK_AND_BODY_END:
         default:
             return TR_NECK_AND_BODY_END;
+    }
+}
+
+TextureRegion Assets::getForceFieldTextureRegion(int forceFieldState, float forceFieldStateTime)
+{
+    static std::vector<TextureRegion> forceFieldStateTurningOnTextureRegions;
+    if (forceFieldStateTurningOnTextureRegions.size() == 0)
+    {
+        forceFieldStateTurningOnTextureRegions.push_back(TextureRegion(FORCE_FIELD_STARTING_FRAME_1_TEXTURE_REGION_X, FORCE_FIELD_STARTING_FRAME_1_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateTurningOnTextureRegions.push_back(TextureRegion(FORCE_FIELD_STARTING_FRAME_2_TEXTURE_REGION_X, FORCE_FIELD_STARTING_FRAME_2_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateTurningOnTextureRegions.push_back(TextureRegion(FORCE_FIELD_STARTING_FRAME_3_TEXTURE_REGION_X, FORCE_FIELD_STARTING_FRAME_3_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateTurningOnTextureRegions.push_back(TextureRegion(FORCE_FIELD_STARTING_FRAME_4_TEXTURE_REGION_X, FORCE_FIELD_STARTING_FRAME_4_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateTurningOnTextureRegions.push_back(TextureRegion(FORCE_FIELD_STARTING_FRAME_5_TEXTURE_REGION_X, FORCE_FIELD_STARTING_FRAME_5_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+    }
+    
+    static float forceFieldStateTurningOnCycleTime = 0.50f;
+    static std::vector<float> forceFieldStateTurningOnFrames;
+    if (forceFieldStateTurningOnFrames.size() == 0)
+    {
+        forceFieldStateTurningOnFrames.push_back(0.1f);
+        forceFieldStateTurningOnFrames.push_back(0.1f);
+        forceFieldStateTurningOnFrames.push_back(0.1f);
+        forceFieldStateTurningOnFrames.push_back(0.1f);
+        forceFieldStateTurningOnFrames.push_back(0.1f);
+    }
+    
+    static std::vector<TextureRegion> forceFieldStateOnTextureRegions;
+    if (forceFieldStateOnTextureRegions.size() == 0)
+    {
+        forceFieldStateOnTextureRegions.push_back(TextureRegion(FORCE_FIELD_ACTIVE_FRAME_1_TEXTURE_REGION_X, FORCE_FIELD_ACTIVE_FRAME_1_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateOnTextureRegions.push_back(TextureRegion(FORCE_FIELD_ACTIVE_FRAME_2_TEXTURE_REGION_X, FORCE_FIELD_ACTIVE_FRAME_2_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateOnTextureRegions.push_back(TextureRegion(FORCE_FIELD_ACTIVE_FRAME_3_TEXTURE_REGION_X, FORCE_FIELD_ACTIVE_FRAME_3_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateOnTextureRegions.push_back(TextureRegion(FORCE_FIELD_ACTIVE_FRAME_4_TEXTURE_REGION_X, FORCE_FIELD_ACTIVE_FRAME_4_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateOnTextureRegions.push_back(TextureRegion(FORCE_FIELD_ACTIVE_FRAME_5_TEXTURE_REGION_X, FORCE_FIELD_ACTIVE_FRAME_5_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateOnTextureRegions.push_back(TextureRegion(FORCE_FIELD_ACTIVE_FRAME_6_TEXTURE_REGION_X, FORCE_FIELD_ACTIVE_FRAME_6_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateOnTextureRegions.push_back(TextureRegion(FORCE_FIELD_ACTIVE_FRAME_7_TEXTURE_REGION_X, FORCE_FIELD_ACTIVE_FRAME_7_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+    }
+    
+    static float forceFieldStateOnCycleTime = 0.70f;
+    static std::vector<float> forceFieldStateOnFrames;
+    if (forceFieldStateOnFrames.size() == 0)
+    {
+        forceFieldStateOnFrames.push_back(0.1f);
+        forceFieldStateOnFrames.push_back(0.1f);
+        forceFieldStateOnFrames.push_back(0.1f);
+        forceFieldStateOnFrames.push_back(0.1f);
+        forceFieldStateOnFrames.push_back(0.1f);
+        forceFieldStateOnFrames.push_back(0.1f);
+        forceFieldStateOnFrames.push_back(0.1f);
+    }
+    
+    static std::vector<TextureRegion> forceFieldStateBreakingDownTextureRegions;
+    if (forceFieldStateBreakingDownTextureRegions.size() == 0)
+    {
+        forceFieldStateBreakingDownTextureRegions.push_back(TextureRegion(FORCE_FIELD_BREAKING_FRAME_1_TEXTURE_REGION_X, FORCE_FIELD_BREAKING_FRAME_1_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateBreakingDownTextureRegions.push_back(TextureRegion(FORCE_FIELD_BREAKING_FRAME_2_TEXTURE_REGION_X, FORCE_FIELD_BREAKING_FRAME_2_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateBreakingDownTextureRegions.push_back(TextureRegion(FORCE_FIELD_BREAKING_FRAME_3_TEXTURE_REGION_X, FORCE_FIELD_BREAKING_FRAME_3_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateBreakingDownTextureRegions.push_back(TextureRegion(FORCE_FIELD_BREAKING_FRAME_4_TEXTURE_REGION_X, FORCE_FIELD_BREAKING_FRAME_4_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateBreakingDownTextureRegions.push_back(TextureRegion(FORCE_FIELD_BREAKING_FRAME_5_TEXTURE_REGION_X, FORCE_FIELD_BREAKING_FRAME_5_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateBreakingDownTextureRegions.push_back(TextureRegion(FORCE_FIELD_BREAKING_FRAME_6_TEXTURE_REGION_X, FORCE_FIELD_BREAKING_FRAME_6_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        forceFieldStateBreakingDownTextureRegions.push_back(TextureRegion(FORCE_FIELD_BREAKING_FRAME_7_TEXTURE_REGION_X, FORCE_FIELD_BREAKING_FRAME_7_TEXTURE_REGION_Y, FORCE_FIELD_TEXTURE_REGION_WIDTH, FORCE_FIELD_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+    }
+    
+    static float forceFieldStateBreakingDownCycleTime = 0.70f;
+    static std::vector<float> forceFieldStateBreakingDownFrames;
+    if (forceFieldStateBreakingDownFrames.size() == 0)
+    {
+        forceFieldStateBreakingDownFrames.push_back(0.1f);
+        forceFieldStateBreakingDownFrames.push_back(0.1f);
+        forceFieldStateBreakingDownFrames.push_back(0.1f);
+        forceFieldStateBreakingDownFrames.push_back(0.1f);
+        forceFieldStateBreakingDownFrames.push_back(0.1f);
+        forceFieldStateBreakingDownFrames.push_back(0.1f);
+        forceFieldStateBreakingDownFrames.push_back(0.1f);
+    }
+    
+    switch (forceFieldState)
+    {
+        case PLAYER_FORCE_FIELD_STATE_TURNING_ON:
+            return forceFieldStateTurningOnTextureRegions.at(getKeyFrameNumber(forceFieldStateTime, forceFieldStateTurningOnCycleTime, forceFieldStateTurningOnFrames));
+        case PLAYER_FORCE_FIELD_STATE_ON:
+            return forceFieldStateOnTextureRegions.at(getKeyFrameNumber(forceFieldStateTime, forceFieldStateOnCycleTime, forceFieldStateOnFrames));
+        case PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN:
+            return forceFieldStateBreakingDownTextureRegions.at(getKeyFrameNumber(forceFieldStateTime, forceFieldStateBreakingDownCycleTime, forceFieldStateBreakingDownFrames));
+        case PLAYER_FORCE_FIELD_STATE_OFF:
+        default: ;
+            // Crash
     }
 }
 
