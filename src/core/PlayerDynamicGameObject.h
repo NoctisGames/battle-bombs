@@ -64,6 +64,8 @@ public:
     bool isHitByExplosion(std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     
     void handlePowerUps(std::vector<std::unique_ptr<PowerUp >> &powerUps);
+    
+    void onForceFieldHit();
 
     void onDeath();
 

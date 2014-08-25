@@ -394,6 +394,9 @@ void GameSession::handlePlayerEvent(int event)
         case PLAYER_PUSH_BOMB:
             pushBombForPlayer(m_players.at(playerIndex).get());
             break;
+        case PLAYER_FORCE_FIELD_HIT:
+            m_players.at(playerIndex).get()->onForceFieldHit();
+            break;
         case PLAYER_DEATH:
             m_players.at(playerIndex).get()->onDeath();
             break;

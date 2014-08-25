@@ -248,7 +248,7 @@ bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explo
         
         if(isHitByExplosion && m_iPlayerForceFieldState != PLAYER_FORCE_FIELD_STATE_OFF)
         {
-            setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN);
+            m_gameListener->addLocalEventForPlayer(PLAYER_FORCE_FIELD_HIT, *this);
             isHitByExplosion = false;
         }
         
@@ -305,6 +305,16 @@ bool PlayerDynamicGameObject::isBombInFrontOfPlayer(BombGameObject &bomb)
         default:
             return m_gridX == bomb.getGridX() && (m_gridY == bomb.getGridY() || m_gridY == bomb.getGridY() + 1);
     }
+}
+
+void PlayerDynamicGameObject::onForceFieldHit()
+{
+    if(m_iPlayerForceFieldState != PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN)
+    {
+        // TODO, play a sound effect
+    }
+    
+    setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN);
 }
 
 void PlayerDynamicGameObject::onDeath()
@@ -372,6 +382,7 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
         case POWER_UP_TYPE_FORCE_FIELD:
             if(m_iPlayerForceFieldState != PLAYER_FORCE_FIELD_STATE_ON)
             {
+                // TODO, play a sound
                 setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_TURNING_ON);
             }
             break;
