@@ -31,7 +31,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     private static final String BREAKABLE_BLOCK_X_VALUES = "breakableBlockXValues";
     private static final String BREAKABLE_BLOCK_Y_VALUES = "breakableBlockYValues";
     private static final String BREAKABLE_BLOCK_POWER_UP_FLAGS = "breakableBlockPowerUpFlags";
-    private static final int NUM_MAPS = 4;
+    private static final int NUM_MAPS = 3;
     private static final short BEGIN_SPECTATE = 1336;
     private static final short BEGIN_GAME = 1337;
     private static final short CLIENT_UPDATE = 1338;
