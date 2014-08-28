@@ -58,6 +58,7 @@ private:
     std::unique_ptr<OpenGLESRectangleRenderer> m_rectangleRenderer;
     GLuint m_gameTexture;
     GLuint m_interfaceTexture;
+    GLuint m_interfaceTexture2;
     GLuint m_charBlackTexture;
     GLuint m_charBlueTexture;
     GLuint m_charGreenTexture;

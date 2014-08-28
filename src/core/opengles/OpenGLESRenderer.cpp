@@ -60,10 +60,8 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(1000, true));
     m_rectangleRenderer = std::unique_ptr<OpenGLESRectangleRenderer>(new OpenGLESRectangleRenderer(true, true));
     
-    // TODO, this gameTexture loading is temporary
-    m_gameTexture = load_png_asset_into_texture("map_space.png");
-    
     m_interfaceTexture = load_png_asset_into_texture("interface.png");
+    m_interfaceTexture2 = load_png_asset_into_texture("interface_2.png");
     
     m_charBlackTexture = load_png_asset_into_texture("char_black.png");
     m_charBlueTexture = load_png_asset_into_texture("bot_blue.png");
@@ -466,6 +464,7 @@ void OpenGLESRenderer::cleanUp()
 {
     glDeleteTextures(1, &m_gameTexture);
     glDeleteTextures(1, &m_interfaceTexture);
+    glDeleteTextures(1, &m_interfaceTexture2);
     glDeleteTextures(1, &m_charBlackTexture);
     glDeleteTextures(1, &m_charBlueTexture);
     glDeleteTextures(1, &m_charGreenTexture);
