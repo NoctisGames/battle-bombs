@@ -12,6 +12,7 @@
 typedef enum
 {
     WAITING_FOR_SERVER,
+    COUNTING_DOWN,
     SPECTATING,
     RUNNING,
 } Game_State;
