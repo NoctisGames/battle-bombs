@@ -80,7 +80,7 @@ protected:
     void handlePlayerEvent(int event);
 
 private:
-    void layBombForPlayer(PlayerDynamicGameObject *player);
+    void layBombForPlayer(PlayerDynamicGameObject *player, int firePower);
     
     void pushBombForPlayer(PlayerDynamicGameObject *player);
 };

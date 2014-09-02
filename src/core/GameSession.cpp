@@ -371,6 +371,13 @@ void GameSession::handlePlayerEvent(int event)
     }
     m_players.at(playerIndex).get()->setGridY(gridY);
     
+    int eventMod = 0;
+    while (event > PLAYER_EVENT_MOD_BASE)
+    {
+        event -= PLAYER_EVENT_MOD_BASE;
+        eventMod++;
+    }
+    
     switch (event)
     {
         case PLAYER_MOVE_RIGHT:
@@ -389,7 +396,7 @@ void GameSession::handlePlayerEvent(int event)
             m_players.at(playerIndex).get()->moveInDirection(-1);
             break;
         case PLAYER_PLANT_BOMB:
-            layBombForPlayer(m_players.at(playerIndex).get());
+            layBombForPlayer(m_players.at(playerIndex).get(), eventMod);
             break;
         case PLAYER_PUSH_BOMB:
             pushBombForPlayer(m_players.at(playerIndex).get());
@@ -435,9 +442,9 @@ void GameSession::handlePlayerEvent(int event)
     }
 }
 
-void GameSession::layBombForPlayer(PlayerDynamicGameObject *player)
+void GameSession::layBombForPlayer(PlayerDynamicGameObject *player, int firePower)
 {
-    BombGameObject *bomb = new BombGameObject(player, player->getFirePower(), player->getGridX(), player->getGridY());
+    BombGameObject *bomb = new BombGameObject(player, firePower, player->getGridX(), player->getGridY());
     m_bombs.push_back(std::unique_ptr<BombGameObject>(bomb));
     
     for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
