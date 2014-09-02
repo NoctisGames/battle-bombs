@@ -68,6 +68,8 @@ public:
     void onForceFieldHit();
 
     void onDeath();
+    
+    void onWin();
 
     bool isAbleToDropAdditionalBomb(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
 

@@ -17,7 +17,7 @@
 #include "GameConstants.h"
 #include "Font.h"
 
-OpenGLESGameScreen::OpenGLESGameScreen(const char *username) : GameScreen(username)
+OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
 {
     // TODO
 }

@@ -52,7 +52,7 @@ void on_surface_changed(int pixelWidth, int pixelHeight, int dpWidth, int dpHeig
     gameScreen->setDpDimensions(dpWidth, dpHeight);
 }
 
-void init(const char *username)
+void init(const char *username, bool isOffline)
 {
     touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
 	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
@@ -71,7 +71,7 @@ void init(const char *username)
 	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
 	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
     
-    gameScreen = new OpenGLESGameScreen(username);
+    gameScreen = new OpenGLESGameScreen(username, isOffline);
 }
 
 void on_resume()

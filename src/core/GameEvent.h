@@ -13,6 +13,7 @@
 #define BEGIN_SPECTATE 1336
 #define BEGIN_GAME 1337
 #define CLIENT_UPDATE 1338
+#define GAME_OVER 1339
 
 // Map Type
 #define MAP_SPACE 0

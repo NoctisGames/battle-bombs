@@ -36,7 +36,7 @@
 #include "Font.h"
 #include "SpectatorControls.h"
 
-GameScreen::GameScreen(const char *username) : GameSession()
+GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 {
     int usernameLength = (int) strlen(username);
     
@@ -44,6 +44,8 @@ GameScreen::GameScreen(const char *username) : GameSession()
     
     std::strncpy(m_username, username, usernameLength);
     m_username[usernameLength] = '\0';
+    
+    m_isOffline = isOffline;
     
     init();
 }
@@ -74,9 +76,13 @@ void GameScreen::init()
     m_explosions.clear();
     m_powerUps.clear();
     
-    m_gameState = WAITING_FOR_SERVER;
+    m_gameState = m_isOffline ? WAITING_FOR_LOCAL_SETTINGS : WAITING_FOR_SERVER;
     m_iScreenState = 0;
     m_fTimeSinceLastClientEvent = 0;
+    m_fCountDownTimeLeft = 3;
+    m_isGameOver = false;
+    m_fTimeSinceGameOver = 0;
+    m_fBlackCoverTransitionAlpha = 0;
 }
 
 void GameScreen::onResume()
@@ -102,16 +108,36 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
     
     switch (m_gameState)
     {
+        case WAITING_FOR_SERVER:
+            // TODO, Next Round starts in 30, 29, 28, etc...
+            // Also, constantly update interface with list of players and platforms they are on
+            break;
+        case WAITING_FOR_LOCAL_SETTINGS:
+            // TODO, allow the user to pick a map
+            // TODO, allow the user to set the number of bots
+            break;
+        case COUNTING_DOWN:
+            m_fCountDownTimeLeft -= deltaTime;
+            if(m_fCountDownTimeLeft < 0)
+            {
+                m_gameState = RUNNING;
+            }
+            
+            // TODO --> 3, 2, 1, GO!
+            
+            break;
         case RUNNING:
             if(m_player->getPlayerState() == ALIVE && m_player->getPlayerActionState() != WINNING)
             {
                 updateInputRunning(touchEvents);
             }
             updateRunning(deltaTime);
+            updateLocalCommon(deltaTime);
             break;
         case SPECTATING:
             updateInputSpectating(touchEvents);
             updateSpectating(deltaTime);
+            updateLocalCommon(deltaTime);
             break;
         default:
             break;
@@ -125,10 +151,18 @@ void GameScreen::present()
     switch (m_gameState)
     {
         case WAITING_FOR_SERVER:
+            // TODO, Render Waiting for Server interface with list of players and countdown timer
+            break;
+        case WAITING_FOR_LOCAL_SETTINGS:
+            // TODO, Render interface for picking a map and setting # of bots
+            break;
+        case COUNTING_DOWN:
             m_renderer->renderWorldBackground();
             
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
             m_renderer->renderMapBordersNear(m_mapBorders);
+            
+            // TODO, Render Player Names (a simple text bubble will do) and a 3, 2, 1, GO!
             
             m_renderer->endFrame();
             break;
@@ -145,6 +179,11 @@ void GameScreen::present()
             m_renderer->renderInterface(*m_interfaceOverlay);
             
             m_renderer->endFrame();
+            
+            if(m_isGameOver)
+            {
+                m_renderer->clearScreenWithColor(0, 0, 0, m_fBlackCoverTransitionAlpha);
+            }
             break;
         case SPECTATING:
             m_renderer->calcScrollYForPlayer(*m_player);
@@ -159,6 +198,11 @@ void GameScreen::present()
             m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
             
             m_renderer->endFrame();
+            
+            if(m_isGameOver)
+            {
+                m_renderer->clearScreenWithColor(0, 0, 0, m_fBlackCoverTransitionAlpha);
+            }
             break;
         default:
             break;
@@ -338,6 +382,25 @@ void GameScreen::updateInputSpectating(std::vector<TouchEvent> &touchEvents)
 	}
 }
 
+void GameScreen::updateLocalCommon(float deltaTime)
+{
+    if(m_isGameOver)
+    {
+        m_fTimeSinceGameOver += deltaTime;
+        
+        if(m_fTimeSinceGameOver > 4)
+        {
+            m_fBlackCoverTransitionAlpha += deltaTime * 0.4f;
+            if(m_fBlackCoverTransitionAlpha > 1)
+            {
+                m_fBlackCoverTransitionAlpha = 1;
+                
+                init();
+            }
+        }
+    }
+}
+
 void GameScreen::spectateNextLivePlayer()
 {
     short playerIndex = m_sPlayerIndex >= 0 ? m_sPlayerIndex : 0;
@@ -410,6 +473,10 @@ void GameScreen::processServerMessages()
             {
                 beginSpectate(d);
             }
+            else if(eventType == GAME_OVER)
+            {
+                gameOver(d);
+            }
         }
 	}
 }
@@ -422,7 +489,7 @@ void GameScreen::beginGame(rapidjson::Document &d)
         {
             m_player = m_players.at(m_sPlayerIndex).get();
             
-            m_gameState = RUNNING;
+            m_gameState = COUNTING_DOWN;
         }
     }
 }
@@ -488,6 +555,29 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
     }
     
     return false;
+}
+
+void GameScreen::gameOver(rapidjson::Document &d)
+{
+    static const char *hasWinnerKey = "hasWinner";
+    
+    if(d.HasMember(hasWinnerKey))
+    {
+        bool hasWinner = d[hasWinnerKey].GetBool();
+        
+        if(hasWinner)
+        {
+            static const char *winningPlayerIndexKey = "winningPlayerIndex";
+            int winningPlayerIndex = d[winningPlayerIndexKey].GetInt();
+            m_players.at(winningPlayerIndex).get()->onWin();
+        }
+        else
+        {
+            // TODO, show a DRAW animation
+        }
+    }
+    
+    m_isGameOver = true;
 }
 
 void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)

@@ -12,9 +12,10 @@
 typedef enum
 {
     WAITING_FOR_SERVER,
+    WAITING_FOR_LOCAL_SETTINGS,
     COUNTING_DOWN,
     SPECTATING,
-    RUNNING,
+    RUNNING
 } Game_State;
 
 #endif /* GAME_STATE_H */

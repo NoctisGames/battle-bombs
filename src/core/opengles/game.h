@@ -13,7 +13,7 @@ void on_surface_created(int pixelWidth, int pixelHeight);
 
 void on_surface_changed(int pixelWidth, int pixelHeight, int dpWidth, int dpHeight);
 
-void init(const char *username);
+void init(const char *username, bool isOffline = false);
 
 void on_resume();
 

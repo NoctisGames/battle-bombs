@@ -117,7 +117,7 @@ static Logger *logger = nil;
             update(self.timeSinceLastUpdate);
             break;
         case 1:
-            init([@"Player_Offline" UTF8String]);
+            init([@"Player_Offline" UTF8String], true);
             break;
         case 2:
             [self dismissViewControllerAnimated:true completion:nil];
@@ -157,7 +157,7 @@ static Logger *logger = nil;
         [logger debug:[NSString stringWithFormat:@"dimension %f x %f", newSize.width, newSize.height]];
     }
     
-    init([@"Player_Offline" UTF8String]);
+    init([@"Player_Offline" UTF8String], true);
     on_surface_created(newSize.width, newSize.height);
     on_surface_changed(newSize.width, newSize.height, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
     on_resume();

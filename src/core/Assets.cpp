@@ -860,9 +860,11 @@ TextureRegion Assets::getForceFieldTextureRegion(int forceFieldState, float forc
         case PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN:
             return forceFieldStateBreakingDownTextureRegions.at(getKeyFrameNumber(forceFieldStateTime, forceFieldStateBreakingDownCycleTime, forceFieldStateBreakingDownFrames));
         case PLAYER_FORCE_FIELD_STATE_OFF:
-        default: ;
-            // Crash
+        default:
+            break;
     }
+    
+    // Crash
 }
 
 TextureRegion Assets::getPowerUpBarItemTextureRegion(PowerUpBarItem &powerUpBarItem, float powerUpBarItemsStateTime)
@@ -973,6 +975,8 @@ TextureRegion Assets::getActiveButtonTextureRegion(ActiveButton &activeButton, f
             return TR_BUTTON_PUSH_DISABLED_TEXTURE_REGION;
         }
     }
+    
+    // Crash
 }
 
 TextureRegion Assets::getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime)
@@ -1107,7 +1111,11 @@ TextureRegion Assets::getPowerUpTextureRegion(PowerUp &powerUp)
             return powerUpSpeedTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
         case POWER_UP_TYPE_PUSH:
             return powerUpPushTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
+        default:
+            break;
     }
+    
+    // Crash
 }
 
 void Assets::setMusicId(short musicId)

@@ -16,7 +16,7 @@ class OpenGLESRenderer;
 class OpenGLESGameScreen : public GameScreen
 {
 public:
-    OpenGLESGameScreen(const char *username);
+    OpenGLESGameScreen(const char *username, bool isOffline = false);
     
     virtual void touchToWorld(TouchEvent &touchEvent);
     

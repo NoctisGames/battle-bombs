@@ -23,7 +23,7 @@ class InterfaceOverlay;
 class GameScreen : public GameSession
 {
 public:
-	GameScreen(const char *username);
+	GameScreen(const char *username, bool isOffline = false);
     
     ~GameScreen();
     
@@ -79,6 +79,11 @@ protected:
 private:
     std::unique_ptr<GameListener> m_gameListener;
     std::unique_ptr<InterfaceOverlay> m_interfaceOverlay;
+    float m_fCountDownTimeLeft;
+    bool m_isGameOver;
+    float m_fTimeSinceGameOver;
+    float m_fBlackCoverTransitionAlpha;
+    bool m_isOffline;
     
     virtual void updateRunning(float deltaTime);
     
@@ -87,6 +92,8 @@ private:
     virtual void updateSpectating(float deltaTime);
     
     void updateInputSpectating(std::vector<TouchEvent> &touchEvents);
+    
+    void updateLocalCommon(float deltaTime);
     
     void spectateNextLivePlayer();
     
@@ -101,6 +108,8 @@ private:
     void beginSpectate(rapidjson::Document &d);
     
     bool beginCommon(rapidjson::Document &d, bool isBeginGame);
+    
+    void gameOver(rapidjson::Document &d);
     
     void handleBreakableBlocksArrayInDocument(rapidjson::Document &d);
     

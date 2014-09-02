@@ -102,22 +102,6 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
         }
         
         updateGrid();
-        
-        short numPlayersAlive = 0;
-        for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = players.begin(); itr != players.end(); itr++)
-        {
-            if((*itr)->getPlayerState() == ALIVE)
-            {
-                numPlayersAlive++;
-            }
-        }
-        
-        if(numPlayersAlive == 1)
-        {
-            m_fStateTime = 0;
-            m_velocity->set(0, 0);
-            m_playerActionState = WINNING;
-        }
     }
     else if (m_playerState == DYING)
     {
@@ -323,6 +307,13 @@ void PlayerDynamicGameObject::onDeath()
     m_fStateTime = 0;
 
     m_gameListener->playSound(SOUND_DEATH);
+}
+
+void PlayerDynamicGameObject::onWin()
+{
+    m_fStateTime = 0;
+    m_velocity->set(0, 0);
+    m_playerActionState = WINNING;
 }
 
 bool PlayerDynamicGameObject::isAbleToDropAdditionalBomb(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
