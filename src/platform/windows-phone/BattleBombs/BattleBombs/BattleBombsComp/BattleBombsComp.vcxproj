@@ -82,7 +82,7 @@
       <AdditionalDependencies>d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>ole32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
-      <WindowsMetadataFile>$(OutDir)BattleBombs.winmd</WindowsMetadataFile>
+      <WindowsMetadataFile>$(OutDir)BattleBombsComp.winmd</WindowsMetadataFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -101,7 +101,7 @@
       <AdditionalDependencies>d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>ole32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
-      <WindowsMetadataFile>$(OutDir)BattleBombs.winmd</WindowsMetadataFile>
+      <WindowsMetadataFile>$(OutDir)BattleBombsComp.winmd</WindowsMetadataFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
@@ -120,7 +120,7 @@
       <AdditionalDependencies>d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>ole32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
-      <WindowsMetadataFile>$(OutDir)BattleBombs.winmd</WindowsMetadataFile>
+      <WindowsMetadataFile>$(OutDir)BattleBombsComp.winmd</WindowsMetadataFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -139,7 +139,7 @@
       <AdditionalDependencies>d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>ole32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
-      <WindowsMetadataFile>$(OutDir)BattleBombs.winmd</WindowsMetadataFile>
+      <WindowsMetadataFile>$(OutDir)BattleBombsComp.winmd</WindowsMetadataFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
