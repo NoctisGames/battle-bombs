@@ -37,6 +37,7 @@
 #include "Line.h"
 #include "Rectangle.h"
 #include "SpectatorControls.h"
+#include "PowerUpType.h"
 
 #include <string>
 
@@ -333,13 +334,13 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 
 	for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
 	{
-		if ((**itr).getPowerUpType() != NONE)
+		if ((**itr).getPowerUpType() != POWER_UP_TYPE_NONE)
 		{
 			renderGameObject((**itr), Assets::getPowerUpBarItemTextureRegion((**itr), interfaceOverlay.getPowerUpBarItemsStateTime()));
 		}
 	}
 
-	if (interfaceOverlay.getActiveButton().getPowerUpType() == PUSH)
+	if (interfaceOverlay.getActiveButton().getPowerUpType() == POWER_UP_TYPE_PUSH)
 	{
 		renderGameObject(interfaceOverlay.getActiveButton(), Assets::getActiveButtonTextureRegion(interfaceOverlay.getActiveButton(), interfaceOverlay.getButtonsStateTime()));
 	}
@@ -361,7 +362,7 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 
 	for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
 	{
-		if ((**itr).getPowerUpType() != NONE)
+		if ((**itr).getPowerUpType() != POWER_UP_TYPE_NONE)
 		{
 			std::string powerUpStack = std::to_string((*itr)->getLevel());
 			float x = (*itr)->getPosition().getX() + (*itr)->getWidth() / 2;
