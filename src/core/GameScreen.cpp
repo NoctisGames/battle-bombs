@@ -182,7 +182,7 @@ void GameScreen::present()
             
             if(m_isGameOver)
             {
-                m_renderer->clearScreenWithColor(0, 0, 0, m_fBlackCoverTransitionAlpha);
+                m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
             }
             break;
         case SPECTATING:
@@ -201,7 +201,7 @@ void GameScreen::present()
             
             if(m_isGameOver)
             {
-                m_renderer->clearScreenWithColor(0, 0, 0, m_fBlackCoverTransitionAlpha);
+                m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
             }
             break;
         default:

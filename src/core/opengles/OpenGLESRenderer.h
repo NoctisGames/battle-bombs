@@ -46,6 +46,8 @@ public:
     
     virtual void renderSpectatorInterface(InterfaceOverlay &interfaceOverlay);
     
+    virtual void renderGameOverBlackCover(float alpha);
+    
     virtual void renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]);
     
     virtual void endFrame();

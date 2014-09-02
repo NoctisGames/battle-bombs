@@ -432,6 +432,14 @@ void OpenGLESRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
     }
 }
 
+void OpenGLESRenderer::renderGameOverBlackCover(float alpha)
+{
+    static Color transitionCoverColor = { 0, 0, 0, 0 };
+    transitionCoverColor.alpha = alpha;
+    
+    m_rectangleRenderer->renderRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, transitionCoverColor);
+}
+
 void OpenGLESRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
 {
     m_spriteBatcher->beginBatch();
