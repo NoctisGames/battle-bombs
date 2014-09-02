@@ -201,6 +201,7 @@
     <ClInclude Include="..\..\..\..\..\core\PlayerActionState.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerAvatar.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerDynamicGameObject.h" />
+    <ClInclude Include="..\..\..\..\..\core\PlayerForceFieldState.h" />
     <ClInclude Include="..\..\..\..\..\core\PowerUp.h" />
     <ClInclude Include="..\..\..\..\..\core\PowerUpBarItem.h" />
     <ClInclude Include="..\..\..\..\..\core\Rectangle.h" />
