@@ -24,6 +24,8 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     private static final String SERVER = "Server";
     private static final String EVENT_TYPE = "eventType";
     private static final String NUM_PLAYERS = "numPlayers";
+    private static final String HAS_WINNER = "hasWinner";
+    private static final String WINNING_PLAYER_INDEX = "winningPlayerIndex";
     private static final String MAP_TYPE = "mapType";
     private static final String NUM_SECONDS_LEFT_FOR_ROUND = "numSecondsLeftForRound";
     private static final String EVENTS = "events";
@@ -35,6 +37,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     private static final short BEGIN_SPECTATE = 1336;
     private static final short BEGIN_GAME = 1337;
     private static final short CLIENT_UPDATE = 1338;
+    private static final short GAME_OVER = 1339;
     private static final int PLAYER_DEATH = 9;
     private static final int PLAYER_EVENT_BASE = 10000000;
     private static final int PLAYER_EVENT_DIRECTION_BASE = 1000000;
@@ -164,10 +167,12 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                 }
 
                 short numAlive = 0;
+                short winningPlayerIndex = -1;
                 for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
                 {
                     if (is_player_alive(_room.getId(), playerIndex))
                     {
+                        winningPlayerIndex = playerIndex;
                         numAlive++;
                     }
                 }
@@ -226,16 +231,29 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                 }
                 else
                 {
-                    // TODO, send out a player won event
                     endGame();
+
+                    boolean hasWinner = winningPlayerIndex != -1;
+
+                    try
+                    {
+                        JSONObject tobeSent = new JSONObject();
+                        tobeSent.put(EVENT_TYPE, GAME_OVER);
+                        tobeSent.put(HAS_WINNER, hasWinner);
+                        tobeSent.put(WINNING_PLAYER_INDEX, winningPlayerIndex);
+                    }
+                    catch (JSONException e)
+                    {
+                        System.err.println(e.toString());
+                    }
                 }
             }
         }
-        else if (_inRoomUserSessionDataMap.size() >= 1)
+        else if (_inRoomUserSessionDataMap.size() > 0)
         {
             _stateTime += deltaTime;
 
-            if (_stateTime > 10)
+            if (_stateTime > 18)
             {
                 // We are re-initialzing the list, starting from 0,
                 // so that we don't end up with a game with only 2 players
