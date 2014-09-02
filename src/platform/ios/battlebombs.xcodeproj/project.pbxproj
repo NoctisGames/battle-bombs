@@ -34,9 +34,6 @@
 		0ADF187E178E2185005DA99E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ADF187D178E2185005DA99E /* GLKit.framework */; };
 		0ADF1880178E2185005DA99E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ADF187F178E2185005DA99E /* OpenGLES.framework */; };
 		0ADF1886178E2185005DA99E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0ADF1884178E2185005DA99E /* InfoPlist.strings */; };
-		0ADF188E178E2185005DA99E /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADF188D178E2185005DA99E /* Default.png */; };
-		0ADF1890178E2185005DA99E /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADF188F178E2185005DA99E /* Default@2x.png */; };
-		0ADF1892178E2185005DA99E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADF1891178E2185005DA99E /* Default-568h@2x.png */; };
 		0ADF1895178E2185005DA99E /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ADF1893178E2185005DA99E /* MainStoryboard_iPhone.storyboard */; };
 		0ADF1898178E2185005DA99E /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ADF1896178E2185005DA99E /* MainStoryboard_iPad.storyboard */; };
 		BB024B571955D99A0051C09E /* Fire.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB024B551955D99A0051C09E /* Fire.cpp */; };
@@ -117,6 +114,7 @@
 		BBA0A402196F549C00737A74 /* bot_white.png in Resources */ = {isa = PBXBuildFile; fileRef = BBA0A3FB196F549C00737A74 /* bot_white.png */; };
 		BBA0A403196F549C00737A74 /* bot_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = BBA0A3FC196F549C00737A74 /* bot_yellow.png */; };
 		BBA1CD531958B10A00AF2AD8 /* MapBorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */; };
+		BBA6492219B5FED100023E5A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBA6492119B5FED100023E5A /* Images.xcassets */; };
 		BBB24BA219638A9300EF78B2 /* interface.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB24BA119638A9300EF78B2 /* interface.png */; };
 		BBB24BA51963AFFA00EF78B2 /* InterfaceOverlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */; };
 		BBBEC914194B425200AAB520 /* char_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBEC913194B425200AAB520 /* char_blue.png */; };
@@ -172,9 +170,6 @@
 		0ADF1887178E2185005DA99E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0ADF188A178E2185005DA99E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0ADF188B178E2185005DA99E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		0ADF188D178E2185005DA99E /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		0ADF188F178E2185005DA99E /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		0ADF1891178E2185005DA99E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		0ADF1894178E2185005DA99E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		0ADF1897178E2185005DA99E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		0ADF189D178E2185005DA99E /* GameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
@@ -333,6 +328,7 @@
 		BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapBorder.cpp; sourceTree = "<group>"; };
 		BBA1CD521958B10A00AF2AD8 /* MapBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBorder.h; sourceTree = "<group>"; };
 		BBA1CD541958C8D700AF2AD8 /* MapBorderType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapBorderType.h; sourceTree = "<group>"; };
+		BBA6492119B5FED100023E5A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BBB24BA119638A9300EF78B2 /* interface.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = interface.png; sourceTree = "<group>"; };
 		BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InterfaceOverlay.cpp; sourceTree = "<group>"; };
 		BBB24BA41963AFFA00EF78B2 /* InterfaceOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterfaceOverlay.h; sourceTree = "<group>"; };
@@ -602,14 +598,12 @@
 		0ADF1882178E2185005DA99E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BBA6492119B5FED100023E5A /* Images.xcassets */,
 				BBD079F518AA879D00E010AF /* assets */,
 				0ADF1883178E2185005DA99E /* battlebombs-Info.plist */,
 				0ADF1884178E2185005DA99E /* InfoPlist.strings */,
 				BB74E80518C2541F007C223E /* Localizable.strings */,
 				0ADF1887178E2185005DA99E /* main.m */,
-				0ADF188D178E2185005DA99E /* Default.png */,
-				0ADF188F178E2185005DA99E /* Default@2x.png */,
-				0ADF1891178E2185005DA99E /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -779,12 +773,10 @@
 				BB71029E196E079500C7BA2F /* map_base.png in Resources */,
 				BBB24BA219638A9300EF78B2 /* interface.png in Resources */,
 				BBA0A401196F549C00737A74 /* bot_red.png in Resources */,
-				0ADF188E178E2185005DA99E /* Default.png in Resources */,
 				BBA0A3FE196F549C00737A74 /* bot_green.png in Resources */,
 				BBDE14B6195A2D7400A91FD7 /* char_pink.png in Resources */,
 				BB39D6E7196EFABD00BC895B /* map_space.aifc in Resources */,
 				BB39D6EA196F01CC00BC895B /* map_base.aifc in Resources */,
-				0ADF1890178E2185005DA99E /* Default@2x.png in Resources */,
 				BB16D96E191987B80034BE67 /* plant_bomb.caf in Resources */,
 				BB4F3105197C1DCD00270703 /* quick_match_normal.png in Resources */,
 				BB16D96D191987B80034BE67 /* explosion.caf in Resources */,
@@ -792,13 +784,13 @@
 				BB4F3104197C1DCD00270703 /* quick_match_highlighted.png in Resources */,
 				BB7102A1196E079500C7BA2F /* map_space.png in Resources */,
 				BBDE14B3195A2D7400A91FD7 /* char_black.png in Resources */,
+				BBA6492219B5FED100023E5A /* Images.xcassets in Resources */,
 				BB39D6E5196ED81400BC895B /* bot_blue.png in Resources */,
 				BB4F3101197C1DCD00270703 /* offline_match_highlighted.png in Resources */,
 				BB4F3102197C1DCD00270703 /* offline_match_normal.png in Resources */,
 				BB74E80718C2541F007C223E /* Localizable.strings in Resources */,
 				BB7102A0196E079500C7BA2F /* map_mountains.png in Resources */,
 				BB16D96C191987B80034BE67 /* death.caf in Resources */,
-				0ADF1892178E2185005DA99E /* Default-568h@2x.png in Resources */,
 				BB8FF7C619AE3FE4005D0701 /* interface_2.png in Resources */,
 				BB4F30FA197C1DC300270703 /* bg~ipad.png in Resources */,
 				BB9D09AC19155C9E002CBFD3 /* map_grasslands.aifc in Resources */,
@@ -1001,6 +993,8 @@
 		0ADF18A3178E2185005DA99E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Stephen Gowen (8S5X8SQ245)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stephen Gowen (8S5X8SQ245)";
@@ -1038,6 +1032,8 @@
 		0ADF18A4178E2185005DA99E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Stephen Gowen (83V22B9TY9)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Stephen Gowen (83V22B9TY9)";
