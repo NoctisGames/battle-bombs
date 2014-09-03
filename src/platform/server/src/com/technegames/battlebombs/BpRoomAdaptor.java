@@ -178,7 +178,10 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                     }
                 }
 
-                if (_numSecondsLeftForRound > 0 && numAlive > 1)
+                // This is a temporary hack
+                // we are using -3 here to account for the 3 second countdown
+                // before the game starts on the client
+                if (_numSecondsLeftForRound > -3 && numAlive > 1)
                 {
                     for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
                     {
