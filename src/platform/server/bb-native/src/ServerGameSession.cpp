@@ -158,6 +158,8 @@ void ServerGameSession::init()
     m_powerUps.clear();
 
     srand((int) time(NULL));
+    
+    m_fCountDownTimeLeft = 3;
 }
 
 void ServerGameSession::handleServerUpdate(const char *message)
@@ -185,7 +187,7 @@ void ServerGameSession::update(float deltaTime)
             }
             else if (eventType == BEGIN_GAME)
             {
-                m_gameState = RUNNING;
+                m_gameState = COUNTING_DOWN;
             }
             else if (eventType == GAME_OVER)
             {
@@ -208,6 +210,13 @@ void ServerGameSession::update(float deltaTime)
 
     switch (m_gameState)
     {
+        case COUNTING_DOWN:
+            m_fCountDownTimeLeft -= deltaTime;
+            if(m_fCountDownTimeLeft < 0)
+            {
+                m_gameState = RUNNING;
+            }
+            break;
         case RUNNING:
             updateRunning(deltaTime);
             break;

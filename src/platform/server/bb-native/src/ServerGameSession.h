@@ -40,6 +40,7 @@ public:
 private:
     std::unique_ptr<GameListener> m_gameListener;
     std::vector<std::unique_ptr<BotPlayerDynamicGameObject >> m_bots;
+    float m_fCountDownTimeLeft;
     
     virtual void updateRunning(float deltaTime);
 
