@@ -28,7 +28,6 @@
 PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
 {
     resetBounds(width * 5 / 32, height / 12);
-    updateGrid();
 
     m_lastBombDropped = nullptr;
     m_fStateTime = 0;
