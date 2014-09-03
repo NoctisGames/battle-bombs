@@ -341,14 +341,14 @@ void GameSession::handlePlayerEvent(int event)
 {
     int playerIndex = 0;
     
-    while(event > PLAYER_EVENT_BASE)
+    while(event >= PLAYER_EVENT_BASE)
     {
         event -= PLAYER_EVENT_BASE;
         playerIndex++;
     }
     
     int direction = 0;
-    while (event > PLAYER_EVENT_DIRECTION_BASE)
+    while (event >= PLAYER_EVENT_DIRECTION_BASE)
     {
         event -= PLAYER_EVENT_DIRECTION_BASE;
         direction++;
@@ -356,7 +356,7 @@ void GameSession::handlePlayerEvent(int event)
     m_players.at(playerIndex).get()->setDirection(direction);
     
     int gridX = 0;
-    while (event > PLAYER_EVENT_GRID_X_BASE)
+    while (event >= PLAYER_EVENT_GRID_X_BASE)
     {
         event -= PLAYER_EVENT_GRID_X_BASE;
         gridX++;
@@ -364,7 +364,7 @@ void GameSession::handlePlayerEvent(int event)
     m_players.at(playerIndex).get()->setGridX(gridX);
     
     int gridY = 0;
-    while (event > PLAYER_EVENT_GRID_Y_BASE)
+    while (event >= PLAYER_EVENT_GRID_Y_BASE)
     {
         event -= PLAYER_EVENT_GRID_Y_BASE;
         gridY++;
@@ -372,7 +372,7 @@ void GameSession::handlePlayerEvent(int event)
     m_players.at(playerIndex).get()->setGridY(gridY);
     
     int eventMod = 0;
-    while (event > PLAYER_EVENT_MOD_BASE)
+    while (event >= PLAYER_EVENT_MOD_BASE)
     {
         event -= PLAYER_EVENT_MOD_BASE;
         eventMod++;

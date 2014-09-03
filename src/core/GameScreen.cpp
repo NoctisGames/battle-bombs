@@ -178,12 +178,12 @@ void GameScreen::present()
             m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderInterface(*m_interfaceOverlay);
             
-            m_renderer->endFrame();
-            
             if(m_isGameOver)
             {
                 m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
             }
+            
+            m_renderer->endFrame();
             break;
         case SPECTATING:
             m_renderer->calcScrollYForPlayer(*m_player);
@@ -197,12 +197,12 @@ void GameScreen::present()
             m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
             
-            m_renderer->endFrame();
-            
             if(m_isGameOver)
             {
                 m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
             }
+            
+            m_renderer->endFrame();
             break;
         default:
             break;
