@@ -287,6 +287,7 @@ void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *key
         int playerDirection = d[keyDirection].GetInt();
         m_players.at(playerIndex).get()->setDirection(playerDirection);
         
+        m_players.at(playerIndex).get()->updateBounds();
         m_players.at(playerIndex).get()->updateGrid();
     }
     
