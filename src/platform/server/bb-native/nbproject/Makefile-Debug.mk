@@ -79,11 +79,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk dist/libBpNative.dll
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk dist/libBbNative.dll
 
-dist/libBpNative.dll: ${OBJECTFILES}
+dist/libBbNative.dll: ${OBJECTFILES}
 	${MKDIR} -p dist
-	${LINK.cc} -o dist/libBpNative.dll ${OBJECTFILES} ${LDLIBSOPTIONS} -shared
+	${LINK.cc} -o dist/libBbNative.dll ${OBJECTFILES} ${LDLIBSOPTIONS} -shared
 
 ${OBJECTDIR}/_ext/32229614/BombGameObject.o: ../../../core/BombGameObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
@@ -211,7 +211,7 @@ ${OBJECTDIR}/src/bp_room_adaptor.o: src/bp_room_adaptor.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} dist/libBpNative.dll
+	${RM} dist/libBbNative.dll
 
 # Subprojects
 .clean-subprojects:

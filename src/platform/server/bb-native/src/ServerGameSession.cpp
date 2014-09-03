@@ -41,9 +41,9 @@ ServerGameSession::ServerGameSession()
 void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, int mapType)
 {
     init();
-    
+
     initializeInsideBlocksAndMapBordersForMapType(mapType);
-    
+
     int playerStartingPositions[8][2] = {
         {PLAYER_1_GRID_X, PLAYER_1_GRID_Y},
         {PLAYER_2_GRID_X, PLAYER_2_GRID_Y},
@@ -54,8 +54,8 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
         {PLAYER_7_GRID_X, PLAYER_7_GRID_Y},
         {PLAYER_8_GRID_X, PLAYER_8_GRID_Y}
     };
-    
-    int n = sizeof(playerStartingPositions)/ sizeof(playerStartingPositions[0]);
+
+    int n = sizeof (playerStartingPositions) / sizeof (playerStartingPositions[0]);
     randomize(playerStartingPositions, n);
 
     m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 1 ?
@@ -105,9 +105,9 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
             {
                 continue;
             }
-            
+
             // The Mountain map has a special DOOR border type
-            if(mapType == MAP_MOUNTAINS && i == GRID_CELL_NUM_ROWS - 1 && j >= 6 && j <= 8)
+            if (mapType == MAP_MOUNTAINS && i == GRID_CELL_NUM_ROWS - 1 && j >= 6 && j <= 8)
             {
                 continue;
             }
@@ -116,7 +116,7 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
             if ((rand() % 100 + 1) < 71)
             {
                 int flag = 0;
-                
+
                 // Generate a random number from 1 - 100
                 // This will be used to determine which type of powerups will appear
                 int flagRange = (rand() % 100 + 1);
@@ -144,7 +144,7 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
             }
         }
     }
-    
+
     PathFinder::getInstance().resetGameGrid();
     PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks, mapType);
 }
@@ -186,6 +186,22 @@ void ServerGameSession::update(float deltaTime)
             else if (eventType == BEGIN_GAME)
             {
                 m_gameState = RUNNING;
+            }
+            else if (eventType == GAME_OVER)
+            {
+                static const char *hasWinnerKey = "hasWinner";
+
+                if (d.HasMember(hasWinnerKey))
+                {
+                    bool hasWinner = d[hasWinnerKey].GetBool();
+
+                    if (hasWinner)
+                    {
+                        static const char *winningPlayerIndexKey = "winningPlayerIndex";
+                        int winningPlayerIndex = d[winningPlayerIndexKey].GetInt();
+                        m_players.at(winningPlayerIndex).get()->onWin();
+                    }
+                }
             }
         }
     }

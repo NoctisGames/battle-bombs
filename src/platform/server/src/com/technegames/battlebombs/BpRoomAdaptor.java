@@ -21,6 +21,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     }
 
     private static final String GAME_BEGIN_LOG = "~~~~~~~~~~~~~~~~~~~ GAME BEGIN ~~~~~~~~~~~~~~~~~~~";
+    private static final String GAME_OVER_LOG = "~~~~~~~~~~~~~~~~~~~ GAME--OVER ~~~~~~~~~~~~~~~~~~~";
     private static final String SERVER = "Server";
     private static final String EVENT_TYPE = "eventType";
     private static final String NUM_PLAYERS = "numPlayers";
@@ -177,7 +178,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                     }
                 }
 
-                if (_numSecondsLeftForRound > 0 && numAlive >= 2)
+                if (_numSecondsLeftForRound > 0 && numAlive > 1)
                 {
                     for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
                     {
@@ -233,7 +234,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                 {
                     endGame();
 
-                    boolean hasWinner = winningPlayerIndex != -1;
+                    boolean hasWinner = winningPlayerIndex != -1 && numAlive == 1;
 
                     try
                     {
@@ -241,6 +242,10 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                         tobeSent.put(EVENT_TYPE, GAME_OVER);
                         tobeSent.put(HAS_WINNER, hasWinner);
                         tobeSent.put(WINNING_PLAYER_INDEX, winningPlayerIndex);
+                        
+                        updateRoomWithMessage(tobeSent.toString());
+                        
+                        System.out.println(GAME_OVER_LOG);
                     }
                     catch (JSONException e)
                     {

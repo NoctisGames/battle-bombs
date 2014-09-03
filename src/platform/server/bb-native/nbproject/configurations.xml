@@ -122,7 +122,7 @@
           </preprocessorList>
         </ccTool>
         <linkerTool>
-          <output>dist/libBpNative.dll</output>
+          <output>dist/libBbNative.dll</output>
         </linkerTool>
       </compileType>
       <item path="../../../core/BombGameObject.cpp" ex="false" tool="1" flavor2="0">
