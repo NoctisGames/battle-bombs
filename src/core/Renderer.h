@@ -53,6 +53,8 @@ public:
     
     virtual void clearScreenWithColor(float r, float g, float b, float a) = 0;
     
+    virtual void beginFrame() = 0;
+    
     virtual void renderWorldBackground() = 0;
     
     virtual void renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps) = 0;
@@ -72,6 +74,8 @@ public:
     virtual void renderGameOverBlackCover(float alpha) = 0;
     
     virtual void renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]) = 0;
+    
+    virtual void renderWaitingText() = 0;
     
     virtual void endFrame() = 0;
 

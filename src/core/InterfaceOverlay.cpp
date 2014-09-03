@@ -124,7 +124,7 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
     
     // Update PowerUp Bar and Buttons if the player is still alive
     
-    if(gameState == RUNNING)
+    if(gameState == RUNNING || gameState == COUNTING_DOWN)
     {
         m_fPowerUpBarItemsStateTime += deltaTime;
         m_fButtonsStateTime += deltaTime;

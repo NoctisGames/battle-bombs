@@ -121,6 +121,7 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
             if(m_fCountDownTimeLeft < 0)
             {
                 m_gameState = RUNNING;
+                Assets::getInstance()->setMusicId(m_iMapType + 2);
             }
             
             // TODO --> 3, 2, 1, GO!
@@ -152,23 +153,19 @@ void GameScreen::present()
     {
         case WAITING_FOR_SERVER:
             // TODO, Render Waiting for Server interface with list of players and countdown timer
+            m_renderer->beginFrame();
+            m_renderer->renderWaitingText();
+            m_renderer->endFrame();
             break;
         case WAITING_FOR_LOCAL_SETTINGS:
             // TODO, Render interface for picking a map and setting # of bots
             break;
         case COUNTING_DOWN:
-            m_renderer->renderWorldBackground();
-            
-            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            m_renderer->renderMapBordersNear(m_mapBorders);
-            
             // TODO, Render Player Names (a simple text bubble will do) and a 3, 2, 1, GO!
-            
-            m_renderer->endFrame();
-            break;
         case RUNNING:
             m_renderer->calcScrollYForPlayer(*m_player);
             
+            m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
@@ -188,6 +185,7 @@ void GameScreen::present()
         case SPECTATING:
             m_renderer->calcScrollYForPlayer(*m_player);
             
+            m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
@@ -396,6 +394,8 @@ void GameScreen::updateLocalCommon(float deltaTime)
                 m_fBlackCoverTransitionAlpha = 1;
                 
                 init();
+                
+                Assets::getInstance()->setMusicId(MUSIC_STOP);
             }
         }
     }
@@ -490,6 +490,8 @@ void GameScreen::beginGame(rapidjson::Document &d)
             m_player = m_players.at(m_sPlayerIndex).get();
             
             m_gameState = COUNTING_DOWN;
+            
+            m_interfaceOverlay->update(0, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
         }
     }
 }
@@ -502,6 +504,8 @@ void GameScreen::beginSpectate(rapidjson::Document &d)
         m_player = m_players.at(m_sPlayerIndex).get();
         
         m_gameState = SPECTATING;
+        
+        Assets::getInstance()->setMusicId(m_iMapType + 2);
     }
 }
 
@@ -548,8 +552,6 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         PathFinder::getInstance().resetGameGrid();
         PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks, m_iMapType);
         m_interfaceOverlay->initializeMiniMap(m_insideBlocks, m_breakableBlocks, m_iMapType);
-        
-        Assets::getInstance()->setMusicId(mapType + 2);
         
         return true;
     }

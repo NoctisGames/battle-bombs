@@ -172,10 +172,13 @@ void OpenGLESRenderer::clearScreenWithColor(float r, float g, float b, float a)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
-void OpenGLESRenderer::renderWorldBackground()
+void OpenGLESRenderer::beginFrame()
 {
     glEnable(GL_TEXTURE_2D);
-    
+}
+
+void OpenGLESRenderer::renderWorldBackground()
+{
     m_spriteBatcher->beginBatch();
     m_spriteBatcher->drawSprite(WORLD_BACKGROUND_X, WORLD_BACKGROUND_Y - m_fScrollY, WORLD_BACKGROUND_WIDTH, WORLD_BACKGROUND_HEIGHT, 0, Assets::getWorldBackgroundTextureRegion());
     m_spriteBatcher->endBatchWithTexture(m_gameTexture);
@@ -459,6 +462,29 @@ void OpenGLESRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID
     }
     
     m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
+}
+
+void OpenGLESRenderer::renderWaitingText()
+{
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+    static Color interfaceColor = { 1, 1, 1, 1 };
+    interfaceColor.alpha -= 0.04f;
+    if(interfaceColor.alpha < 0.2f)
+    {
+        interfaceColor.alpha = 1;
+    }
+    
+    m_spriteBatcherWithColor->beginBatch();
+    
+    std::stringstream ss;
+    ss << "Waiting for next Round...";
+    std::string waitingText = ss.str();
+    
+    m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
+    
+    m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
 }
 
 void OpenGLESRenderer::endFrame()
