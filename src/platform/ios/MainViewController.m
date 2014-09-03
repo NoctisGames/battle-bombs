@@ -28,13 +28,22 @@ static NSString *username;
     NSString *UUID = [[NSUUID UUID] UUIDString];
     UUID = [UUID substringToIndex:8];
     username = [@"Player_" stringByAppendingString:UUID];
+    
+    [WarpClient initWarp:APPWARP_APP_KEY server:APPWARP_HOST_ADDRESS];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    [self initializeAppWarp];
+    WarpClient *warpClient = [WarpClient getInstance];
+    
+    [warpClient addChatRequestListener:self];
+    [warpClient addConnectionRequestListener:self];
+    [warpClient addLobbyRequestListener:self];
+    [warpClient addNotificationListener:self];
+    [warpClient addRoomRequestListener:self];
+    [warpClient addZoneRequestListener:self];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -292,22 +301,6 @@ static NSString *username;
 - (void)onGetMatchedRoomsDone:(MatchedRoomsEvent *)event
 {
     NSLog(@"%s",__FUNCTION__);
-}
-
-#pragma private methods
-
-- (void)initializeAppWarp
-{
-    [WarpClient initWarp:APPWARP_APP_KEY server:APPWARP_HOST_ADDRESS];
-    
-    WarpClient *warpClient = [WarpClient getInstance];
-    
-    [warpClient addChatRequestListener:self];
-    [warpClient addConnectionRequestListener:self];
-    [warpClient addLobbyRequestListener:self];
-    [warpClient addNotificationListener:self];
-    [warpClient addRoomRequestListener:self];
-    [warpClient addZoneRequestListener:self];
 }
 
 @end
