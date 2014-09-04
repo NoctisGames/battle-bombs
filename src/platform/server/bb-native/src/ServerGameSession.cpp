@@ -26,6 +26,7 @@
 #include "Fire.h"
 #include "PathFinder.h"
 #include "MapSearchNode.h"
+#include "PowerUpType.h"
 
 //For RNG purposes
 #include <stdlib.h>
@@ -115,28 +116,23 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
             // 70% chance there will be a breakable block at all
             if ((rand() % 100 + 1) < 71)
             {
-                int flag = 0;
+                int flag = POWER_UP_TYPE_NONE;
 
                 // Generate a random number from 1 - 100
                 // This will be used to determine which type of powerups will appear
                 int flagRange = (rand() % 100 + 1);
 
-                // TODO, generate a random power up flag
-                // Some Power Up are more rare than others,
-                // so that should be reflected here
-
-                // 50% chance of a random passive powerup
-                // These all have an equal chance of showing up
-                if (flagRange <= 50)
+                if (flagRange <= 25)
                 {
-                    flag = rand() % 4 + 1;
+                    flag = rand() % POWER_UP_TYPE_SPEED + 1;
                 }
-                else if (flagRange > 50 && flagRange < 70)
+                else if (flagRange > 25 && flagRange <= 30)
                 {
-                    // 20% chance of an active powerup
-                    // We'll determine the weight of these once we get them created and play with them a bit
-                    // Right now, it just sets the flag to 5 as a placeholder value for the Push
-                    flag = 5;
+                    flag = POWER_UP_TYPE_FORCE_FIELD;
+                }
+                else if (flagRange > 30 && flagRange <= 35)
+                {
+                    flag = POWER_UP_TYPE_PUSH;
                 }
 
                 // If these two blocks don't get caught, the flag remains 0 and no powerup will be created
