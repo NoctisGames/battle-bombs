@@ -189,7 +189,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                         if (_inRoomUserSessionDataMap.get(user)._timeSinceLastChat > 1000)
                         {
                             short playerIndex = _inRoomUserSessionDataMap.get(user)._playerIndex;
-                            if (!_playerSpotsReceivedGameStateCommand[playerIndex])
+                            if (!_playerSpotsReceivedGameStateCommand[playerIndex] && _numSecondsLeftForRound >= 5)
                             {
                                 String beginGameCommand = getGameStateCommand(BEGIN_SPECTATE);
                                 if (beginGameCommand != null)
