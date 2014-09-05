@@ -12,7 +12,7 @@ public final class Main
     {
         String appconfigPath = System.getProperty("user.dir") + System.getProperty("file.separator") + "AppConfig.json";
 
-        boolean started = AppWarpServer.start(new BpServerAdaptor(), appconfigPath);
+        boolean started = AppWarpServer.start(new BbServerAdaptor(), appconfigPath);
 
         if (started)
         {

@@ -7,12 +7,13 @@ import com.shephertz.app42.server.idomain.IZone;
  *
  * @author sgowen
  */
-public final class BpServerAdaptor extends BaseServerAdaptor
+public final class BbServerAdaptor extends BaseServerAdaptor
 {
     @Override
     public void onZoneCreated(IZone zone)
     {
         System.out.println("Zone Created " + zone.getName() + " with key " + zone.getAppKey());
-        zone.setAdaptor(new BpZoneAdaptor());
+        
+        zone.setAdaptor(new BbZoneAdaptor(zone));
     }
 }

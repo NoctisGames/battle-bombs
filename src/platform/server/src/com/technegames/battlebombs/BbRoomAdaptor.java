@@ -13,7 +13,7 @@ import org.json.JSONObject;
  *
  * @author sgowen
  */
-public final class BpRoomAdaptor extends BaseRoomAdaptor
+public final class BbRoomAdaptor extends BaseRoomAdaptor
 {
     static
     {
@@ -69,7 +69,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
     private long lastRealTimeMeasurement_ms; // temporal storage for last time measurement
     private int mapType = 0; // Increment this by 1 every time we start a new game
 
-    public BpRoomAdaptor(IRoom room)
+    public BbRoomAdaptor(IRoom room)
     {
         _room = room;
         _stateTime = 0;
