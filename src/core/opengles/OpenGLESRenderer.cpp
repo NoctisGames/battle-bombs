@@ -330,7 +330,7 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
     ss << "Waiting for next Round...";
     std::string waitingText = ss.str();
     
-    m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 16, 0.5f, 0.5f, interfaceColor, true);
+    m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, 0.5f, 0.5f, 0.5f, interfaceColor, true);
     
     m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
 }
