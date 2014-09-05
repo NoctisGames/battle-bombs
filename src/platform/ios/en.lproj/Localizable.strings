@@ -6,14 +6,7 @@
   Copyright (c) 2014 Techne Games. All rights reserved.
 */
 
-// Chat Log Messages
-"you_have_connected" = "You have connected";
-
-// Dialogs
-"welcome_title" = "Welcome To Bomber Party!";
-"username_hint" = "Enter a Username...";
-"connect" = "Connect";
-
-"join_message" = "Join?";
-"join" = "Join";
-"cancel" = "Cancel";
+// Dialog
+"update_required_title" = "Update Required";
+"update_required_message" = "A new version of Battle Bombs is available, please update.";
+"update_required_button" = "OK";

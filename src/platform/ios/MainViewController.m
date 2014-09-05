@@ -100,8 +100,21 @@ static NSString *_username;
 - (void)onConnectDone:(ConnectEvent *) event
 {
     NSLog(@"%s", __FUNCTION__);
+    NSLog(@"event.result: %hhu", event.result);
     
-    [[WarpClient getInstance] joinRoomInRangeBetweenMinUsers:0 andMaxUsers:7 maxPrefered:YES];
+    if(event.result == CLIENT_NEEDS_TO_UPDATE)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"update_required_title", nil)
+                                                        message:NSLocalizedString(@"update_required_message", nil)
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"update_required_button", nil)
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        [[WarpClient getInstance] joinRoomInRangeBetweenMinUsers:0 andMaxUsers:7 maxPrefered:YES];
+    }
 }
 
 - (void)onDisconnectDone:(ConnectEvent *) event
