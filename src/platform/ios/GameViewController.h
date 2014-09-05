@@ -6,15 +6,14 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#import <GLKit/GLKit.h>
 #import <AppWarp_iOS_SDK/AppWarp_iOS_SDK.h>
+#import "BaseGameViewController.h"
 
-@interface GameViewController : GLKViewController <UITextFieldDelegate, ChatRequestListener, ConnectionRequestListener, LobbyRequestListener, NotifyListener, RoomRequestListener, ZoneRequestListener>
+@interface GameViewController : BaseGameViewController <UITextFieldDelegate, ChatRequestListener, ConnectionRequestListener, LobbyRequestListener, NotifyListener, RoomRequestListener, ZoneRequestListener>
 {
     // Nothing to do here
 }
 
-@property (strong, nonatomic) NSString *username;
 @property (strong, nonatomic) NSString *joinedRoomId;
 
 @end

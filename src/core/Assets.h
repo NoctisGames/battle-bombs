@@ -46,6 +46,8 @@ public:
 
 	static TextureRegion getBreakableBlockTextureRegion(BreakableBlock &breakableBlock);
     
+    static TextureRegion getWaitingForServerInterfaceTextureRegion();
+    
     static TextureRegion getInterfaceOverlayTextureRegion();
     
     static TextureRegion getSpectatorInterfaceOverlayTextureRegion();

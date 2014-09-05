@@ -7,77 +7,32 @@
 //
 
 #import "GameViewController.h"
-#import "Logger.h"
-#import "Music.h"
-#import "Sound.h"
 
+// C++
 #include "game.h"
-#include "Assets.h"
 
 @interface GameViewController ()
 {
     // Empty
 }
 
-@property (strong, nonatomic) EAGLContext *context;
-@property (strong, nonatomic) Music *bgm;
-@property (strong, nonatomic) Sound *plantBombSound;
-@property (strong, nonatomic) Sound *explosionSound;
-@property (strong, nonatomic) Sound *deathSound;
-
 @end
 
 @implementation GameViewController
 
-static NSString *KEEP_ALIVE = @"KEEP_ALIVE";
-static NSString *EVENT_TYPE = @"eventType";
-static int CLIENT_UPDATE = 1338;
-static NSString *EVENTS = @"events";
-static NSString *PLAYER_INDEX = @"playerIndex";
-static NSString *X = @"X";
-static NSString *Y = @"Y";
-static NSString *DIRECTION = @"Direction";
+static NSString * const KEEP_ALIVE = @"KEEP_ALIVE";
+static NSString * const EVENT_TYPE = @"eventType";
+static NSString * const EVENTS = @"events";
+static NSString * const PLAYER_INDEX = @"playerIndex";
+static NSString * const X = @"X";
+static NSString * const Y = @"Y";
+static NSString * const DIRECTION = @"Direction";
 
-static Logger *logger = nil;
-
-+ (void)initialize
-{
-    logger = [[Logger alloc] initWithClass:[GameViewController class]];
-}
+static int const CLIENT_UPDATE = 1338;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
-    if (!self.context)
-    {
-        [logger error:@"Failed to create ES context"];
-    }
-    
-    GLKView *view = (GLKView *)self.view;
-    
-    view.context = self.context;
-    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
-    view.userInteractionEnabled = YES;
-    
-    [view setMultipleTouchEnabled:YES];
-    
-    [self setupGL];
-    
-    self.plantBombSound = [[Sound alloc] initWithSoundNamed:@"plant_bomb.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:3];
-    self.explosionSound = [[Sound alloc] initWithSoundNamed:@"explosion.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
-    self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onPause)
-                                                 name:UIApplicationWillResignActiveNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onResume)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
     
     WarpClient *warpClient = [WarpClient getInstance];
     
@@ -89,77 +44,18 @@ static Logger *logger = nil;
     [warpClient addZoneRequestListener:self];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    [self onPause];
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    on_touch_down(pos.x, pos.y);
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    on_touch_dragged(pos.x, pos.y);
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    on_touch_up(pos.x, pos.y);
-}
-
-#pragma mark <GLKViewControllerDelegate>
-
-- (void)update
-{
-    int gameState = get_state();
-    switch (gameState)
-    {
-        case 0:
-            update(self.timeSinceLastUpdate);
-            [self pushEvents];
-            break;
-        case 1:
-            init([self.username UTF8String]);
-            break;
-        case 2:
-            [self dismissViewControllerAnimated:true completion:nil];
-            break;
-        default:
-            break;
-    }
-}
-
-#pragma mark <GLKViewDelegate>
-
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
-{
-    present();
-    [self handleSound];
-    [self handleMusic];
-}
-
 #pragma mark <ChatRequestListener>
 
 - (void)onSendChatDone:(Byte)result
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onSendPrivateChatDone:(Byte)result
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 #pragma mark <ConnectionRequestListener>
@@ -167,19 +63,19 @@ static Logger *logger = nil;
 - (void)onConnectDone:(ConnectEvent*) event
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onDisconnectDone:(ConnectEvent*) event
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onInitUDPDone:(Byte)result
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 #pragma mark <LobbyRequestListener>
@@ -187,31 +83,31 @@ static Logger *logger = nil;
 - (void)onJoinLobbyDone:(LobbyEvent*)lobbyEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onLeaveLobbyDone:(LobbyEvent*)lobbyEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onSubscribeLobbyDone:(LobbyEvent*)lobbyEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUnSubscribeLobbyDone:(LobbyEvent*)lobbyEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGetLiveLobbyInfoDone:(LiveRoomInfoEvent*)event
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 #pragma mark <NotifyListener>
@@ -219,19 +115,19 @@ static Logger *logger = nil;
 - (void)onRoomCreated:(RoomData *)roomEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onRoomDestroyed:(RoomData *)roomEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserLeftRoom:(RoomData *)roomData username:(NSString *)username
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
     
     if([username isEqualToString:self.username])
     {
@@ -242,19 +138,19 @@ static Logger *logger = nil;
 - (void)onUserJoinedRoom:(RoomData *)roomData username:(NSString *)username
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserLeftLobby:(LobbyData *)lobbyData username:(NSString *)username
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserJoinedLobby:(LobbyData *)lobbyData username:(NSString *)username
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onChatReceived:(ChatEvent *)chatEvent
@@ -269,48 +165,48 @@ static Logger *logger = nil;
 -(void)onPrivateChatReceived:(NSString *)message fromUser:(NSString *)senderName
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUpdatePeersReceived:(UpdateEvent *)updateEvent
 {
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 -(void)onUserChangeRoomProperty:(RoomData *)event username:(NSString *)username properties:(NSDictionary *)properties lockedProperties:(NSDictionary *)lockedProperties
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onMoveCompleted:(MoveEvent *) moveEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserPaused:(NSString *)userName withLocation:(NSString *)locId isLobby:(BOOL)isLobby
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserResumed:(NSString *)userName withLocation:(NSString *)locId isLobby:(BOOL)isLobby
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGameStarted:(NSString *)sender roomId:(NSString *)roomId  nextTurn:(NSString *)nextTurn
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGameStopped:(NSString *)sender roomId:(NSString *)roomId
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 #pragma mark <RoomRequestListener>
@@ -318,55 +214,55 @@ static Logger *logger = nil;
 - (void)onSubscribeRoomDone:(RoomEvent*)roomEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUnSubscribeRoomDone:(RoomEvent*)roomEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onJoinRoomDone:(RoomEvent*)roomEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onLeaveRoomDone:(RoomEvent*)roomEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGetLiveRoomInfoDone:(LiveRoomInfoEvent*)event
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onSetCustomRoomDataDone:(LiveRoomInfoEvent*)event
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUpdatePropertyDone:(LiveRoomInfoEvent *)event
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onLockPropertiesDone:(Byte)result
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUnlockPropertiesDone:(Byte)result
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 #pragma mark <ZoneRequestListener>
@@ -374,71 +270,46 @@ static Logger *logger = nil;
 - (void)onCreateRoomDone:(RoomEvent*)roomEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onDeleteRoomDone:(RoomEvent*)roomEvent
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGetAllRoomsDone:(AllRoomsEvent*)event
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGetOnlineUsersDone:(AllUsersEvent*)event
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGetLiveUserInfoDone:(LiveUserInfoEvent*)event
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onSetCustomUserDataDone:(LiveUserInfoEvent*)event
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGetMatchedRoomsDone:(MatchedRoomsEvent*)event
 {
     // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
-#pragma mark <Private>
-
-- (void)setupGL
-{
-    [EAGLContext setCurrentContext:self.context];
-    
-    self.preferredFramesPerSecond = 60;
-    
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-    CGSize screenSize = CGSizeMake(screenBounds.size.width * screenScale, screenBounds.size.height * screenScale);
-    
-    CGSize newSize = CGSizeMake(screenSize.width, screenSize.height);
-    newSize.width = roundf(newSize.width);
-	newSize.height = roundf(newSize.height);
-    
-    if([Logger isDebugEnabled])
-    {
-        [logger debug:[NSString stringWithFormat:@"dimension %f x %f", newSize.width, newSize.height]];
-    }
-    
-    init([self.username UTF8String]);
-    on_surface_created(newSize.width, newSize.height);
-    on_surface_changed(newSize.width, newSize.height, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
-    on_resume();
-}
+#pragma mark <Protected>
 
 - (void)pushEvents
 {
@@ -470,76 +341,8 @@ static Logger *logger = nil;
     }
 }
 
-- (void)handleSound
-{
-    short soundId;
-    while ((soundId = get_current_sound_id()) > 0)
-    {
-        switch (soundId)
-        {
-            case SOUND_PLANT_BOMB:
-                [self.plantBombSound play];
-                break;
-            case SOUND_EXPLOSION:
-                [self.explosionSound play];
-                break;
-            case SOUND_DEATH:
-                [self.deathSound play];
-                break;
-            default:
-                continue;
-        }
-    }
-}
-
-- (void)handleMusic
-{
-    bool loadedNewTrack = false;
-    short musicId = get_current_music_id();
-    switch (musicId)
-    {
-        case MUSIC_STOP:
-            [self.bgm stop];
-            break;
-        case MUSIC_PLAY_MAP_SPACE:
-            self.bgm = [[Music alloc] initWithMusicNamed:@"map_space" fromBundle:[NSBundle mainBundle]];
-            loadedNewTrack = true;
-            break;
-        case MUSIC_PLAY_MAP_GRASSLANDS:
-            self.bgm = [[Music alloc] initWithMusicNamed:@"map_grasslands" fromBundle:[NSBundle mainBundle]];
-            loadedNewTrack = true;
-            break;
-        case MUSIC_PLAY_MAP_MOUNTAINS:
-            self.bgm = [[Music alloc] initWithMusicNamed:@"map_mountains" fromBundle:[NSBundle mainBundle]];
-            loadedNewTrack = true;
-            break;
-        case MUSIC_PLAY_MAP_BASE:
-            self.bgm = [[Music alloc] initWithMusicNamed:@"map_base" fromBundle:[NSBundle mainBundle]];
-            loadedNewTrack = true;
-            break;
-        default:
-            break;
-    }
-    
-    if(loadedNewTrack)
-    {
-        [self.bgm setLooping:true];
-        [self.bgm setVolume:1.0f];
-        [self.bgm play];
-    }
-}
-
-- (void)onResume
-{
-    on_resume();
-}
-
 - (void)onPause
 {
-    [self.bgm stop];
-    
-    on_pause();
-    
     WarpClient *warpClient = [WarpClient getInstance];
     
     [warpClient removeChatRequestListener:self];
@@ -552,10 +355,7 @@ static Logger *logger = nil;
     [warpClient leaveRoom:self.joinedRoomId];
     [warpClient disconnect];
     
-    if (![self.presentedViewController isBeingDismissed])
-    {
-        [self dismissViewControllerAnimated:NO completion:nil];
-    }
+    [super onPause];
 }
 
 @end

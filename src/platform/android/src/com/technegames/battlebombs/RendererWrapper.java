@@ -33,15 +33,19 @@ public final class RendererWrapper implements Renderer
     private static final short MUSIC_PLAY_MAP_BASE = 5;
     private static final short SOUND_PLANT_BOMB = 1;
     private static final short SOUND_EXPLOSION = 2;
-    private static final short SOUND_DEATH = 3;
+    private static final short SOUND_PU_BOMB = 3;
+    private static final short SOUND_PU_FIRE = 4;
+    private static final short SOUND_PU_SPEED = 5;
+    private static final short SOUND_PU_FORCE_FIELD = 6;
+    private static final short SOUND_PU_PUSH = 7;
+    private static final short SOUND_FORCE_FIELD_DOWN = 8;
+    private static final short SOUND_DEATH = 9;
 
-    // smooth constant elements to play with
-    private static final float movAveragePeriod = 40; // #frames involved in
-                                                      // average calc (suggested
-                                                      // values 5-100)
-    private static final float smoothFactor = 0.1f; // adjusting ratio
-                                                    // (suggested values
-                                                    // 0.01-0.5)
+    // #frames involved in average calc (suggested values 5-100)
+    private static final float movAveragePeriod = 40;
+
+    // adjusting ratio (suggested values 0.01-0.5)
+    private static final float smoothFactor = 0.1f;
 
     static
     {

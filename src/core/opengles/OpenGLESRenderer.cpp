@@ -23,6 +23,7 @@
 #include "Vector2D.h"
 #include "Fire.h"
 #include "GameEvent.h"
+#include "WaitingForServerInterface.h"
 #include "InterfaceOverlay.h"
 #include "PowerUpBarItem.h"
 #include "BombButton.h"
@@ -307,6 +308,33 @@ void OpenGLESRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorde
     m_spriteBatcher->endBatchWithTexture(m_gameTexture);
 }
 
+void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface)
+{
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+    m_spriteBatcher->beginBatch();
+    renderGameObject(waitingForServerInterface, Assets::getWaitingForServerInterfaceTextureRegion());
+    m_spriteBatcher->endBatchWithTexture(m_interfaceTexture2);
+    
+    static Color interfaceColor = { 1, 1, 1, 1 };
+    interfaceColor.alpha -= 0.04f;
+    if(interfaceColor.alpha < 0.2f)
+    {
+        interfaceColor.alpha = 1;
+    }
+    
+    m_spriteBatcherWithColor->beginBatch();
+    
+    std::stringstream ss;
+    ss << "Waiting for next Round...";
+    std::string waitingText = ss.str();
+    
+    m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 16, 0.5f, 0.5f, interfaceColor, true);
+    
+    m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
+}
+
 void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 {
     m_spriteBatcher->beginBatch();
@@ -462,29 +490,6 @@ void OpenGLESRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID
     }
     
     m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
-}
-
-void OpenGLESRenderer::renderWaitingText()
-{
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    static Color interfaceColor = { 1, 1, 1, 1 };
-    interfaceColor.alpha -= 0.04f;
-    if(interfaceColor.alpha < 0.2f)
-    {
-        interfaceColor.alpha = 1;
-    }
-    
-    m_spriteBatcherWithColor->beginBatch();
-    
-    std::stringstream ss;
-    ss << "Waiting for next Round...";
-    std::string waitingText = ss.str();
-    
-    m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
-    
-    m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
 }
 
 void OpenGLESRenderer::endFrame()

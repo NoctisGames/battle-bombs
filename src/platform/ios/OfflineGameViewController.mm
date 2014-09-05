@@ -7,235 +7,132 @@
 //
 
 #import "OfflineGameViewController.h"
-#import "Logger.h"
-#import "Music.h"
-#import "Sound.h"
 
+// C++
 #include "game.h"
-#include "ResourceConstants.h"
+#include "GameEvent.h"
 
 @interface OfflineGameViewController ()
 {
-    // Empty
+    BOOL _playersAlive[8];
+    int _mapType;
 }
-
-@property (strong, nonatomic) EAGLContext *context;
-@property (strong, nonatomic) Music *bgm;
-@property (strong, nonatomic) Sound *plantBombSound;
-@property (strong, nonatomic) Sound *explosionSound;
-@property (strong, nonatomic) Sound *deathSound;
 
 @end
 
 @implementation OfflineGameViewController
 
-static Logger *logger = nil;
-
-+ (void)initialize
+- (void)viewDidAppear:(BOOL)animated
 {
-    logger = [[Logger alloc] initWithClass:[OfflineGameViewController class]];
+    [super viewDidAppear:animated];
+    
+    _playersAlive[0] = true;
+    _playersAlive[1] = true;
+    _playersAlive[2] = true;
+    _playersAlive[3] = true;
+    _playersAlive[4] = true;
+    _playersAlive[5] = true;
+    _playersAlive[6] = true;
+    _playersAlive[7] = true;
+    
+    _mapType = 0;
+    
+    [self handleGameState:1];
 }
 
-- (void)viewDidLoad
+#pragma mark <Protected>
+
+- (void)handleGameState:(int)gameState
 {
-    [super viewDidLoad];
-    
-    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
-    if (!self.context)
+    if(gameState == 1)
     {
-        [logger error:@"Failed to create ES context"];
+        NSString *beginGameMessage = [NSString stringWithFormat:@"{\"breakableBlockPowerUpFlags\": \"0,1,2,3,4,5\", \"breakableBlockXValues\": \"8,4,5,7,8,9\", \"breakableBlockYValues\": \"0,1,2,3,4,5\", \"eventType\": 1337, \"mapType\": %i, \"numBreakableBlocks\": 5, \"numClientBots\": 7, \"numPlayers\": 1, \"playerIndex0\": \"%@\", \"playerIndex0Alive\": true, \"playerIndex0Direction\": 0, \"playerIndex0X\": 22.208955764770508, \"playerIndex0Y\": 12.179104804992676, \"playerIndex1\": \"Bot 1\", \"playerIndex1Alive\": true, \"playerIndex1Direction\": 2, \"playerIndex1X\": 2.1492538452148438, \"playerIndex1Y\": 12.179104804992676, \"playerIndex2\": \"Bot 2\", \"playerIndex2Alive\": true, \"playerIndex2Direction\": 0, \"playerIndex2X\": 17.91044807434082, \"playerIndex2Y\": 2.1492538452148438, \"playerIndex3\": \"Bot 3\", \"playerIndex3Alive\": true, \"playerIndex3Direction\": 2, \"playerIndex3X\": 6.447761058807373, \"playerIndex3Y\": 2.1492538452148438, \"playerIndex4\": \"Bot 4\", \"playerIndex4Alive\": true, \"playerIndex4Direction\": 1, \"playerIndex4X\": 2.1492538452148438, \"playerIndex4Y\": 25.074626922607422, \"playerIndex5\": \"Bot 5\", \"playerIndex5Alive\": true, \"playerIndex5Direction\": 3, \"playerIndex5X\": 2.1492538452148438, \"playerIndex5Y\": 16.477611541748047, \"playerIndex6\": \"Bot 6\", \"playerIndex6Alive\": true, \"playerIndex6Direction\": 1, \"playerIndex6X\": 22.208955764770508, \"playerIndex6Y\": 25.074626922607422, \"playerIndex7\": \"Bot 7\", \"playerIndex7Alive\": true, \"playerIndex7Direction\": 3, \"playerIndex7X\": 22.208955764770508, \"playerIndex7Y\": 16.477611541748047}", _mapType, self.username];
+        
+        on_chat_received([beginGameMessage UTF8String]);
     }
     
-    GLKView *view = (GLKView *)self.view;
-    
-    view.context = self.context;
-    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
-    view.userInteractionEnabled = YES;
-    
-    [view setMultipleTouchEnabled:YES];
-    
-    [self setupGL];
-    
-    self.plantBombSound = [[Sound alloc] initWithSoundNamed:@"plant_bomb.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:3];
-    self.explosionSound = [[Sound alloc] initWithSoundNamed:@"explosion.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
-    self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onPause)
-                                                 name:UIApplicationWillResignActiveNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onResume)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    on_chat_received([@"{\"breakableBlockPowerUpFlags\": \"0,1,2,3,4,5\", \"breakableBlockXValues\": \"8,4,5,7,8,9\", \"breakableBlockYValues\": \"0,1,2,3,4,5\", \"eventType\": 1337, \"mapType\": 0, \"numBreakableBlocks\": 5, \"numClientBots\": 7, \"numPlayers\": 1, \"playerIndex0\": \"Player_Offline\", \"playerIndex0Alive\": true, \"playerIndex0Direction\": 0, \"playerIndex0X\": 22.208955764770508, \"playerIndex0Y\": 12.179104804992676, \"playerIndex1\": \"Bot 1\", \"playerIndex1Alive\": true, \"playerIndex1Direction\": 2, \"playerIndex1X\": 2.1492538452148438, \"playerIndex1Y\": 12.179104804992676, \"playerIndex2\": \"Bot 2\", \"playerIndex2Alive\": true, \"playerIndex2Direction\": 0, \"playerIndex2X\": 17.91044807434082, \"playerIndex2Y\": 2.1492538452148438, \"playerIndex3\": \"Bot 3\", \"playerIndex3Alive\": true, \"playerIndex3Direction\": 2, \"playerIndex3X\": 6.447761058807373, \"playerIndex3Y\": 2.1492538452148438, \"playerIndex4\": \"Bot 4\", \"playerIndex4Alive\": true, \"playerIndex4Direction\": 1, \"playerIndex4X\": 2.1492538452148438, \"playerIndex4Y\": 25.074626922607422, \"playerIndex5\": \"Bot 5\", \"playerIndex5Alive\": true, \"playerIndex5Direction\": 3, \"playerIndex5X\": 2.1492538452148438, \"playerIndex5Y\": 16.477611541748047, \"playerIndex6\": \"Bot 6\", \"playerIndex6Alive\": true, \"playerIndex6Direction\": 1, \"playerIndex6X\": 22.208955764770508, \"playerIndex6Y\": 25.074626922607422, \"playerIndex7\": \"Bot 7\", \"playerIndex7Alive\": true, \"playerIndex7Direction\": 3, \"playerIndex7X\": 22.208955764770508, \"playerIndex7Y\": 16.477611541748047}" UTF8String]);
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    [self onPause];
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    on_touch_down(pos.x, pos.y);
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    on_touch_dragged(pos.x, pos.y);
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    on_touch_up(pos.x, pos.y);
-}
-
-#pragma mark <GLKViewControllerDelegate>
-
-- (void)update
-{
-    int gameState = get_state();
-    switch (gameState)
+    _mapType++;
+    if(_mapType >= MAP_BASE)
     {
-        case 0:
-            update(self.timeSinceLastUpdate);
-            break;
-        case 1:
-            init([@"Player_Offline" UTF8String], true);
-            break;
-        case 2:
-            [self dismissViewControllerAnimated:true completion:nil];
-            break;
-        default:
-            break;
+        _mapType = 0;
     }
 }
 
-#pragma mark <GLKViewDelegate>
-
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
+- (void)pushEvents
 {
-    present();
-    [self handleSound];
-    [self handleMusic];
-}
-
-#pragma mark <Private>
-
-- (void)setupGL
-{
-    [EAGLContext setCurrentContext:self.context];
-    
-    self.preferredFramesPerSecond = 60;
-    
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-    CGSize screenSize = CGSizeMake(screenBounds.size.width * screenScale, screenBounds.size.height * screenScale);
-    
-    CGSize newSize = CGSizeMake(screenSize.width, screenSize.height);
-    newSize.width = roundf(newSize.width);
-	newSize.height = roundf(newSize.height);
-    
-    if([Logger isDebugEnabled])
+    int event = get_oldest_event_id();
+    if(event > 0)
     {
-        [logger debug:[NSString stringWithFormat:@"dimension %f x %f", newSize.width, newSize.height]];
-    }
-    
-    init([@"Player_Offline" UTF8String], true);
-    on_surface_created(newSize.width, newSize.height);
-    on_surface_changed(newSize.width, newSize.height, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
-    on_resume();
-}
-
-- (void)handleSound
-{
-    short soundId;
-    while ((soundId = get_current_sound_id()) > 0)
-    {
-        switch (soundId)
+        while ((event = get_oldest_event_id()) > 0)
         {
-            case SOUND_PLANT_BOMB:
-                [self.plantBombSound play];
-                break;
-            case SOUND_EXPLOSION:
-                [self.explosionSound play];
-                break;
-            case SOUND_DEATH:
-                [self.deathSound play];
-                break;
-            default:
-                continue;
+            int playerIndex = 0;
+            while(event >= PLAYER_EVENT_BASE)
+            {
+                event -= PLAYER_EVENT_BASE;
+                playerIndex++;
+            }
+            
+            while (event >= PLAYER_EVENT_DIRECTION_BASE)
+            {
+                event -= PLAYER_EVENT_DIRECTION_BASE;
+            }
+            
+            while (event >= PLAYER_EVENT_GRID_X_BASE)
+            {
+                event -= PLAYER_EVENT_GRID_X_BASE;
+            }
+            
+            while (event >= PLAYER_EVENT_GRID_Y_BASE)
+            {
+                event -= PLAYER_EVENT_GRID_Y_BASE;
+            }
+            
+            while (event >= PLAYER_EVENT_MOD_BASE)
+            {
+                event -= PLAYER_EVENT_MOD_BASE;
+            }
+            
+            switch (event)
+            {
+                case PLAYER_DEATH:
+                    [self handleDeathForPlayerIndex:playerIndex];
+                    break;
+                default:
+                    continue;
+            }
         }
     }
 }
 
-- (void)handleMusic
+- (bool)isOffline
 {
-    bool loadedNewTrack = false;
-    short musicId = get_current_music_id();
-    switch (musicId)
-    {
-        case MUSIC_STOP:
-            [self.bgm stop];
-            break;
-        case MUSIC_PLAY_MAP_SPACE:
-            self.bgm = [[Music alloc] initWithMusicNamed:@"map_space" fromBundle:[NSBundle mainBundle]];
-            loadedNewTrack = true;
-            break;
-        case MUSIC_PLAY_MAP_GRASSLANDS:
-            self.bgm = [[Music alloc] initWithMusicNamed:@"map_grasslands" fromBundle:[NSBundle mainBundle]];
-            loadedNewTrack = true;
-            break;
-        case MUSIC_PLAY_MAP_MOUNTAINS:
-            self.bgm = [[Music alloc] initWithMusicNamed:@"map_mountains" fromBundle:[NSBundle mainBundle]];
-            loadedNewTrack = true;
-            break;
-        case MUSIC_PLAY_MAP_BASE:
-            self.bgm = [[Music alloc] initWithMusicNamed:@"map_base" fromBundle:[NSBundle mainBundle]];
-            loadedNewTrack = true;
-            break;
-        default:
-            break;
-    }
-    
-    if(loadedNewTrack)
-    {
-        [self.bgm setLooping:true];
-        [self.bgm setVolume:1.0f];
-        [self.bgm play];
-    }
+    return true;
 }
 
-- (void)onResume
-{
-    on_resume();
-}
+#pragma mark <Private>
 
-- (void)onPause
+- (void)handleDeathForPlayerIndex:(int)playerIndex
 {
-    [self.bgm stop];
+    _playersAlive[playerIndex] = false;
     
-    on_pause();
-    
-    if (![self.presentedViewController isBeingDismissed])
+    int numAlive = 0;
+    int winningPlayerIndex = -1;
+    for (int i = 0; i < 8; i++)
     {
-        [self dismissViewControllerAnimated:NO completion:nil];
+        if(_playersAlive[i])
+        {
+            winningPlayerIndex = i;
+            numAlive++;
+        }
+    }
+    
+    if(numAlive <= 1)
+    {
+        bool hasWinner = numAlive == 1;
+        
+        NSString *gameOverMessage = [NSString stringWithFormat:@"{\"eventType\": %i, \"hasWinner\": %i, \"winningPlayerIndex\": %i}", GAME_OVER, hasWinner, winningPlayerIndex];
+        
+        on_chat_received([gameOverMessage UTF8String]);
     }
 }
 
