@@ -237,7 +237,7 @@ public final class BpRoomAdaptor extends BaseRoomAdaptor
                 {
                     endGame();
 
-                    boolean hasWinner = winningPlayerIndex != -1 && numAlive == 1;
+                    boolean hasWinner = numAlive == 1;
 
                     try
                     {
