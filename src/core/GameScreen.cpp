@@ -418,7 +418,7 @@ void GameScreen::updateGameEnding(float deltaTime)
 {
     m_fTimeSinceGameOver += deltaTime;
     
-    updateSpectating(deltaTime / m_fTimeSinceGameOver);
+    updateSpectating(deltaTime / (m_fTimeSinceGameOver + 1));
     
     if(m_fTimeSinceGameOver > 4)
     {
