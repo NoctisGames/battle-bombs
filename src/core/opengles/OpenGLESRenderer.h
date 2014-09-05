@@ -44,6 +44,8 @@ public:
     
     virtual void renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear);
     
+    virtual void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface);
+    
     virtual void renderInterface(InterfaceOverlay &interfaceOverlay);
     
     virtual void renderSpectatorInterface(InterfaceOverlay &interfaceOverlay);
@@ -51,8 +53,6 @@ public:
     virtual void renderGameOverBlackCover(float alpha);
     
     virtual void renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]);
-    
-    virtual void renderWaitingText();
     
     virtual void endFrame();
     

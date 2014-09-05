@@ -1,20 +1,21 @@
 //
-//  OfflineGameViewController.mm
+//  BaseGameViewController.m
 //  battlebombs
 //
-//  Created by Stephen Gowen on 5/19/14.
+//  Created by Stephen Gowen on 9/5/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#import "OfflineGameViewController.h"
+#import "BaseGameViewController.h"
 #import "Logger.h"
 #import "Music.h"
 #import "Sound.h"
 
+// C++
 #include "game.h"
 #include "ResourceConstants.h"
 
-@interface OfflineGameViewController ()
+@interface BaseGameViewController ()
 {
     // Empty
 }
@@ -23,17 +24,23 @@
 @property (strong, nonatomic) Music *bgm;
 @property (strong, nonatomic) Sound *plantBombSound;
 @property (strong, nonatomic) Sound *explosionSound;
+@property (strong, nonatomic) Sound *powerUpBombSound;
+@property (strong, nonatomic) Sound *powerUpFireSound;
+@property (strong, nonatomic) Sound *powerUpSpeedSound;
+@property (strong, nonatomic) Sound *powerUpForceFieldSound;
+@property (strong, nonatomic) Sound *powerUpPushSound;
+@property (strong, nonatomic) Sound *forceFieldDownSound;
 @property (strong, nonatomic) Sound *deathSound;
 
 @end
 
-@implementation OfflineGameViewController
+@implementation BaseGameViewController
 
 static Logger *logger = nil;
 
 + (void)initialize
 {
-    logger = [[Logger alloc] initWithClass:[OfflineGameViewController class]];
+    logger = [[Logger alloc] initWithClass:[BaseGameViewController class]];
 }
 
 - (void)viewDidLoad
@@ -58,6 +65,12 @@ static Logger *logger = nil;
     
     self.plantBombSound = [[Sound alloc] initWithSoundNamed:@"plant_bomb.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:3];
     self.explosionSound = [[Sound alloc] initWithSoundNamed:@"explosion.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
+    self.powerUpBombSound = [[Sound alloc] initWithSoundNamed:@"pu_bomb.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpFireSound = [[Sound alloc] initWithSoundNamed:@"pu_fire.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpSpeedSound = [[Sound alloc] initWithSoundNamed:@"pu_speed.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpForceFieldSound = [[Sound alloc] initWithSoundNamed:@"pu_force_field.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpPushSound = [[Sound alloc] initWithSoundNamed:@"pu_push.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.forceFieldDownSound = [[Sound alloc] initWithSoundNamed:@"force_field_down.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -69,13 +82,6 @@ static Logger *logger = nil;
                                              selector:@selector(onResume)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    on_chat_received([@"{\"breakableBlockPowerUpFlags\": \"0,1,2,3,4,5\", \"breakableBlockXValues\": \"8,4,5,7,8,9\", \"breakableBlockYValues\": \"0,1,2,3,4,5\", \"eventType\": 1337, \"mapType\": 0, \"numBreakableBlocks\": 5, \"numClientBots\": 7, \"numPlayers\": 1, \"playerIndex0\": \"Player_Offline\", \"playerIndex0Alive\": true, \"playerIndex0Direction\": 0, \"playerIndex0X\": 22.208955764770508, \"playerIndex0Y\": 12.179104804992676, \"playerIndex1\": \"Bot 1\", \"playerIndex1Alive\": true, \"playerIndex1Direction\": 2, \"playerIndex1X\": 2.1492538452148438, \"playerIndex1Y\": 12.179104804992676, \"playerIndex2\": \"Bot 2\", \"playerIndex2Alive\": true, \"playerIndex2Direction\": 0, \"playerIndex2X\": 17.91044807434082, \"playerIndex2Y\": 2.1492538452148438, \"playerIndex3\": \"Bot 3\", \"playerIndex3Alive\": true, \"playerIndex3Direction\": 2, \"playerIndex3X\": 6.447761058807373, \"playerIndex3Y\": 2.1492538452148438, \"playerIndex4\": \"Bot 4\", \"playerIndex4Alive\": true, \"playerIndex4Direction\": 1, \"playerIndex4X\": 2.1492538452148438, \"playerIndex4Y\": 25.074626922607422, \"playerIndex5\": \"Bot 5\", \"playerIndex5Alive\": true, \"playerIndex5Direction\": 3, \"playerIndex5X\": 2.1492538452148438, \"playerIndex5Y\": 16.477611541748047, \"playerIndex6\": \"Bot 6\", \"playerIndex6Alive\": true, \"playerIndex6Direction\": 1, \"playerIndex6X\": 22.208955764770508, \"playerIndex6Y\": 25.074626922607422, \"playerIndex7\": \"Bot 7\", \"playerIndex7Alive\": true, \"playerIndex7Direction\": 3, \"playerIndex7X\": 22.208955764770508, \"playerIndex7Y\": 16.477611541748047}" UTF8String]);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -115,12 +121,10 @@ static Logger *logger = nil;
     {
         case 0:
             update(self.timeSinceLastUpdate);
+            [self pushEvents];
             break;
         case 1:
-            init([@"Player_Offline" UTF8String], true);
-            break;
-        case 2:
-            [self dismissViewControllerAnimated:true completion:nil];
+            [self handleGameState:1];
             break;
         default:
             break;
@@ -136,31 +140,16 @@ static Logger *logger = nil;
     [self handleMusic];
 }
 
-#pragma mark <Private>
+#pragma mark <Protected>
 
-- (void)setupGL
+- (void)handleGameState:(int)gameState
 {
-    [EAGLContext setCurrentContext:self.context];
-    
-    self.preferredFramesPerSecond = 60;
-    
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-    CGSize screenSize = CGSizeMake(screenBounds.size.width * screenScale, screenBounds.size.height * screenScale);
-    
-    CGSize newSize = CGSizeMake(screenSize.width, screenSize.height);
-    newSize.width = roundf(newSize.width);
-	newSize.height = roundf(newSize.height);
-    
-    if([Logger isDebugEnabled])
-    {
-        [logger debug:[NSString stringWithFormat:@"dimension %f x %f", newSize.width, newSize.height]];
-    }
-    
-    init([@"Player_Offline" UTF8String], true);
-    on_surface_created(newSize.width, newSize.height);
-    on_surface_changed(newSize.width, newSize.height, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
-    on_resume();
+    // Override in subclass
+}
+
+- (void)pushEvents
+{
+    // Override in subclass
 }
 
 - (void)handleSound
@@ -175,6 +164,24 @@ static Logger *logger = nil;
                 break;
             case SOUND_EXPLOSION:
                 [self.explosionSound play];
+                break;
+            case SOUND_PU_BOMB:
+                [self.powerUpBombSound play];
+                break;
+            case SOUND_PU_FIRE:
+                [self.powerUpFireSound play];
+                break;
+            case SOUND_PU_SPEED:
+                [self.powerUpSpeedSound play];
+                break;
+            case SOUND_PU_FORCE_FIELD:
+                [self.powerUpForceFieldSound play];
+                break;
+            case SOUND_PU_PUSH:
+                [self.powerUpPushSound play];
+                break;
+            case SOUND_FORCE_FIELD_DOWN:
+                [self.forceFieldDownSound play];
                 break;
             case SOUND_DEATH:
                 [self.deathSound play];
@@ -237,6 +244,38 @@ static Logger *logger = nil;
     {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
+}
+
+- (bool)isOffline
+{
+    return false;
+}
+
+#pragma mark <Private>
+
+- (void)setupGL
+{
+    [EAGLContext setCurrentContext:self.context];
+    
+    self.preferredFramesPerSecond = 60;
+    
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    CGSize screenSize = CGSizeMake(screenBounds.size.width * screenScale, screenBounds.size.height * screenScale);
+    
+    CGSize newSize = CGSizeMake(screenSize.width, screenSize.height);
+    newSize.width = roundf(newSize.width);
+	newSize.height = roundf(newSize.height);
+    
+    if([Logger isDebugEnabled])
+    {
+        [logger debug:[NSString stringWithFormat:@"dimension %f x %f", newSize.width, newSize.height]];
+    }
+    
+    init([self.username UTF8String], [self isOffline]);
+    on_surface_created(newSize.width, newSize.height);
+    on_surface_changed(newSize.width, newSize.height, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
+    on_resume();
 }
 
 @end

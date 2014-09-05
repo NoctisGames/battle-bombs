@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#import <GLKit/GLKit.h>
+#import "BaseGameViewController.h"
 
-@interface OfflineGameViewController : GLKViewController
+@interface OfflineGameViewController : BaseGameViewController
 {
     // Nothing to do here
 }

@@ -29,6 +29,7 @@
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "PathFinder.h"
+#include "WaitingForServerInterface.h"
 #include "InterfaceOverlay.h"
 #include "BombButton.h"
 #include "PowerUpBarItem.h"
@@ -65,6 +66,7 @@ void GameScreen::init()
 {
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
     m_gameListener = std::unique_ptr<GameListener>(new GameListener());
+    m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10.38805970149248f, 11.2298507475f));
     m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
     
     m_player = nullptr;
@@ -111,10 +113,12 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
         case WAITING_FOR_SERVER:
             // TODO, Next Round starts in 30, 29, 28, etc...
             // Also, constantly update interface with list of players and platforms they are on
+            m_waitingForServerInterface->update(deltaTime);
             break;
         case WAITING_FOR_LOCAL_SETTINGS:
             // TODO, allow the user to pick a map
             // TODO, allow the user to set the number of bots
+            updateInputWaitingForLocalSettings(touchEvents);
             break;
         case COUNTING_DOWN:
             m_fCountDownTimeLeft -= deltaTime;
@@ -154,7 +158,7 @@ void GameScreen::present()
         case WAITING_FOR_SERVER:
             // TODO, Render Waiting for Server interface with list of players and countdown timer
             m_renderer->beginFrame();
-            m_renderer->renderWaitingText();
+            m_renderer->renderWaitingForServerInterface(*m_waitingForServerInterface);
             m_renderer->endFrame();
             break;
         case WAITING_FOR_LOCAL_SETTINGS:
@@ -253,6 +257,25 @@ void GameScreen::resetTimeSinceLastClientEvent()
 }
 
 // Private Methods
+
+void GameScreen::updateInputWaitingForLocalSettings(std::vector<TouchEvent> &touchEvents)
+{
+    for (std::vector<TouchEvent>::iterator itr = touchEvents.begin(); itr != touchEvents.end(); itr++)
+	{
+		touchToWorld((*itr));
+		
+		switch (itr->getTouchType())
+		{
+            case DOWN:
+                m_iScreenState = 1;
+                continue;
+            case DRAGGED:
+                continue;
+            case UP:
+                return;
+		}
+	}
+}
 
 void GameScreen::updateRunning(float deltaTime)
 {
@@ -391,11 +414,9 @@ void GameScreen::updateLocalCommon(float deltaTime)
             m_fBlackCoverTransitionAlpha += deltaTime * 0.4f;
             if(m_fBlackCoverTransitionAlpha > 1)
             {
-                m_fBlackCoverTransitionAlpha = 1;
+                Assets::getInstance()->setMusicId(MUSIC_STOP);
                 
                 init();
-                
-                Assets::getInstance()->setMusicId(MUSIC_STOP);
             }
         }
     }

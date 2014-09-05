@@ -18,6 +18,7 @@ class TouchEvent;
 class Vector2D;
 class Rectangle;
 class Renderer;
+class WaitingForServerInterface;
 class InterfaceOverlay;
 
 class GameScreen : public GameSession
@@ -78,12 +79,15 @@ protected:
 
 private:
     std::unique_ptr<GameListener> m_gameListener;
+    std::unique_ptr<WaitingForServerInterface> m_waitingForServerInterface;
     std::unique_ptr<InterfaceOverlay> m_interfaceOverlay;
     float m_fCountDownTimeLeft;
     bool m_isGameOver;
     float m_fTimeSinceGameOver;
     float m_fBlackCoverTransitionAlpha;
     bool m_isOffline;
+    
+    void updateInputWaitingForLocalSettings(std::vector<TouchEvent> &touchEvents);
     
     virtual void updateRunning(float deltaTime);
     

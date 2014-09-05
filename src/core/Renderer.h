@@ -39,6 +39,7 @@ class BreakableBlock;
 class BombGameObject;
 class Explosion;
 class PowerUp;
+class WaitingForServerInterface;
 class InterfaceOverlay;
 class Font;
 
@@ -67,6 +68,8 @@ public:
     
     virtual void renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear) = 0;
     
+    virtual void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface) = 0;
+    
     virtual void renderInterface(InterfaceOverlay &interfaceOverlay) = 0;
     
     virtual void renderSpectatorInterface(InterfaceOverlay &interfaceOverlay) = 0;
@@ -74,8 +77,6 @@ public:
     virtual void renderGameOverBlackCover(float alpha) = 0;
     
     virtual void renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]) = 0;
-    
-    virtual void renderWaitingText() = 0;
     
     virtual void endFrame() = 0;
 
