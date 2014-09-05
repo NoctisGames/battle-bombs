@@ -97,6 +97,8 @@ public:
     
     void setUsername(const char *username);
     
+    void setClientPlayer(bool isClientPlayer);
+    
     void setIsBot(bool isBot);
 
 protected:
@@ -118,6 +120,7 @@ protected:
     
 private:
     char *m_username;
+    bool m_isClientPlayer;
     bool m_isBot;
     
     bool isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);

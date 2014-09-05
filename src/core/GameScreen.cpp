@@ -418,9 +418,9 @@ void GameScreen::updateGameEnding(float deltaTime)
 {
     m_fTimeSinceGameOver += deltaTime;
     
-    if(m_fTimeSinceGameOver > 4)
+    if(m_fTimeSinceGameOver > 6)
     {
-        m_fBlackCoverTransitionAlpha += deltaTime * 0.4f;
+        m_fBlackCoverTransitionAlpha += deltaTime * 0.5f;
         if(m_fBlackCoverTransitionAlpha > 1)
         {
             Assets::getInstance()->setMusicId(MUSIC_STOP);
@@ -430,7 +430,7 @@ void GameScreen::updateGameEnding(float deltaTime)
     }
     else
     {
-        updateSpectating(deltaTime / (m_fTimeSinceGameOver * m_fTimeSinceGameOver + 1));
+        updateSpectating(deltaTime / (m_fTimeSinceGameOver + 1));
     }
 }
 
@@ -535,6 +535,8 @@ void GameScreen::beginSpectate(rapidjson::Document &d)
     {
         m_sPlayerIndex = 0;
         m_player = m_players.at(m_sPlayerIndex).get();
+        
+        spectateNextLivePlayer();
         
         m_gameState = SPECTATING;
         
@@ -652,6 +654,7 @@ void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *
         {
             // Now we know which player index the user is
             m_sPlayerIndex = playerIndex;
+            m_players.at(playerIndex)->setClientPlayer(true);
         }
         
         m_players.at(playerIndex)->setUsername(username);

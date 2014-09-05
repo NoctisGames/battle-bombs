@@ -46,6 +46,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
 
     m_playerState = ALIVE;
     m_playerActionState = IDLE;
+    m_isClientPlayer = false;
     m_isBot = false;
 }
 
@@ -295,7 +296,7 @@ void PlayerDynamicGameObject::onForceFieldHit()
 {
     if(m_iPlayerForceFieldState != PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN)
     {
-        // TODO, play a sound effect
+        m_gameListener->playSound(SOUND_FORCE_FIELD_DOWN);
     }
     
     setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN);
@@ -371,11 +372,7 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
             m_firePower++;
             break;
         case POWER_UP_TYPE_FORCE_FIELD:
-            if(m_iPlayerForceFieldState != PLAYER_FORCE_FIELD_STATE_ON)
-            {
-                // TODO, play a sound
-                setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_TURNING_ON);
-            }
+            setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_TURNING_ON);
             break;
         case POWER_UP_TYPE_SPEED:
             m_iSpeed++;
@@ -383,6 +380,31 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
         case POWER_UP_TYPE_PUSH:
             m_activePowerUp = POWER_UP_TYPE_PUSH;
             break;
+    }
+    
+    if(m_isClientPlayer)
+    {
+        switch (powerUpFlag)
+        {
+            case POWER_UP_TYPE_BOMB:
+                m_gameListener->playSound(SOUND_PU_BOMB);
+                break;
+            case POWER_UP_TYPE_FIRE:
+                m_gameListener->playSound(SOUND_PU_FIRE);
+                break;
+            case POWER_UP_TYPE_FORCE_FIELD:
+                if(m_iPlayerForceFieldState != PLAYER_FORCE_FIELD_STATE_ON)
+                {
+                    m_gameListener->playSound(SOUND_PU_FORCE_FIELD);
+                }
+                break;
+            case POWER_UP_TYPE_SPEED:
+                m_gameListener->playSound(SOUND_PU_SPEED);
+                break;
+            case POWER_UP_TYPE_PUSH:
+                m_gameListener->playSound(SOUND_PU_PUSH);
+                break;
+        }
     }
 }
 
@@ -453,6 +475,11 @@ void PlayerDynamicGameObject::setUsername(const char *username)
     
     std::strncpy(m_username, username, usernameLength);
     m_username[usernameLength] = '\0';
+}
+
+void PlayerDynamicGameObject::setClientPlayer(bool isClientPlayer)
+{
+    m_isClientPlayer = isClientPlayer;
 }
 
 // Private
