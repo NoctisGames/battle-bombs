@@ -55,7 +55,7 @@ static NSString *username;
         gameViewController.username = username;
         gameViewController.joinedRoomId = self.joinedRoomId;
     }
-    else if([[segue identifier] isEqualToString:@"Main_To_Game"])
+    else if([[segue identifier] isEqualToString:@"Main_To_Offline_Game"])
     {
         OfflineGameViewController *gameViewController = (OfflineGameViewController *) segue.destinationViewController;
         gameViewController.username = username;
