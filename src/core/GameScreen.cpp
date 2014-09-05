@@ -418,8 +418,6 @@ void GameScreen::updateGameEnding(float deltaTime)
 {
     m_fTimeSinceGameOver += deltaTime;
     
-    updateSpectating(deltaTime / (m_fTimeSinceGameOver + 1));
-    
     if(m_fTimeSinceGameOver > 4)
     {
         m_fBlackCoverTransitionAlpha += deltaTime * 0.4f;
@@ -429,6 +427,10 @@ void GameScreen::updateGameEnding(float deltaTime)
             
             init();
         }
+    }
+    else
+    {
+        updateSpectating(deltaTime / (m_fTimeSinceGameOver * m_fTimeSinceGameOver + 1));
     }
 }
 
