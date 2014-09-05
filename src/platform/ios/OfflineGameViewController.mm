@@ -95,7 +95,6 @@
         switch (event)
         {
             case PLAYER_DEATH:
-                NSLog(@"PLAYER_DEATH");
                 [self handleDeathForPlayerIndex:playerIndex];
                 continue;
             default:
@@ -130,11 +129,6 @@
         {
             winningPlayerIndex = i;
             numAlive++;
-            NSLog(@"_playersAlive[%i] = true", i);
-        }
-        else
-        {
-            NSLog(@"_playersAlive[%i] = false", i);
         }
     }
     

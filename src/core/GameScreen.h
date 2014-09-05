@@ -99,7 +99,7 @@ private:
     
     void updateInputSpectating(std::vector<TouchEvent> &touchEvents);
     
-    void updateLocalCommon(float deltaTime);
+    void updateGameEnding(float deltaTime);
     
     void spectateNextLivePlayer();
     

@@ -82,7 +82,6 @@ void GameScreen::init()
     m_iScreenState = 0;
     m_fTimeSinceLastClientEvent = 0;
     m_fCountDownTimeLeft = 3;
-    m_isGameOver = false;
     m_fTimeSinceGameOver = 0;
     m_fBlackCoverTransitionAlpha = 0;
 }
@@ -137,12 +136,13 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
                 updateInputRunning(touchEvents);
             }
             updateRunning(deltaTime);
-            updateLocalCommon(deltaTime);
             break;
         case SPECTATING:
             updateInputSpectating(touchEvents);
             updateSpectating(deltaTime);
-            updateLocalCommon(deltaTime);
+            break;
+        case GAME_ENDING:
+            updateGameEnding(deltaTime);
             break;
         default:
             break;
@@ -179,11 +179,6 @@ void GameScreen::present()
             m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderInterface(*m_interfaceOverlay);
             
-            if(m_isGameOver)
-            {
-                m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
-            }
-            
             m_renderer->endFrame();
             break;
         case SPECTATING:
@@ -199,10 +194,21 @@ void GameScreen::present()
             m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
             
-            if(m_isGameOver)
-            {
-                m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
-            }
+            m_renderer->endFrame();
+            break;
+        case GAME_ENDING:
+            m_renderer->calcScrollYForPlayer(*m_player);
+            
+            m_renderer->beginFrame();
+            m_renderer->renderWorldBackground();
+            
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
+            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderExplosions(m_explosions);
+            m_renderer->renderPlayers(m_players);
+            m_renderer->renderMapBordersNear(m_mapBorders);
+            
+            m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
             
             m_renderer->endFrame();
             break;
@@ -408,21 +414,20 @@ void GameScreen::updateInputSpectating(std::vector<TouchEvent> &touchEvents)
 	}
 }
 
-void GameScreen::updateLocalCommon(float deltaTime)
+void GameScreen::updateGameEnding(float deltaTime)
 {
-    if(m_isGameOver)
+    m_fTimeSinceGameOver += deltaTime;
+    
+    updateSpectating(deltaTime / m_fTimeSinceGameOver);
+    
+    if(m_fTimeSinceGameOver > 4)
     {
-        m_fTimeSinceGameOver += deltaTime;
-        
-        if(m_fTimeSinceGameOver > 4)
+        m_fBlackCoverTransitionAlpha += deltaTime * 0.4f;
+        if(m_fBlackCoverTransitionAlpha > 1)
         {
-            m_fBlackCoverTransitionAlpha += deltaTime * 0.4f;
-            if(m_fBlackCoverTransitionAlpha > 1)
-            {
-                Assets::getInstance()->setMusicId(MUSIC_STOP);
-                
-                init();
-            }
+            Assets::getInstance()->setMusicId(MUSIC_STOP);
+            
+            init();
         }
     }
 }
@@ -605,7 +610,7 @@ void GameScreen::gameOver(rapidjson::Document &d)
         }
     }
     
-    m_isGameOver = true;
+    m_gameState = GAME_ENDING;
 }
 
 void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)

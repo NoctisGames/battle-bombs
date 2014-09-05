@@ -15,7 +15,8 @@ typedef enum
     WAITING_FOR_LOCAL_SETTINGS,
     COUNTING_DOWN,
     SPECTATING,
-    RUNNING
+    RUNNING,
+    GAME_ENDING
 } Game_State;
 
 #endif /* GAME_STATE_H */
