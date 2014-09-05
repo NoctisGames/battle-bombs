@@ -194,3 +194,10 @@ bool handle_on_back_pressed()
 {
     return gameScreen->handleOnBackPressed();
 }
+
+#pragma mark <Offline Mode>
+
+int get_num_seconds_left()
+{
+    return gameScreen->getNumSecondsLeft();
+}

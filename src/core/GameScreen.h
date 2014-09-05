@@ -65,6 +65,8 @@ public:
     bool isTimeToSendKeepAlive();
 
 	void resetTimeSinceLastClientEvent();
+    
+    int getNumSecondsLeft();
 
 protected:
     std::unique_ptr<Renderer> m_renderer;

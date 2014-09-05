@@ -256,7 +256,12 @@ void GameScreen::resetTimeSinceLastClientEvent()
 	m_fTimeSinceLastClientEvent = 0;
 }
 
-// Private Methods
+int GameScreen::getNumSecondsLeft()
+{
+    return m_interfaceOverlay == nullptr ? 0 : m_interfaceOverlay->getNumSecondsLeft();
+}
+
+#pragma mark <Private>
 
 void GameScreen::updateInputWaitingForLocalSettings(std::vector<TouchEvent> &touchEvents)
 {

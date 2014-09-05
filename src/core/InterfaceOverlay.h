@@ -71,6 +71,8 @@ public:
     
     void setNumSecondsLeft(int numSecondsLeft);
     
+    int getNumSecondsLeft();
+    
     int getNumMinutesLeft();
     
     int getNumSecondsLeftFirstColumn();

@@ -344,6 +344,11 @@ void InterfaceOverlay::setNumSecondsLeft(int numSecondsLeft)
 	m_fCountdownStateTime = 0;
 }
 
+int InterfaceOverlay::getNumSecondsLeft()
+{
+    return m_iNumSecondsLeft;
+}
+
 int InterfaceOverlay::getNumMinutesLeft()
 {
 	int numMinutes = 0;

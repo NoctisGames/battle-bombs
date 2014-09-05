@@ -55,4 +55,8 @@ int get_player_direction();
 
 bool handle_on_back_pressed();
 
+#pragma mark <Offline Mode>
+
+int get_num_seconds_left();
+
 #endif /* GAME_H */
