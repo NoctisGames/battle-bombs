@@ -20,7 +20,7 @@
 @implementation MainViewController
 
 static Logger *logger = nil;
-static NSString *username;
+static NSString *_username;
 
 + (void)initialize
 {
@@ -28,7 +28,7 @@ static NSString *username;
     
     NSString *UUID = [[NSUUID UUID] UUIDString];
     UUID = [UUID substringToIndex:8];
-    username = [@"Player_" stringByAppendingString:UUID];
+    _username = [@"Player_" stringByAppendingString:UUID];
     
     [WarpClient initWarp:APPWARP_APP_KEY server:APPWARP_HOST_ADDRESS];
 }
@@ -52,13 +52,13 @@ static NSString *username;
     if([[segue identifier] isEqualToString:@"Main_To_Game"])
     {
         GameViewController *gameViewController = (GameViewController *) segue.destinationViewController;
-        gameViewController.username = username;
+        gameViewController.username = _username;
         gameViewController.joinedRoomId = self.joinedRoomId;
     }
     else if([[segue identifier] isEqualToString:@"Main_To_Offline_Game"])
     {
         OfflineGameViewController *gameViewController = (OfflineGameViewController *) segue.destinationViewController;
-        gameViewController.username = username;
+        gameViewController.username = _username;
     }
     
     WarpClient *warpClient = [WarpClient getInstance];
@@ -75,7 +75,7 @@ static NSString *username;
 
 - (IBAction)startQuickMatch:(id)sender
 {
-    [[WarpClient getInstance] connectWithUserName:username authData:@"iOS"];
+    [[WarpClient getInstance] connectWithUserName:_username authData:@"iOS"];
 }
 
 - (IBAction)startQuickOfflineMatch:(id)sender
@@ -162,7 +162,7 @@ static NSString *username;
 {
     NSLog(@"%s", __FUNCTION__);
     
-    if(roomData)
+    if(roomData && [username isEqualToString:_username])
     {
         self.joinedRoomId = roomData.roomId;
         
