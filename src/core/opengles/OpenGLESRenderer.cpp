@@ -327,7 +327,7 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
         ss2 << waitingForServerInterface.getTimeToNextRound();
         std::string timerText = ss2.str();
         
-        m_font->renderText(*m_spriteBatcherWithColor, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 2.5f, 1.5f, 1.5f, timerColor, true);
+        m_font->renderText(*m_spriteBatcherWithColor, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 2.5f, 2.0f, 1.36842105263158f, timerColor, true);
     }
     
     static Color interfaceColor = { 1, 1, 1, 1 };
