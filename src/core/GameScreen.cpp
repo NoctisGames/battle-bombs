@@ -111,12 +111,13 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
     
     processServerMessages();
     
+    m_waitingForServerInterface->update(deltaTime);
+    
     switch (m_gameState)
     {
         case WAITING_FOR_SERVER:
             // TODO, Next Round starts in 30, 29, 28, etc...
             // Also, constantly update interface with list of players and platforms they are on
-            m_waitingForServerInterface->update(deltaTime);
             break;
         case WAITING_FOR_LOCAL_SETTINGS:
             // TODO, allow the user to pick a map
@@ -619,6 +620,14 @@ void GameScreen::gameOver(rapidjson::Document &d)
         else
         {
             // TODO, show a DRAW animation
+        }
+        
+        static const char *timeToNextRoundKey = "timeToNextRound";
+        
+        if(d.HasMember(timeToNextRoundKey))
+        {
+            float timeToNextRound = d[timeToNextRoundKey].GetInt();
+            m_waitingForServerInterface->setTimeToNextRound(timeToNextRound);
         }
     }
     

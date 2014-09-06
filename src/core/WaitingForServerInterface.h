@@ -17,6 +17,13 @@ public:
 	WaitingForServerInterface(float x, float y, float width, float height);
     
     void update(float deltaTime);
+    
+    void setTimeToNextRound(float timeToNextRound);
+    
+    int getTimeToNextRound();
+    
+private:
+    float m_fTimeToNextRound;
 };
 
 #endif /* defined(__battlebombs__WaitingForServerInterface__) */

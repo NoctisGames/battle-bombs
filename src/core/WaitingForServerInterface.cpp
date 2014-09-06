@@ -12,10 +12,23 @@
 
 WaitingForServerInterface::WaitingForServerInterface(float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
 {
-    // TODO
+    m_fTimeToNextRound = 18;
 }
 
 void WaitingForServerInterface::update(float deltaTime)
 {
-    // TODO
+    if(m_fTimeToNextRound > 0)
+    {
+        m_fTimeToNextRound -= deltaTime;
+    }
+}
+
+void WaitingForServerInterface::setTimeToNextRound(float timeToNextRound)
+{
+    m_fTimeToNextRound = timeToNextRound;
+}
+
+int WaitingForServerInterface::getTimeToNextRound()
+{
+    return m_fTimeToNextRound;
 }

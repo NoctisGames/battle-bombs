@@ -11,13 +11,6 @@
 // C++
 #include "game.h"
 
-@interface GameViewController ()
-{
-    // Empty
-}
-
-@end
-
 @implementation GameViewController
 
 static NSString * const KEEP_ALIVE = @"KEEP_ALIVE";
@@ -48,13 +41,11 @@ static int const CLIENT_UPDATE = 1338;
 
 - (void)onSendChatDone:(Byte)result
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onSendPrivateChatDone:(Byte)result
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
@@ -62,19 +53,16 @@ static int const CLIENT_UPDATE = 1338;
 
 - (void)onConnectDone:(ConnectEvent*) event
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onDisconnectDone:(ConnectEvent*) event
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onInitUDPDone:(Byte)result
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
@@ -82,31 +70,26 @@ static int const CLIENT_UPDATE = 1338;
 
 - (void)onJoinLobbyDone:(LobbyEvent*)lobbyEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onLeaveLobbyDone:(LobbyEvent*)lobbyEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onSubscribeLobbyDone:(LobbyEvent*)lobbyEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUnSubscribeLobbyDone:(LobbyEvent*)lobbyEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGetLiveLobbyInfoDone:(LiveRoomInfoEvent*)event
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
@@ -114,19 +97,16 @@ static int const CLIENT_UPDATE = 1338;
 
 - (void)onRoomCreated:(RoomData *)roomEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onRoomDestroyed:(RoomData *)roomEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserLeftRoom:(RoomData *)roomData username:(NSString *)username
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
     
     if([username isEqualToString:self.username])
@@ -137,19 +117,16 @@ static int const CLIENT_UPDATE = 1338;
 
 - (void)onUserJoinedRoom:(RoomData *)roomData username:(NSString *)username
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserLeftLobby:(LobbyData *)lobbyData username:(NSString *)username
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserJoinedLobby:(LobbyData *)lobbyData username:(NSString *)username
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
@@ -164,7 +141,6 @@ static int const CLIENT_UPDATE = 1338;
 
 -(void)onPrivateChatReceived:(NSString *)message fromUser:(NSString *)senderName
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
@@ -175,37 +151,31 @@ static int const CLIENT_UPDATE = 1338;
 
 -(void)onUserChangeRoomProperty:(RoomData *)event username:(NSString *)username properties:(NSDictionary *)properties lockedProperties:(NSDictionary *)lockedProperties
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onMoveCompleted:(MoveEvent *) moveEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserPaused:(NSString *)userName withLocation:(NSString *)locId isLobby:(BOOL)isLobby
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserResumed:(NSString *)userName withLocation:(NSString *)locId isLobby:(BOOL)isLobby
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGameStarted:(NSString *)sender roomId:(NSString *)roomId  nextTurn:(NSString *)nextTurn
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGameStopped:(NSString *)sender roomId:(NSString *)roomId
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
@@ -213,55 +183,46 @@ static int const CLIENT_UPDATE = 1338;
 
 - (void)onSubscribeRoomDone:(RoomEvent*)roomEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUnSubscribeRoomDone:(RoomEvent*)roomEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onJoinRoomDone:(RoomEvent*)roomEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onLeaveRoomDone:(RoomEvent*)roomEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGetLiveRoomInfoDone:(LiveRoomInfoEvent*)event
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onSetCustomRoomDataDone:(LiveRoomInfoEvent*)event
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUpdatePropertyDone:(LiveRoomInfoEvent *)event
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onLockPropertiesDone:(Byte)result
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUnlockPropertiesDone:(Byte)result
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
@@ -269,43 +230,36 @@ static int const CLIENT_UPDATE = 1338;
 
 - (void)onCreateRoomDone:(RoomEvent*)roomEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onDeleteRoomDone:(RoomEvent*)roomEvent
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGetAllRoomsDone:(AllRoomsEvent*)event
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGetOnlineUsersDone:(AllUsersEvent*)event
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGetLiveUserInfoDone:(LiveUserInfoEvent*)event
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onSetCustomUserDataDone:(LiveUserInfoEvent*)event
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGetMatchedRoomsDone:(MatchedRoomsEvent*)event
 {
-    // TODO
     NSLog(@"%s", __FUNCTION__);
 }
 

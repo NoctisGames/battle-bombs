@@ -317,6 +317,19 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
     renderGameObject(waitingForServerInterface, Assets::getWaitingForServerInterfaceTextureRegion());
     m_spriteBatcher->endBatchWithTexture(m_interfaceTexture2);
     
+    m_spriteBatcherWithColor->beginBatch();
+    
+    if(waitingForServerInterface.getTimeToNextRound() > 0)
+    {
+        static Color timerColor = { 1, 1, 1, 1 };
+        
+        std::stringstream ss2;
+        ss2 << waitingForServerInterface.getTimeToNextRound();
+        std::string timerText = ss2.str();
+        
+        m_font->renderText(*m_spriteBatcherWithColor, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 2.5f, 1.5f, 1.5f, timerColor, true);
+    }
+    
     static Color interfaceColor = { 1, 1, 1, 1 };
     interfaceColor.alpha -= 0.025f;
     if(interfaceColor.alpha < 0.2f)
@@ -324,10 +337,8 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
         interfaceColor.alpha = 1;
     }
     
-    m_spriteBatcherWithColor->beginBatch();
-    
     std::stringstream ss;
-    ss << "Waiting for next Round...";
+    ss << "Waiting for next Round";
     std::string waitingText = ss.str();
     
     m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, 0.5f, 0.5f, 0.5f, interfaceColor, true);
