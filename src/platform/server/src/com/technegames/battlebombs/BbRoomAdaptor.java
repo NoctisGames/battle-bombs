@@ -60,6 +60,10 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     {
         false, false, false, false, false, false, false, false
     };
+    private final String[] _activePlayerNames =
+    {
+        "", "", "", "", "", "", "", ""
+    };
 
     private int _numSecondsLeftForRound;
     private float _stateTime;
@@ -106,6 +110,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     _stateTime = 0;
 
                     _playerSpotsOccupied[i] = true;
+                    _activePlayerNames[i] = user.getName();
                     _inRoomUserSessionDataMap.put(user, new UserSessionData(0, i));
 
                     System.out.println(user.getName() + " joined the room");
@@ -245,9 +250,9 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                         tobeSent.put(EVENT_TYPE, GAME_OVER);
                         tobeSent.put(HAS_WINNER, hasWinner);
                         tobeSent.put(WINNING_PLAYER_INDEX, winningPlayerIndex);
-                        
+
                         updateRoomWithMessage(tobeSent.toString());
-                        
+
                         System.out.println(GAME_OVER_LOG);
                     }
                     catch (JSONException e)
@@ -270,6 +275,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 {
                     _playerSpotsOccupied[i] = false;
                     _playerSpotsReceivedGameStateCommand[i] = false;
+                    _activePlayerNames[i] = "";
                 }
 
                 _inGameUserSessionDataMap.clear();
@@ -283,6 +289,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     userSessionData._playerIndex = i;
                     _playerSpotsOccupied[i] = true;
                     _playerSpotsReceivedGameStateCommand[i] = true;
+                    _activePlayerNames[i] = user.getName();
 
                     // Lock in users for this game session, more users can join the room,
                     // but they won't be included in the game until the next round.
@@ -298,6 +305,20 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 }
 
                 init(_room.getId(), _inGameUserSessionDataMap.size(), mapType);
+
+                for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
+                {
+                    if (is_player_bot(_room.getId(), playerIndex))
+                    {
+                        String botName;
+                        while (isBotNameAlreadyInUseForRound((botName = Globals.getRandomBotName())))
+                        {
+                            // We wait until we get a unique name
+                        }
+
+                        _activePlayerNames[playerIndex] = botName;
+                    }
+                }
 
                 _numSecondsLeftForRound = 120;
 
@@ -414,7 +435,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         {
             if (is_player_bot(_room.getId(), playerIndex))
             {
-                tobeSent.put("playerIndex" + playerIndex, "Bot " + playerIndex);
+                tobeSent.put("playerIndex" + playerIndex, _activePlayerNames[playerIndex]);
                 tobeSent.put("playerIndex" + playerIndex + "IsBot", true);
                 tobeSent.put("playerIndex" + playerIndex + "X", get_player_x(_room.getId(), playerIndex));
                 tobeSent.put("playerIndex" + playerIndex + "Y", get_player_y(_room.getId(), playerIndex));
@@ -485,6 +506,19 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         System.out.println(user.getName() + " left room (" + (onUserLeaveRequest ? "exited" : "timed out") + ")");
 
         logRoom();
+    }
+
+    private boolean isBotNameAlreadyInUseForRound(String botName)
+    {
+        for (String name : _activePlayerNames)
+        {
+            if (name.equals(botName))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void logRoom()
