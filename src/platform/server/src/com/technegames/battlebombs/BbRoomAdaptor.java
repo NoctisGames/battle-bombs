@@ -95,15 +95,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     @Override
     public void handleUserJoinRequest(IUser user, HandlingResult result)
     {
-        if (_inRoomUserSessionDataMap.containsKey(user))
-        {
-            System.out.println(user.getName() + " rejoined the room");
-
-            logRoom();
-
-            return;
-        }
-        else
+        if (!_inRoomUserSessionDataMap.containsKey(user))
         {
             for (short i = 0; i < _playerSpotsOccupied.length; i++)
             {
