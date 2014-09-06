@@ -10,9 +10,9 @@
 #include "Vector2D.h"
 #include "Rectangle.h"
 
-WaitingForServerInterface::WaitingForServerInterface(float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
+WaitingForServerInterface::WaitingForServerInterface(float x, float y, float width, float height, float timeToNextRound) : GameObject(x, y, width, height, 0)
 {
-    m_fTimeToNextRound = 18;
+    m_fTimeToNextRound = timeToNextRound;
 }
 
 void WaitingForServerInterface::update(float deltaTime)

@@ -69,7 +69,7 @@ void GameScreen::init()
 {
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
     m_gameListener = std::unique_ptr<GameListener>(new GameListener());
-    m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10.38805970149248f, 11.2298507475f));
+    m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10.38805970149248f, 11.2298507475f, m_fTimeToNextRound));
     m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface());
     m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
     
@@ -85,6 +85,7 @@ void GameScreen::init()
     m_gameState = m_isOffline ? WAITING_FOR_LOCAL_SETTINGS : WAITING_FOR_SERVER;
     m_iScreenState = 0;
     m_fTimeSinceLastClientEvent = 0;
+    m_fTimeToNextRound = 0;
     m_fCountDownTimeLeft = 3;
     m_fTimeSinceGameOver = 0;
     m_fBlackCoverTransitionAlpha = 0;
@@ -425,6 +426,7 @@ void GameScreen::updateInputSpectating(std::vector<TouchEvent> &touchEvents)
 
 void GameScreen::updateGameEnding(float deltaTime)
 {
+    m_fTimeToNextRound -= deltaTime;
     m_fTimeSinceGameOver += deltaTime;
     
     if(m_fTimeSinceGameOver > 5)
@@ -626,7 +628,7 @@ void GameScreen::gameOver(rapidjson::Document &d)
         
         if(d.HasMember(timeToNextRoundKey))
         {
-            float timeToNextRound = d[timeToNextRoundKey].GetInt();
+            m_fTimeToNextRound = d[timeToNextRoundKey].GetInt();
             m_waitingForServerInterface->setTimeToNextRound(timeToNextRound);
         }
     }

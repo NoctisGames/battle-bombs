@@ -14,7 +14,7 @@
 class WaitingForServerInterface : public GameObject
 {
 public:
-	WaitingForServerInterface(float x, float y, float width, float height);
+	WaitingForServerInterface(float x, float y, float width, float height, float timeToNextRound);
     
     void update(float deltaTime);
     
