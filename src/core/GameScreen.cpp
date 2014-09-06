@@ -629,7 +629,6 @@ void GameScreen::gameOver(rapidjson::Document &d)
         if(d.HasMember(timeToNextRoundKey))
         {
             m_fTimeToNextRound = d[timeToNextRoundKey].GetInt();
-            m_waitingForServerInterface->setTimeToNextRound(timeToNextRound);
         }
     }
     
