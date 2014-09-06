@@ -11,6 +11,7 @@
 
 typedef enum
 {
+    WAITING,
     WAITING_FOR_SERVER,
     WAITING_FOR_LOCAL_SETTINGS,
     COUNTING_DOWN,

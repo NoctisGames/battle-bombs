@@ -17,5 +17,5 @@ WaitingForServerInterface::WaitingForServerInterface(float x, float y, float wid
 
 void WaitingForServerInterface::update(float deltaTime)
 {
-    
+    // TODO
 }

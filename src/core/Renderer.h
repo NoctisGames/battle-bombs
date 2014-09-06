@@ -40,6 +40,7 @@ class BombGameObject;
 class Explosion;
 class PowerUp;
 class WaitingForServerInterface;
+class WaitingForLocalSettingsInterface;
 class InterfaceOverlay;
 class Font;
 
@@ -69,6 +70,8 @@ public:
     virtual void renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear) = 0;
     
     virtual void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface) = 0;
+    
+    virtual void renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface) = 0;
     
     virtual void renderInterface(InterfaceOverlay &interfaceOverlay) = 0;
     

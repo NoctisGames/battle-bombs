@@ -86,6 +86,7 @@
 		BB7305E2189C6BFA009F6DF4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7305E1189C6BFA009F6DF4 /* AudioToolbox.framework */; };
 		BB7305E4189C6C06009F6DF4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7305E3189C6C06009F6DF4 /* AVFoundation.framework */; };
 		BB74E80718C2541F007C223E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BB74E80518C2541F007C223E /* Localizable.strings */; };
+		BB7F5D1619BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7F5D1419BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp */; };
 		BB82640B18C288F200A24A7C /* AppWarp_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		BB8FF7C619AE3FE4005D0701 /* interface_2.png in Resources */ = {isa = PBXBuildFile; fileRef = BB8FF7C519AE3FE4005D0701 /* interface_2.png */; };
 		BB9139C918BEFCC800E51FB5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9139C818BEFCC800E51FB5 /* MainViewController.m */; };
@@ -276,6 +277,8 @@
 		BB7305E1189C6BFA009F6DF4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		BB7305E3189C6C06009F6DF4 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		BB74E80618C2541F007C223E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BB7F5D1419BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaitingForLocalSettingsInterface.cpp; sourceTree = "<group>"; };
+		BB7F5D1519BA912B0041BEB3 /* WaitingForLocalSettingsInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaitingForLocalSettingsInterface.h; sourceTree = "<group>"; };
 		BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppWarp_iOS_SDK.framework; path = ../../3rdparty/AppWarp/AppWarp_iOS_SDK.framework; sourceTree = "<group>"; };
 		BB8FF7C519AE3FE4005D0701 /* interface_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = interface_2.png; sourceTree = "<group>"; };
 		BB90FA7818D50E4100733E9B /* GameEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameEvent.h; sourceTree = "<group>"; };
@@ -512,6 +515,8 @@
 				BB96EECB18B99A6900F7C356 /* Triangle.h */,
 				BB96EECC18B99A6900F7C356 /* Vector2D.cpp */,
 				BB96EECD18B99A6900F7C356 /* Vector2D.h */,
+				BB7F5D1419BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp */,
+				BB7F5D1519BA912B0041BEB3 /* WaitingForLocalSettingsInterface.h */,
 				BB6FB25F19B9433F0068F20E /* WaitingForServerInterface.cpp */,
 				BB6FB26019B9433F0068F20E /* WaitingForServerInterface.h */,
 			);
@@ -857,6 +862,7 @@
 				BB96EEEE18B99A7100F7C356 /* game.cpp in Sources */,
 				0A8FBF8D179E07440039BA29 /* platform_asset_utils.m in Sources */,
 				BB9D93BE191FB4EC00AD9CCE /* PowerUp.cpp in Sources */,
+				BB7F5D1619BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp in Sources */,
 				BB96EEDB18B99A6900F7C356 /* Vector2D.cpp in Sources */,
 				BB96EED918B99A6900F7C356 /* TouchEvent.cpp in Sources */,
 				BB0BC0581970C7780092A968 /* BombButton.cpp in Sources */,

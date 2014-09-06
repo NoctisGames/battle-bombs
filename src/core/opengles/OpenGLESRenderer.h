@@ -46,6 +46,8 @@ public:
     
     virtual void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface);
     
+    virtual void renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
+    
     virtual void renderInterface(InterfaceOverlay &interfaceOverlay);
     
     virtual void renderSpectatorInterface(InterfaceOverlay &interfaceOverlay);

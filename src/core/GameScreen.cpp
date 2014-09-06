@@ -30,6 +30,7 @@
 #include "BreakableBlock.h"
 #include "PathFinder.h"
 #include "WaitingForServerInterface.h"
+#include "WaitingForLocalSettingsInterface.h"
 #include "InterfaceOverlay.h"
 #include "BombButton.h"
 #include "PowerUpBarItem.h"
@@ -49,6 +50,8 @@ GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
     m_isOffline = isOffline;
     
     init();
+    
+    m_gameState = m_isOffline ? WAITING : WAITING_FOR_SERVER;
 }
 
 GameScreen::~GameScreen()
@@ -67,6 +70,7 @@ void GameScreen::init()
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
     m_gameListener = std::unique_ptr<GameListener>(new GameListener());
     m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10.38805970149248f, 11.2298507475f));
+    m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface());
     m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
     
     m_player = nullptr;
@@ -118,6 +122,7 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
             // TODO, allow the user to pick a map
             // TODO, allow the user to set the number of bots
             updateInputWaitingForLocalSettings(touchEvents);
+            m_waitingForLocalSettingsInterface->update(deltaTime);
             break;
         case COUNTING_DOWN:
             m_fCountDownTimeLeft -= deltaTime;
@@ -163,6 +168,9 @@ void GameScreen::present()
             break;
         case WAITING_FOR_LOCAL_SETTINGS:
             // TODO, Render interface for picking a map and setting # of bots
+            m_renderer->beginFrame();
+            m_renderer->renderWaitingForLocalSettingsInterface(*m_waitingForLocalSettingsInterface);
+            m_renderer->endFrame();
             break;
         case COUNTING_DOWN:
             // TODO, Render Player Names (a simple text bubble will do) and a 3, 2, 1, GO!

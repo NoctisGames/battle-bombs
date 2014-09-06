@@ -22,9 +22,9 @@
 
 @implementation OfflineGameViewController
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewDidLoad
 {
-    [super viewDidAppear:animated];
+    [super viewDidLoad];
     
     _mapType = 0;
     

@@ -318,7 +318,7 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
     m_spriteBatcher->endBatchWithTexture(m_interfaceTexture2);
     
     static Color interfaceColor = { 1, 1, 1, 1 };
-    interfaceColor.alpha -= 0.04f;
+    interfaceColor.alpha -= 0.025f;
     if(interfaceColor.alpha < 0.2f)
     {
         interfaceColor.alpha = 1;
@@ -331,6 +331,29 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
     std::string waitingText = ss.str();
     
     m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, 0.5f, 0.5f, 0.5f, interfaceColor, true);
+    
+    m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
+}
+
+void OpenGLESRenderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
+{
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+    static Color interfaceColor = { 1, 1, 1, 1 };
+    interfaceColor.alpha -= 0.025f;
+    if(interfaceColor.alpha < 0.2f)
+    {
+        interfaceColor.alpha = 1;
+    }
+    
+    m_spriteBatcherWithColor->beginBatch();
+    
+    std::stringstream ss;
+    ss << "Tap anywhere to play again!";
+    std::string waitingText = ss.str();
+    
+    m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
     
     m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
 }
