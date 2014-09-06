@@ -433,7 +433,7 @@ void GameScreen::updateGameEnding(float deltaTime)
     
     if(m_fTimeSinceGameOver > 5)
     {
-        m_fBlackCoverTransitionAlpha += deltaTime * 0.33f;
+        m_fBlackCoverTransitionAlpha += deltaTime * 0.40f;
         if(m_fBlackCoverTransitionAlpha > 1)
         {
             Assets::getInstance()->setMusicId(MUSIC_STOP);
