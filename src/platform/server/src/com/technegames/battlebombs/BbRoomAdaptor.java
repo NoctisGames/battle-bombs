@@ -27,6 +27,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final String NUM_PLAYERS = "numPlayers";
     private static final String HAS_WINNER = "hasWinner";
     private static final String WINNING_PLAYER_INDEX = "winningPlayerIndex";
+    private static final String TIME_TO_NEXT_ROUND = "timeToNextRound";
     private static final String MAP_TYPE = "mapType";
     private static final String NUM_SECONDS_LEFT_FOR_ROUND = "numSecondsLeftForRound";
     private static final String EVENTS = "events";
@@ -34,6 +35,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final String BREAKABLE_BLOCK_X_VALUES = "breakableBlockXValues";
     private static final String BREAKABLE_BLOCK_Y_VALUES = "breakableBlockYValues";
     private static final String BREAKABLE_BLOCK_POWER_UP_FLAGS = "breakableBlockPowerUpFlags";
+    private static final int TIME_BETWEEN_ROUNDS = 18;
     private static final int NUM_MAPS = 3;
     private static final short BEGIN_SPECTATE = 1336;
     private static final short BEGIN_GAME = 1337;
@@ -250,6 +252,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                         tobeSent.put(EVENT_TYPE, GAME_OVER);
                         tobeSent.put(HAS_WINNER, hasWinner);
                         tobeSent.put(WINNING_PLAYER_INDEX, winningPlayerIndex);
+                        tobeSent.put(TIME_TO_NEXT_ROUND, TIME_BETWEEN_ROUNDS);
 
                         updateRoomWithMessage(tobeSent.toString());
 
@@ -266,7 +269,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         {
             _stateTime += deltaTime;
 
-            if (_stateTime > 18)
+            if (_stateTime > TIME_BETWEEN_ROUNDS)
             {
                 // We are re-initialzing the list, starting from 0,
                 // so that we don't end up with a game with only 2 players
