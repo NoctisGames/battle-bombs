@@ -49,6 +49,8 @@ GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
     
     m_isOffline = isOffline;
     
+    m_fTimeToNextRound = 18;
+    
     init();
     
     m_gameState = m_isOffline ? WAITING : WAITING_FOR_SERVER;
