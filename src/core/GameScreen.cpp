@@ -679,6 +679,6 @@ void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *
     
     if(isBeginGame || playerIndex != m_sPlayerIndex)
     {
-        handlePlayerDataUpdate(d, keyIsBot, keyX, keyY, keyDirection, keyAlive, playerIndex);
+        handlePlayerDataUpdate(d, keyIsBot, keyX, keyY, keyDirection, keyAlive, playerIndex, isBeginGame);
     }
 }

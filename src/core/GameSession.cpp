@@ -274,7 +274,7 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
     handleClientEventsArrayInDocument(d);
 }
 
-void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex)
+void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame)
 {
     if (d.HasMember(keyX) && d.HasMember(keyY) && d.HasMember(keyDirection))
     {
@@ -295,6 +295,10 @@ void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *key
     {
         bool isPlayerAlive = d[keyAlive].GetBool();
         m_players.at(playerIndex).get()->setPlayerState(isPlayerAlive ? ALIVE : DEAD);
+    }
+    else if(isBeginGame)
+    {
+        m_players.at(playerIndex).get()->setPlayerState(DEAD);
     }
     
     if(d.HasMember(keyIsBot))

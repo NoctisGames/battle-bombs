@@ -71,7 +71,7 @@ protected:
 
     void clientUpdate(rapidjson::Document &d, bool isBeginGame);
 
-    void handlePlayerDataUpdate(rapidjson::Document &d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex);
+    void handlePlayerDataUpdate(rapidjson::Document &d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame);
 
     void handleClientEventsArrayInDocument(rapidjson::Document &d);
 
