@@ -146,7 +146,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             }
             else
             {
-                String platformString = message.substring(8);
+                String platformString = message.substring(message.length() - 1);
                 int platform = Integer.parseInt(platformString);
                 _inRoomUserSessionDataMap.get(sender)._platform = platform;
             }
