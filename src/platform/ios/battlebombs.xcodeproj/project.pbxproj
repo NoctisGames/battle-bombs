@@ -87,6 +87,13 @@
 		BB7305E4189C6C06009F6DF4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7305E3189C6C06009F6DF4 /* AVFoundation.framework */; };
 		BB74E80718C2541F007C223E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BB74E80518C2541F007C223E /* Localizable.strings */; };
 		BB7F5D1619BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7F5D1419BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp */; };
+		BB81B1AA19BE147400548837 /* STHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1A919BE147400548837 /* STHTTPRequest.m */; };
+		BB81B1AE19BE15B500548837 /* Progress_Dialog_Landscape.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB81B1AC19BE15B500548837 /* Progress_Dialog_Landscape.xib */; };
+		BB81B1B319BE15E700548837 /* TGApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B019BE15E700548837 /* TGApiManager.m */; };
+		BB81B1B419BE15E700548837 /* TGProgressDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B219BE15E700548837 /* TGProgressDialog.m */; };
+		BB81B1B719BE163900548837 /* TGDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B619BE163900548837 /* TGDialog.m */; };
+		BB81B1BA19BE197E00548837 /* TGJsonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B919BE197E00548837 /* TGJsonUtils.m */; };
+		BB81B1BD19BE1A1800548837 /* TGDeviceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1BC19BE1A1800548837 /* TGDeviceUtil.m */; };
 		BB82640B18C288F200A24A7C /* AppWarp_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		BB8FF7C619AE3FE4005D0701 /* interface_2.png in Resources */ = {isa = PBXBuildFile; fileRef = BB8FF7C519AE3FE4005D0701 /* interface_2.png */; };
 		BB9139C918BEFCC800E51FB5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9139C818BEFCC800E51FB5 /* MainViewController.m */; };
@@ -279,6 +286,19 @@
 		BB74E80618C2541F007C223E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BB7F5D1419BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaitingForLocalSettingsInterface.cpp; sourceTree = "<group>"; };
 		BB7F5D1519BA912B0041BEB3 /* WaitingForLocalSettingsInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaitingForLocalSettingsInterface.h; sourceTree = "<group>"; };
+		BB81B1A819BE147400548837 /* STHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STHTTPRequest.h; sourceTree = "<group>"; };
+		BB81B1A919BE147400548837 /* STHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STHTTPRequest.m; sourceTree = "<group>"; };
+		BB81B1AD19BE15B500548837 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Progress_Dialog_Landscape.xib; sourceTree = "<group>"; };
+		BB81B1AF19BE15E700548837 /* TGApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGApiManager.h; sourceTree = "<group>"; };
+		BB81B1B019BE15E700548837 /* TGApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGApiManager.m; sourceTree = "<group>"; };
+		BB81B1B119BE15E700548837 /* TGProgressDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGProgressDialog.h; sourceTree = "<group>"; };
+		BB81B1B219BE15E700548837 /* TGProgressDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGProgressDialog.m; sourceTree = "<group>"; };
+		BB81B1B519BE163900548837 /* TGDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGDialog.h; sourceTree = "<group>"; };
+		BB81B1B619BE163900548837 /* TGDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGDialog.m; sourceTree = "<group>"; };
+		BB81B1B819BE197E00548837 /* TGJsonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGJsonUtils.h; sourceTree = "<group>"; };
+		BB81B1B919BE197E00548837 /* TGJsonUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGJsonUtils.m; sourceTree = "<group>"; };
+		BB81B1BB19BE1A1800548837 /* TGDeviceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGDeviceUtil.h; sourceTree = "<group>"; };
+		BB81B1BC19BE1A1800548837 /* TGDeviceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGDeviceUtil.m; sourceTree = "<group>"; };
 		BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppWarp_iOS_SDK.framework; path = ../../3rdparty/AppWarp/AppWarp_iOS_SDK.framework; sourceTree = "<group>"; };
 		BB8FF7C519AE3FE4005D0701 /* interface_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = interface_2.png; sourceTree = "<group>"; };
 		BB90FA7818D50E4100733E9B /* GameEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameEvent.h; sourceTree = "<group>"; };
@@ -603,8 +623,6 @@
 				0ADF189E178E2185005DA99E /* GameViewController.mm */,
 				BBCDD32318BFC8E1003A4EED /* Logger.h */,
 				BBCDD32418BFC8E1003A4EED /* Logger.m */,
-				0ADF1896178E2185005DA99E /* MainStoryboard_iPad.storyboard */,
-				0ADF1893178E2185005DA99E /* MainStoryboard_iPhone.storyboard */,
 				BB9139C718BEFCC800E51FB5 /* MainViewController.h */,
 				BB9139C818BEFCC800E51FB5 /* MainViewController.m */,
 				BB7305D6189C598D009F6DF4 /* Music.h */,
@@ -615,9 +633,21 @@
 				0ABADED6178E2E7800DED9FD /* platform_gl.h */,
 				BB7305D8189C598D009F6DF4 /* Sound.h */,
 				BB7305D9189C598D009F6DF4 /* Sound.m */,
+				BB81B1A819BE147400548837 /* STHTTPRequest.h */,
+				BB81B1A919BE147400548837 /* STHTTPRequest.m */,
+				0ADF1882178E2185005DA99E /* Supporting Files */,
+				BB81B1AF19BE15E700548837 /* TGApiManager.h */,
+				BB81B1B019BE15E700548837 /* TGApiManager.m */,
+				BB81B1BB19BE1A1800548837 /* TGDeviceUtil.h */,
+				BB81B1BC19BE1A1800548837 /* TGDeviceUtil.m */,
+				BB81B1B519BE163900548837 /* TGDialog.h */,
+				BB81B1B619BE163900548837 /* TGDialog.m */,
+				BB81B1B819BE197E00548837 /* TGJsonUtils.h */,
+				BB81B1B919BE197E00548837 /* TGJsonUtils.m */,
+				BB81B1B119BE15E700548837 /* TGProgressDialog.h */,
+				BB81B1B219BE15E700548837 /* TGProgressDialog.m */,
 				BBCDD32718BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.h */,
 				BBCDD32818BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m */,
-				0ADF1882178E2185005DA99E /* Supporting Files */,
 			);
 			name = ios;
 			sourceTree = "<group>";
@@ -625,6 +655,9 @@
 		0ADF1882178E2185005DA99E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0ADF1896178E2185005DA99E /* MainStoryboard_iPad.storyboard */,
+				0ADF1893178E2185005DA99E /* MainStoryboard_iPhone.storyboard */,
+				BB81B1AC19BE15B500548837 /* Progress_Dialog_Landscape.xib */,
 				BBA6492119B5FED100023E5A /* Images.xcassets */,
 				BBD079F518AA879D00E010AF /* assets */,
 				0ADF1883178E2185005DA99E /* battlebombs-Info.plist */,
@@ -801,6 +834,7 @@
 				BBBEC914194B425200AAB520 /* char_blue.png in Resources */,
 				BB5C577319B9F27B00AD76E7 /* pu_fire.caf in Resources */,
 				BB5C577619B9F27B00AD76E7 /* pu_speed.caf in Resources */,
+				BB81B1AE19BE15B500548837 /* Progress_Dialog_Landscape.xib in Resources */,
 				0ADF1886178E2185005DA99E /* InfoPlist.strings in Resources */,
 				BBDE14B8195A2D7400A91FD7 /* char_white.png in Resources */,
 				BB4F3106197C1DCD00270703 /* quick_match_pressed.png in Resources */,
@@ -879,6 +913,7 @@
 				BB96EEF218B99A7100F7C356 /* SpriteBatcher.cpp in Sources */,
 				BB96EEED18B99A7100F7C356 /* asset_utils.c in Sources */,
 				0A8FBF7C179E07320039BA29 /* png.c in Sources */,
+				BB81B1B419BE15E700548837 /* TGProgressDialog.m in Sources */,
 				BBF5DE2519770CE500759BB1 /* SpectatorControls.cpp in Sources */,
 				BB0BC05C1971B7810092A968 /* PowerUpBarItem.cpp in Sources */,
 				0A8FBF7D179E07320039BA29 /* pngerror.c in Sources */,
@@ -890,6 +925,7 @@
 				0A8FBF7F179E07320039BA29 /* pngmem.c in Sources */,
 				BB6FB26119B9433F0068F20E /* WaitingForServerInterface.cpp in Sources */,
 				BB42C0AC1975A82E00B592E5 /* OpenGLESRectangleRenderer.cpp in Sources */,
+				BB81B1B719BE163900548837 /* TGDialog.m in Sources */,
 				BB96EED418B99A6900F7C356 /* Line.cpp in Sources */,
 				0A8FBF80179E07320039BA29 /* pngpread.c in Sources */,
 				BB9948E219366E2900A8E599 /* GameListener.cpp in Sources */,
@@ -905,6 +941,7 @@
 				0A8FBF82179E07320039BA29 /* pngrio.c in Sources */,
 				0A8FBF83179E07320039BA29 /* pngrtran.c in Sources */,
 				BB96EED318B99A6900F7C356 /* GameScreen.cpp in Sources */,
+				BB81B1AA19BE147400548837 /* STHTTPRequest.m in Sources */,
 				0A8FBF84179E07320039BA29 /* pngrutil.c in Sources */,
 				BB96EECF18B99A6900F7C356 /* DynamicGameObject.cpp in Sources */,
 				BB96EED718B99A6900F7C356 /* Renderer.cpp in Sources */,
@@ -913,13 +950,16 @@
 				BB96EEEF18B99A7100F7C356 /* image.c in Sources */,
 				BBD0A2C3197420C900804A7C /* PlayerAvatar.cpp in Sources */,
 				BB96EED818B99A6900F7C356 /* TextureRegion.cpp in Sources */,
+				BB81B1B319BE15E700548837 /* TGApiManager.m in Sources */,
 				BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */,
 				BB0CC4B91964FAD100F770C4 /* MapSearchNode.cpp in Sources */,
+				BB81B1BA19BE197E00548837 /* TGJsonUtils.m in Sources */,
 				BB96EED618B99A6900F7C356 /* Rectangle.cpp in Sources */,
 				0A8FBF86179E07320039BA29 /* pngtrans.c in Sources */,
 				BB31AC9E18E05A6400E7369F /* InsideBlock.cpp in Sources */,
 				0A8FBF87179E07320039BA29 /* pngwio.c in Sources */,
 				BB96EEF118B99A7100F7C356 /* OpenGLESRenderer.cpp in Sources */,
+				BB81B1BD19BE1A1800548837 /* TGDeviceUtil.m in Sources */,
 				0A8FBF88179E07320039BA29 /* pngwrite.c in Sources */,
 				BBF7CC5E18CCA2B700B7CD15 /* DPadControl.cpp in Sources */,
 				BB1B8C8118C8B13300C72D2D /* PlayerDynamicGameObject.cpp in Sources */,
@@ -966,6 +1006,14 @@
 				BB74E80618C2541F007C223E /* en */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		BB81B1AC19BE15B500548837 /* Progress_Dialog_Landscape.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BB81B1AD19BE15B500548837 /* en */,
+			);
+			name = Progress_Dialog_Landscape.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -358,9 +358,9 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
                     case CONNECTING:
                         ss << "Connecting as " << waitingForServerInterface.getUsername();
                         break;
-                    case UPDATE_REQUIRED:
-                        ss << "A new version of Battle Bombs is available, please update";
-                        fontSize = 0.40f;
+                    case CONNECTION_ERROR:
+                        ss << "There was an error connecting to Battle Bombs...";
+                        fontSize = 0.42f;
                         break;
                     case FINDING_ROOM_TO_JOIN:
                         ss << "Finding a room to join";

@@ -8,8 +8,13 @@
 
 // Update Required Dialog
 "update_required_title" = "Update Required";
-"update_required_message" = "A new version of Battle Bombs is available, please update.";
+"update_required_message" = "A new version of Battle Bombs is available, please update before playing online.";
 "update_required_cancel" = "OK";
+
+// Connection Error Dialog
+"connection_error_title" = "Connection Error";
+"connection_error_message" = "Your device is unable to connect to Techne Games. Please check your connection and try again.";
+"connection_error_cancel" = "OK";
 
 // Enter Username Dialog
 "enter_username_title" = "Player Name";
