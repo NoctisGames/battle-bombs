@@ -31,7 +31,7 @@
 
 @implementation GameViewController
 
-static NSString * const KEEP_ALIVE = @"KEEP_ALIVE";
+static NSString * const KEEP_ALIVE = [@"KEEP_ALIVE" stringByAppendingFormat:@"%i", PLATFORM_IOS];
 static NSString * const EVENT_TYPE = @"eventType";
 static NSString * const EVENTS = @"events";
 static NSString * const PLAYER_INDEX = @"playerIndex";
@@ -68,7 +68,7 @@ static Logger *logger = nil;
     
     on_chat_received([preGameUpdate UTF8String]);
     
-    [warpClient connectWithUserName:self.username authData:@"iOS"];
+    [warpClient connectWithUserName:self.username authData:@"T3chn3G4m35"];
 }
 
 #pragma mark <ChatRequestListener>
