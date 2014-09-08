@@ -159,9 +159,12 @@ static Logger *logger = nil;
 {
     NSLog(@"%s", __FUNCTION__);
     
-    if([username isEqualToString:self.username])
+    if(roomData)
     {
-        [self onPause];
+        if([username isEqualToString:self.username])
+        {
+            [self onPause];
+        }
     }
 }
 
@@ -169,13 +172,16 @@ static Logger *logger = nil;
 {
     NSLog(@"%s", __FUNCTION__);
     
-    if(roomData && [username isEqualToString:self.username])
+    if(roomData)
     {
-        self.joinedRoomId = roomData.roomId;
-        
-        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, ROOM_JOINED_WAITING_FOR_SERVER];
-        
-        on_chat_received([preGameUpdate UTF8String]);
+        if([username isEqualToString:self.username])
+        {
+            self.joinedRoomId = roomData.roomId;
+            
+            NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, ROOM_JOINED_WAITING_FOR_SERVER];
+            
+            on_chat_received([preGameUpdate UTF8String]);
+        }
     }
 }
 
