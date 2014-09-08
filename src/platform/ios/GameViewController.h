@@ -14,6 +14,4 @@
     // Nothing to do here
 }
 
-@property (strong, nonatomic) NSString *joinedRoomId;
-
 @end

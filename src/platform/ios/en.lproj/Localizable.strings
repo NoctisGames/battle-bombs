@@ -6,7 +6,19 @@
   Copyright (c) 2014 Techne Games. All rights reserved.
 */
 
-// Dialog
+// Update Required Dialog
 "update_required_title" = "Update Required";
 "update_required_message" = "A new version of Battle Bombs is available, please update.";
-"update_required_button" = "OK";
+"update_required_cancel" = "OK";
+
+// Enter Username Dialog
+"enter_username_title" = "Player Name";
+"enter_username_hint" = "Enter your Battle Bombs name";
+"enter_username_button" = "Connect";
+"enter_username_play" = "Play";
+"enter_username_cancel" = "Cancel";
+
+// Invalid Username Dialog
+"invalid_username_title" = "Invalid Username";
+"invalid_username_message" = "Please enter a username between 3 and 15 characters.";
+"invalid_username_cancel" = "OK";

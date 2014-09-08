@@ -49,11 +49,9 @@ GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
     
     m_isOffline = isOffline;
     
-    m_fTimeToNextRound = 18;
-    
     init();
     
-    m_gameState = m_isOffline ? WAITING : WAITING_FOR_SERVER;
+    m_gameState = m_isOffline ? WAITING : WAITING_FOR_CONNECTION;
 }
 
 GameScreen::~GameScreen()
@@ -71,7 +69,7 @@ void GameScreen::init()
 {
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
     m_gameListener = std::unique_ptr<GameListener>(new GameListener());
-    m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10.38805970149248f, 11.2298507475f, m_fTimeToNextRound));
+    m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10.38805970149248f, 11.2298507475f, m_username));
     m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface());
     m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
     
@@ -87,7 +85,6 @@ void GameScreen::init()
     m_gameState = m_isOffline ? WAITING_FOR_LOCAL_SETTINGS : WAITING_FOR_SERVER;
     m_iScreenState = 0;
     m_fTimeSinceLastClientEvent = 0;
-    m_fTimeToNextRound = 0;
     m_fCountDownTimeLeft = 3;
     m_fTimeSinceGameOver = 0;
     m_fBlackCoverTransitionAlpha = 0;
@@ -114,10 +111,17 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
     
     processServerMessages();
     
-    m_waitingForServerInterface->update(deltaTime);
+    m_waitingForServerInterface->update(deltaTime, m_gameState);
     
     switch (m_gameState)
     {
+        case WAITING_FOR_CONNECTION:
+            // TODO, update message based on connection state
+            // Also, change the state to WAITING_FOR_SERVER when appropriate
+            break;
+        case UPDATE_REQUIRED_WAITING_FOR_INPUT:
+            updateInputUpdateRequiredWaitingForInput(touchEvents);
+            break;
         case WAITING_FOR_SERVER:
             // TODO, Next Round starts in 30, 29, 28, etc...
             // Also, constantly update interface with list of players and platforms they are on
@@ -285,18 +289,15 @@ void GameScreen::updateInputWaitingForLocalSettings(std::vector<TouchEvent> &tou
 {
     for (std::vector<TouchEvent>::iterator itr = touchEvents.begin(); itr != touchEvents.end(); itr++)
 	{
-		touchToWorld((*itr));
-		
-		switch (itr->getTouchType())
-		{
-            case DOWN:
-                m_iScreenState = 1;
-                continue;
-            case DRAGGED:
-                continue;
-            case UP:
-                return;
-		}
+        m_iScreenState = 1;
+	}
+}
+
+void GameScreen::updateInputUpdateRequiredWaitingForInput(std::vector<TouchEvent> &touchEvents)
+{
+    for (std::vector<TouchEvent>::iterator itr = touchEvents.begin(); itr != touchEvents.end(); itr++)
+	{
+        m_iScreenState = 1;
 	}
 }
 
@@ -428,7 +429,6 @@ void GameScreen::updateInputSpectating(std::vector<TouchEvent> &touchEvents)
 
 void GameScreen::updateGameEnding(float deltaTime)
 {
-    m_fTimeToNextRound -= deltaTime;
     m_fTimeSinceGameOver += deltaTime;
     
     if(m_fTimeSinceGameOver > 5)
@@ -522,6 +522,35 @@ void GameScreen::processServerMessages()
             else if(eventType == GAME_OVER && (m_gameState == RUNNING || m_gameState == SPECTATING))
             {
                 gameOver(d);
+            }
+            else if(eventType == PRE_GAME_SERVER_UPDATE && m_gameState == WAITING_FOR_SERVER)
+            {
+                static const char *timeToNextRoundKey = "timeToNextRound";
+                
+                if(d.HasMember(timeToNextRoundKey))
+                {
+                    int timeToNextRound = d[timeToNextRoundKey].GetInt();
+                    m_waitingForServerInterface->setTimeToNextRound(timeToNextRound);
+                }
+            }
+            else if(eventType == PRE_GAME && m_gameState == WAITING_FOR_CONNECTION)
+            {
+                static const char *phaseKey = "phase";
+                
+                if(d.HasMember(phaseKey))
+                {
+                    int phase = d[phaseKey].GetInt();
+                    m_waitingForServerInterface->setPreGamePhase(phase);
+                    
+                    if(phase == ROOM_JOINED_WAITING_FOR_SERVER)
+                    {
+                        m_gameState = WAITING_FOR_SERVER;
+                    }
+                    else if(phase == UPDATE_REQUIRED)
+                    {
+                        m_gameState = UPDATE_REQUIRED_WAITING_FOR_INPUT;
+                    }
+                }
             }
         }
 	}
@@ -624,13 +653,6 @@ void GameScreen::gameOver(rapidjson::Document &d)
         else
         {
             // TODO, show a DRAW animation
-        }
-        
-        static const char *timeToNextRoundKey = "timeToNextRound";
-        
-        if(d.HasMember(timeToNextRoundKey))
-        {
-            m_fTimeToNextRound = d[timeToNextRoundKey].GetInt();
         }
     }
     

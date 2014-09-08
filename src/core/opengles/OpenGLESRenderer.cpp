@@ -313,37 +313,72 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    m_spriteBatcher->beginBatch();
-    renderGameObject(waitingForServerInterface, Assets::getWaitingForServerInterfaceTextureRegion());
-    m_spriteBatcher->endBatchWithTexture(m_interfaceTexture2);
-    
-    m_spriteBatcherWithColor->beginBatch();
-    
-    if(waitingForServerInterface.getTimeToNextRound() > 0)
+    if(waitingForServerInterface.renderPlayersList())
     {
-        static Color timerColor = { 1, 1, 1, 1 };
-        
-        std::stringstream ss2;
-        ss2 << waitingForServerInterface.getTimeToNextRound();
-        std::string timerText = ss2.str();
-        
-        m_font->renderText(*m_spriteBatcherWithColor, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 2.5f, 2.0f, 1.36842105263158f, timerColor, true);
+        m_spriteBatcher->beginBatch();
+        renderGameObject(waitingForServerInterface, Assets::getWaitingForServerInterfaceTextureRegion());
+        m_spriteBatcher->endBatchWithTexture(m_interfaceTexture2);
     }
     
-    static Color interfaceColor = { 1, 1, 1, 1 };
-    interfaceColor.alpha -= 0.025f;
-    if(interfaceColor.alpha < 0.2f)
+    if(waitingForServerInterface.renderTimeToNextRound() || waitingForServerInterface.renderMessage())
     {
-        interfaceColor.alpha = 1;
+        m_spriteBatcherWithColor->beginBatch();
+        
+        if(waitingForServerInterface.renderTimeToNextRound())
+        {
+            static Color timerColor = { 1, 1, 1, 1 };
+            
+            std::stringstream ss2;
+            ss2 << waitingForServerInterface.getTimeToNextRound();
+            std::string timerText = ss2.str();
+            
+            m_font->renderText(*m_spriteBatcherWithColor, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 2.5f, 2.0f, 1.36842105263158f, timerColor, true);
+        }
+        
+        if(waitingForServerInterface.renderMessage())
+        {
+            static Color interfaceColor = { 1, 1, 1, 1 };
+            interfaceColor.alpha -= 0.025f;
+            if(interfaceColor.alpha < 0.2f)
+            {
+                interfaceColor.alpha = 1;
+            }
+            
+            std::stringstream ss;
+            if(waitingForServerInterface.renderPlayersList())
+            {
+                ss << "Waiting for next Round";
+            }
+            else
+            {
+                switch (waitingForServerInterface.getPreGamePhase())
+                {
+                    case CONNECTING:
+                        ss << "Connecting as " << waitingForServerInterface.getUsername();
+                        break;
+                    case UPDATE_REQUIRED:
+                        ss << "A new version of Battle Bombs is available, please update";
+                        break;
+                    case FINDING_ROOM_TO_JOIN:
+                        ss << "Finding a room to join";
+                        break;
+                    case ROOM_JOINED_WAITING_FOR_SERVER:
+                        ss << "Waiting for next round";
+                        break;
+                    case DEFAULT:
+                    default:
+                        ss << "...";
+                        break;
+                }
+            }
+            
+            std::string waitingText = ss.str();
+            
+            m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, 0.5f, 0.5f, 0.5f, interfaceColor, true);
+            
+            m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
+        }
     }
-    
-    std::stringstream ss;
-    ss << "Waiting for next Round";
-    std::string waitingText = ss.str();
-    
-    m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, 0.5f, 0.5f, 0.5f, interfaceColor, true);
-    
-    m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
 }
 
 void OpenGLESRenderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)

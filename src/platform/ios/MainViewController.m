@@ -7,319 +7,130 @@
 //
 
 #import "MainViewController.h"
-#import "GameViewController.h"
-#import "OfflineGameViewController.h"
+#import "BaseGameViewController.h"
 #import "Logger.h"
 
 @interface MainViewController ()
+{
+    // Empty
+}
 
-@property (strong, nonatomic) NSString *joinedRoomId;
+@property (strong, nonatomic) NSString *username;
 
 @end
 
 @implementation MainViewController
 
 static Logger *logger = nil;
-static NSString *_username;
 
 + (void)initialize
 {
     logger = [[Logger alloc] initWithClass:[MainViewController class]];
-    
-    NSString *UUID = [[NSUUID UUID] UUIDString];
-    UUID = [UUID substringToIndex:8];
-    _username = [@"Player_" stringByAppendingString:UUID];
-    
-    [WarpClient initWarp:APPWARP_APP_KEY server:APPWARP_HOST_ADDRESS];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    WarpClient *warpClient = [WarpClient getInstance];
-    
-    [warpClient addChatRequestListener:self];
-    [warpClient addConnectionRequestListener:self];
-    [warpClient addLobbyRequestListener:self];
-    [warpClient addNotificationListener:self];
-    [warpClient addRoomRequestListener:self];
-    [warpClient addZoneRequestListener:self];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([[segue identifier] isEqualToString:@"Main_To_Game"])
-    {
-        GameViewController *gameViewController = (GameViewController *) segue.destinationViewController;
-        gameViewController.username = _username;
-        gameViewController.joinedRoomId = self.joinedRoomId;
-    }
-    else if([[segue identifier] isEqualToString:@"Main_To_Offline_Game"])
-    {
-        OfflineGameViewController *gameViewController = (OfflineGameViewController *) segue.destinationViewController;
-        gameViewController.username = _username;
-    }
-    
-    WarpClient *warpClient = [WarpClient getInstance];
-    
-    [warpClient removeChatRequestListener:self];
-    [warpClient removeConnectionRequestListener:self];
-    [warpClient removeLobbyRequestListener:self];
-    [warpClient removeNotificationListener:self];
-    [warpClient removeRoomRequestListener:self];
-    [warpClient removeZoneRequestListener:self];
+    BaseGameViewController *gameViewController = (BaseGameViewController *) segue.destinationViewController;
+    gameViewController.username = _username;
     
     [super prepareForSegue:segue sender:sender];
 }
 
 - (IBAction)startQuickMatch:(id)sender
 {
-    [[WarpClient getInstance] connectWithUserName:_username authData:@"iOS"];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"enter_username_title", nil)
+                                                    message:nil
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"enter_username_cancel", nil)
+                                          otherButtonTitles:NSLocalizedString(@"enter_username_button", nil), nil];
+    
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField *alertTextField = [alert textFieldAtIndex:0];
+    alertTextField.keyboardType = UIKeyboardTypeDefault;
+    alertTextField.placeholder = NSLocalizedString(@"enter_username_hint", nil);
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [userDefaults objectForKey:@"USERNAME"];
+    if(username && [username length] >= 3 && [username length] <= 15)
+    {
+        [alertTextField setText:username];
+    }
+    
+    [alert show];
 }
 
 - (IBAction)startQuickOfflineMatch:(id)sender
 {
-    [self performSegueWithIdentifier:@"Main_To_Offline_Game" sender:self];
-}
-
-#pragma <ChatRequestListener> methods
-
-- (void)onSendChatDone:(Byte)result
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onSendPrivateChatDone:(Byte)result
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-#pragma <ConnectionRequestListener> methods
-
-- (void)onConnectDone:(ConnectEvent *) event
-{
-    NSLog(@"%s", __FUNCTION__);
-    NSLog(@"event.result: %hhu", event.result);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"enter_username_title", nil)
+                                                    message:nil
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"enter_username_cancel", nil)
+                                          otherButtonTitles:NSLocalizedString(@"enter_username_play", nil), nil];
     
-    if(event.result == CLIENT_NEEDS_TO_UPDATE)
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"update_required_title", nil)
-                                                        message:NSLocalizedString(@"update_required_message", nil)
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"update_required_button", nil)
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
-    else
-    {
-        [[WarpClient getInstance] joinRoomInRangeBetweenMinUsers:0 andMaxUsers:7 maxPrefered:YES];
-    }
-}
-
-- (void)onDisconnectDone:(ConnectEvent *) event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onInitUDPDone:(Byte)result
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-#pragma <LobbyRequestListener> methods
-
-- (void)onJoinLobbyDone:(LobbyEvent *)lobbyEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onLeaveLobbyDone:(LobbyEvent *)lobbyEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onSubscribeLobbyDone:(LobbyEvent *)lobbyEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUnSubscribeLobbyDone:(LobbyEvent *)lobbyEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGetLiveLobbyInfoDone:(LiveRoomInfoEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-#pragma <NotifyListener> methods
-
-- (void)onRoomCreated:(RoomData *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onRoomDestroyed:(RoomData *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUserLeftRoom:(RoomData *)roomData username:(NSString *)username
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUserJoinedRoom:(RoomData *)roomData username:(NSString *)username
-{
-    NSLog(@"%s", __FUNCTION__);
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField *alertTextField = [alert textFieldAtIndex:0];
+    alertTextField.keyboardType = UIKeyboardTypeDefault;
+    alertTextField.placeholder = NSLocalizedString(@"enter_username_hint", nil);
     
-    if(roomData && [username isEqualToString:_username])
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [userDefaults objectForKey:@"USERNAME"];
+    if(username && [username length] >= 3 && [username length] <= 15)
     {
-        self.joinedRoomId = roomData.roomId;
+        [alertTextField setText:username];
+    }
+    
+    [alert show];
+}
+
+#pragma mark <UIAlertViewDelegate>
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if([alertView.title isEqualToString:NSLocalizedString(@"enter_username_title", nil)])
+    {
+        if([title isEqualToString:NSLocalizedString(@"enter_username_button", nil)])
+        {
+            _username = [alertView textFieldAtIndex:0].text;
+            
+            if(_username.length >= 3 && _username.length <= 15)
+            {
+                [self performSegueWithIdentifier:@"Main_To_Game" sender:self];
+            }
+            else
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"invalid_username_title", nil)
+                                                                message:NSLocalizedString(@"invalid_username_message", nil)
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"invalid_username_cancel", nil)
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
+        }
+        else if([title isEqualToString:NSLocalizedString(@"enter_username_play", nil)])
+        {
+            _username = [alertView textFieldAtIndex:0].text;
+            
+            if(_username.length >= 3 && _username.length <= 15)
+            {
+                [self performSegueWithIdentifier:@"Main_To_Offline_Game" sender:self];
+            }
+            else
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"invalid_username_title", nil)
+                                                                message:NSLocalizedString(@"invalid_username_message", nil)
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"invalid_username_cancel", nil)
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
+        }
         
-        [self performSegueWithIdentifier:@"Main_To_Game" sender:self];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:_username forKey:@"USERNAME"];
+        [userDefaults synchronize];
     }
-}
-
-- (void)onUserLeftLobby:(LobbyData *)lobbyData username:(NSString *)username
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUserJoinedLobby:(LobbyData *)lobbyData username:(NSString *)username
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onChatReceived:(ChatEvent *)chatEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
--(void)onPrivateChatReceived:(NSString *)message fromUser:(NSString *)senderName
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUpdatePeersReceived:(UpdateEvent *)updateEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
--(void)onUserChangeRoomProperty:(RoomData *)event username:(NSString *)username properties:(NSDictionary *)properties lockedProperties:(NSDictionary *)lockedProperties
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onMoveCompleted:(MoveEvent *) moveEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUserPaused:(NSString *)userName withLocation:(NSString *)locId isLobby:(BOOL)isLobby
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUserResumed:(NSString *)userName withLocation:(NSString *)locId isLobby:(BOOL)isLobby
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGameStarted:(NSString *)sender roomId:(NSString *)roomId  nextTurn:(NSString *)nextTurn
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGameStopped:(NSString *)sender roomId:(NSString *)roomId
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-#pragma <RoomRequestListener> methods
-
-- (void)onSubscribeRoomDone:(RoomEvent *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUnSubscribeRoomDone:(RoomEvent *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onJoinRoomDone:(RoomEvent *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onLeaveRoomDone:(RoomEvent *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGetLiveRoomInfoDone:(LiveRoomInfoEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onSetCustomRoomDataDone:(LiveRoomInfoEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUpdatePropertyDone:(LiveRoomInfoEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onLockPropertiesDone:(Byte)result
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUnlockPropertiesDone:(Byte)result
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-#pragma <ZoneRequestListener> methods
-
-- (void)onCreateRoomDone:(RoomEvent *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onDeleteRoomDone:(RoomEvent *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGetAllRoomsDone:(AllRoomsEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGetOnlineUsersDone:(AllUsersEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGetLiveUserInfoDone:(LiveUserInfoEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onSetCustomUserDataDone:(LiveUserInfoEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGetMatchedRoomsDone:(MatchedRoomsEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
 }
 
 @end

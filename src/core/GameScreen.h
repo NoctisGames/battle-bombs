@@ -85,7 +85,6 @@ private:
     std::unique_ptr<WaitingForServerInterface> m_waitingForServerInterface;
     std::unique_ptr<WaitingForLocalSettingsInterface> m_waitingForLocalSettingsInterface;
     std::unique_ptr<InterfaceOverlay> m_interfaceOverlay;
-    float m_fTimeToNextRound;
     float m_fCountDownTimeLeft;
     bool m_isGameOver;
     float m_fTimeSinceGameOver;
@@ -93,6 +92,8 @@ private:
     bool m_isOffline;
     
     void updateInputWaitingForLocalSettings(std::vector<TouchEvent> &touchEvents);
+    
+    void updateInputUpdateRequiredWaitingForInput(std::vector<TouchEvent> &touchEvents);
     
     virtual void updateRunning(float deltaTime);
     

@@ -6,10 +6,28 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
+#define APPWARP_APP_KEY         @"1bc691b6-8c0f-4247-9"
+#define APPWARP_SECRET_KEY      @"139f6094-4e04-4041-9"
+#define APPWARP_HOST_ADDRESS    @"191.234.54.124"
+
+// Response Codes
+#define CLIENT_NEEDS_TO_UPDATE 1
+
 #import "GameViewController.h"
+#import "Logger.h"
 
 // C++
 #include "game.h"
+#include "GameEvent.h"
+
+@interface GameViewController ()
+{
+    // Empty
+}
+
+@property (strong, nonatomic) NSString *joinedRoomId;
+
+@end
 
 @implementation GameViewController
 
@@ -21,7 +39,17 @@ static NSString * const X = @"X";
 static NSString * const Y = @"Y";
 static NSString * const DIRECTION = @"Direction";
 
-static int const CLIENT_UPDATE = 1338;
+// PRE_GAME_SERVER_UPDATE
+static NSString * const PHASE = @"phase";
+
+static Logger *logger = nil;
+
++ (void)initialize
+{
+    logger = [[Logger alloc] initWithClass:[GameViewController class]];
+    
+    [WarpClient initWarp:APPWARP_APP_KEY server:APPWARP_HOST_ADDRESS];
+}
 
 - (void)viewDidLoad
 {
@@ -35,6 +63,12 @@ static int const CLIENT_UPDATE = 1338;
     [warpClient addNotificationListener:self];
     [warpClient addRoomRequestListener:self];
     [warpClient addZoneRequestListener:self];
+    
+    NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%i,", EVENT_TYPE, PRE_GAME, PHASE, CONNECTING];
+    
+    on_chat_received([preGameUpdate UTF8String]);
+    
+    [warpClient connectWithUserName:self.username authData:@"iOS"];
 }
 
 #pragma mark <ChatRequestListener>
@@ -51,12 +85,28 @@ static int const CLIENT_UPDATE = 1338;
 
 #pragma mark <ConnectionRequestListener>
 
-- (void)onConnectDone:(ConnectEvent*) event
+- (void)onConnectDone:(ConnectEvent *)event
 {
     NSLog(@"%s", __FUNCTION__);
+    NSLog(@"event.result: %hhu", event.result);
+    
+    if(event.result == CLIENT_NEEDS_TO_UPDATE)
+    {
+        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%i,", EVENT_TYPE, PRE_GAME, PHASE, UPDATE_REQUIRED];
+        
+        on_chat_received([preGameUpdate UTF8String]);
+    }
+    else
+    {
+        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%i,", EVENT_TYPE, PRE_GAME, PHASE, FINDING_ROOM_TO_JOIN];
+        
+        on_chat_received([preGameUpdate UTF8String]);
+        
+        [[WarpClient getInstance] joinRoomInRangeBetweenMinUsers:0 andMaxUsers:7 maxPrefered:YES];
+    }
 }
 
-- (void)onDisconnectDone:(ConnectEvent*) event
+- (void)onDisconnectDone:(ConnectEvent *)event
 {
     NSLog(@"%s", __FUNCTION__);
 }
@@ -68,27 +118,27 @@ static int const CLIENT_UPDATE = 1338;
 
 #pragma mark <LobbyRequestListener>
 
-- (void)onJoinLobbyDone:(LobbyEvent*)lobbyEvent
+- (void)onJoinLobbyDone:(LobbyEvent *)lobbyEvent
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onLeaveLobbyDone:(LobbyEvent*)lobbyEvent
+- (void)onLeaveLobbyDone:(LobbyEvent *)lobbyEvent
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onSubscribeLobbyDone:(LobbyEvent*)lobbyEvent
+- (void)onSubscribeLobbyDone:(LobbyEvent *)lobbyEvent
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onUnSubscribeLobbyDone:(LobbyEvent*)lobbyEvent
+- (void)onUnSubscribeLobbyDone:(LobbyEvent *)lobbyEvent
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onGetLiveLobbyInfoDone:(LiveRoomInfoEvent*)event
+- (void)onGetLiveLobbyInfoDone:(LiveRoomInfoEvent *)event
 {
     NSLog(@"%s", __FUNCTION__);
 }
@@ -118,6 +168,15 @@ static int const CLIENT_UPDATE = 1338;
 - (void)onUserJoinedRoom:(RoomData *)roomData username:(NSString *)username
 {
     NSLog(@"%s", __FUNCTION__);
+    
+    if(roomData && [username isEqualToString:self.username])
+    {
+        self.joinedRoomId = roomData.roomId;
+        
+        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%i,", EVENT_TYPE, PRE_GAME, PHASE, ROOM_JOINED_WAITING_FOR_SERVER];
+        
+        on_chat_received([preGameUpdate UTF8String]);
+    }
 }
 
 - (void)onUserLeftLobby:(LobbyData *)lobbyData username:(NSString *)username
@@ -181,32 +240,32 @@ static int const CLIENT_UPDATE = 1338;
 
 #pragma mark <RoomRequestListener>
 
-- (void)onSubscribeRoomDone:(RoomEvent*)roomEvent
+- (void)onSubscribeRoomDone:(RoomEvent *)roomEvent
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onUnSubscribeRoomDone:(RoomEvent*)roomEvent
+- (void)onUnSubscribeRoomDone:(RoomEvent *)roomEvent
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onJoinRoomDone:(RoomEvent*)roomEvent
+- (void)onJoinRoomDone:(RoomEvent *)roomEvent
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onLeaveRoomDone:(RoomEvent*)roomEvent
+- (void)onLeaveRoomDone:(RoomEvent *)roomEvent
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onGetLiveRoomInfoDone:(LiveRoomInfoEvent*)event
+- (void)onGetLiveRoomInfoDone:(LiveRoomInfoEvent *)event
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onSetCustomRoomDataDone:(LiveRoomInfoEvent*)event
+- (void)onSetCustomRoomDataDone:(LiveRoomInfoEvent *)event
 {
     NSLog(@"%s", __FUNCTION__);
 }
@@ -228,42 +287,50 @@ static int const CLIENT_UPDATE = 1338;
 
 #pragma mark <ZoneRequestListener>
 
-- (void)onCreateRoomDone:(RoomEvent*)roomEvent
+- (void)onCreateRoomDone:(RoomEvent *)roomEvent
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onDeleteRoomDone:(RoomEvent*)roomEvent
+- (void)onDeleteRoomDone:(RoomEvent *)roomEvent
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onGetAllRoomsDone:(AllRoomsEvent*)event
+- (void)onGetAllRoomsDone:(AllRoomsEvent *)event
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onGetOnlineUsersDone:(AllUsersEvent*)event
+- (void)onGetOnlineUsersDone:(AllUsersEvent *)event
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onGetLiveUserInfoDone:(LiveUserInfoEvent*)event
+- (void)onGetLiveUserInfoDone:(LiveUserInfoEvent *)event
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onSetCustomUserDataDone:(LiveUserInfoEvent*)event
+- (void)onSetCustomUserDataDone:(LiveUserInfoEvent *)event
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)onGetMatchedRoomsDone:(MatchedRoomsEvent*)event
+- (void)onGetMatchedRoomsDone:(MatchedRoomsEvent *)event
 {
     NSLog(@"%s", __FUNCTION__);
 }
 
 #pragma mark <Protected>
+
+- (void)handleGameState:(int)gameState
+{
+    if(gameState == 1)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
 
 - (void)pushEvents
 {
