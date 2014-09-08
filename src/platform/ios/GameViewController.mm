@@ -198,7 +198,7 @@ static Logger *logger = nil;
     on_chat_received([chatEvent.message UTF8String]);
 }
 
--(void)onPrivateChatReceived:(NSString *)message fromUser:(NSString *)senderName
+- (void)onPrivateChatReceived:(NSString *)message fromUser:(NSString *)senderName
 {
     NSLog(@"%s", __FUNCTION__);
 }
