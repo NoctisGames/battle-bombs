@@ -109,8 +109,6 @@ void present()
 void on_chat_received(const char *message)
 {
     gameScreen->handleServerUpdate(message);
-    // TODO, pass to the GameScreen, where it will be converted
-    // into a JSON Object and processed accordingly.
 }
 
 void on_touch_down(float raw_touch_x, float raw_touch_y)

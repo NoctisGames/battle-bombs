@@ -507,50 +507,53 @@ void GameScreen::processServerMessages()
     
 	for (std::vector<const char *>::iterator itr = serverMessages.begin(); itr != serverMessages.end(); itr++)
 	{
-		static const char *eventTypeKey = "eventType";
-        
-		rapidjson::Document d;
+        rapidjson::Document d;
 		d.Parse<0>(*itr);
-        if(d.HasMember(eventTypeKey))
+        if(d.IsObject())
         {
-            int eventType = d[eventTypeKey].GetInt();
+            static const char *eventTypeKey = "eventType";
             
-            if (eventType == BEGIN_GAME)
+            if(d.HasMember(eventTypeKey))
             {
-                beginGame(d);
-            }
-            else if (eventType == CLIENT_UPDATE && (m_gameState == RUNNING || m_gameState == SPECTATING))
-            {
-                clientUpdate(d, false);
-            }
-            else if(eventType == BEGIN_SPECTATE && m_gameState == WAITING_FOR_SERVER)
-            {
-                beginSpectate(d);
-            }
-            else if(eventType == GAME_OVER && (m_gameState == RUNNING || m_gameState == SPECTATING))
-            {
-                gameOver(d);
-            }
-            else if(eventType == PRE_GAME_SERVER_UPDATE && m_gameState == WAITING_FOR_SERVER)
-            {
-                m_waitingForServerInterface->handlePreGameServerUpdate(d);
-            }
-            else if(eventType == PRE_GAME && m_gameState == WAITING_FOR_CONNECTION)
-            {
-                static const char *phaseKey = "phase";
+                int eventType = d[eventTypeKey].GetInt();
                 
-                if(d.HasMember(phaseKey))
+                if (eventType == BEGIN_GAME)
                 {
-                    int phase = d[phaseKey].GetInt();
-                    m_waitingForServerInterface->setPreGamePhase(phase);
+                    beginGame(d);
+                }
+                else if (eventType == CLIENT_UPDATE && (m_gameState == RUNNING || m_gameState == SPECTATING))
+                {
+                    clientUpdate(d, false);
+                }
+                else if(eventType == BEGIN_SPECTATE && m_gameState == WAITING_FOR_SERVER)
+                {
+                    beginSpectate(d);
+                }
+                else if(eventType == GAME_OVER && (m_gameState == RUNNING || m_gameState == SPECTATING))
+                {
+                    gameOver(d);
+                }
+                else if(eventType == PRE_GAME_SERVER_UPDATE && m_gameState == WAITING_FOR_SERVER)
+                {
+                    m_waitingForServerInterface->handlePreGameServerUpdate(d);
+                }
+                else if(eventType == PRE_GAME && m_gameState == WAITING_FOR_CONNECTION)
+                {
+                    static const char *phaseKey = "phase";
                     
-                    if(phase == ROOM_JOINED_WAITING_FOR_SERVER)
+                    if(d.HasMember(phaseKey))
                     {
-                        m_gameState = WAITING_FOR_SERVER;
-                    }
-                    else if(phase == CONNECTION_ERROR)
-                    {
-                        m_gameState = CONNECTION_ERROR_WAITING_FOR_INPUT;
+                        int phase = d[phaseKey].GetInt();
+                        m_waitingForServerInterface->setPreGamePhase(phase);
+                        
+                        if(phase == ROOM_JOINED_WAITING_FOR_SERVER)
+                        {
+                            m_gameState = WAITING_FOR_SERVER;
+                        }
+                        else if(phase == CONNECTION_ERROR)
+                        {
+                            m_gameState = CONNECTION_ERROR_WAITING_FOR_INPUT;
+                        }
                     }
                 }
             }
