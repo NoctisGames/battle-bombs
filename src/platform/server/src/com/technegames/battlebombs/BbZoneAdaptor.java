@@ -32,19 +32,5 @@ public final class BbZoneAdaptor extends BaseZoneAdaptor
     public void handleAddUserRequest(IUser user, String authString, HandlingResult result)
     {
         System.out.println("UserRequest " + user.getName());
-
-        if (_zone.getAppKey().equalsIgnoreCase(Globals.CURRENT_ZONE_KEY))
-        {
-            // TODO, write the authString (which is actually the user's platform: iOS, Android, or WP8 to a database or something)
-        }
-        else
-        {
-            System.out.println(user.getName() + " is using an old version of the client!");
-
-            result.code = 1; // Not Successful
-            result.sendNotification = false;
-            result.sendResponse = true;
-            result.description = "A new version of Battle Bombs has been released, please update.";
-        }
     }
 }

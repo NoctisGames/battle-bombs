@@ -36,6 +36,10 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final String BREAKABLE_BLOCK_Y_VALUES = "breakableBlockYValues";
     private static final String BREAKABLE_BLOCK_POWER_UP_FLAGS = "breakableBlockPowerUpFlags";
     private static final int TIME_BETWEEN_ROUNDS = 20;
+    private static final int PLATFORM_UNKNOWN = 0;
+    private static final int PLATFORM_ANDROID = 1;
+    private static final int PLATFORM_IOS = 2;
+    private static final int PLATFORM_WINDOWS_PHONE = 3;
     private static final int NUM_MAPS = 3;
     private static final short PRE_GAME_SERVER_UPDATE = 1335;
     private static final short BEGIN_SPECTATE = 1336;
@@ -109,7 +113,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
 
                     _playerSpotsOccupied[i] = true;
                     _activePlayerNames[i] = user.getName();
-                    _inRoomUserSessionDataMap.put(user, new UserSessionData(0, i));
+                    _inRoomUserSessionDataMap.put(user, new UserSessionData(0, i, PLATFORM_UNKNOWN));
 
                     System.out.println(user.getName() + " joined the room");
 
@@ -139,6 +143,12 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             if (_inGameUserSessionDataMap.containsKey(sender) && message != null && message.contains("{") && message.contains(","))
             {
                 updateRoomWithMessage(message);
+            }
+            else
+            {
+                String platformString = message.substring(8);
+                int platform = Integer.parseInt(platformString);
+                _inRoomUserSessionDataMap.get(sender)._platform = platform;
             }
         }
 
@@ -273,7 +283,18 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     JSONObject tobeSent = new JSONObject();
                     tobeSent.put(EVENT_TYPE, PRE_GAME_SERVER_UPDATE);
                     tobeSent.put(TIME_TO_NEXT_ROUND, TIME_BETWEEN_ROUNDS - (int) _stateTime);
+                    tobeSent.put(NUM_PLAYERS, _inRoomUserSessionDataMap.size());
+                    for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
+                    {
+                        IUser user = (IUser) entry.getKey();
+                        UserSessionData userSessionData = (UserSessionData) entry.getValue();
 
+                        short playerIndex = userSessionData._playerIndex;
+
+                        tobeSent.put("playerIndex" + playerIndex, user.getName());
+                        tobeSent.put("playerIndex" + playerIndex + "Platform", userSessionData._platform);
+                    }
+                    
                     updateRoomWithMessage(tobeSent.toString());
                 }
                 catch (JSONException e)
