@@ -10,9 +10,6 @@
 #define APPWARP_SECRET_KEY      @"139f6094-4e04-4041-9"
 #define APPWARP_HOST_ADDRESS    @"191.234.54.124"
 
-// Response Codes
-#define CLIENT_NEEDS_TO_UPDATE 1
-
 #import "GameViewController.h"
 #import "Logger.h"
 
@@ -31,7 +28,7 @@
 
 @implementation GameViewController
 
-static NSString * const KEEP_ALIVE = [@"KEEP_ALIVE" stringByAppendingFormat:@"%i", PLATFORM_IOS];
+static NSString * const KEEP_ALIVE = [@"KEEP_ALIVE_" stringByAppendingFormat:@"%i", PLATFORM_IOS];
 static NSString * const EVENT_TYPE = @"eventType";
 static NSString * const EVENTS = @"events";
 static NSString * const PLAYER_INDEX = @"playerIndex";
@@ -71,18 +68,6 @@ static Logger *logger = nil;
     [warpClient connectWithUserName:self.username authData:@"T3chn3G4m35"];
 }
 
-#pragma mark <ChatRequestListener>
-
-- (void)onSendChatDone:(Byte)result
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onSendPrivateChatDone:(Byte)result
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
 #pragma mark <ConnectionRequestListener>
 
 - (void)onConnectDone:(ConnectEvent *)event
@@ -90,19 +75,19 @@ static Logger *logger = nil;
     NSLog(@"%s", __FUNCTION__);
     NSLog(@"event.result: %hhu", event.result);
     
-    if(event.result == CLIENT_NEEDS_TO_UPDATE)
-    {
-        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, UPDATE_REQUIRED];
-        
-        on_chat_received([preGameUpdate UTF8String]);
-    }
-    else
+    if(event.result == 0)
     {
         NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, FINDING_ROOM_TO_JOIN];
         
         on_chat_received([preGameUpdate UTF8String]);
         
         [[WarpClient getInstance] joinRoomInRangeBetweenMinUsers:0 andMaxUsers:7 maxPrefered:YES];
+    }
+    else
+    {
+        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, CONNECTION_ERROR];
+        
+        on_chat_received([preGameUpdate UTF8String]);
     }
 }
 
@@ -112,33 +97,6 @@ static Logger *logger = nil;
 }
 
 - (void)onInitUDPDone:(Byte)result
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-#pragma mark <LobbyRequestListener>
-
-- (void)onJoinLobbyDone:(LobbyEvent *)lobbyEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onLeaveLobbyDone:(LobbyEvent *)lobbyEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onSubscribeLobbyDone:(LobbyEvent *)lobbyEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUnSubscribeLobbyDone:(LobbyEvent *)lobbyEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGetLiveLobbyInfoDone:(LiveRoomInfoEvent *)event
 {
     NSLog(@"%s", __FUNCTION__);
 }
@@ -244,90 +202,6 @@ static Logger *logger = nil;
     NSLog(@"%s", __FUNCTION__);
 }
 
-#pragma mark <RoomRequestListener>
-
-- (void)onSubscribeRoomDone:(RoomEvent *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUnSubscribeRoomDone:(RoomEvent *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onJoinRoomDone:(RoomEvent *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onLeaveRoomDone:(RoomEvent *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGetLiveRoomInfoDone:(LiveRoomInfoEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onSetCustomRoomDataDone:(LiveRoomInfoEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUpdatePropertyDone:(LiveRoomInfoEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onLockPropertiesDone:(Byte)result
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onUnlockPropertiesDone:(Byte)result
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-#pragma mark <ZoneRequestListener>
-
-- (void)onCreateRoomDone:(RoomEvent *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onDeleteRoomDone:(RoomEvent *)roomEvent
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGetAllRoomsDone:(AllRoomsEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGetOnlineUsersDone:(AllUsersEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGetLiveUserInfoDone:(LiveUserInfoEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onSetCustomUserDataDone:(LiveUserInfoEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
-- (void)onGetMatchedRoomsDone:(MatchedRoomsEvent *)event
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
 #pragma mark <Protected>
 
 - (void)handleGameState:(int)gameState
@@ -372,12 +246,8 @@ static Logger *logger = nil;
 {
     WarpClient *warpClient = [WarpClient getInstance];
     
-    [warpClient removeChatRequestListener:self];
     [warpClient removeConnectionRequestListener:self];
-    [warpClient removeLobbyRequestListener:self];
     [warpClient removeNotificationListener:self];
-    [warpClient removeRoomRequestListener:self];
-    [warpClient removeZoneRequestListener:self];
     
     [warpClient leaveRoom:self.joinedRoomId];
     [warpClient disconnect];

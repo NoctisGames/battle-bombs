@@ -344,8 +344,6 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
                 interfaceColor.alpha = 1;
             }
             
-            float fontSize = 0.5f;
-            
             std::stringstream ss;
             if(waitingForServerInterface.renderPlayersList())
             {
@@ -358,9 +356,8 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
                     case CONNECTING:
                         ss << "Connecting as " << waitingForServerInterface.getUsername();
                         break;
-                    case UPDATE_REQUIRED:
-                        ss << "A new version of Battle Bombs is available, please update";
-                        fontSize = 0.40f;
+                    case CONNECTION_ERROR:
+                        ss << "There was an error connecting to Battle Bombs...";
                         break;
                     case FINDING_ROOM_TO_JOIN:
                         ss << "Finding a room to join";
@@ -377,7 +374,7 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
             
             std::string waitingText = ss.str();
             
-            m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, 0.5f, fontSize, fontSize, interfaceColor, true);
+            m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, 0.5f, 0.5f, 0.5f, interfaceColor, true);
             
             m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
         }

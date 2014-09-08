@@ -11,17 +11,25 @@
 
 #include "GameObject.h"
 #include "GameState.h"
+#include "rapidjson/document.h"
+#include <vector>
 
 class WaitingForServerInterface : public GameObject
 {
 public:
 	WaitingForServerInterface(float x, float y, float width, float height, const char *username);
     
+    ~WaitingForServerInterface();
+    
     void update(float deltaTime, Game_State gameState);
+    
+    void handlePreGameServerUpdate(rapidjson::Document &d);
     
     char * getUsername();
     
-    void setTimeToNextRound(float timeToNextRound);
+    std::vector<char *> & getPlayerNames();
+    
+    std::vector<int> & getPlayerPlatforms();
     
     int getTimeToNextRound();
     
@@ -37,11 +45,15 @@ public:
     
 private:
     char *m_username;
+    std::vector<char *> m_playerNames;
+    std::vector<int> m_playerPlatforms;
     float m_fTimeToNextRound;
     int m_iPreGamePhase;
     bool m_renderTimeToNextRound;
     bool m_renderPlayersList;
     bool m_renderMessage;
+    
+    void handlePlayerNameAndPlatform(rapidjson::Document &d, const char *keyName, const char *keyPlatform);
 };
 
 #endif /* defined(__battlebombs__WaitingForServerInterface__) */

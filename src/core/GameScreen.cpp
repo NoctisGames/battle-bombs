@@ -120,8 +120,8 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
             // TODO, update message based on connection state
             // Also, change the state to WAITING_FOR_SERVER when appropriate
             break;
-        case UPDATE_REQUIRED_WAITING_FOR_INPUT:
-            updateInputUpdateRequiredWaitingForInput(touchEvents);
+        case CONNECTION_ERROR_WAITING_FOR_INPUT:
+            updateInputConnectionErrorWaitingForInput(touchEvents);
             break;
         case WAITING_FOR_SERVER:
             // TODO, Next Round starts in 30, 29, 28, etc...
@@ -171,7 +171,7 @@ void GameScreen::present()
     switch (m_gameState)
     {
         case WAITING_FOR_CONNECTION:
-        case UPDATE_REQUIRED_WAITING_FOR_INPUT:
+        case CONNECTION_ERROR_WAITING_FOR_INPUT:
             m_renderer->beginFrame();
             m_renderer->renderWaitingForServerInterface(*m_waitingForServerInterface);
             m_renderer->endFrame();
@@ -301,7 +301,7 @@ void GameScreen::updateInputWaitingForLocalSettings(std::vector<TouchEvent> &tou
 	}
 }
 
-void GameScreen::updateInputUpdateRequiredWaitingForInput(std::vector<TouchEvent> &touchEvents)
+void GameScreen::updateInputConnectionErrorWaitingForInput(std::vector<TouchEvent> &touchEvents)
 {
     for (std::vector<TouchEvent>::iterator itr = touchEvents.begin(); itr != touchEvents.end(); itr++)
 	{
@@ -533,13 +533,7 @@ void GameScreen::processServerMessages()
             }
             else if(eventType == PRE_GAME_SERVER_UPDATE && m_gameState == WAITING_FOR_SERVER)
             {
-                static const char *timeToNextRoundKey = "timeToNextRound";
-                
-                if(d.HasMember(timeToNextRoundKey))
-                {
-                    int timeToNextRound = d[timeToNextRoundKey].GetInt();
-                    m_waitingForServerInterface->setTimeToNextRound(timeToNextRound);
-                }
+                m_waitingForServerInterface->handlePreGameServerUpdate(d);
             }
             else if(eventType == PRE_GAME && m_gameState == WAITING_FOR_CONNECTION)
             {
@@ -554,9 +548,9 @@ void GameScreen::processServerMessages()
                     {
                         m_gameState = WAITING_FOR_SERVER;
                     }
-                    else if(phase == UPDATE_REQUIRED)
+                    else if(phase == CONNECTION_ERROR)
                     {
-                        m_gameState = UPDATE_REQUIRED_WAITING_FOR_INPUT;
+                        m_gameState = CONNECTION_ERROR_WAITING_FOR_INPUT;
                     }
                 }
             }

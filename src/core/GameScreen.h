@@ -93,7 +93,7 @@ private:
     
     void updateInputWaitingForLocalSettings(std::vector<TouchEvent> &touchEvents);
     
-    void updateInputUpdateRequiredWaitingForInput(std::vector<TouchEvent> &touchEvents);
+    void updateInputConnectionErrorWaitingForInput(std::vector<TouchEvent> &touchEvents);
     
     virtual void updateRunning(float deltaTime);
     

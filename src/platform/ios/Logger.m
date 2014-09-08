@@ -3,7 +3,7 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 2/27/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c)2014 Techne Games. All rights reserved.
 //
 
 #import "Logger.h"
@@ -17,7 +17,7 @@ static int loggingLevel = 4;
 
 @implementation Logger
 
-+(void) initializeLoggingLevelFromNSString:(NSString *)loggingLevelName
++ (void)initializeLoggingLevelFromNSString:(NSString *)loggingLevelName
 {
     if([loggingLevelName isEqualToString:LOG_DEBUG])
     {
@@ -41,7 +41,7 @@ static int loggingLevel = 4;
     }
 }
 
--(id) initWithClass:(Class)c
+- (id)initWithClass:(Class)c
 {
     self = [super init];
     
@@ -53,7 +53,7 @@ static int loggingLevel = 4;
     return self;
 }
 
--(void) debug:(NSString *)message
+- (void)debug:(NSString *)message
 {
     if (loggingLevel >= 4)
     {
@@ -61,7 +61,7 @@ static int loggingLevel = 4;
     }
 }
 
--(void) info:(NSString *)message
+- (void)info:(NSString *)message
 {
     if (loggingLevel >= 3)
     {
@@ -69,7 +69,7 @@ static int loggingLevel = 4;
     }
 }
 
--(void) warn:(NSString *)message
+- (void)warn:(NSString *)message
 {
     if (loggingLevel >= 2)
     {
@@ -77,7 +77,7 @@ static int loggingLevel = 4;
     }
 }
 
--(void) error:(NSString *)message
+- (void)error:(NSString *)message
 {
     if (loggingLevel >= 1)
     {
@@ -85,7 +85,7 @@ static int loggingLevel = 4;
     }
 }
 
--(void) error:(NSString *)message withException:(NSException *)e
+- (void)error:(NSString *)message withException:(NSException *)e
 {
     if (loggingLevel >= 1)
     {
@@ -93,7 +93,7 @@ static int loggingLevel = 4;
     }
 }
 
--(void) error:(NSString *)message withError:(NSError *)e
+- (void)error:(NSString *)message withError:(NSError *)e
 {
     if (loggingLevel >= 1)
     {
@@ -101,22 +101,22 @@ static int loggingLevel = 4;
     }
 }
 
-+(bool) isErrorEnabled
++ (bool)isErrorEnabled
 {
     return loggingLevel >= 1;
 }
 
-+(bool) isWarnEnabled
++ (bool)isWarnEnabled
 {
     return loggingLevel >= 2;
 }
 
-+(bool) isInfoEnabled
++ (bool)isInfoEnabled
 {
     return loggingLevel >= 3;
 }
 
-+(bool) isDebugEnabled
++ (bool)isDebugEnabled
 {
     return loggingLevel >= 4;
 }

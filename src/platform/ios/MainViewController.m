@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "BaseGameViewController.h"
 #import "Logger.h"
+#import "TGApiManager.h"
 
 @interface MainViewController ()
 {
@@ -38,25 +39,53 @@ static Logger *logger = nil;
 
 - (IBAction)startQuickMatch:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"enter_username_title", nil)
-                                                    message:nil
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"enter_username_cancel", nil)
-                                          otherButtonTitles:NSLocalizedString(@"enter_username_button", nil), nil];
-    
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    UITextField *alertTextField = [alert textFieldAtIndex:0];
-    alertTextField.keyboardType = UIKeyboardTypeDefault;
-    alertTextField.placeholder = NSLocalizedString(@"enter_username_hint", nil);
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *username = [userDefaults objectForKey:@"USERNAME"];
-    if(username && [username length] >= 3 && [username length] <= 15)
+    OnComplete onSuccess = ^(NSDictionary *jsonResponse)
     {
-        [alertTextField setText:username];
-    }
+        BOOL isCurrentVersion = [[jsonResponse objectForKey:@"isCurrentVersion"] boolValue];
+        if(isCurrentVersion)
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"enter_username_title", nil)
+                                                            message:nil
+                                                           delegate:self
+                                                  cancelButtonTitle:NSLocalizedString(@"enter_username_cancel", nil)
+                                                  otherButtonTitles:NSLocalizedString(@"enter_username_button", nil), nil];
+            
+            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            UITextField *alertTextField = [alert textFieldAtIndex:0];
+            alertTextField.keyboardType = UIKeyboardTypeDefault;
+            alertTextField.placeholder = NSLocalizedString(@"enter_username_hint", nil);
+            
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            NSString *username = [userDefaults objectForKey:@"USERNAME"];
+            if(username && [username length] >= 3 && [username length] <= 15)
+            {
+                [alertTextField setText:username];
+            }
+            
+            [alert show];
+        }
+        else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"update_required_title", nil)
+                                                            message:NSLocalizedString(@"update_required_message", nil)
+                                                           delegate:self
+                                                  cancelButtonTitle:NSLocalizedString(@"update_required_cancel", nil)
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+    };
     
-    [alert show];
+    OnComplete onFailure = ^(NSDictionary *jsonResponse)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"connection_error_title", nil)
+                                                        message:NSLocalizedString(@"connection_error_message", nil)
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"connection_error_cancel", nil)
+                                              otherButtonTitles:nil];
+        [alert show];
+    };
+    
+    [[TGApiManager getInstance] sendJsonRequestWithOnSuccess:onSuccess andOnFailure:onFailure];
 }
 
 - (IBAction)startQuickOfflineMatch:(id)sender
