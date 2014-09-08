@@ -37,6 +37,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final String BREAKABLE_BLOCK_POWER_UP_FLAGS = "breakableBlockPowerUpFlags";
     private static final int TIME_BETWEEN_ROUNDS = 18;
     private static final int NUM_MAPS = 3;
+    private static final short PRE_GAME_SERVER_UPDATE = 1335;
     private static final short BEGIN_SPECTATE = 1336;
     private static final short BEGIN_GAME = 1337;
     private static final short CLIENT_UPDATE = 1338;
@@ -69,6 +70,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
 
     private int _numSecondsLeftForRound;
     private float _stateTime;
+    private float _countdownTime;
     private boolean _isGameRunning;
     private float smoothedDeltaRealTime_ms = 17.5f; // initial value, Optionally you can save the new computed value (will change with each hardware) in Preferences to optimize the first drawing frames
     private float movAverageDeltaTime_ms = smoothedDeltaRealTime_ms; // mov Average start with default value
@@ -79,6 +81,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     {
         _room = room;
         _stateTime = 0;
+        _countdownTime = 0;
         _isGameRunning = false;
 
         System.out.println("Creating Adapter for Room: " + _room.getName() + ", with MAX USERS: " + _room.getMaxUsers());
@@ -102,6 +105,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 if (!_playerSpotsOccupied[i])
                 {
                     _stateTime = 0;
+                    _countdownTime = 0;
 
                     _playerSpotsOccupied[i] = true;
                     _activePlayerNames[i] = user.getName();
@@ -188,7 +192,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                         if (_inRoomUserSessionDataMap.get(user)._timeSinceLastChat > 1000)
                         {
                             short playerIndex = _inRoomUserSessionDataMap.get(user)._playerIndex;
-                            if (!_playerSpotsReceivedGameStateCommand[playerIndex] && _numSecondsLeftForRound >= 5)
+                            if (!_playerSpotsReceivedGameStateCommand[playerIndex] && _numSecondsLeftForRound >= 3)
                             {
                                 String beginGameCommand = getGameStateCommand(BEGIN_SPECTATE);
                                 if (beginGameCommand != null)
@@ -244,7 +248,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                         tobeSent.put(EVENT_TYPE, GAME_OVER);
                         tobeSent.put(HAS_WINNER, hasWinner);
                         tobeSent.put(WINNING_PLAYER_INDEX, winningPlayerIndex);
-                        tobeSent.put(TIME_TO_NEXT_ROUND, TIME_BETWEEN_ROUNDS);
 
                         updateRoomWithMessage(tobeSent.toString());
 
@@ -260,6 +263,24 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         else if (_inRoomUserSessionDataMap.size() > 0)
         {
             _stateTime += deltaTime;
+            _countdownTime += deltaTime;
+            if (_countdownTime > 1)
+            {
+                _countdownTime = 0;
+
+                try
+                {
+                    JSONObject tobeSent = new JSONObject();
+                    tobeSent.put(EVENT_TYPE, PRE_GAME_SERVER_UPDATE);
+                    tobeSent.put(TIME_TO_NEXT_ROUND, TIME_BETWEEN_ROUNDS - _stateTime);
+
+                    updateRoomWithMessage(tobeSent.toString());
+                }
+                catch (JSONException e)
+                {
+                    System.err.println(e.toString());
+                }
+            }
 
             if (_stateTime > TIME_BETWEEN_ROUNDS)
             {
@@ -324,6 +345,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
 
                     _isGameRunning = true;
                     _stateTime = 0;
+                    _countdownTime = 0;
 
                     System.out.println(GAME_BEGIN_LOG);
                 }
@@ -332,6 +354,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         else
         {
             _stateTime = 0;
+            _countdownTime = 0;
         }
 
         // Moving average calc
@@ -451,6 +474,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     {
         _isGameRunning = false;
         _stateTime = 0;
+        _countdownTime = 0;
     }
 
     private void removeUser(IUser user, boolean onUserLeaveRequest)
