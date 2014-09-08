@@ -35,7 +35,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final String BREAKABLE_BLOCK_X_VALUES = "breakableBlockXValues";
     private static final String BREAKABLE_BLOCK_Y_VALUES = "breakableBlockYValues";
     private static final String BREAKABLE_BLOCK_POWER_UP_FLAGS = "breakableBlockPowerUpFlags";
-    private static final int TIME_BETWEEN_ROUNDS = 18;
+    private static final int TIME_BETWEEN_ROUNDS = 20;
     private static final int NUM_MAPS = 3;
     private static final short PRE_GAME_SERVER_UPDATE = 1335;
     private static final short BEGIN_SPECTATE = 1336;
@@ -272,7 +272,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 {
                     JSONObject tobeSent = new JSONObject();
                     tobeSent.put(EVENT_TYPE, PRE_GAME_SERVER_UPDATE);
-                    tobeSent.put(TIME_TO_NEXT_ROUND, TIME_BETWEEN_ROUNDS - _stateTime);
+                    tobeSent.put(TIME_TO_NEXT_ROUND, TIME_BETWEEN_ROUNDS - (int) _stateTime);
 
                     updateRoomWithMessage(tobeSent.toString());
                 }
