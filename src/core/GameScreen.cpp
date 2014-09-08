@@ -107,11 +107,12 @@ void GameScreen::onPause()
 
 void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
 {
-    m_fTimeSinceLastClientEvent += deltaTime;
+    if(m_gameState == WAITING_FOR_SERVER || m_gameState == COUNTING_DOWN || m_gameState == RUNNING || m_gameState == SPECTATING || m_gameState == GAME_ENDING)
+    {
+        m_fTimeSinceLastClientEvent += deltaTime;
+    }
     
     processServerMessages();
-    
-    m_waitingForServerInterface->update(deltaTime, m_gameState);
     
     switch (m_gameState)
     {
@@ -125,6 +126,7 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
         case WAITING_FOR_SERVER:
             // TODO, Next Round starts in 30, 29, 28, etc...
             // Also, constantly update interface with list of players and platforms they are on
+            m_waitingForServerInterface->update(deltaTime, m_gameState);
             break;
         case WAITING_FOR_LOCAL_SETTINGS:
             // TODO, allow the user to pick a map
@@ -168,8 +170,14 @@ void GameScreen::present()
     
     switch (m_gameState)
     {
+        case WAITING_FOR_CONNECTION:
+        case UPDATE_REQUIRED_WAITING_FOR_INPUT:
+            m_renderer->beginFrame();
+            m_renderer->renderWaitingForServerInterface(*m_waitingForServerInterface);
+            m_renderer->endFrame();
+            break;
         case WAITING_FOR_SERVER:
-            // TODO, Render Waiting for Server interface with list of players and countdown timer
+            // TODO, render list of players
             m_renderer->beginFrame();
             m_renderer->renderWaitingForServerInterface(*m_waitingForServerInterface);
             m_renderer->endFrame();
@@ -431,9 +439,9 @@ void GameScreen::updateGameEnding(float deltaTime)
 {
     m_fTimeSinceGameOver += deltaTime;
     
-    if(m_fTimeSinceGameOver > 5)
+    if(m_fTimeSinceGameOver > 6)
     {
-        m_fBlackCoverTransitionAlpha += deltaTime * 0.45f;
+        m_fBlackCoverTransitionAlpha += deltaTime * 0.40f;
         if(m_fBlackCoverTransitionAlpha > 1)
         {
             Assets::getInstance()->setMusicId(MUSIC_STOP);

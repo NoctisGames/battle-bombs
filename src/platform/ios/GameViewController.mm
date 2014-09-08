@@ -64,7 +64,7 @@ static Logger *logger = nil;
     [warpClient addRoomRequestListener:self];
     [warpClient addZoneRequestListener:self];
     
-    NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%i,", EVENT_TYPE, PRE_GAME, PHASE, CONNECTING];
+    NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, CONNECTING];
     
     on_chat_received([preGameUpdate UTF8String]);
     
@@ -92,13 +92,13 @@ static Logger *logger = nil;
     
     if(event.result == CLIENT_NEEDS_TO_UPDATE)
     {
-        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%i,", EVENT_TYPE, PRE_GAME, PHASE, UPDATE_REQUIRED];
+        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, UPDATE_REQUIRED];
         
         on_chat_received([preGameUpdate UTF8String]);
     }
     else
     {
-        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%i,", EVENT_TYPE, PRE_GAME, PHASE, FINDING_ROOM_TO_JOIN];
+        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, FINDING_ROOM_TO_JOIN];
         
         on_chat_received([preGameUpdate UTF8String]);
         
@@ -173,7 +173,7 @@ static Logger *logger = nil;
     {
         self.joinedRoomId = roomData.roomId;
         
-        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%i,", EVENT_TYPE, PRE_GAME, PHASE, ROOM_JOINED_WAITING_FOR_SERVER];
+        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, ROOM_JOINED_WAITING_FOR_SERVER];
         
         on_chat_received([preGameUpdate UTF8String]);
     }

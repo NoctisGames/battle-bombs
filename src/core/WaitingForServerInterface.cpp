@@ -35,6 +35,8 @@ void WaitingForServerInterface::update(float deltaTime, Game_State gameState)
     {
         m_fTimeToNextRound -= deltaTime;
     }
+    
+    m_renderTimeToNextRound = (int)m_fTimeToNextRound > 0;
 }
 
 char * WaitingForServerInterface::getUsername()
@@ -45,7 +47,6 @@ char * WaitingForServerInterface::getUsername()
 void WaitingForServerInterface::setTimeToNextRound(float timeToNextRound)
 {
     m_fTimeToNextRound = timeToNextRound;
-    m_renderTimeToNextRound = m_fTimeToNextRound > 0;
 }
 
 int WaitingForServerInterface::getTimeToNextRound()
