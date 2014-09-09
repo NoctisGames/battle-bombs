@@ -17,7 +17,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1surf
 
 JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1surface_1changed(JNIEnv * env, jclass cls, jint pixel_width, jint pixel_height, jint dp_width, jint dp_height);
 
-JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_init(JNIEnv* env, jclass cls, jstring username);
+JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_init(JNIEnv* env, jclass cls, jstring username, jboolean is_offline);
 
 JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1resume(JNIEnv* env, jclass cls);
 
@@ -58,6 +58,8 @@ JNIEXPORT float JNICALL Java_com_technegames_battlebombs_RendererWrapper_get_1pl
 JNIEXPORT int JNICALL Java_com_technegames_battlebombs_RendererWrapper_get_1player_1direction(JNIEnv* env, jclass cls);
 
 JNIEXPORT bool JNICALL Java_com_technegames_battlebombs_RendererWrapper_handle_1on_1back_1pressed(JNIEnv* env, jclass cls);
+
+JNIEXPORT int JNICALL Java_com_technegames_battlebombs_RendererWrapper_get_1num_1seconds_1left(JNIEnv* env, jclass cls);
 };
 
 JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1surface_1created(JNIEnv * env, jclass cls, jint pixel_width, jint pixel_height)
@@ -74,13 +76,13 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1surf
 	on_surface_changed(pixel_width, pixel_height, dp_width, dp_height);
 }
 
-JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_init(JNIEnv* env, jclass cls, jstring username)
+JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_init(JNIEnv* env, jclass cls, jstring username, jboolean is_offline)
 {
 	UNUSED(env);
 	UNUSED(cls);
 
 	const char *nativeUsername = (env)->GetStringUTFChars(username, nullptr);
-	init(nativeUsername);
+	init(nativeUsername, is_offline);
 }
 
 JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1resume(JNIEnv* env, jclass cls)
@@ -227,4 +229,11 @@ JNIEXPORT bool JNICALL Java_com_technegames_battlebombs_RendererWrapper_handle_1
 	UNUSED(env);
 	UNUSED(cls);
 	return handle_on_back_pressed();
+}
+
+JNIEXPORT int JNICALL Java_com_technegames_battlebombs_RendererWrapper_get_1num_1seconds_1left(JNIEnv* env, jclass cls)
+{
+	UNUSED(env);
+	UNUSED(cls);
+	return get_num_seconds_left();
 }
