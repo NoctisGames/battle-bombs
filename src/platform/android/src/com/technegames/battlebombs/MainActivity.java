@@ -55,6 +55,9 @@ public final class MainActivity extends Activity
                     usernameEditText.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
                     usernameEditText.setHint(R.string.enter_username_hint);
 
+                    String storedUsername = AppPrefs.getInstance(MainActivity.this).getPlayerName();
+                    usernameEditText.setText(storedUsername);
+
                     new AlertDialog.Builder(MainActivity.this).setTitle(R.string.enter_username_title).setView(usernameEditText).setPositiveButton(R.string.enter_username_button, new DialogInterface.OnClickListener()
                     {
                         public void onClick(DialogInterface dialog, int whichButton)
@@ -64,6 +67,7 @@ public final class MainActivity extends Activity
                             ViewUtils.hideKeyboardForView(usernameEditText);
 
                             String username = ViewUtils.getTrimmedString(usernameEditText);
+                            AppPrefs.getInstance(MainActivity.this).setPlayerName(username);
                             if (username.length() >= 3 && username.length() <= 15)
                             {
                                 GameActivity.startActivity(MainActivity.this, username);
@@ -117,6 +121,9 @@ public final class MainActivity extends Activity
         usernameEditText.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
         usernameEditText.setHint(R.string.enter_username_hint);
 
+        String storedUsername = AppPrefs.getInstance(MainActivity.this).getPlayerName();
+        usernameEditText.setText(storedUsername);
+
         new AlertDialog.Builder(this).setTitle(R.string.enter_username_title).setView(usernameEditText).setPositiveButton(R.string.enter_username_play, new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int whichButton)
@@ -126,6 +133,7 @@ public final class MainActivity extends Activity
                 ViewUtils.hideKeyboardForView(usernameEditText);
 
                 String username = ViewUtils.getTrimmedString(usernameEditText);
+                AppPrefs.getInstance(MainActivity.this).setPlayerName(username);
                 if (username.length() >= 3 && username.length() <= 15)
                 {
                     OfflineGameActivity.startActivity(MainActivity.this, username);

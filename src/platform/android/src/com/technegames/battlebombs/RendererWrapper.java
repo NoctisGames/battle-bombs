@@ -277,7 +277,7 @@ public final class RendererWrapper implements Renderer
 
             if (get_num_seconds_left() <= 0)
             {
-                String gameOverMessage = String.format(Locale.US, "{\"eventType\": %i, \"hasWinner\": false, \"winningPlayerIndex\": %i}", GAME_OVER, -1);
+                String gameOverMessage = String.format(Locale.US, "{\"eventType\": %d, \"hasWinner\": false, \"winningPlayerIndex\": %d}", GAME_OVER, -1);
 
                 on_chat_received(gameOverMessage);
             }
@@ -338,7 +338,7 @@ public final class RendererWrapper implements Renderer
 
         clear_state();
 
-        String beginGameMessage = String.format(Locale.US, "{\"breakableBlockPowerUpFlags\": \"0,1,2,3,4,5\", \"breakableBlockXValues\": \"8,4,5,7,8,9\", \"breakableBlockYValues\": \"0,1,2,3,4,5\", \"eventType\": 1337, \"mapType\": %i, \"numBreakableBlocks\": 5, \"numClientBots\": 7, \"numPlayers\": 1, \"playerIndex0\": \"%s\", \"playerIndex0Alive\": true, \"playerIndex0Direction\": 0, \"playerIndex0X\": 22.208955764770508, \"playerIndex0Y\": 12.179104804992676, \"playerIndex1\": \"Bot 1\", \"playerIndex1Alive\": true, \"playerIndex1Direction\": 2, \"playerIndex1X\": 2.1492538452148438, \"playerIndex1Y\": 12.179104804992676, \"playerIndex2\": \"Bot 2\", \"playerIndex2Alive\": true, \"playerIndex2Direction\": 0, \"playerIndex2X\": 17.91044807434082, \"playerIndex2Y\": 2.1492538452148438, \"playerIndex3\": \"Bot 3\", \"playerIndex3Alive\": true, \"playerIndex3Direction\": 2, \"playerIndex3X\": 6.447761058807373, \"playerIndex3Y\": 2.1492538452148438, \"playerIndex4\": \"Bot 4\", \"playerIndex4Alive\": true, \"playerIndex4Direction\": 1, \"playerIndex4X\": 2.1492538452148438, \"playerIndex4Y\": 25.074626922607422, \"playerIndex5\": \"Bot 5\", \"playerIndex5Alive\": true, \"playerIndex5Direction\": 3, \"playerIndex5X\": 2.1492538452148438, \"playerIndex5Y\": 16.477611541748047, \"playerIndex6\": \"Bot 6\", \"playerIndex6Alive\": true, \"playerIndex6Direction\": 1, \"playerIndex6X\": 22.208955764770508, \"playerIndex6Y\": 25.074626922607422, \"playerIndex7\": \"Bot 7\", \"playerIndex7Alive\": true, \"playerIndex7Direction\": 3, \"playerIndex7X\": 22.208955764770508, \"playerIndex7Y\": 16.477611541748047}", _mapType, this.username);
+        String beginGameMessage = String.format(Locale.US, "{\"breakableBlockPowerUpFlags\": \"0,1,2,3,4,5\", \"breakableBlockXValues\": \"8,4,5,7,8,9\", \"breakableBlockYValues\": \"0,1,2,3,4,5\", \"eventType\": 1337, \"mapType\": %d, \"numBreakableBlocks\": 5, \"numClientBots\": 7, \"numPlayers\": 1, \"playerIndex0\": \"%s\", \"playerIndex0Alive\": true, \"playerIndex0Direction\": 0, \"playerIndex0X\": 22.208955764770508, \"playerIndex0Y\": 12.179104804992676, \"playerIndex1\": \"Bot 1\", \"playerIndex1Alive\": true, \"playerIndex1Direction\": 2, \"playerIndex1X\": 2.1492538452148438, \"playerIndex1Y\": 12.179104804992676, \"playerIndex2\": \"Bot 2\", \"playerIndex2Alive\": true, \"playerIndex2Direction\": 0, \"playerIndex2X\": 17.91044807434082, \"playerIndex2Y\": 2.1492538452148438, \"playerIndex3\": \"Bot 3\", \"playerIndex3Alive\": true, \"playerIndex3Direction\": 2, \"playerIndex3X\": 6.447761058807373, \"playerIndex3Y\": 2.1492538452148438, \"playerIndex4\": \"Bot 4\", \"playerIndex4Alive\": true, \"playerIndex4Direction\": 1, \"playerIndex4X\": 2.1492538452148438, \"playerIndex4Y\": 25.074626922607422, \"playerIndex5\": \"Bot 5\", \"playerIndex5Alive\": true, \"playerIndex5Direction\": 3, \"playerIndex5X\": 2.1492538452148438, \"playerIndex5Y\": 16.477611541748047, \"playerIndex6\": \"Bot 6\", \"playerIndex6Alive\": true, \"playerIndex6Direction\": 1, \"playerIndex6X\": 22.208955764770508, \"playerIndex6Y\": 25.074626922607422, \"playerIndex7\": \"Bot 7\", \"playerIndex7Alive\": true, \"playerIndex7Direction\": 3, \"playerIndex7X\": 22.208955764770508, \"playerIndex7Y\": 16.477611541748047}", _mapType, this.username);
 
         on_chat_received(beginGameMessage);
 
@@ -371,11 +371,11 @@ public final class RendererWrapper implements Renderer
             String gameOverMessage;
             if (hasWinner)
             {
-                gameOverMessage = String.format(Locale.US, "{\"eventType\": %i, \"hasWinner\": true, \"winningPlayerIndex\": %i}", GAME_OVER, winningPlayerIndex);
+                gameOverMessage = String.format(Locale.US, "{\"eventType\": %d, \"hasWinner\": true, \"winningPlayerIndex\": %d}", GAME_OVER, winningPlayerIndex);
             }
             else
             {
-                gameOverMessage = String.format(Locale.US, "{\"eventType\": %i, \"hasWinner\": false, \"winningPlayerIndex\": %i}", GAME_OVER, winningPlayerIndex);
+                gameOverMessage = String.format(Locale.US, "{\"eventType\": %d, \"hasWinner\": false, \"winningPlayerIndex\": %d}", GAME_OVER, winningPlayerIndex);
             }
 
             on_chat_received(gameOverMessage);
