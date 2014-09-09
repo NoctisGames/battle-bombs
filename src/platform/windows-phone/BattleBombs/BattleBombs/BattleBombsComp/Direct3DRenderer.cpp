@@ -313,7 +313,7 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 
 	m_currentShaderResourceView = m_interfaceShaderResourceView;
 
-	m_spriteBatch->Begin();
+	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
 
 	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
 	{
