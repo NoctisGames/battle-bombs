@@ -12,6 +12,10 @@ AppWarp/
 DirectXTK/
 !DirectXTK/DirectXTK_readme.txt
 
+# gson
+gson/
+! gson/gson_readme.txt
+
 # libpng
 libpng/
 !libpng/Android.mk

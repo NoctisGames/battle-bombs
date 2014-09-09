@@ -11,7 +11,6 @@
 #define APPWARP_HOST_ADDRESS    @"191.234.54.124"
 
 #import "GameViewController.h"
-#import "Logger.h"
 
 // C++
 #include "game.h"
@@ -39,12 +38,8 @@ static NSString * const DIRECTION = @"Direction";
 // PRE_GAME_SERVER_UPDATE
 static NSString * const PHASE = @"phase";
 
-static Logger *logger = nil;
-
 + (void)initialize
 {
-    logger = [[Logger alloc] initWithClass:[GameViewController class]];
-    
     [WarpClient initWarp:APPWARP_APP_KEY server:APPWARP_HOST_ADDRESS];
 }
 
@@ -54,12 +49,8 @@ static Logger *logger = nil;
     
     WarpClient *warpClient = [WarpClient getInstance];
     
-    [warpClient addChatRequestListener:self];
     [warpClient addConnectionRequestListener:self];
-    [warpClient addLobbyRequestListener:self];
     [warpClient addNotificationListener:self];
-    [warpClient addRoomRequestListener:self];
-    [warpClient addZoneRequestListener:self];
     
     NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, CONNECTING];
     

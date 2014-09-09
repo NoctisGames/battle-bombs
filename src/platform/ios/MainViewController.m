@@ -8,7 +8,6 @@
 
 #import "MainViewController.h"
 #import "BaseGameViewController.h"
-#import "Logger.h"
 #import "TGApiManager.h"
 
 @interface MainViewController ()
@@ -21,13 +20,6 @@
 @end
 
 @implementation MainViewController
-
-static Logger *logger = nil;
-
-+ (void)initialize
-{
-    logger = [[Logger alloc] initWithClass:[MainViewController class]];
-}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

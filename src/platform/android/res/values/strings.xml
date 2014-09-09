@@ -3,11 +3,29 @@
 
     <string name="app_name">Battle Bombs</string>
 
-    <!-- Activity Main -->
-    <string name="start_quick_match">QUICK MATCH</string>
-    <string name="start_quick_offline_match">OFFLINE MATCH</string>
-    
-    <!-- Activity Game -->
-    <string name="chat_hint">Enter a Message&#8230;</string>
+    <!-- Update Required Dialog -->
+    <string name="update_required_title">Update Required</string>
+    <string name="update_required_message">A new version of Battle Bombs is available, please update before playing online.</string>
+    <string name="update_required_cancel">OK</string>
+
+    <!-- Connection Error Dialog -->
+    <string name="connection_error_title">Connection Error</string>
+    <string name="connection_error_message">Your device is unable to connect to Techne Games. Please check your connection and try again.</string>
+    <string name="connection_error_cancel">OK</string>
+
+    <!-- Enter Username Dialog -->
+    <string name="enter_username_title">Player Name</string>
+    <string name="enter_username_hint">Enter your Battle Bombs name</string>
+    <string name="enter_username_button">Connect</string>
+    <string name="enter_username_play">Play</string>
+    <string name="enter_username_cancel">Cancel</string>
+
+    <!-- Invalid Username Dialog -->
+    <string name="invalid_username_title">Invalid Username</string>
+    <string name="invalid_username_message">Please enter a username between 3 and 15 characters.</string>
+    <string name="invalid_username_cancel">OK</string>
+
+    <!-- JSON Request Message -->
+    <string name="json_request_progress_message">One Moment&#8230;</string>
 
 </resources>

@@ -6,11 +6,9 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#import "iAd/ADBannerView.h"
-
 @interface MainViewController : UIViewController <UIAlertViewDelegate>
 {
-    // TODO
+    // Empty
 }
 
 - (IBAction)startQuickMatch:(id)sender;

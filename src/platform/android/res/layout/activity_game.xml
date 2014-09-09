@@ -11,45 +11,4 @@
         android:orientation="vertical" >
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/chat_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:alpha="0.6"
-        android:background="@android:color/black"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/chat_log_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/chat_edittext"
-            android:layout_alignParentTop="true"
-            android:background="@android:color/transparent"
-            android:gravity="left|bottom"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="16dp"
-            android:scrollbars="vertical"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/chat_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/transparent"
-            android:hint="@string/chat_hint"
-            android:imeOptions="flagNoExtractUi|actionSend"
-            android:inputType="textAutoCorrect"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:textColor="@android:color/white" />
-    </RelativeLayout>
-
 </RelativeLayout>

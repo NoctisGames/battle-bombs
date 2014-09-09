@@ -49,7 +49,7 @@ static Logger *logger = nil;
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    [self showProgressDialogWithMessage:@"One Moment..."];
+    [self showProgressDialogWithMessage:NSLocalizedString(@"json_request_progress_message", nil)];
     
     r.completionDataBlock = ^(NSDictionary *headers, NSData *body)
     {

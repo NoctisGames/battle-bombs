@@ -60,34 +60,22 @@ public final class RendererWrapper implements Renderer
     private final Sound plantBombSound;
     private final Sound explosionSound;
     private final Sound deathSound;
-    private final boolean isOnline;
+    private final boolean isOffline;
 
     private Music bgm;
 
-    private float smoothedDeltaRealTime_ms = 17.5f; // initial value, Optionally
-                                                    // you can save the new
-                                                    // computed value (will
-                                                    // change with each
-                                                    // hardware) in Preferences
-                                                    // to optimize the first
-                                                    // drawing frames
-    private float movAverageDeltaTime_ms = smoothedDeltaRealTime_ms; // mov
-                                                                     // Average
-                                                                     // start
-                                                                     // with
-                                                                     // default
-                                                                     // value
-    private long lastRealTimeMeasurement_ms; // temporal storage for last time
-                                             // measurement
+    private float smoothedDeltaRealTime_ms = 17.5f;
+    private float movAverageDeltaTime_ms = smoothedDeltaRealTime_ms;
+    private long lastRealTimeMeasurement_ms;
     private boolean isInitialized;
 
-    public RendererWrapper(Activity activity, int deviceScreenWidth, int deviceScreenHeight, String username)
+    public RendererWrapper(Activity activity, int deviceScreenWidth, int deviceScreenHeight, String username, boolean isOffline)
     {
         this.activity = activity;
         this.deviceScreenWidth = deviceScreenWidth;
         this.deviceScreenHeight = deviceScreenHeight;
         this.username = username;
-        this.isOnline = !username.equalsIgnoreCase("Player_Offline");
+        this.isOffline = isOffline;
         this.audio = new Audio(activity.getAssets());
         this.plantBombSound = audio.newSound("plant_bomb.ogg");
         this.explosionSound = audio.newSound("explosion.ogg");
@@ -151,7 +139,8 @@ public final class RendererWrapper implements Renderer
         if (lastRealTimeMeasurement_ms > 0)
         {
             realTimeElapsed_ms = (currTimePick_ms - lastRealTimeMeasurement_ms);
-        } else
+        }
+        else
         {
             realTimeElapsed_ms = smoothedDeltaRealTime_ms; // just the first
                                                            // time
@@ -208,7 +197,11 @@ public final class RendererWrapper implements Renderer
 
     private void pushEvents()
     {
-        if (isOnline)
+        if (isOffline)
+        {
+            
+        }
+        else
         {
             try
             {
@@ -236,13 +229,15 @@ public final class RendererWrapper implements Renderer
                     logger.debug("tobeSent.toString(): " + tobeSent.toString());
 
                     WarpClient.getInstance().sendChat(tobeSent.toString());
-                } else if (is_time_to_send_keep_alive())
+                }
+                else if (is_time_to_send_keep_alive())
                 {
                     reset_time_since_last_client_event();
 
                     WarpClient.getInstance().sendChat(KEEP_ALIVE);
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 logger.error(e.toString(), e);
             }
