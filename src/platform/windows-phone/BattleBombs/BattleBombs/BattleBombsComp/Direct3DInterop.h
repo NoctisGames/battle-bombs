@@ -18,7 +18,7 @@ namespace BattleBombsComp
 	public:
 		Direct3DInterop();
 
-		Windows::Phone::Graphics::Interop::IDrawingSurfaceContentProvider^ CreateContentProvider(int numberOfBots, Platform::String^ username);
+		Windows::Phone::Graphics::Interop::IDrawingSurfaceContentProvider^ CreateContentProvider(Platform::String^ username, bool isOffline);
 
 		// IDrawingSurfaceManipulationHandler
 		virtual void SetManipulationHost(Windows::Phone::Input::Interop::DrawingSurfaceManipulationHost^ manipulationHost);
@@ -60,9 +60,17 @@ namespace BattleBombsComp
 		Direct3DBase^ m_direct3DBase;
 		BasicTimer^ m_timer;
 		Windows::Foundation::Size m_renderResolution;
-		bool m_isOnline;
+		bool m_isOffline;
+		char *m_username;
+		const char *m_gameOverMessage;
+		bool m_playersAlive[8];
+		int m_mapType;
 
 		void pushEvents();
+
+		void handleGameStateOne();
+
+		void handleDeathForPlayerIndex(int playerIndex);
 
 		short getOldestEventId();
 	};

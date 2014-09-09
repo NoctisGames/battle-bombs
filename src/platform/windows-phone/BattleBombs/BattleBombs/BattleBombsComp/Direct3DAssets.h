@@ -17,6 +17,12 @@ class Direct3DAssets
 public:
 	std::unique_ptr<GameSound> m_plantBombSound;
 	std::unique_ptr<GameSound> m_explosionSound;
+	std::unique_ptr<GameSound> m_powerUpBombSound;
+	std::unique_ptr<GameSound> m_powerUpFireSound;
+	std::unique_ptr<GameSound> m_powerUpSpeedSound;
+	std::unique_ptr<GameSound> m_powerUpForceFieldSound;
+	std::unique_ptr<GameSound> m_powerUpPushSound;
+	std::unique_ptr<GameSound> m_forceFieldDownSound;
 	std::unique_ptr<GameSound> m_deathSound;
 
 	static Direct3DAssets * getInstance();

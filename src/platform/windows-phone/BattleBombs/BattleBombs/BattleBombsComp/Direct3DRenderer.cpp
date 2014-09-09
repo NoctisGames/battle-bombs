@@ -28,6 +28,7 @@
 #include "Vector2D.h"
 #include "Fire.h"
 #include "GameEvent.h"
+#include "WaitingForServerInterface.h"
 #include "InterfaceOverlay.h"
 #include "PowerUpBarItem.h"
 #include "BombButton.h"
@@ -36,10 +37,12 @@
 #include "MiniMapGridType.h"
 #include "Line.h"
 #include "Rectangle.h"
+#include "PlayerForceFieldState.h"
 #include "SpectatorControls.h"
 #include "PowerUpType.h"
 
 #include <string>
+#include <sstream>
 
 using namespace DirectX;
 
@@ -56,6 +59,7 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 	// Initialize Textures
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(d3dDevice, L"Assets\\interface_2.dds", NULL, &m_interface2ShaderResourceView, NULL));
 
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\bot_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
@@ -195,6 +199,11 @@ void Direct3DRenderer::clearScreenWithColor(float r, float g, float b, float a)
 	m_d3dContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 }
 
+void Direct3DRenderer::beginFrame()
+{
+	// Empty
+}
+
 void Direct3DRenderer::renderWorldBackground()
 {
 	m_currentShaderResourceView = m_gameShaderResourceView;
@@ -301,6 +310,20 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 			m_spriteBatch->End();
 		}
 	}
+
+	m_currentShaderResourceView = m_interfaceShaderResourceView;
+
+	m_spriteBatch->Begin();
+
+	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
+	{
+		if ((**itr).getPlayerState() != Player_State::DEAD && (**itr).getPlayerForceFieldState() != PLAYER_FORCE_FIELD_STATE_OFF)
+		{
+			renderGameObjectWithRespectToPlayer((**itr), Assets::getForceFieldTextureRegion((**itr).getPlayerForceFieldState(), (**itr).getPlayerForceFieldStateTime()));
+		}
+	}
+
+	m_spriteBatch->End();
 }
 
 void Direct3DRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear)
@@ -315,6 +338,99 @@ void Direct3DRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorde
 			renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
 		}
 	}
+	m_spriteBatch->End();
+}
+
+void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface)
+{
+	m_currentShaderResourceView = m_interface2ShaderResourceView;
+
+	if (waitingForServerInterface.renderPlayersList())
+	{
+		m_spriteBatch->Begin();
+		renderGameObject(waitingForServerInterface, Assets::getWaitingForServerInterfaceTextureRegion());
+		m_spriteBatch->End();
+	}
+
+	if (waitingForServerInterface.renderTimeToNextRound() || waitingForServerInterface.renderMessage())
+	{
+		m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
+
+		if (waitingForServerInterface.renderTimeToNextRound())
+		{
+			static DirectX::XMVECTORF32 timerColor = { 1, 1, 1, 1 };
+
+			std::string timerText = std::to_string(waitingForServerInterface.getTimeToNextRound());
+
+			m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 2.5f, 2.0f, 1.36842105263158f, timerColor, true);
+		}
+
+		if (waitingForServerInterface.renderMessage())
+		{
+			static DirectX::XMVECTORF32 interfaceColor = { 1, 1, 1, 1 };
+			interfaceColor.f[3] -= 0.025f;
+			if (interfaceColor.f[3] < 0.2f)
+			{
+				interfaceColor.f[3] = 1;
+			}
+
+			float fontSize = 0.5f;
+
+			std::stringstream ss;
+			if (waitingForServerInterface.renderPlayersList())
+			{
+				ss << "Waiting for next Round";
+			}
+			else
+			{
+				switch (waitingForServerInterface.getPreGamePhase())
+				{
+				case CONNECTING:
+					ss << "Connecting as " << waitingForServerInterface.getUsername();
+					break;
+				case CONNECTION_ERROR:
+					ss << "There was an error connecting to Battle Bombs...";
+					fontSize = 0.42f;
+					break;
+				case FINDING_ROOM_TO_JOIN:
+					ss << "Finding a room to join";
+					break;
+				case ROOM_JOINED_WAITING_FOR_SERVER:
+					ss << "Waiting for next round";
+					break;
+				case DEFAULT:
+				default:
+					ss << "...";
+					break;
+				}
+			}
+
+			std::string waitingText = ss.str();
+
+			m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, waitingText, SCREEN_WIDTH / 2, 0.5f, fontSize, fontSize, interfaceColor, true);
+
+			m_spriteBatch->End();
+		}
+	}
+}
+
+void Direct3DRenderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
+{
+	m_currentShaderResourceView = m_interface2ShaderResourceView;
+
+	static DirectX::XMVECTORF32 interfaceColor = { 1, 1, 1, 1 };
+	interfaceColor.f[3] -= 0.025f;
+	if (interfaceColor.f[3] < 0.2f)
+	{
+		interfaceColor.f[3] = 1;
+	}
+
+	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
+
+	std::string waitingText = "Tap anywhere to play again!";
+
+	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
+
 	m_spriteBatch->End();
 }
 
@@ -446,6 +562,15 @@ void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
 	}
 }
 
+void Direct3DRenderer::renderGameOverBlackCover(float alpha)
+{
+	static Color transitionCoverColor = Color(0, 0, 0, 0);
+	transitionCoverColor.alpha = alpha;
+
+	static Rectangle gameOverBlackCoverRectangle = Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	renderRectangleFill(gameOverBlackCoverRectangle, transitionCoverColor);
+}
+
 void Direct3DRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
 {
 	m_currentShaderResourceView = m_interfaceShaderResourceView;
@@ -476,6 +601,7 @@ void Direct3DRenderer::cleanUp()
 {
 	m_gameShaderResourceView->Release();
 	m_interfaceShaderResourceView->Release();
+	m_interface2ShaderResourceView->Release();
 	m_charBlackShaderResourceView->Release();
 	m_charBlueShaderResourceView->Release();
 	m_charGreenShaderResourceView->Release();

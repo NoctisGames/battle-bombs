@@ -19,7 +19,7 @@
 #include "Vector2D.h"
 #include "Font.h"
 
-Direct3DGameScreen::Direct3DGameScreen(const char *username, int deviceScreenWidth, int deviceScreenHeight) : GameScreen(username)
+Direct3DGameScreen::Direct3DGameScreen(const char *username, int deviceScreenWidth, int deviceScreenHeight, bool isOffline) : GameScreen(username, isOffline)
 {
 	m_iDeviceScreenWidth = deviceScreenWidth;
 	m_iDeviceScreenHeight = deviceScreenHeight;
@@ -80,6 +80,24 @@ void Direct3DGameScreen::handleSound()
 		case SOUND_EXPLOSION:
 			Direct3DAssets::getInstance()->m_explosionSound->play();
 			break;
+		case SOUND_PU_BOMB:
+			Direct3DAssets::getInstance()->m_powerUpBombSound->play();
+			break;
+		case SOUND_PU_FIRE:
+			Direct3DAssets::getInstance()->m_powerUpFireSound->play();
+			break;
+		case SOUND_PU_SPEED:
+			Direct3DAssets::getInstance()->m_powerUpSpeedSound->play();
+			break;
+		case SOUND_PU_FORCE_FIELD:
+			Direct3DAssets::getInstance()->m_powerUpForceFieldSound->play();
+			break;
+		case SOUND_PU_PUSH:
+			Direct3DAssets::getInstance()->m_powerUpPushSound->play();
+			break;
+		case SOUND_FORCE_FIELD_DOWN:
+			Direct3DAssets::getInstance()->m_forceFieldDownSound->play();
+			break;
 		case SOUND_DEATH:
 			Direct3DAssets::getInstance()->m_deathSound->play();
 			break;
@@ -122,9 +140,5 @@ void Direct3DGameScreen::handleMusic()
 
 bool Direct3DGameScreen::handleOnBackPressed()
 {
-	if (m_gameState == Game_State::RUNNING)
-	{
-		return true;
-	}
 	return false;
 }

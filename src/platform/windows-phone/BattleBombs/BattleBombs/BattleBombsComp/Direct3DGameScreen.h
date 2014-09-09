@@ -14,7 +14,7 @@
 class Direct3DGameScreen : public GameScreen
 {
 public:
-	Direct3DGameScreen(const char *username, int deviceScreenWidth, int deviceScreenHeight);
+	Direct3DGameScreen(const char *username, int deviceScreenWidth, int deviceScreenHeight, bool isOffline = false);
 
 	void load(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView);
 

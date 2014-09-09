@@ -30,6 +30,8 @@ public:
 	
 	virtual void clearScreenWithColor(float r, float g, float b, float a);
 
+	virtual void beginFrame();
+
 	virtual void renderWorldBackground();
 
 	virtual void renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
@@ -42,9 +44,15 @@ public:
 
 	virtual void renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear);
 
+	virtual void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface);
+
+	virtual void renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
+
 	virtual void renderInterface(InterfaceOverlay &interfaceOverlay);
 
 	virtual void renderSpectatorInterface(InterfaceOverlay &interfaceOverlay);
+
+	virtual void renderGameOverBlackCover(float alpha);
 
 	virtual void renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]);
 
@@ -60,6 +68,7 @@ private:
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	ID3D11ShaderResourceView *m_gameShaderResourceView;
 	ID3D11ShaderResourceView *m_interfaceShaderResourceView;
+	ID3D11ShaderResourceView *m_interface2ShaderResourceView;
 	ID3D11ShaderResourceView *m_charBlackShaderResourceView;
 	ID3D11ShaderResourceView *m_charBlueShaderResourceView;
 	ID3D11ShaderResourceView *m_charGreenShaderResourceView;

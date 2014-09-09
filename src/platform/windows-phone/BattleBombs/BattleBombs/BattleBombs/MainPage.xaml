@@ -63,6 +63,7 @@
                                      Margin="10,326,426,82"
                                      VerticalAlignment="Center"
                                      Width="217"
+                                     IsEnabled="True"
                                      Click="Start_Quick_Match"
                                      x:Name="StartQuickMatch" />
             <BattleBombs:ButtonImage ImageSource="/Assets/offline_match_normal.png"
@@ -73,6 +74,7 @@
                                      Margin="10,398,426,10"
                                      VerticalAlignment="Center"
                                      Width="217"
+                                     IsEnabled="True"
                                      Click="Start_Quick_Offline_Match"
                                      x:Name="StartQuickOfflineMatch" />
         </Grid>

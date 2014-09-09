@@ -18,12 +18,26 @@ namespace BattleBombs
 {
     public partial class GamePage : PhoneApplicationPage
     {
-        private com.shephertz.app42.gaming.multiplayer.client.listener.ChatRequestListener m_chatRequestListener;
+        private static String EVENT_TYPE = "eventType";
+        private static String PHASE = "phase";
+
+        // Definitions from src/core/GameEvent.h
+        // Event Type
+        private static int PRE_GAME = 1334;
+
+        // Pre Game Phases
+        private static int CONNECTING = 1;
+        private static int FINDING_ROOM_TO_JOIN = 2;
+        private static int ROOM_JOINED_WAITING_FOR_SERVER = 3;
+        private static int CONNECTION_ERROR = 4;
+
+        static GamePage()
+        {
+            WarpClient.initialize(AppWarpConstants.APPWARP_APP_KEY, AppWarpConstants.APPWARP_HOST_ADDRESS);
+        }
+
         private com.shephertz.app42.gaming.multiplayer.client.listener.ConnectionRequestListener m_connectionRequestListener;
-        private com.shephertz.app42.gaming.multiplayer.client.listener.LobbyRequestListener m_lobbyRequestListener;
         private com.shephertz.app42.gaming.multiplayer.client.listener.NotifyListener m_notifyListener;
-        private com.shephertz.app42.gaming.multiplayer.client.listener.RoomRequestListener m_roomRequestListener;
-        private com.shephertz.app42.gaming.multiplayer.client.listener.ZoneRequestListener m_zoneRequestListener;
 
         private Direct3DInterop m_d3dInterop = null;
         private string m_joinedRoomId;
@@ -33,7 +47,8 @@ namespace BattleBombs
         {
             InitializeComponent();
 
-            initializeAppWarp();
+            m_connectionRequestListener = new MyConnectionRequestListener(this);
+            m_notifyListener = new MyNotifyListener(this);
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -41,11 +56,6 @@ namespace BattleBombs
             base.OnNavigatedTo(e);
 
             PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
-
-            if (NavigationContext.QueryString.TryGetValue("joinedRoomId", out m_joinedRoomId))
-            {
-                Console.WriteLine("m_joinedRoomId = " + m_joinedRoomId);
-            }
 
             if (NavigationContext.QueryString.TryGetValue("username", out m_username))
             {
@@ -57,12 +67,8 @@ namespace BattleBombs
         {
             base.OnNavigatedFrom(e);
 
-            WarpClient.GetInstance().RemoveChatRequestListener(m_chatRequestListener);
             WarpClient.GetInstance().RemoveConnectionRequestListener(m_connectionRequestListener);
-            WarpClient.GetInstance().RemoveLobbyRequestListener(m_lobbyRequestListener);
             WarpClient.GetInstance().RemoveNotificationListener(m_notifyListener);
-            WarpClient.GetInstance().RemoveRoomRequestListener(m_roomRequestListener);
-            WarpClient.GetInstance().RemoveZoneRequestListener(m_zoneRequestListener);
 
             WarpClient.GetInstance().LeaveRoom(m_joinedRoomId);
             WarpClient.GetInstance().Disconnect();
@@ -72,10 +78,10 @@ namespace BattleBombs
         {
             base.OnBackKeyPress(e);
 
-            //if (m_d3dInterop.onBackPressed())
-            //{
-            //    e.Cancel = true;
-            //}
+            if (m_d3dInterop.onBackPressed())
+            {
+                e.Cancel = true;
+            }
         }
 
         private void DrawingSurface_Loaded(object sender, RoutedEventArgs e)
@@ -94,58 +100,34 @@ namespace BattleBombs
                 m_d3dInterop.RenderResolution = m_d3dInterop.NativeResolution;
 
                 // Hook-up native component to DrawingSurface
-                DrawingSurface.SetContentProvider(m_d3dInterop.CreateContentProvider(0, m_username));
+                DrawingSurface.SetContentProvider(m_d3dInterop.CreateContentProvider(m_username, false));
                 DrawingSurface.SetManipulationHandler(m_d3dInterop);
 
                 m_d3dInterop.setWinRtCallback(new WinRtCallback(ProcessCallback));
             }
+
+            string preGameUpdate = "{\"" + EVENT_TYPE + "\":" + PRE_GAME + ",\"" + PHASE + "\":" + CONNECTING + "}";
+
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                m_d3dInterop.onChatReceived(preGameUpdate);
+            });
+
+            WarpClient.GetInstance().AddConnectionRequestListener(m_connectionRequestListener);
+            WarpClient.GetInstance().AddNotificationListener(m_notifyListener);
+
+            WarpClient.GetInstance().Connect(m_username, "T3chn3G4m35");
         }
 
         private void ProcessCallback(String command, String param)
         {
-            Console.WriteLine("Incoming callback from C++ : " + command);
-
             if (command.Equals("SEND_CHAT"))
             {
                 WarpClient.GetInstance().SendChat(param);
             }
-        }
-
-        private void initializeAppWarp()
-        {
-            // We pass an instance of GamePage so that these listeners can change properties of the page, like show chats or other game status
-            m_chatRequestListener = new MyChatRequestListener(this);
-            m_connectionRequestListener = new MyConnectionRequestListener(this);
-            m_lobbyRequestListener = new MyLobbyRequestListener(this);
-            m_notifyListener = new MyNotifyListener(this);
-            m_roomRequestListener = new MyRoomRequestListener(this);
-            m_zoneRequestListener = new MyZoneRequestListener(this);
-
-            WarpClient.GetInstance().AddChatRequestListener(m_chatRequestListener);
-            WarpClient.GetInstance().AddConnectionRequestListener(m_connectionRequestListener);
-            WarpClient.GetInstance().AddLobbyRequestListener(m_lobbyRequestListener);
-            WarpClient.GetInstance().AddNotificationListener(m_notifyListener);
-            WarpClient.GetInstance().AddRoomRequestListener(m_roomRequestListener);
-            WarpClient.GetInstance().AddZoneRequestListener(m_zoneRequestListener);
-        }
-
-        private class MyChatRequestListener : com.shephertz.app42.gaming.multiplayer.client.listener.ChatRequestListener
-        {
-            private GamePage _page;
-
-            public MyChatRequestListener(GamePage result)
+            else if (command.Equals("EXIT"))
             {
-                _page = result;
-            }
-
-            public void onSendChatDone(byte result)
-            {
-                Debug.WriteLine("onSendChatDone");
-            }
-
-            public void onSendPrivateChatDone(byte result)
-            {
-                Debug.WriteLine("onSendPrivateChatDone");
+                NavigationService.GoBack();
             }
         }
 
@@ -161,6 +143,27 @@ namespace BattleBombs
             public void onConnectDone(ConnectEvent eventObj)
             {
                 Debug.WriteLine("onConnectDone");
+
+                if (eventObj.getResult() == 0)
+                {
+                    string preGameUpdate = "{\"" + EVENT_TYPE + "\":" + PRE_GAME + ",\"" + PHASE + "\":" + FINDING_ROOM_TO_JOIN + "}";
+
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        _page.m_d3dInterop.onChatReceived(preGameUpdate);
+                    });
+
+                    WarpClient.GetInstance().JoinRoomInRange(0, 7, true);
+                }
+                else
+                {
+                    string preGameUpdate = "{\"" + EVENT_TYPE + "\":" + PRE_GAME + ",\"" + PHASE + "\":" + CONNECTION_ERROR + "}";
+
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        _page.m_d3dInterop.onChatReceived(preGameUpdate);
+                    });
+                }
             }
 
             public void onDisconnectDone(ConnectEvent eventObj)
@@ -171,41 +174,6 @@ namespace BattleBombs
             public void onInitUDPDone(byte resultCode)
             {
                 Debug.WriteLine("onInitUDPDone");
-            }
-        }
-
-        private class MyLobbyRequestListener : com.shephertz.app42.gaming.multiplayer.client.listener.LobbyRequestListener
-        {
-            private GamePage _page;
-
-            public MyLobbyRequestListener(GamePage result)
-            {
-                _page = result;
-            }
-
-            public void onGetLiveLobbyInfoDone(LiveRoomInfoEvent eventObj)
-            {
-                Debug.WriteLine("onGetLiveLobbyInfoDone");
-            }
-
-            public void onJoinLobbyDone(LobbyEvent eventObj)
-            {
-                Debug.WriteLine("onJoinLobbyDone");
-            }
-
-            public void onLeaveLobbyDone(LobbyEvent eventObj)
-            {
-                Debug.WriteLine("onLeaveLobbyDone");
-            }
-
-            public void onSubscribeLobbyDone(LobbyEvent eventObj)
-            {
-                Debug.WriteLine("onSubscribeLobbyDone");
-            }
-
-            public void onUnSubscribeLobbyDone(LobbyEvent eventObj)
-            {
-                Debug.WriteLine("onUnSubscribeLobbyDone");
             }
         }
 
@@ -222,14 +190,7 @@ namespace BattleBombs
             {
                 Debug.WriteLine("onChatReceived");
 
-                if (_page.m_d3dInterop != null)
-                {
-                    _page.m_d3dInterop.onChatReceived(eventObj.getMessage());
-                }
-                else
-                {
-                    Console.WriteLine("onChatReceived before m_d3dInterop was initialized!");
-                }
+                _page.m_d3dInterop.onChatReceived(eventObj.getMessage());
             }
 
             public void onGameStarted(string sender, string roomId, string nextTurn)
@@ -280,6 +241,18 @@ namespace BattleBombs
             public void onUserJoinedRoom(RoomData eventObj, string username)
             {
                 Debug.WriteLine("onUserJoinedRoom");
+
+                if (eventObj != null && _page.m_username.Equals(username))
+                {
+                    _page.m_joinedRoomId = eventObj.getId();
+
+                    string preGameUpdate = "{\"" + EVENT_TYPE + "\":" + PRE_GAME + ",\"" + PHASE + "\":" + ROOM_JOINED_WAITING_FOR_SERVER + "}";
+
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        _page.m_d3dInterop.onChatReceived(preGameUpdate);
+                    });
+                }
             }
 
             public void onUserLeftLobby(LobbyData eventObj, string username)
@@ -305,116 +278,6 @@ namespace BattleBombs
             public void onUserResumed(string locid, bool isLobby, string username)
             {
                 Debug.WriteLine("onUserResumed");
-            }
-        }
-
-        private class MyRoomRequestListener : com.shephertz.app42.gaming.multiplayer.client.listener.RoomRequestListener
-        {
-            private GamePage _page;
-
-            public MyRoomRequestListener(GamePage page)
-            {
-                _page = page;
-            }
-
-            public void onGetLiveRoomInfoDone(LiveRoomInfoEvent eventObj)
-            {
-                Debug.WriteLine("onGetLiveRoomInfoDone");
-            }
-
-            public void onInvokeRoomRPCDone(RPCEvent rpcEvent)
-            {
-                Debug.WriteLine("onInvokeRoomRPCDone");
-            }
-
-            public void onJoinRoomDone(RoomEvent eventObj)
-            {
-                Debug.WriteLine("onJoinRoomDone");
-            }
-
-            public void onLeaveRoomDone(RoomEvent eventObj)
-            {
-                Debug.WriteLine("onLeaveRoomDone");
-            }
-
-            public void onLockPropertiesDone(byte result)
-            {
-                Debug.WriteLine("onLockPropertiesDone");
-            }
-
-            public void onSetCustomRoomDataDone(LiveRoomInfoEvent eventObj)
-            {
-                Debug.WriteLine("onSetCustomRoomDataDone");
-            }
-
-            public void onSubscribeRoomDone(RoomEvent eventObj)
-            {
-                Debug.WriteLine("onSubscribeRoomDone");
-            }
-
-            public void onUnlockPropertiesDone(byte result)
-            {
-                Debug.WriteLine("onUnlockPropertiesDone");
-            }
-
-            public void onUnSubscribeRoomDone(RoomEvent eventObj)
-            {
-                Debug.WriteLine("onUnSubscribeRoomDone");
-            }
-
-            public void onUpdatePropertyDone(LiveRoomInfoEvent lifeLiveRoomInfoEvent)
-            {
-                Debug.WriteLine("onUpdatePropertyDone");
-            }
-        }
-
-        private class MyZoneRequestListener : com.shephertz.app42.gaming.multiplayer.client.listener.ZoneRequestListener
-        {
-            private GamePage _page;
-
-            public MyZoneRequestListener(GamePage page)
-            {
-                _page = page;
-            }
-
-            public void onCreateRoomDone(RoomEvent eventObj)
-            {
-                Debug.WriteLine("onCreateRoomDone");
-            }
-
-            public void onDeleteRoomDone(RoomEvent eventObj)
-            {
-                Debug.WriteLine("onDeleteRoomDone");
-            }
-
-            public void onGetAllRoomsDone(AllRoomsEvent eventObj)
-            {
-                Debug.WriteLine("onGetAllRoomsDone");
-            }
-
-            public void onGetLiveUserInfoDone(LiveUserInfoEvent eventObj)
-            {
-                Debug.WriteLine("onGetLiveUserInfoDone");
-            }
-
-            public void onGetMatchedRoomsDone(MatchedRoomsEvent matchedRoomsEvent)
-            {
-                Debug.WriteLine("onGetMatchedRoomsDone");
-            }
-
-            public void onGetOnlineUsersDone(AllUsersEvent eventObj)
-            {
-                Debug.WriteLine("onGetOnlineUsersDone");
-            }
-
-            public void onInvokeZoneRPCDone(RPCEvent rpcEvent)
-            {
-                Debug.WriteLine("onInvokeZoneRPCDone");
-            }
-
-            public void onSetCustomUserDataDone(LiveUserInfoEvent eventObj)
-            {
-                Debug.WriteLine("onSetCustomUserDataDone");
             }
         }
     }
