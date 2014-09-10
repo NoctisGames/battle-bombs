@@ -127,7 +127,10 @@ namespace BattleBombs
             }
             else if (command.Equals("EXIT"))
             {
-                NavigationService.GoBack();
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    NavigationService.GoBack();
+                });
             }
         }
 

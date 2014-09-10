@@ -11,7 +11,6 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
 using Newtonsoft.Json;
 using System.Windows.Media.Imaging;
 using Microsoft.Phone.Shell;
