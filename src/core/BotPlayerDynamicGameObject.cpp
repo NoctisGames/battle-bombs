@@ -105,7 +105,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 				else
 				{
 					// Let's randomly traverse the map
-					explore(players, bombs, breakableBlocks);
+					explore(players, bombs, breakableBlocks, powerUps);
 					m_badBombEscapeNodes.clear();
 					m_currentPathType = 2;
 				}
@@ -344,7 +344,7 @@ void BotPlayerDynamicGameObject::moveInDirection(int direction)
 	}
 }
 
-void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
+void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps)
 {
 	int gridRightX = m_gridX + 1;
 	int gridLeftX = m_gridX - 1;
@@ -353,7 +353,19 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 
 	short bestDirection = -1;
 	float shortestDistanceToPlayerTarget = 9000;
-	Vector2D vectorTarget = Vector2D(m_playerTarget->getGridX(), m_playerTarget->getGridY());
+    Vector2D vectorTarget;
+    if(m_playerTarget == nullptr)
+    {
+        for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
+        {
+            vectorTarget = Vector2D((*itr)->getGridX(), (*itr)->getGridY());
+            break;
+        }
+    }
+    else
+    {
+        vectorTarget = Vector2D(m_playerTarget->getGridX(), m_playerTarget->getGridY());
+    }
 
 	Vector2D vector = Vector2D(gridRightX, m_gridY);
 	float distance = vector.distSquared(vectorTarget);
