@@ -46,7 +46,7 @@ namespace BattleBombs
 
             WebClient webClient = new WebClient();
             webClient.DownloadStringCompleted += webClient_DownloadStringCompleted;
-            webClient.DownloadStringAsync(new Uri("http://technegames.com/techne-games/bb_01.json"));
+            webClient.DownloadStringAsync(new Uri("https://s3.amazonaws.com/battlebombs/bb_01.json"));
         }
 
         private void Start_Quick_Offline_Match(object sender, RoutedEventArgs e)
@@ -67,10 +67,17 @@ namespace BattleBombs
                 }
                 else
                 {
-                    IsCurrentVersionResponse isCurrentVersionResponse = JsonConvert.DeserializeObject<IsCurrentVersionResponse>(e.Result);
-                    if (isCurrentVersionResponse.isCurrentVersion)
+                    ServerStatusResponse serverStatusResponse = JsonConvert.DeserializeObject<ServerStatusResponse>(e.Result);
+                    if (serverStatusResponse.isCurrentVersion)
                     {
-                        showEnterPlayerNameDialog(true);
+                        if (serverStatusResponse.isDownForMaintenance)
+                        {
+                            MessageBox.Show("Techne Games is down for maintenance, but will be back online soon.\nFeel free to enjoy the offline mode in the meantime.");
+                        }
+                        else
+                        {
+                            showEnterPlayerNameDialog(true);
+                        }
                     }
                     else
                     {
@@ -115,8 +122,10 @@ namespace BattleBombs
         }
     }
 
-    public class IsCurrentVersionResponse
+    public class ServerStatusResponse
     {
         public bool isCurrentVersion { get; set; }
+
+        public bool isDownForMaintenance { get; set; }
     }
 }
