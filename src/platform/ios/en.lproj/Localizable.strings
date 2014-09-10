@@ -11,6 +11,11 @@
 "update_required_message" = "A new version of Battle Bombs is available, please update before playing online.";
 "update_required_cancel" = "OK";
 
+// Down for Maintenance Dialog
+"down_for_maintenance_title" = "Down for Maintenance";
+"down_for_maintenance_message" = "Techne Games is down for maintenance, but will be back online soon.\nFeel free to enjoy the offline mode in the meantime.";
+"down_for_maintenance_cancel" = "OK";
+
 // Connection Error Dialog
 "connection_error_title" = "Connection Error";
 "connection_error_message" = "Your device is unable to connect to Techne Games. Please check your connection and try again.";

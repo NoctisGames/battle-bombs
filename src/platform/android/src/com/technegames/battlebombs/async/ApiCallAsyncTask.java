@@ -13,11 +13,11 @@ import com.technegames.battlebombs.InstanceManager;
 import com.technegames.battlebombs.Logger;
 import com.technegames.battlebombs.NetworkUtil;
 import com.technegames.battlebombs.R;
-import com.technegames.battlebombs.api.IsCurrentVersionResponse;
+import com.technegames.battlebombs.api.ServerStatusResponse;
 import com.technegames.battlebombs.callback.AsyncTaskCallback;
 import com.technegames.battlebombs.json.JsonDeserializer;
 
-public final class ApiCallAsyncTask extends AsyncTask<Object, Void, IsCurrentVersionResponse>
+public final class ApiCallAsyncTask extends AsyncTask<Object, Void, ServerStatusResponse>
 {
     private static final Logger logger = new Logger(ApiCallAsyncTask.class);
 
@@ -37,7 +37,7 @@ public final class ApiCallAsyncTask extends AsyncTask<Object, Void, IsCurrentVer
     }
 
     @Override
-    protected IsCurrentVersionResponse doInBackground(Object... params)
+    protected ServerStatusResponse doInBackground(Object... params)
     {
         if (NetworkUtil.isConnected(callback.getActivity()))
         {
@@ -55,7 +55,7 @@ public final class ApiCallAsyncTask extends AsyncTask<Object, Void, IsCurrentVer
                 String serverResponse = getServerResponse(conn);
 
                 JsonDeserializer jsonDeserializer = InstanceManager.getInstance().retrieveInstance(JsonDeserializer.class);
-                IsCurrentVersionResponse jsonResponse = jsonDeserializer.deserializeJsonIntoType(serverResponse, IsCurrentVersionResponse.class);
+                ServerStatusResponse jsonResponse = jsonDeserializer.deserializeJsonIntoType(serverResponse, ServerStatusResponse.class);
 
                 return jsonResponse;
             }
@@ -69,7 +69,7 @@ public final class ApiCallAsyncTask extends AsyncTask<Object, Void, IsCurrentVer
     }
 
     @Override
-    protected void onPostExecute(IsCurrentVersionResponse response)
+    protected void onPostExecute(ServerStatusResponse response)
     {
         callback.onComplete(response);
     }

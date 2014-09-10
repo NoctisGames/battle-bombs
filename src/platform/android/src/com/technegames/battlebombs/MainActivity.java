@@ -9,14 +9,14 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
-import com.technegames.battlebombs.api.IsCurrentVersionResponse;
+import com.technegames.battlebombs.api.ServerStatusResponse;
 import com.technegames.battlebombs.async.ApiCallAsyncTask;
 import com.technegames.battlebombs.callback.AsyncTaskCallback;
 
 public final class MainActivity extends Activity
 {
     private AsyncTaskCallback _asyncTaskCallback;
-    private AsyncTask<Object, Void, IsCurrentVersionResponse> _currentlyExecutingAsyncTask;
+    private AsyncTask<Object, Void, ServerStatusResponse> _currentlyExecutingAsyncTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,43 +47,50 @@ public final class MainActivity extends Activity
         AsyncTaskCallback callback = new AsyncTaskCallback(this)
         {
             @Override
-            protected void onSuccess(IsCurrentVersionResponse onSuccessObject)
+            protected void onSuccess(ServerStatusResponse onSuccessObject)
             {
                 if (onSuccessObject.isCurrentVersion)
                 {
-                    final EditText usernameEditText = new EditText(MainActivity.this);
-                    usernameEditText.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
-                    usernameEditText.setHint(R.string.enter_username_hint);
-
-                    String storedUsername = AppPrefs.getInstance(MainActivity.this).getPlayerName();
-                    usernameEditText.setText(storedUsername);
-
-                    new AlertDialog.Builder(MainActivity.this).setTitle(R.string.enter_username_title).setView(usernameEditText).setPositiveButton(R.string.enter_username_button, new DialogInterface.OnClickListener()
+                    if (onSuccessObject.isDownForMaintenance)
                     {
-                        public void onClick(DialogInterface dialog, int whichButton)
+                        new AlertDialog.Builder(MainActivity.this).setTitle(R.string.down_for_maintenance_title).setMessage(R.string.down_for_maintenance_message).setPositiveButton(R.string.down_for_maintenance_cancel, new DialogInterface.OnClickListener()
                         {
-                            dialog.dismiss();
-
-                            ViewUtils.hideKeyboardForView(usernameEditText);
-
-                            String username = ViewUtils.getTrimmedString(usernameEditText);
-                            AppPrefs.getInstance(MainActivity.this).setPlayerName(username);
-                            if (username.length() >= 3 && username.length() <= 15)
+                            public void onClick(DialogInterface dialog, int whichButton)
                             {
-                                GameActivity.startActivity(MainActivity.this, username);
+                                dialog.dismiss();
                             }
-                            else
+                        }).show();
+                    }
+                    else
+                    {
+                        final EditText usernameEditText = new EditText(MainActivity.this);
+                        usernameEditText.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+                        usernameEditText.setHint(R.string.enter_username_hint);
+
+                        String storedUsername = AppPrefs.getInstance(MainActivity.this).getPlayerName();
+                        usernameEditText.setText(storedUsername);
+
+                        new AlertDialog.Builder(MainActivity.this).setTitle(R.string.enter_username_title).setView(usernameEditText).setPositiveButton(R.string.enter_username_button, new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int whichButton)
                             {
-                                new AlertDialog.Builder(MainActivity.this).setTitle(R.string.invalid_username_title).setMessage(R.string.invalid_username_message).setPositiveButton(R.string.invalid_username_cancel, new DialogInterface.OnClickListener()
+                                dialog.dismiss();
+
+                                ViewUtils.hideKeyboardForView(usernameEditText);
+
+                                String username = ViewUtils.getTrimmedString(usernameEditText);
+                                AppPrefs.getInstance(MainActivity.this).setPlayerName(username);
+                                if (username.length() >= 3 && username.length() <= 15)
                                 {
-                                    public void onClick(DialogInterface dialog, int whichButton)
-                                    {
-                                        dialog.dismiss();
-                                    }
-                                }).show();
+                                    GameActivity.startActivity(MainActivity.this, username);
+                                }
+                                else
+                                {
+                                    showInvalidUsernameDialog();
+                                }
                             }
-                        }
-                    }).setNegativeButton(R.string.enter_username_cancel, new DefaultActionOnClickListener()).show();
+                        }).setNegativeButton(R.string.enter_username_cancel, new DefaultActionOnClickListener()).show();
+                    }
                 }
                 else
                 {
@@ -140,16 +147,21 @@ public final class MainActivity extends Activity
                 }
                 else
                 {
-                    new AlertDialog.Builder(MainActivity.this).setTitle(R.string.invalid_username_title).setMessage(R.string.invalid_username_message).setPositiveButton(R.string.invalid_username_cancel, new DialogInterface.OnClickListener()
-                    {
-                        public void onClick(DialogInterface dialog, int whichButton)
-                        {
-                            dialog.dismiss();
-                        }
-                    }).show();
+                    showInvalidUsernameDialog();
                 }
             }
         }).setNegativeButton(R.string.enter_username_cancel, new DefaultActionOnClickListener()).show();
+    }
+
+    private void showInvalidUsernameDialog()
+    {
+        new AlertDialog.Builder(MainActivity.this).setTitle(R.string.invalid_username_title).setMessage(R.string.invalid_username_message).setPositiveButton(R.string.invalid_username_cancel, new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton)
+            {
+                dialog.dismiss();
+            }
+        }).show();
     }
 
     private final class DefaultActionOnClickListener implements DialogInterface.OnClickListener

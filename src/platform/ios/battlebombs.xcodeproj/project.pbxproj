@@ -640,7 +640,6 @@
 				BB7305D9189C598D009F6DF4 /* Sound.m */,
 				BB81B1A819BE147400548837 /* STHTTPRequest.h */,
 				BB81B1A919BE147400548837 /* STHTTPRequest.m */,
-				0ADF1882178E2185005DA99E /* Supporting Files */,
 				BB81B1AF19BE15E700548837 /* TGApiManager.h */,
 				BB81B1B019BE15E700548837 /* TGApiManager.m */,
 				BB81B1BB19BE1A1800548837 /* TGDeviceUtil.h */,
@@ -653,6 +652,7 @@
 				BB81B1B219BE15E700548837 /* TGProgressDialog.m */,
 				BBCDD32718BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.h */,
 				BBCDD32818BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m */,
+				0ADF1882178E2185005DA99E /* Supporting Files */,
 			);
 			name = ios;
 			sourceTree = "<group>";

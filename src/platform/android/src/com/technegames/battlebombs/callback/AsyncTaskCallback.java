@@ -7,14 +7,14 @@ import android.app.ProgressDialog;
 import android.view.WindowManager;
 
 import com.technegames.battlebombs.StringUtils;
-import com.technegames.battlebombs.api.IsCurrentVersionResponse;
+import com.technegames.battlebombs.api.ServerStatusResponse;
 
 public abstract class AsyncTaskCallback
 {
     private final WeakReference<Activity> activityReference;
     private final ProgressDialog progressDialog;
 
-    protected abstract void onSuccess(IsCurrentVersionResponse onSuccessObject);
+    protected abstract void onSuccess(ServerStatusResponse onSuccessObject);
 
     protected abstract void onFailure();
 
@@ -24,7 +24,7 @@ public abstract class AsyncTaskCallback
         this.progressDialog = createProgressDialog();
     }
 
-    public void onComplete(IsCurrentVersionResponse object)
+    public void onComplete(ServerStatusResponse object)
     {
         safeDismissProgressDialog();
 
