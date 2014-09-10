@@ -43,7 +43,7 @@ public final class ApiCallAsyncTask extends AsyncTask<Object, Void, ServerStatus
         {
             try
             {
-                URL url = new URL("http://technegames.com/techne-games/bb_01.json");
+                URL url = new URL("https://s3.amazonaws.com/battlebombs/bb_01.json");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setReadTimeout(70000);

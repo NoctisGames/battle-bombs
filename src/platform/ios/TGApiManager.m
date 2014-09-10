@@ -44,7 +44,7 @@ static Logger *logger = nil;
 
 - (void)sendJsonRequestWithOnSuccess:(OnComplete)os andOnFailure:(OnComplete)of
 {
-    STHTTPRequest *r = [STHTTPRequest requestWithURLString:@"http://technegames.com/techne-games/bb_01.json"];
+    STHTTPRequest *r = [STHTTPRequest requestWithURLString:@"https://s3.amazonaws.com/battlebombs/bb_01.json"];
     [r setHeaderWithName:@"Accept" value:@"application/json"];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
