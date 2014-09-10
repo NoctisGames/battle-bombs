@@ -49,7 +49,6 @@ public final class ApiCallAsyncTask extends AsyncTask<Object, Void, ServerStatus
                 conn.setReadTimeout(70000);
                 conn.setConnectTimeout(70000);
                 conn.setRequestMethod("GET");
-                conn.setDoInput(true);
                 conn.addRequestProperty("Accept", "application/json");
 
                 String serverResponse = getServerResponse(conn);
