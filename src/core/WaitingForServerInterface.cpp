@@ -10,6 +10,7 @@
 #include "Vector2D.h"
 #include "Rectangle.h"
 #include "GameEvent.h"
+#include "PlayerRow.h"
 
 WaitingForServerInterface::WaitingForServerInterface(float x, float y, float width, float height, const char *username) : GameObject(x, y, width, height, 0)
 {
@@ -19,6 +20,22 @@ WaitingForServerInterface::WaitingForServerInterface(float x, float y, float wid
     
     std::strncpy(m_username, username, usernameLength);
     m_username[usernameLength] = '\0';
+    
+    float playerRowWidth = width * 0.9f;
+    float playerRowHeight = height / 8 * 0.9f;
+    float playerRowHeightHalf = playerRowHeight / 2;
+    float playerRowMargin = height / 8 * 0.05f;
+    float playersListBottomY = y - height / 2 + playerRowMargin;
+    float playerRowHeightEighth = height / 8;
+    
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 7, playerRowWidth, playerRowHeight)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 6, playerRowWidth, playerRowHeight)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 5, playerRowWidth, playerRowHeight)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 4, playerRowWidth, playerRowHeight)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 3, playerRowWidth, playerRowHeight)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 2, playerRowWidth, playerRowHeight)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 1, playerRowWidth, playerRowHeight)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 0, playerRowWidth, playerRowHeight)));
     
     m_fTimeToNextRound = 0;
     m_iPreGamePhase = DEFAULT;
@@ -31,14 +48,6 @@ WaitingForServerInterface::~WaitingForServerInterface()
 {
     delete m_username;
     m_username = NULL;
-    
-    for(char *playerName : m_playerNames)
-    {
-        delete playerName;
-    }
-    m_playerNames.clear();
-    
-    m_playerPlatforms.clear();
 }
 
 void WaitingForServerInterface::update(float deltaTime, Game_State gameState)
@@ -88,16 +97,59 @@ void WaitingForServerInterface::handlePreGameServerUpdate(rapidjson::Document &d
             static const char *playerIndex6PlatformKey = "playerIndex6Platform";
             static const char *playerIndex7PlatformKey = "playerIndex7Platform";
             
-            m_playerNames.clear();
+            int playerIndex = 0;
+            if(d.HasMember(playerIndex0Key))
+            {
+                m_playerRows.at(playerIndex)->handlePlayerNameAndPlatform(d, playerIndex0Key, playerIndex0PlatformKey, playerIndex);
+                playerIndex++;
+            }
             
-            handlePlayerNameAndPlatform(d, playerIndex0Key, playerIndex0PlatformKey);
-            handlePlayerNameAndPlatform(d, playerIndex1Key, playerIndex1PlatformKey);
-            handlePlayerNameAndPlatform(d, playerIndex2Key, playerIndex2PlatformKey);
-            handlePlayerNameAndPlatform(d, playerIndex3Key, playerIndex3PlatformKey);
-            handlePlayerNameAndPlatform(d, playerIndex4Key, playerIndex4PlatformKey);
-            handlePlayerNameAndPlatform(d, playerIndex5Key, playerIndex5PlatformKey);
-            handlePlayerNameAndPlatform(d, playerIndex6Key, playerIndex6PlatformKey);
-            handlePlayerNameAndPlatform(d, playerIndex7Key, playerIndex7PlatformKey);
+            if(d.HasMember(playerIndex1Key))
+            {
+                m_playerRows.at(playerIndex)->handlePlayerNameAndPlatform(d, playerIndex1Key, playerIndex1PlatformKey, playerIndex);
+                playerIndex++;
+            }
+            
+            if(d.HasMember(playerIndex2Key))
+            {
+                m_playerRows.at(playerIndex)->handlePlayerNameAndPlatform(d, playerIndex2Key, playerIndex2PlatformKey, playerIndex);
+                playerIndex++;
+            }
+            
+            if(d.HasMember(playerIndex3Key))
+            {
+                m_playerRows.at(playerIndex)->handlePlayerNameAndPlatform(d, playerIndex3Key, playerIndex3PlatformKey, playerIndex);
+                playerIndex++;
+            }
+            
+            if(d.HasMember(playerIndex4Key))
+            {
+                m_playerRows.at(playerIndex)->handlePlayerNameAndPlatform(d, playerIndex4Key, playerIndex4PlatformKey, playerIndex);
+                playerIndex++;
+            }
+            
+            if(d.HasMember(playerIndex5Key))
+            {
+                m_playerRows.at(playerIndex)->handlePlayerNameAndPlatform(d, playerIndex5Key, playerIndex5PlatformKey, playerIndex);
+                playerIndex++;
+            }
+            
+            if(d.HasMember(playerIndex6Key))
+            {
+                m_playerRows.at(playerIndex)->handlePlayerNameAndPlatform(d, playerIndex6Key, playerIndex6PlatformKey, playerIndex);
+                playerIndex++;
+            }
+            
+            if(d.HasMember(playerIndex7Key))
+            {
+                m_playerRows.at(playerIndex)->handlePlayerNameAndPlatform(d, playerIndex7Key, playerIndex7PlatformKey, playerIndex);
+                playerIndex++;
+            }
+            
+            for(; playerIndex < 8; playerIndex++)
+            {
+                m_playerRows.at(playerIndex)->reset();
+            }
         }
     }
 }
@@ -107,14 +159,9 @@ char * WaitingForServerInterface::getUsername()
     return m_username;
 }
 
-std::vector<char *> & WaitingForServerInterface::getPlayerNames()
+std::vector<std::unique_ptr<PlayerRow >> & WaitingForServerInterface::getPlayerRows()
 {
-    return m_playerNames;
-}
-
-std::vector<int> & WaitingForServerInterface::getPlayerPlatforms()
-{
-    return m_playerPlatforms;
+    return m_playerRows;
 }
 
 int WaitingForServerInterface::getTimeToNextRound()
@@ -145,25 +192,4 @@ bool WaitingForServerInterface::renderPlayersList()
 bool WaitingForServerInterface::renderMessage()
 {
     return m_renderMessage;
-}
-
-#pragma mark <Private>
-
-void WaitingForServerInterface::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *keyName, const char *keyPlatform)
-{
-    if(d.HasMember(keyName) && d.HasMember(keyPlatform))
-    {
-        const char *username = d[keyName].GetString();
-        int usernameLength = (int) strlen(username);
-        
-        char *newUsername = new char[usernameLength];
-        
-        std::strncpy(newUsername, username, usernameLength);
-        newUsername[usernameLength] = '\0';
-        
-        m_playerNames.push_back(newUsername);
-        
-        int playerPlatform = d[keyPlatform].GetInt();
-        m_playerPlatforms.push_back(playerPlatform);
-    }
 }

@@ -35,6 +35,8 @@
 #include "Vertices2D.h"
 #include "PlayerForceFieldState.h"
 #include "SpectatorControls.h"
+#include "PlayerRow.h"
+#include "PlayerRowPlatformAvatar.h"
 
 #include <sstream>
 
@@ -317,7 +319,28 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
     {
         m_spriteBatcher->beginBatch();
         renderGameObject(waitingForServerInterface, Assets::getWaitingForServerInterfaceTextureRegion());
+        
+        for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
+        {
+            renderGameObject((*itr)->getPlayerPlatformAvatar(), Assets::getPlayerRowPlatformAvatarTextureRegion((*itr)->getPlayerPlatformAvatar()));
+        }
+        
         m_spriteBatcher->endBatchWithTexture(m_interfaceTexture2);
+        
+        m_spriteBatcherWithColor->beginBatch();
+        
+        static Color playerNameColor = { 1, 1, 1, 1 };
+        
+        for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
+        {
+            std::stringstream ss;
+            ss << (*itr)->getPlayerName();
+            std::string playerName = ss.str();
+            
+            m_font->renderText(*m_spriteBatcherWithColor, playerName, (*itr)->getFontX(), (*itr)->getFontY(), (*itr)->getFontGlyphWidth(), (*itr)->getFontGlyphHeight(), playerNameColor, true);
+        }
+        
+        m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture2);
     }
     
     if(waitingForServerInterface.renderTimeToNextRound() || waitingForServerInterface.renderMessage())

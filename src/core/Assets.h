@@ -28,6 +28,7 @@ class PowerUpBarItem;
 class ActiveButton;
 class BombButton;
 class SpectatorControls;
+class PlayerRowPlatformAvatar;
 
 class Assets
 {
@@ -47,6 +48,8 @@ public:
 	static TextureRegion getBreakableBlockTextureRegion(BreakableBlock &breakableBlock);
     
     static TextureRegion getWaitingForServerInterfaceTextureRegion();
+    
+    static TextureRegion getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatformAvatar &playerRowPlatformAvatar);
     
     static TextureRegion getInterfaceOverlayTextureRegion();
     

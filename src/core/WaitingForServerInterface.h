@@ -14,6 +14,8 @@
 #include "rapidjson/document.h"
 #include <vector>
 
+class PlayerRow;
+
 class WaitingForServerInterface : public GameObject
 {
 public:
@@ -27,9 +29,7 @@ public:
     
     char * getUsername();
     
-    std::vector<char *> & getPlayerNames();
-    
-    std::vector<int> & getPlayerPlatforms();
+    std::vector<std::unique_ptr<PlayerRow >> & getPlayerRows();
     
     int getTimeToNextRound();
     
@@ -44,16 +44,13 @@ public:
     bool renderMessage();
     
 private:
+    std::vector<std::unique_ptr<PlayerRow>> m_playerRows;
     char *m_username;
-    std::vector<char *> m_playerNames;
-    std::vector<int> m_playerPlatforms;
     float m_fTimeToNextRound;
     int m_iPreGamePhase;
     bool m_renderTimeToNextRound;
     bool m_renderPlayersList;
     bool m_renderMessage;
-    
-    void handlePlayerNameAndPlatform(rapidjson::Document &d, const char *keyName, const char *keyPlatform);
 };
 
 #endif /* defined(__battlebombs__WaitingForServerInterface__) */

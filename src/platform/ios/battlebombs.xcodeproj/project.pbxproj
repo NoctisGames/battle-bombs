@@ -135,6 +135,7 @@
 		BBB24BA219638A9300EF78B2 /* interface.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB24BA119638A9300EF78B2 /* interface.png */; };
 		BBB24BA51963AFFA00EF78B2 /* InterfaceOverlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */; };
 		BBBEC914194B425200AAB520 /* char_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBEC913194B425200AAB520 /* char_blue.png */; };
+		BBC92AD819C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92AD619C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp */; };
 		BBCCF55E193847A0000F509A /* BotPlayerDynamicGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */; };
 		BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32418BFC8E1003A4EED /* Logger.m */; };
 		BBCDD32918BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32818BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m */; };
@@ -377,6 +378,8 @@
 		BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InterfaceOverlay.cpp; sourceTree = "<group>"; };
 		BBB24BA41963AFFA00EF78B2 /* InterfaceOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterfaceOverlay.h; sourceTree = "<group>"; };
 		BBBEC913194B425200AAB520 /* char_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_blue.png; sourceTree = "<group>"; };
+		BBC92AD619C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerRowPlatformAvatar.cpp; sourceTree = "<group>"; };
+		BBC92AD719C0B963004B44B2 /* PlayerRowPlatformAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerRowPlatformAvatar.h; sourceTree = "<group>"; };
 		BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BotPlayerDynamicGameObject.cpp; sourceTree = "<group>"; };
 		BBCCF55D193847A0000F509A /* BotPlayerDynamicGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BotPlayerDynamicGameObject.h; sourceTree = "<group>"; };
 		BBCDD32318BFC8E1003A4EED /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
@@ -517,6 +520,8 @@
 				BB724A9319A93FE80050859C /* PlayerForceFieldState.h */,
 				BB419D6A19BFFED5007834CB /* PlayerRow.cpp */,
 				BB419D6B19BFFED5007834CB /* PlayerRow.h */,
+				BBC92AD619C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp */,
+				BBC92AD719C0B963004B44B2 /* PlayerRowPlatformAvatar.h */,
 				BB47C9BD18F326D4002ED03B /* PlayerState.h */,
 				BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */,
 				BB9D93BD191FB4EC00AD9CCE /* PowerUp.h */,
@@ -930,6 +935,7 @@
 				0A8FBF7F179E07320039BA29 /* pngmem.c in Sources */,
 				BB6FB26119B9433F0068F20E /* WaitingForServerInterface.cpp in Sources */,
 				BB42C0AC1975A82E00B592E5 /* OpenGLESRectangleRenderer.cpp in Sources */,
+				BBC92AD819C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp in Sources */,
 				BB81B1B719BE163900548837 /* TGDialog.m in Sources */,
 				BB96EED418B99A6900F7C356 /* Line.cpp in Sources */,
 				0A8FBF80179E07320039BA29 /* pngpread.c in Sources */,

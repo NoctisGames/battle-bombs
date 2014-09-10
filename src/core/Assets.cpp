@@ -26,6 +26,8 @@
 #include "PlayerAvatar.h"
 #include "SpectatorControls.h"
 #include "PlayerForceFieldState.h"
+#include "PlayerRowPlatformAvatar.h"
+#include "GameEvent.h"
 #include <list>
 
 Assets * Assets::getInstance()
@@ -146,6 +148,26 @@ TextureRegion Assets::getWaitingForServerInterfaceTextureRegion()
 {
     static TextureRegion textureRegion = TextureRegion(WAITING_PLAYERS_LIST_BACKGROUND_TEXTURE_REGION_X, WAITING_PLAYERS_LIST_BACKGROUND_TEXTURE_REGION_Y, WAITING_PLAYERS_LIST_BACKGROUND_TEXTURE_REGION_WIDTH, WAITING_PLAYERS_LIST_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     return textureRegion;
+}
+
+TextureRegion Assets::getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatformAvatar &playerRowPlatformAvatar)
+{
+    static TextureRegion platformAndroidTextureRegion = TextureRegion(INTERFACE_2_PLAYER_PLATFORM_AVATAR_ANDROID_TEXTURE_REGION_X, INTERFACE_2_PLAYER_PLATFORM_AVATAR_ANDROID_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_PLATFORM_AVATAR_ANDROID_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_PLATFORM_AVATAR_ANDROID_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion platformIOSTextureRegion = TextureRegion(INTERFACE_2_PLAYER_PLATFORM_AVATAR_IOS_TEXTURE_REGION_X, INTERFACE_2_PLAYER_PLATFORM_AVATAR_IOS_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_PLATFORM_AVATAR_IOS_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_PLATFORM_AVATAR_IOS_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion platformWP8TextureRegion = TextureRegion(INTERFACE_2_PLAYER_PLATFORM_AVATAR_WP8_TEXTURE_REGION_X, INTERFACE_2_PLAYER_PLATFORM_AVATAR_WP8_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_PLATFORM_AVATAR_WP8_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_PLATFORM_AVATAR_WP8_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    switch (playerRowPlatformAvatar.getPlayerPlatform())
+    {
+        case PLATFORM_ANDROID:
+            return platformAndroidTextureRegion;
+        case PLATFORM_IOS:
+            return platformIOSTextureRegion;
+        case PLATFORM_WINDOWS_PHONE:
+            return platformWP8TextureRegion;
+        case PLATFORM_UNKNOWN:
+        default:
+            break;
+    }
 }
 
 TextureRegion Assets::getInterfaceOverlayTextureRegion()
