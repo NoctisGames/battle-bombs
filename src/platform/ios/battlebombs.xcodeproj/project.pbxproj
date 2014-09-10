@@ -53,6 +53,7 @@
 		BB39D6E7196EFABD00BC895B /* map_space.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB39D6E6196EFABD00BC895B /* map_space.aifc */; };
 		BB39D6EA196F01CC00BC895B /* map_base.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB39D6E8196F01CC00BC895B /* map_base.aifc */; };
 		BB39D6EB196F01CC00BC895B /* map_mountains.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB39D6E9196F01CC00BC895B /* map_mountains.aifc */; };
+		BB419D6C19BFFED5007834CB /* PlayerRow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB419D6A19BFFED5007834CB /* PlayerRow.cpp */; };
 		BB42C0AC1975A82E00B592E5 /* OpenGLESRectangleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB42C0AA1975A82E00B592E5 /* OpenGLESRectangleRenderer.cpp */; };
 		BB451A3718C30E810093E559 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB451A3618C30E810093E559 /* libz.dylib */; };
 		BB4F30F7197C1DC300270703 /* bg-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BB4F30F3197C1DC300270703 /* bg-568h@2x~iphone.png */; };
@@ -223,6 +224,8 @@
 		BB39D6E6196EFABD00BC895B /* map_space.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = map_space.aifc; sourceTree = "<group>"; };
 		BB39D6E8196F01CC00BC895B /* map_base.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = map_base.aifc; sourceTree = "<group>"; };
 		BB39D6E9196F01CC00BC895B /* map_mountains.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = map_mountains.aifc; sourceTree = "<group>"; };
+		BB419D6A19BFFED5007834CB /* PlayerRow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerRow.cpp; sourceTree = "<group>"; };
+		BB419D6B19BFFED5007834CB /* PlayerRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerRow.h; sourceTree = "<group>"; };
 		BB42C0AA1975A82E00B592E5 /* OpenGLESRectangleRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLESRectangleRenderer.cpp; sourceTree = "<group>"; };
 		BB42C0AB1975A82E00B592E5 /* OpenGLESRectangleRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLESRectangleRenderer.h; sourceTree = "<group>"; };
 		BB42C0AD1975B71C00B592E5 /* MiniMapGridType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MiniMapGridType.h; sourceTree = "<group>"; };
@@ -512,6 +515,8 @@
 				BB1B8C7F18C8B13300C72D2D /* PlayerDynamicGameObject.cpp */,
 				BB1B8C8018C8B13300C72D2D /* PlayerDynamicGameObject.h */,
 				BB724A9319A93FE80050859C /* PlayerForceFieldState.h */,
+				BB419D6A19BFFED5007834CB /* PlayerRow.cpp */,
+				BB419D6B19BFFED5007834CB /* PlayerRow.h */,
 				BB47C9BD18F326D4002ED03B /* PlayerState.h */,
 				BB9D93BC191FB4EC00AD9CCE /* PowerUp.cpp */,
 				BB9D93BD191FB4EC00AD9CCE /* PowerUp.h */,
@@ -956,6 +961,7 @@
 				BB81B1BA19BE197E00548837 /* TGJsonUtils.m in Sources */,
 				BB96EED618B99A6900F7C356 /* Rectangle.cpp in Sources */,
 				0A8FBF86179E07320039BA29 /* pngtrans.c in Sources */,
+				BB419D6C19BFFED5007834CB /* PlayerRow.cpp in Sources */,
 				BB31AC9E18E05A6400E7369F /* InsideBlock.cpp in Sources */,
 				0A8FBF87179E07320039BA29 /* pngwio.c in Sources */,
 				BB96EEF118B99A7100F7C356 /* OpenGLESRenderer.cpp in Sources */,
