@@ -20,8 +20,9 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         System.load("C:\\Users\\sgowen\\Documents\\GitHub\\battle-bombs\\src\\platform\\server\\bb-native\\dist\\libBbNative.dll");
     }
 
+    private static final String PRE_GAME_TICK_LOG = "~~~~~~~~~~~~~~ PRE GAME TICK ~~~~~~~~~~~~~~~~~~";
     private static final String GAME_BEGIN_LOG = "~~~~~~~~~~~~~~~~~~~ GAME BEGIN ~~~~~~~~~~~~~~~~~~~";
-    private static final String GAME_OVER_LOG = "~~~~~~~~~~~~~~~~~~~ GAME--OVER ~~~~~~~~~~~~~~~~~~~";
+    private static final String GAME_OVER_LOG = "~~~~~~~~~~~~~~~~~~~~ GAME--OVER ~~~~~~~~~~~~~~~~~~~";
     private static final String SERVER = "Server";
     private static final String EVENT_TYPE = "eventType";
     private static final String NUM_PLAYERS = "numPlayers";
@@ -294,7 +295,8 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                         tobeSent.put("playerIndex" + playerIndex, user.getName());
                         tobeSent.put("playerIndex" + playerIndex + "Platform", userSessionData._platform);
                     }
-                    
+                    System.out.println(PRE_GAME_TICK_LOG);
+
                     updateRoomWithMessage(tobeSent.toString());
                 }
                 catch (JSONException e)
@@ -357,7 +359,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     }
                 }
 
-                _numSecondsLeftForRound = 120;
+                _numSecondsLeftForRound = 180;
 
                 String beginGameCommand = getGameStateCommand(BEGIN_GAME);
                 if (beginGameCommand != null)
