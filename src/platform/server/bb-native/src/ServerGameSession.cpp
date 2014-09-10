@@ -154,7 +154,7 @@ void ServerGameSession::init()
     m_powerUps.clear();
 
     srand((int) time(NULL));
-    
+
     m_fCountDownTimeLeft = 3;
 }
 
@@ -208,7 +208,7 @@ void ServerGameSession::update(float deltaTime)
     {
         case COUNTING_DOWN:
             m_fCountDownTimeLeft -= deltaTime;
-            if(m_fCountDownTimeLeft < 0)
+            if (m_fCountDownTimeLeft < 0)
             {
                 m_gameState = RUNNING;
             }
@@ -250,6 +250,19 @@ int ServerGameSession::popOldestEventId()
 
 void ServerGameSession::updateRunning(float deltaTime)
 {
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        if ((*itr)->isBot())
+        {
+            (*itr)->handlePowerUps(m_powerUps);
+
+            if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
+            {
+                m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+            }
+        }
+    }
+
     std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
 
     for (std::vector<int>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)

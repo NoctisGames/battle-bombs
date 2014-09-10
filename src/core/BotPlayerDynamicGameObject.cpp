@@ -185,13 +185,6 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 			}
 		}
 	}
-
-	handlePowerUps(powerUps);
-    
-    if (isHitByExplosion(explosions, bombs))
-	{
-		m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *this);
-	}
 }
 
 bool BotPlayerDynamicGameObject::isBot()

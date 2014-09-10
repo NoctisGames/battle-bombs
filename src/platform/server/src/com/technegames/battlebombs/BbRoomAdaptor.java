@@ -48,10 +48,10 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final short CLIENT_UPDATE = 1338;
     private static final short GAME_OVER = 1339;
     private static final int PLAYER_DEATH = 9;
-    private static final int PLAYER_EVENT_BASE = 10000000;
-    private static final int PLAYER_EVENT_DIRECTION_BASE = 1000000;
-    private static final int PLAYER_EVENT_GRID_X_BASE = 10000;
-    private static final int PLAYER_EVENT_GRID_Y_BASE = 100;
+    private static final int PLAYER_EVENT_BASE = 100000000;
+    private static final int PLAYER_EVENT_DIRECTION_BASE = 10000000;
+    private static final int PLAYER_EVENT_GRID_X_BASE = 100000;
+    private static final int PLAYER_EVENT_GRID_Y_BASE = 1000;
 
     // smooth constant elements to play with
     private static final float movAveragePeriod = 40; // #frames involved in average calc (suggested values 5-100)
