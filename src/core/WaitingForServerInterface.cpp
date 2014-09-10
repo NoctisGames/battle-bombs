@@ -22,9 +22,9 @@ WaitingForServerInterface::WaitingForServerInterface(float x, float y, float wid
     m_username[usernameLength] = '\0';
     
     float playerRowWidth = width * 0.9f;
-    float playerRowHeight = height / 8 * 0.9f;
+    float playerRowHeight = height / 8 * 0.8f;
     float playerRowHeightHalf = playerRowHeight / 2;
-    float playerRowMargin = height / 8 * 0.05f;
+    float playerRowMargin = height / 8 * 0.06f;
     float playersListBottomY = y - height / 2 + playerRowMargin;
     float playerRowHeightEighth = height / 8;
     

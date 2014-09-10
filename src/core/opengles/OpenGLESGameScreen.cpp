@@ -19,7 +19,7 @@
 
 OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
 {
-    // TODO
+    // Empty
 }
 
 void OpenGLESGameScreen::onSurfaceCreated(int width, int height)
@@ -47,12 +47,12 @@ void OpenGLESGameScreen::setDpDimensions(int dpWidth, int dpHeight)
 
 void OpenGLESGameScreen::platformResume()
 {
-    // TODO
+    // Empty
 }
 
 void OpenGLESGameScreen::platformPause()
 {
-    // TODO
+    // Empty
 }
 
 bool OpenGLESGameScreen::handleOnBackPressed()

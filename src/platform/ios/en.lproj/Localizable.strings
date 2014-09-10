@@ -30,7 +30,7 @@
 
 // Invalid Username Dialog
 "invalid_username_title" = "Invalid Username";
-"invalid_username_message" = "Please enter a username between 3 and 15 characters.";
+"invalid_username_message" = "Please enter a username between 3 and 12 characters.";
 "invalid_username_cancel" = "OK";
 
 // JSON Request Message

@@ -21,6 +21,9 @@ class Renderer;
 class WaitingForServerInterface;
 class WaitingForLocalSettingsInterface;
 class InterfaceOverlay;
+class CountDownNumberGameObject;
+class DisplayBattleGameObject;
+class DisplayGameOverGameObject;
 
 class GameScreen : public GameSession
 {
@@ -81,6 +84,9 @@ protected:
 	int m_iScreenState;
 
 private:
+    std::vector<std::unique_ptr<CountDownNumberGameObject>> m_countDownNumbers;
+    std::unique_ptr<DisplayBattleGameObject> m_displayBattle;
+    std::vector<std::unique_ptr<DisplayGameOverGameObject>> m_displayGameOvers;
     std::unique_ptr<GameListener> m_gameListener;
     std::unique_ptr<WaitingForServerInterface> m_waitingForServerInterface;
     std::unique_ptr<WaitingForLocalSettingsInterface> m_waitingForLocalSettingsInterface;
@@ -90,6 +96,8 @@ private:
     float m_fTimeSinceGameOver;
     float m_fBlackCoverTransitionAlpha;
     bool m_isOffline;
+    bool m_hasDisplayed2;
+    bool m_hasDisplayed1;
     
     void updateInputWaitingForLocalSettings(std::vector<TouchEvent> &touchEvents);
     

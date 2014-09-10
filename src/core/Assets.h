@@ -29,6 +29,8 @@ class ActiveButton;
 class BombButton;
 class SpectatorControls;
 class PlayerRowPlatformAvatar;
+class CountDownNumberGameObject;
+class DisplayGameOverGameObject;
 
 class Assets
 {
@@ -63,6 +65,10 @@ public:
     
     static TextureRegion getPlayerTextureRegion(PlayerDynamicGameObject &player);
     
+    static TextureRegion getPlayerNameBubbleTextureRegion();
+    
+    static TextureRegion getPlayerPointerTextureRegion();
+    
     static TextureRegion getBombTextureRegion(BombGameObject &bomb);
     
     static TextureRegion getFireTextureRegion(Fire &fire);
@@ -76,6 +82,12 @@ public:
     static TextureRegion getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime);
     
     static TextureRegion getSpectatorControlsTextureRegion(SpectatorControls &spectatorControls);
+    
+    static TextureRegion getCountDownNumberTextureRegion(CountDownNumberGameObject &countDownNumberGameObject);
+    
+    static TextureRegion getDisplayBattleTextureRegion();
+    
+    static TextureRegion getDisplayGameOverTextureRegion(DisplayGameOverGameObject &displayGameOverGameObject);
     
     void setMusicId(short musicId);
     

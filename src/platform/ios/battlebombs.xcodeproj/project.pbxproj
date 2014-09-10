@@ -136,6 +136,9 @@
 		BBB24BA51963AFFA00EF78B2 /* InterfaceOverlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */; };
 		BBBEC914194B425200AAB520 /* char_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBEC913194B425200AAB520 /* char_blue.png */; };
 		BBC92AD819C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92AD619C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp */; };
+		BBC92AE019C0FA7F004B44B2 /* CountDownNumberGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92ADE19C0FA7F004B44B2 /* CountDownNumberGameObject.cpp */; };
+		BBC92AE319C0FC77004B44B2 /* DisplayBattleGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92AE119C0FC77004B44B2 /* DisplayBattleGameObject.cpp */; };
+		BBC92AE619C0FC92004B44B2 /* DisplayGameOverGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92AE419C0FC92004B44B2 /* DisplayGameOverGameObject.cpp */; };
 		BBCCF55E193847A0000F509A /* BotPlayerDynamicGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */; };
 		BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32418BFC8E1003A4EED /* Logger.m */; };
 		BBCDD32918BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32818BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m */; };
@@ -380,6 +383,14 @@
 		BBBEC913194B425200AAB520 /* char_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_blue.png; sourceTree = "<group>"; };
 		BBC92AD619C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerRowPlatformAvatar.cpp; sourceTree = "<group>"; };
 		BBC92AD719C0B963004B44B2 /* PlayerRowPlatformAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerRowPlatformAvatar.h; sourceTree = "<group>"; };
+		BBC92ADE19C0FA7F004B44B2 /* CountDownNumberGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CountDownNumberGameObject.cpp; sourceTree = "<group>"; };
+		BBC92ADF19C0FA7F004B44B2 /* CountDownNumberGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountDownNumberGameObject.h; sourceTree = "<group>"; };
+		BBC92AE119C0FC77004B44B2 /* DisplayBattleGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisplayBattleGameObject.cpp; sourceTree = "<group>"; };
+		BBC92AE219C0FC77004B44B2 /* DisplayBattleGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayBattleGameObject.h; sourceTree = "<group>"; };
+		BBC92AE419C0FC92004B44B2 /* DisplayGameOverGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisplayGameOverGameObject.cpp; sourceTree = "<group>"; };
+		BBC92AE519C0FC92004B44B2 /* DisplayGameOverGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayGameOverGameObject.h; sourceTree = "<group>"; };
+		BBC92AE719C0FCAA004B44B2 /* DisplayGameOverType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DisplayGameOverType.h; sourceTree = "<group>"; };
+		BBC92AE819C0FCE6004B44B2 /* CountDownNumberType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CountDownNumberType.h; sourceTree = "<group>"; };
 		BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BotPlayerDynamicGameObject.cpp; sourceTree = "<group>"; };
 		BBCCF55D193847A0000F509A /* BotPlayerDynamicGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BotPlayerDynamicGameObject.h; sourceTree = "<group>"; };
 		BBCDD32318BFC8E1003A4EED /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
@@ -462,6 +473,14 @@
 				BBF683EC1951509900EBD23E /* BreakableBlockState.h */,
 				BB0A1FF119726CD30074D0BA /* ButtonState.h */,
 				BB96EEB018B99A6900F7C356 /* Color.h */,
+				BBC92ADE19C0FA7F004B44B2 /* CountDownNumberGameObject.cpp */,
+				BBC92ADF19C0FA7F004B44B2 /* CountDownNumberGameObject.h */,
+				BBC92AE819C0FCE6004B44B2 /* CountDownNumberType.h */,
+				BBC92AE119C0FC77004B44B2 /* DisplayBattleGameObject.cpp */,
+				BBC92AE219C0FC77004B44B2 /* DisplayBattleGameObject.h */,
+				BBC92AE419C0FC92004B44B2 /* DisplayGameOverGameObject.cpp */,
+				BBC92AE519C0FC92004B44B2 /* DisplayGameOverGameObject.h */,
+				BBC92AE719C0FCAA004B44B2 /* DisplayGameOverType.h */,
 				BBF7CC5C18CCA2B700B7CD15 /* DPadControl.cpp */,
 				BBF7CC5D18CCA2B700B7CD15 /* DPadControl.h */,
 				BB0BC05919719ECB0092A968 /* DPadControlState.h */,
@@ -927,6 +946,7 @@
 				BBF5DE2519770CE500759BB1 /* SpectatorControls.cpp in Sources */,
 				BB0BC05C1971B7810092A968 /* PowerUpBarItem.cpp in Sources */,
 				0A8FBF7D179E07320039BA29 /* pngerror.c in Sources */,
+				BBC92AE319C0FC77004B44B2 /* DisplayBattleGameObject.cpp in Sources */,
 				BBDF1A6C190F256300ECDBE2 /* BombGameObject.cpp in Sources */,
 				BBA1CD531958B10A00AF2AD8 /* MapBorder.cpp in Sources */,
 				0A8FBF7E179E07320039BA29 /* pngget.c in Sources */,
@@ -949,7 +969,9 @@
 				BB96EEF318B99A7100F7C356 /* texture.c in Sources */,
 				BB68B02A192A82EF0065CE1D /* OfflineGameViewController.mm in Sources */,
 				BB06563C18E214B000076912 /* GameSession.cpp in Sources */,
+				BBC92AE619C0FC92004B44B2 /* DisplayGameOverGameObject.cpp in Sources */,
 				0A8FBF82179E07320039BA29 /* pngrio.c in Sources */,
+				BBC92AE019C0FA7F004B44B2 /* CountDownNumberGameObject.cpp in Sources */,
 				0A8FBF83179E07320039BA29 /* pngrtran.c in Sources */,
 				BB96EED318B99A6900F7C356 /* GameScreen.cpp in Sources */,
 				BB81B1AA19BE147400548837 /* STHTTPRequest.m in Sources */,

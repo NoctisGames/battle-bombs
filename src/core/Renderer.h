@@ -43,6 +43,9 @@ class WaitingForServerInterface;
 class WaitingForLocalSettingsInterface;
 class InterfaceOverlay;
 class Font;
+class CountDownNumberGameObject;
+class DisplayBattleGameObject;
+class DisplayGameOverGameObject;
 
 class Renderer
 {
@@ -72,6 +75,8 @@ public:
     virtual void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface) = 0;
     
     virtual void renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface) = 0;
+    
+    virtual void renderUIEffects(std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject) = 0;
     
     virtual void renderInterface(InterfaceOverlay &interfaceOverlay) = 0;
     

@@ -80,7 +80,7 @@ public final class MainActivity extends Activity
 
                                 String username = ViewUtils.getTrimmedString(usernameEditText);
                                 AppPrefs.getInstance(MainActivity.this).setPlayerName(username);
-                                if (username.length() >= 3 && username.length() <= 15)
+                                if (username.length() >= 3 && username.length() <= 12)
                                 {
                                     GameActivity.startActivity(MainActivity.this, username);
                                 }
@@ -141,7 +141,7 @@ public final class MainActivity extends Activity
 
                 String username = ViewUtils.getTrimmedString(usernameEditText);
                 AppPrefs.getInstance(MainActivity.this).setPlayerName(username);
-                if (username.length() >= 3 && username.length() <= 15)
+                if (username.length() >= 3 && username.length() <= 12)
                 {
                     OfflineGameActivity.startActivity(MainActivity.this, username);
                 }

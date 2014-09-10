@@ -9,10 +9,11 @@
 #include "PlayerRowPlatformAvatar.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
+#include "GameEvent.h"
 
 PlayerRowPlatformAvatar::PlayerRowPlatformAvatar(float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
 {
-    // No further setup required
+    m_iPlayerPlatform = PLATFORM_UNKNOWN;
 }
 
 void PlayerRowPlatformAvatar::setPlayerPlatform(int playerPlatform)

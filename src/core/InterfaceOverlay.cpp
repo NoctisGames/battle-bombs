@@ -54,7 +54,7 @@ InterfaceOverlay::InterfaceOverlay(GameListener *gameListener)
     m_fPowerUpBarItemsStateTime = 0;
     m_fButtonsStateTime = 0;
     m_fCountdownStateTime = 0;
-    m_iNumSecondsLeft = 120;
+    m_iNumSecondsLeft = 180;
 }
 
 void InterfaceOverlay::initializeMiniMap(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType)
@@ -124,7 +124,7 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
     
     // Update PowerUp Bar and Buttons if the player is still alive
     
-    if(gameState == RUNNING || gameState == COUNTING_DOWN)
+    if(gameState == RUNNING)
     {
         m_fPowerUpBarItemsStateTime += deltaTime;
         m_fButtonsStateTime += deltaTime;

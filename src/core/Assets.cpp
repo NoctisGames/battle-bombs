@@ -27,6 +27,8 @@
 #include "SpectatorControls.h"
 #include "PlayerForceFieldState.h"
 #include "PlayerRowPlatformAvatar.h"
+#include "CountDownNumberGameObject.h"
+#include "DisplayGameOverGameObject.h"
 #include "GameEvent.h"
 #include <list>
 
@@ -698,6 +700,18 @@ TextureRegion Assets::getBombTextureRegion(BombGameObject &bomb)
     }
 }
 
+TextureRegion Assets::getPlayerNameBubbleTextureRegion()
+{
+    static TextureRegion textureRegion = TextureRegion(PLAYER_NAME_BUBBLE_TEXTURE_REGION_X, PLAYER_NAME_BUBBLE_TEXTURE_REGION_Y, PLAYER_NAME_BUBBLE_TEXTURE_REGION_WIDTH, PLAYER_NAME_BUBBLE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    return textureRegion;
+}
+
+TextureRegion Assets::getPlayerPointerTextureRegion()
+{
+    static TextureRegion textureRegion = TextureRegion(SPECTATING_WHO_ARROW_TEXTURE_REGION_X, SPECTATING_WHO_ARROW_TEXTURE_REGION_Y, SPECTATING_WHO_ARROW_TEXTURE_REGION_WIDTH, SPECTATING_WHO_ARROW_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    return textureRegion;
+}
+
 TextureRegion Assets::getSpectatorControlsTextureRegion(SpectatorControls &spectatorControls)
 {
     static TextureRegion TR_LEFT_ARROW_HIGHLIGHTED = TextureRegion(SPECTATOR_CONTROLS_LEFT_ARROW_HIGHLIGHTED_TEXTURE_REGION_X, SPECTATOR_CONTROLS_LEFT_ARROW_HIGHLIGHTED_TEXTURE_REGION_Y, SPECTATOR_CONTROLS_TEXTURE_REGION_WIDTH, SPECTATOR_CONTROLS_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
@@ -713,6 +727,45 @@ TextureRegion Assets::getSpectatorControlsTextureRegion(SpectatorControls &spect
         case NOTHING_HIGHLIGHTED:
         default:
             return TR_NOTHING_HIGHLIGHTED;
+    }
+}
+
+TextureRegion Assets::getCountDownNumberTextureRegion(CountDownNumberGameObject &countDownNumberGameObject)
+{
+    static TextureRegion display3TextureRegion = TextureRegion(COUNTDOWN_3_TEXTURE_REGION_X, COUNTDOWN_3_TEXTURE_REGION_Y, COUNTDOWN_3_TEXTURE_REGION_WIDTH, COUNTDOWN_3_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion display2TextureRegion = TextureRegion(COUNTDOWN_2_TEXTURE_REGION_X, COUNTDOWN_2_TEXTURE_REGION_Y, COUNTDOWN_2_TEXTURE_REGION_WIDTH, COUNTDOWN_2_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion display1TextureRegion = TextureRegion(COUNTDOWN_1_TEXTURE_REGION_X, COUNTDOWN_1_TEXTURE_REGION_Y, COUNTDOWN_1_TEXTURE_REGION_WIDTH, COUNTDOWN_1_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    switch (countDownNumberGameObject.getType())
+    {
+        case DISPLAY_3:
+            return display3TextureRegion;
+        case DISPLAY_2:
+            return display2TextureRegion;
+        case DISPLAY_1:
+        default:
+            return display1TextureRegion;
+    }
+}
+
+TextureRegion Assets::getDisplayBattleTextureRegion()
+{
+    static TextureRegion textureRegion = TextureRegion(BATTLE_TEXTURE_REGION_X, BATTLE_TEXTURE_REGION_Y, BATTLE_TEXTURE_REGION_WIDTH, BATTLE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    return textureRegion;
+}
+
+TextureRegion Assets::getDisplayGameOverTextureRegion(DisplayGameOverGameObject &displayGameOverGameObject)
+{
+    static TextureRegion displayGameSetTextureRegion = TextureRegion(GAME_SET_TEXTURE_REGION_X, GAME_SET_TEXTURE_REGION_Y, GAME_SET_TEXTURE_REGION_WIDTH, GAME_SET_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion displayDrawTextureRegion = TextureRegion(DRAW_TEXTURE_REGION_X, DRAW_TEXTURE_REGION_Y, DRAW_TEXTURE_REGION_WIDTH, DRAW_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    switch (displayGameOverGameObject.getType())
+    {
+        case GAME_SET:
+            return displayGameSetTextureRegion;
+        case DRAW:
+        default:
+            return displayDrawTextureRegion;
     }
 }
 

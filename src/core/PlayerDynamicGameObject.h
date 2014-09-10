@@ -100,6 +100,14 @@ public:
     void setClientPlayer(bool isClientPlayer);
     
     void setIsBot(bool isBot);
+    
+    void setIsDisplayingName(bool isDisplayingName);
+    
+    bool isDisplayingName();
+    
+    void setIsDisplayingPointer(bool isDisplayingPointer);
+    
+    bool isDisplayingPointer();
 
 protected:
     BombGameObject *m_lastBombDropped;
@@ -122,6 +130,9 @@ private:
     char *m_username;
     bool m_isClientPlayer;
     bool m_isBot;
+    bool m_isDisplayingName;
+    float m_fDisplayingPointerStateTime;
+    bool m_isDisplayingPointer;
     
     bool isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     

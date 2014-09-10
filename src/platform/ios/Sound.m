@@ -68,7 +68,7 @@
     AudioServicesPlaySystemSound(soundID[soundIndex++]);
 }
 
-- (NSString *) getFileName
+- (NSString *)getFileName
 {
     return fileName;
 }

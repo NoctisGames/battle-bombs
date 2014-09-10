@@ -17,10 +17,10 @@
     int soundIndex;
 }
 
-- (id) initWithSoundNamed:(NSString *)fileName fromBundle:(NSBundle *)bundle andMaxNumOfSimultaneousPlays:(int)mnsp;
+- (id)initWithSoundNamed:(NSString *)fileName fromBundle:(NSBundle *)bundle andMaxNumOfSimultaneousPlays:(int)mnsp;
 
-- (void) play;
+- (void)play;
 
-- (NSString *) getFileName;
+- (NSString *)getFileName;
 
 @end

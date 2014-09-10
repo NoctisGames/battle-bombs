@@ -37,6 +37,9 @@
 #include "SpectatorControls.h"
 #include "PlayerRow.h"
 #include "PlayerRowPlatformAvatar.h"
+#include "CountDownNumberGameObject.h"
+#include "DisplayBattleGameObject.h"
+#include "DisplayGameOverGameObject.h"
 
 #include <sstream>
 
@@ -269,9 +272,57 @@ void OpenGLESRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
         {
             renderGameObjectWithRespectToPlayer((**itr), Assets::getForceFieldTextureRegion((**itr).getPlayerForceFieldState(), (**itr).getPlayerForceFieldStateTime()));
         }
+        
+        if((*itr)->isDisplayingName())
+        {
+            static TextureRegion tr = Assets::getPlayerNameBubbleTextureRegion();
+            static float playerYModifier = GRID_CELL_HEIGHT * 7 / 8;
+            
+            std::stringstream ss;
+            ss << (*itr)->getUsername();
+            std::string playerNameText = ss.str();
+            
+            float increaseBubbleModifier = 0;
+            int playerNameTextLength = playerNameText.length();
+            if(playerNameTextLength > 6)
+            {
+                playerNameTextLength -= 6;
+                increaseBubbleModifier = GRID_CELL_WIDTH * 2 / 7;
+            }
+            
+            m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, GRID_CELL_WIDTH * 2 + (increaseBubbleModifier * playerNameTextLength), GRID_CELL_HEIGHT / 2, 0, tr);
+        }
+        else if((*itr)->isDisplayingPointer())
+        {
+            static TextureRegion tr = Assets::getPlayerPointerTextureRegion();
+            static float playerYModifier = GRID_CELL_HEIGHT * 7 / 8;
+            m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, GRID_CELL_WIDTH / 2, GRID_CELL_HEIGHT / 2, 0, tr);
+        }
     }
     
     m_spriteBatcher->endBatchWithTexture(m_interfaceTexture);
+    
+    m_spriteBatcherWithColor->beginBatch();
+    
+    for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
+    {
+        if((*itr)->isDisplayingName())
+        {
+            static Color playerNameColor = { 1, 1, 1, 1 };
+            
+            std::stringstream ss;
+            ss << (*itr)->getUsername();
+            std::string playerNameText = ss.str();
+            
+            static float playerYModifier = GRID_CELL_HEIGHT * 7 / 8;
+            static float playerNameFontGlyphWidth = GRID_CELL_WIDTH * 2 / 7;
+            static float playerNameFontGlyphHeight = playerNameFontGlyphWidth * 0.68421052631579;
+            
+            m_font->renderText(*m_spriteBatcherWithColor, playerNameText, (*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, playerNameFontGlyphWidth, playerNameFontGlyphHeight, playerNameColor, true);
+        }
+    }
+    
+    m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
 }
 
 void OpenGLESRenderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
@@ -322,7 +373,10 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
         
         for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
         {
-            renderGameObject((*itr)->getPlayerPlatformAvatar(), Assets::getPlayerRowPlatformAvatarTextureRegion((*itr)->getPlayerPlatformAvatar()));
+            if((*itr)->isActive())
+            {
+                renderGameObject((*itr)->getPlayerPlatformAvatar(), Assets::getPlayerRowPlatformAvatarTextureRegion((*itr)->getPlayerPlatformAvatar()));
+            }
         }
         
         m_spriteBatcher->endBatchWithTexture(m_interfaceTexture2);
@@ -333,11 +387,14 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
         
         for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
         {
-            std::stringstream ss;
-            ss << (*itr)->getPlayerName();
-            std::string playerName = ss.str();
-            
-            m_font->renderText(*m_spriteBatcherWithColor, playerName, (*itr)->getFontX(), (*itr)->getFontY(), (*itr)->getFontGlyphWidth(), (*itr)->getFontGlyphHeight(), playerNameColor, true);
+            if((*itr)->isActive())
+            {
+                std::stringstream ss;
+                ss << (*itr)->getPlayerName();
+                std::string playerName = ss.str();
+                
+                m_font->renderText(*m_spriteBatcherWithColor, playerName, (*itr)->getFontX(), (*itr)->getFontY(), (*itr)->getFontGlyphWidth(), (*itr)->getFontGlyphHeight(), playerNameColor, true);
+            }
         }
         
         m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture2);
@@ -428,6 +485,25 @@ void OpenGLESRenderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSet
     m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
     
     m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
+}
+
+void OpenGLESRenderer::renderUIEffects(std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject)
+{
+    m_spriteBatcher->beginBatch();
+    
+    for (std::vector<std::unique_ptr<CountDownNumberGameObject>>::iterator itr = countDownNumbers.begin(); itr != countDownNumbers.end(); itr++)
+    {
+        renderGameObject((**itr), Assets::getCountDownNumberTextureRegion(**itr));
+    }
+    
+    renderGameObject(displayBattleGameObject, Assets::getDisplayBattleTextureRegion());
+    
+    for (std::vector<std::unique_ptr<DisplayGameOverGameObject>>::iterator itr = displayGameOverGameObject.begin(); itr != displayGameOverGameObject.end(); itr++)
+    {
+        renderGameObject((**itr), Assets::getDisplayGameOverTextureRegion(**itr));
+    }
+    
+    m_spriteBatcher->endBatchWithTexture(m_interfaceTexture2);
 }
 
 void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)

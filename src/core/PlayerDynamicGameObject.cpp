@@ -48,6 +48,9 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
     m_playerActionState = IDLE;
     m_isClientPlayer = false;
     m_isBot = false;
+    m_isDisplayingName = false;
+    m_fDisplayingPointerStateTime = 0;
+    m_isDisplayingPointer = false;
 }
 
 void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
@@ -56,6 +59,15 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
 
     if (m_playerState == ALIVE && m_playerActionState != WINNING)
     {
+        if(m_isDisplayingPointer)
+        {
+            m_fDisplayingPointerStateTime += deltaTime;
+            if(m_fDisplayingPointerStateTime > 1)
+            {
+                m_isDisplayingPointer = false;
+            }
+        }
+        
         if(m_playerActionState == PLACING_BOMB || m_playerActionState == PUSHING_BOMB)
         {
             if(m_fStateTime > 0.15f)
@@ -306,6 +318,9 @@ void PlayerDynamicGameObject::onDeath()
 {
     m_playerState = DYING;
     m_fStateTime = 0;
+    
+    m_isDisplayingName = false;
+    m_isDisplayingPointer = false;
 
     m_gameListener->playSound(SOUND_DEATH);
 }
@@ -480,6 +495,27 @@ void PlayerDynamicGameObject::setUsername(const char *username)
 void PlayerDynamicGameObject::setClientPlayer(bool isClientPlayer)
 {
     m_isClientPlayer = isClientPlayer;
+}
+
+void PlayerDynamicGameObject::setIsDisplayingName(bool isDisplayingName)
+{
+    m_isDisplayingName = isDisplayingName;
+}
+
+bool PlayerDynamicGameObject::isDisplayingName()
+{
+    return m_isDisplayingName;
+}
+
+void PlayerDynamicGameObject::setIsDisplayingPointer(bool isDisplayingPointer)
+{
+    m_isDisplayingPointer = isDisplayingPointer;
+    m_fDisplayingPointerStateTime = 0;
+}
+
+bool PlayerDynamicGameObject::isDisplayingPointer()
+{
+    return m_isDisplayingPointer;
 }
 
 // Private

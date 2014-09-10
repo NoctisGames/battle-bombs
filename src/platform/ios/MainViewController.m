@@ -61,10 +61,7 @@
                 
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 NSString *username = [userDefaults objectForKey:@"USERNAME"];
-                if(username && [username length] >= 3 && [username length] <= 15)
-                {
-                    [alertTextField setText:username];
-                }
+                [alertTextField setText:username];
                 
                 [alert show];
             }
@@ -108,10 +105,7 @@
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *username = [userDefaults objectForKey:@"USERNAME"];
-    if(username && [username length] >= 3 && [username length] <= 15)
-    {
-        [alertTextField setText:username];
-    }
+    [alertTextField setText:username];
     
     [alert show];
 }
@@ -128,7 +122,7 @@
         {
             _username = [alertView textFieldAtIndex:0].text;
             
-            if(_username.length >= 3 && _username.length <= 15)
+            if(_username.length >= 3 && _username.length <= 12)
             {
                 [self performSegueWithIdentifier:@"Main_To_Game" sender:self];
             }
@@ -146,7 +140,7 @@
         {
             _username = [alertView textFieldAtIndex:0].text;
             
-            if(_username.length >= 3 && _username.length <= 15)
+            if(_username.length >= 3 && _username.length <= 12)
             {
                 [self performSegueWithIdentifier:@"Main_To_Offline_Game" sender:self];
             }

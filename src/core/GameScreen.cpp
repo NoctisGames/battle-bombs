@@ -37,6 +37,9 @@
 #include "PlayerAvatar.h"
 #include "Font.h"
 #include "SpectatorControls.h"
+#include "CountDownNumberGameObject.h"
+#include "DisplayBattleGameObject.h"
+#include "DisplayGameOverGameObject.h"
 
 GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 {
@@ -68,6 +71,7 @@ void GameScreen::handleServerUpdate(const char *message)
 void GameScreen::init()
 {
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
+    m_displayBattle = std::unique_ptr<DisplayBattleGameObject>(new DisplayBattleGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f));
     m_gameListener = std::unique_ptr<GameListener>(new GameListener());
     m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10.38805970149248f, 11.2298507475f, m_username));
     m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface());
@@ -81,6 +85,8 @@ void GameScreen::init()
     m_bombs.clear();
     m_explosions.clear();
     m_powerUps.clear();
+    m_countDownNumbers.clear();
+    m_displayGameOvers.clear();
     
     m_gameState = m_isOffline ? WAITING_FOR_LOCAL_SETTINGS : WAITING_FOR_SERVER;
     m_iScreenState = 0;
@@ -88,6 +94,9 @@ void GameScreen::init()
     m_fCountDownTimeLeft = 3;
     m_fTimeSinceGameOver = 0;
     m_fBlackCoverTransitionAlpha = 0;
+    
+    m_hasDisplayed2 = false;
+    m_hasDisplayed1 = false;
 }
 
 void GameScreen::onResume()
@@ -117,20 +126,16 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
     switch (m_gameState)
     {
         case WAITING_FOR_CONNECTION:
-            // TODO, update message based on connection state
-            // Also, change the state to WAITING_FOR_SERVER when appropriate
+            // See processServerMessages()
             break;
         case CONNECTION_ERROR_WAITING_FOR_INPUT:
             updateInputConnectionErrorWaitingForInput(touchEvents);
             break;
         case WAITING_FOR_SERVER:
-            // TODO, Next Round starts in 30, 29, 28, etc...
-            // Also, constantly update interface with list of players and platforms they are on
             m_waitingForServerInterface->update(deltaTime, m_gameState);
             break;
         case WAITING_FOR_LOCAL_SETTINGS:
-            // TODO, allow the user to pick a map
-            // TODO, allow the user to set the number of bots
+            // TODO, allow the user to pick a map and set the number of bots
             updateInputWaitingForLocalSettings(touchEvents);
             m_waitingForLocalSettingsInterface->update(deltaTime);
             break;
@@ -138,11 +143,44 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
             m_fCountDownTimeLeft -= deltaTime;
             if(m_fCountDownTimeLeft < 0)
             {
+                m_countDownNumbers.clear();
+                
+                // TODO, Play Battle sound
                 m_gameState = RUNNING;
+                
+                for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+                {
+                    (*itr)->setIsDisplayingName(false);
+                }
+                
                 Assets::getInstance()->setMusicId(m_iMapType + 2);
             }
+            else if(m_fCountDownTimeLeft <= 1 && !m_hasDisplayed1)
+            {
+                // TODO, Play 1 sound
+                m_countDownNumbers.push_back(std::unique_ptr<CountDownNumberGameObject>(new CountDownNumberGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 2, SCREEN_WIDTH * 2 * 0.76923076923077f, DISPLAY_1)));
+                m_hasDisplayed1 = true;
+            }
+            else if(m_fCountDownTimeLeft <= 2 && !m_hasDisplayed2)
+            {
+                // TODO, Play 2 sound
+                m_countDownNumbers.push_back(std::unique_ptr<CountDownNumberGameObject>(new CountDownNumberGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 2, SCREEN_WIDTH * 2 * 0.76923076923077f, DISPLAY_2)));
+                m_hasDisplayed2 = true;
+            }
             
-            // TODO --> 3, 2, 1, GO!
+            for (std::vector < std::unique_ptr < CountDownNumberGameObject >> ::iterator itr = m_countDownNumbers.begin(); itr != m_countDownNumbers.end(); )
+            {
+                (*itr)->update(deltaTime);
+                
+                if ((*itr)->remove())
+                {
+                    itr = m_countDownNumbers.erase(itr);
+                }
+                else
+                {
+                    itr++;
+                }
+            }
             
             break;
         case RUNNING:
@@ -172,12 +210,7 @@ void GameScreen::present()
     {
         case WAITING_FOR_CONNECTION:
         case CONNECTION_ERROR_WAITING_FOR_INPUT:
-            m_renderer->beginFrame();
-            m_renderer->renderWaitingForServerInterface(*m_waitingForServerInterface);
-            m_renderer->endFrame();
-            break;
         case WAITING_FOR_SERVER:
-            // TODO, render list of players
             m_renderer->beginFrame();
             m_renderer->renderWaitingForServerInterface(*m_waitingForServerInterface);
             m_renderer->endFrame();
@@ -189,7 +222,21 @@ void GameScreen::present()
             m_renderer->endFrame();
             break;
         case COUNTING_DOWN:
-            // TODO, Render Player Names (a simple text bubble will do) and a 3, 2, 1, GO!
+            m_renderer->calcScrollYForPlayer(*m_player);
+            
+            m_renderer->beginFrame();
+            m_renderer->renderWorldBackground();
+            
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
+            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderExplosions(m_explosions);
+            m_renderer->renderPlayers(m_players);
+            m_renderer->renderMapBordersNear(m_mapBorders);
+            
+            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            
+            m_renderer->endFrame();
+            break;
         case RUNNING:
             m_renderer->calcScrollYForPlayer(*m_player);
             
@@ -202,6 +249,8 @@ void GameScreen::present()
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderInterface(*m_interfaceOverlay);
+            
+            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
             m_renderer->endFrame();
             break;
@@ -218,6 +267,8 @@ void GameScreen::present()
             m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
             
+            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            
             m_renderer->endFrame();
             break;
         case GAME_ENDING:
@@ -231,6 +282,8 @@ void GameScreen::present()
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
+            
+            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
             m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
             
@@ -349,6 +402,8 @@ void GameScreen::updateRunning(float deltaTime)
     
     m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
     
+    m_displayBattle->update(deltaTime);
+    
     updateCommon(deltaTime);
 }
 
@@ -439,6 +494,11 @@ void GameScreen::updateGameEnding(float deltaTime)
 {
     m_fTimeSinceGameOver += deltaTime;
     
+    for (std::vector < std::unique_ptr < DisplayGameOverGameObject >> ::iterator itr = m_displayGameOvers.begin(); itr != m_displayGameOvers.end(); itr++)
+    {
+        (*itr)->update(deltaTime);
+    }
+    
     if(m_fTimeSinceGameOver > 6)
     {
         m_fBlackCoverTransitionAlpha += deltaTime * 0.40f;
@@ -461,7 +521,7 @@ void GameScreen::spectateNextLivePlayer()
     for(int i = 0; i < m_players.size(); i++)
     {
         playerIndex++;
-        if(playerIndex == 8)
+        if(playerIndex == m_players.size())
         {
             playerIndex = 0;
         }
@@ -475,6 +535,12 @@ void GameScreen::spectateNextLivePlayer()
     m_sPlayerIndex = playerIndex;
     
     m_player = m_players.at(m_sPlayerIndex).get();
+    
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        (*itr)->setIsDisplayingPointer(false);
+    }
+    m_player->setIsDisplayingPointer(true);
 }
 
 void GameScreen::spectatePreviousLivePlayer()
@@ -497,6 +563,12 @@ void GameScreen::spectatePreviousLivePlayer()
     m_sPlayerIndex = playerIndex;
     
     m_player = m_players.at(m_sPlayerIndex).get();
+    
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        (*itr)->setIsDisplayingPointer(false);
+    }
+    m_player->setIsDisplayingPointer(true);
 }
 
 // Server Stuff
@@ -571,7 +643,13 @@ void GameScreen::beginGame(rapidjson::Document &d)
             
             m_gameState = COUNTING_DOWN;
             
-            m_interfaceOverlay->update(0, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
+            // TODO, Play 3 sound
+            m_countDownNumbers.push_back(std::unique_ptr<CountDownNumberGameObject>(new CountDownNumberGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 2, SCREEN_WIDTH * 2 * 0.76923076923077f, DISPLAY_3)));
+            
+            for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+            {
+                (*itr)->setIsDisplayingName(true);
+            }
         }
     }
 }
@@ -654,10 +732,19 @@ void GameScreen::gameOver(rapidjson::Document &d)
             static const char *winningPlayerIndexKey = "winningPlayerIndex";
             int winningPlayerIndex = d[winningPlayerIndexKey].GetInt();
             m_players.at(winningPlayerIndex).get()->onWin();
+            
+            // Adjusts the camera
+            m_sPlayerIndex = winningPlayerIndex;
+            m_player = m_players.at(m_sPlayerIndex).get();
+            
+            m_player->setIsDisplayingName(true);
+            m_player->setIsDisplayingPointer(false);
+            
+            m_displayGameOvers.push_back(std::unique_ptr<DisplayGameOverGameObject>(new DisplayGameOverGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14.75f, GRID_CELL_HEIGHT * 1.5f, GAME_SET)));
         }
         else
         {
-            // TODO, show a DRAW animation
+            m_displayGameOvers.push_back(std::unique_ptr<DisplayGameOverGameObject>(new DisplayGameOverGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 11.25f, GRID_CELL_HEIGHT * 1.75f, DRAW)));
         }
     }
     
