@@ -19,15 +19,21 @@
 #define MUSIC_PLAY_MAP_BASE 5
 
 // Sound Definitions
-#define SOUND_PLANT_BOMB 1
-#define SOUND_EXPLOSION 2
-#define SOUND_PU_BOMB 3
-#define SOUND_PU_FIRE 4
-#define SOUND_PU_SPEED 5
-#define SOUND_PU_FORCE_FIELD 6
-#define SOUND_PU_PUSH 7
-#define SOUND_FORCE_FIELD_DOWN 8
-#define SOUND_DEATH 9
+#define SOUND_COUNT_DOWN_3 1
+#define SOUND_COUNT_DOWN_2 2
+#define SOUND_COUNT_DOWN_1 3
+#define SOUND_BATTLE 4
+#define SOUND_PLANT_BOMB 5
+#define SOUND_EXPLOSION 6
+#define SOUND_PU_BOMB 7
+#define SOUND_PU_FIRE 8
+#define SOUND_PU_SPEED 9
+#define SOUND_PU_FORCE_FIELD 10
+#define SOUND_PU_PUSH 11
+#define SOUND_FORCE_FIELD_DOWN 12
+#define SOUND_DEATH 13
+#define SOUND_GAME_SET 14
+#define SOUND_DRAW 15
 
 // Texture Definitions
 #define GAME_TEXTURE_WIDTH 1024

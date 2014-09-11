@@ -149,7 +149,7 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
             {
                 m_countDownNumbers.clear();
                 
-                // TODO, Play Battle sound
+                m_gameListener->playSound(SOUND_BATTLE);
                 m_gameState = RUNNING;
                 
                 for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
@@ -161,13 +161,13 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
             }
             else if(m_fCountDownTimeLeft <= 1 && !m_hasDisplayed1)
             {
-                // TODO, Play 1 sound
+                m_gameListener->playSound(SOUND_COUNT_DOWN_1);
                 m_countDownNumbers.push_back(std::unique_ptr<CountDownNumberGameObject>(new CountDownNumberGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 2, SCREEN_WIDTH * 2 * 0.76923076923077f, DISPLAY_1)));
                 m_hasDisplayed1 = true;
             }
             else if(m_fCountDownTimeLeft <= 2 && !m_hasDisplayed2)
             {
-                // TODO, Play 2 sound
+                m_gameListener->playSound(SOUND_COUNT_DOWN_2);
                 m_countDownNumbers.push_back(std::unique_ptr<CountDownNumberGameObject>(new CountDownNumberGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 2, SCREEN_WIDTH * 2 * 0.76923076923077f, DISPLAY_2)));
                 m_hasDisplayed2 = true;
             }
@@ -673,7 +673,7 @@ void GameScreen::beginGame(rapidjson::Document &d)
             
             m_gameState = COUNTING_DOWN;
             
-            // TODO, Play 3 sound
+            m_gameListener->playSound(SOUND_COUNT_DOWN_3);
             m_countDownNumbers.push_back(std::unique_ptr<CountDownNumberGameObject>(new CountDownNumberGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 2, SCREEN_WIDTH * 2 * 0.76923076923077f, DISPLAY_3)));
             
             for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
@@ -772,10 +772,14 @@ void GameScreen::gameOver(rapidjson::Document &d)
             m_player->setIsDisplayingName(true);
             m_player->setIsDisplayingPointer(false);
             
+            m_gameListener->playSound(SOUND_GAME_SET);
+            
             m_displayGameOvers.push_back(std::unique_ptr<DisplayGameOverGameObject>(new DisplayGameOverGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.80f, GRID_CELL_WIDTH * 14.75f, GRID_CELL_HEIGHT * 1.5f, GAME_SET)));
         }
         else
         {
+            m_gameListener->playSound(SOUND_DRAW);
+            
             m_displayGameOvers.push_back(std::unique_ptr<DisplayGameOverGameObject>(new DisplayGameOverGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.80f, GRID_CELL_WIDTH * 11.25f, GRID_CELL_HEIGHT * 1.75f, DRAW)));
         }
     }

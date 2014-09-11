@@ -42,15 +42,21 @@ public final class RendererWrapper implements Renderer
     private static final short MUSIC_PLAY_MAP_GRASSLANDS = 3;
     private static final short MUSIC_PLAY_MAP_MOUNTAINS = 4;
     private static final short MUSIC_PLAY_MAP_BASE = 5;
-    private static final short SOUND_PLANT_BOMB = 1;
-    private static final short SOUND_EXPLOSION = 2;
-    private static final short SOUND_PU_BOMB = 3;
-    private static final short SOUND_PU_FIRE = 4;
-    private static final short SOUND_PU_SPEED = 5;
-    private static final short SOUND_PU_FORCE_FIELD = 6;
-    private static final short SOUND_PU_PUSH = 7;
-    private static final short SOUND_FORCE_FIELD_DOWN = 8;
-    private static final short SOUND_DEATH = 9;
+    private static final short SOUND_COUNT_DOWN_3 = 1;
+    private static final short SOUND_COUNT_DOWN_2 = 2;
+    private static final short SOUND_COUNT_DOWN_1 = 3;
+    private static final short SOUND_BATTLE = 4;
+    private static final short SOUND_PLANT_BOMB = 5;
+    private static final short SOUND_EXPLOSION = 6;
+    private static final short SOUND_PU_BOMB = 7;
+    private static final short SOUND_PU_FIRE = 8;
+    private static final short SOUND_PU_SPEED = 9;
+    private static final short SOUND_PU_FORCE_FIELD = 10;
+    private static final short SOUND_PU_PUSH = 11;
+    private static final short SOUND_FORCE_FIELD_DOWN = 12;
+    private static final short SOUND_DEATH = 13;
+    private static final short SOUND_GAME_SET = 14;
+    private static final short SOUND_DRAW = 15;
 
     // #frames involved in average calc (suggested values 5-100)
     private static final float movAveragePeriod = 40;
@@ -68,6 +74,10 @@ public final class RendererWrapper implements Renderer
     private final int deviceScreenHeight;
     private final String username;
     private final Audio audio;
+    private final Sound countDown3Sound;
+    private final Sound countDown2Sound;
+    private final Sound countDown1Sound;
+    private final Sound battleSound;
     private final Sound plantBombSound;
     private final Sound explosionSound;
     private final Sound powerUpBombSound;
@@ -77,6 +87,8 @@ public final class RendererWrapper implements Renderer
     private final Sound powerUpPushSound;
     private final Sound forceFieldDownSound;
     private final Sound deathSound;
+    private final Sound gameSetSound;
+    private final Sound drawSound;
     private final boolean isOffline;
 
     private Music bgm;
@@ -98,6 +110,10 @@ public final class RendererWrapper implements Renderer
         this.username = username;
         this.isOffline = isOffline;
         this.audio = new Audio(activity.getAssets());
+        this.countDown3Sound = audio.newSound("countdown_3.ogg");
+        this.countDown2Sound = audio.newSound("countdown_2.ogg");
+        this.countDown1Sound = audio.newSound("countdown_1.ogg");
+        this.battleSound = audio.newSound("battle.ogg");
         this.plantBombSound = audio.newSound("plant_bomb.ogg");
         this.explosionSound = audio.newSound("explosion.ogg");
         this.powerUpBombSound = audio.newSound("pu_bomb.ogg");
@@ -107,6 +123,8 @@ public final class RendererWrapper implements Renderer
         this.powerUpPushSound = audio.newSound("pu_push.ogg");
         this.forceFieldDownSound = audio.newSound("force_field_down.ogg");
         this.deathSound = audio.newSound("death.ogg");
+        this.gameSetSound = audio.newSound("game_set.ogg");
+        this.drawSound = audio.newSound("draw.ogg");
 
         this.isInitialized = false;
 
@@ -389,6 +407,18 @@ public final class RendererWrapper implements Renderer
         {
             switch (soundId)
             {
+                case SOUND_COUNT_DOWN_3:
+                    countDown3Sound.play(1);
+                    break;
+                case SOUND_COUNT_DOWN_2:
+                    countDown2Sound.play(1);
+                    break;
+                case SOUND_COUNT_DOWN_1:
+                    countDown1Sound.play(1);
+                    break;
+                case SOUND_BATTLE:
+                    battleSound.play(1);
+                    break;
                 case SOUND_PLANT_BOMB:
                     plantBombSound.play(1);
                     break;
@@ -415,6 +445,12 @@ public final class RendererWrapper implements Renderer
                     break;
                 case SOUND_DEATH:
                     deathSound.play(1);
+                    break;
+                case SOUND_GAME_SET:
+                    gameSetSound.play(1);
+                    break;
+                case SOUND_DRAW:
+                    drawSound.play(1);
                     break;
                 default:
                     continue;

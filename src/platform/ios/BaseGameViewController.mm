@@ -22,6 +22,10 @@
 
 @property (strong, nonatomic) EAGLContext *context;
 @property (strong, nonatomic) Music *bgm;
+@property (strong, nonatomic) Sound *countDown3Sound;
+@property (strong, nonatomic) Sound *countDown2Sound;
+@property (strong, nonatomic) Sound *countDown1Sound;
+@property (strong, nonatomic) Sound *battleSound;
 @property (strong, nonatomic) Sound *plantBombSound;
 @property (strong, nonatomic) Sound *explosionSound;
 @property (strong, nonatomic) Sound *powerUpBombSound;
@@ -31,6 +35,8 @@
 @property (strong, nonatomic) Sound *powerUpPushSound;
 @property (strong, nonatomic) Sound *forceFieldDownSound;
 @property (strong, nonatomic) Sound *deathSound;
+@property (strong, nonatomic) Sound *gameSetSound;
+@property (strong, nonatomic) Sound *drawSound;
 
 @end
 
@@ -63,6 +69,10 @@ static Logger *logger = nil;
     
     [self setupGL];
     
+    self.countDown3Sound = [[Sound alloc] initWithSoundNamed:@"countdown_3.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
+    self.countDown2Sound = [[Sound alloc] initWithSoundNamed:@"countdown_2.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
+    self.countDown1Sound = [[Sound alloc] initWithSoundNamed:@"countdown_1.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
+    self.battleSound = [[Sound alloc] initWithSoundNamed:@"battle.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.plantBombSound = [[Sound alloc] initWithSoundNamed:@"plant_bomb.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:3];
     self.explosionSound = [[Sound alloc] initWithSoundNamed:@"explosion.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
     self.powerUpBombSound = [[Sound alloc] initWithSoundNamed:@"pu_bomb.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
@@ -72,6 +82,8 @@ static Logger *logger = nil;
     self.powerUpPushSound = [[Sound alloc] initWithSoundNamed:@"pu_push.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.forceFieldDownSound = [[Sound alloc] initWithSoundNamed:@"force_field_down.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.gameSetSound = [[Sound alloc] initWithSoundNamed:@"game_set.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
+    self.drawSound = [[Sound alloc] initWithSoundNamed:@"draw.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onPause)
@@ -159,6 +171,18 @@ static Logger *logger = nil;
     {
         switch (soundId)
         {
+            case SOUND_COUNT_DOWN_3:
+                [self.countDown3Sound play];
+                break;
+            case SOUND_COUNT_DOWN_2:
+                [self.countDown2Sound play];
+                break;
+            case SOUND_COUNT_DOWN_1:
+                [self.countDown1Sound play];
+                break;
+            case SOUND_BATTLE:
+                [self.battleSound play];
+                break;
             case SOUND_PLANT_BOMB:
                 [self.plantBombSound play];
                 break;
@@ -185,6 +209,12 @@ static Logger *logger = nil;
                 break;
             case SOUND_DEATH:
                 [self.deathSound play];
+                break;
+            case SOUND_GAME_SET:
+                [self.gameSetSound play];
+                break;
+            case SOUND_DRAW:
+                [self.drawSound play];
                 break;
             default:
                 continue;

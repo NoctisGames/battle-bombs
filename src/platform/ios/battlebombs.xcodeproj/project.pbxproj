@@ -39,6 +39,12 @@
 		BB024B571955D99A0051C09E /* Fire.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB024B551955D99A0051C09E /* Fire.cpp */; };
 		BB06563C18E214B000076912 /* GameSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB06563A18E214B000076912 /* GameSession.cpp */; };
 		BB06563F18E24DA700076912 /* BreakableBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB06563D18E24DA700076912 /* BreakableBlock.cpp */; };
+		BB07506019C248520028515E /* battle.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB07505A19C248520028515E /* battle.caf */; };
+		BB07506119C248520028515E /* countdown_1.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB07505B19C248520028515E /* countdown_1.caf */; };
+		BB07506219C248520028515E /* countdown_2.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB07505C19C248520028515E /* countdown_2.caf */; };
+		BB07506319C248520028515E /* countdown_3.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB07505D19C248520028515E /* countdown_3.caf */; };
+		BB07506419C248520028515E /* draw.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB07505E19C248520028515E /* draw.caf */; };
+		BB07506519C248520028515E /* game_set.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB07505F19C248520028515E /* game_set.caf */; };
 		BB0BC0581970C7780092A968 /* BombButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0BC0561970C7780092A968 /* BombButton.cpp */; };
 		BB0BC05C1971B7810092A968 /* PowerUpBarItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0BC05A1971B7810092A968 /* PowerUpBarItem.cpp */; };
 		BB0CC4B61964F91600F770C4 /* PathFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0CC4B41964F91600F770C4 /* PathFinder.cpp */; };
@@ -201,6 +207,12 @@
 		BB06563B18E214B000076912 /* GameSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSession.h; sourceTree = "<group>"; };
 		BB06563D18E24DA700076912 /* BreakableBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BreakableBlock.cpp; sourceTree = "<group>"; };
 		BB06563E18E24DA700076912 /* BreakableBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BreakableBlock.h; sourceTree = "<group>"; };
+		BB07505A19C248520028515E /* battle.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = battle.caf; sourceTree = "<group>"; };
+		BB07505B19C248520028515E /* countdown_1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = countdown_1.caf; sourceTree = "<group>"; };
+		BB07505C19C248520028515E /* countdown_2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = countdown_2.caf; sourceTree = "<group>"; };
+		BB07505D19C248520028515E /* countdown_3.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = countdown_3.caf; sourceTree = "<group>"; };
+		BB07505E19C248520028515E /* draw.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = draw.caf; sourceTree = "<group>"; };
+		BB07505F19C248520028515E /* game_set.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = game_set.caf; sourceTree = "<group>"; };
 		BB0A1FF119726CD30074D0BA /* ButtonState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ButtonState.h; sourceTree = "<group>"; };
 		BB0BC0561970C7780092A968 /* BombButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BombButton.cpp; sourceTree = "<group>"; };
 		BB0BC0571970C7780092A968 /* BombButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BombButton.h; sourceTree = "<group>"; };
@@ -697,6 +709,39 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		BB07506619C248950028515E /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				BB07505A19C248520028515E /* battle.caf */,
+				BB07505B19C248520028515E /* countdown_1.caf */,
+				BB07505C19C248520028515E /* countdown_2.caf */,
+				BB07505D19C248520028515E /* countdown_3.caf */,
+				BB16D969191987B80034BE67 /* death.caf */,
+				BB07505E19C248520028515E /* draw.caf */,
+				BB16D96A191987B80034BE67 /* explosion.caf */,
+				BB5C577719B9F2B500AD76E7 /* force_field_down.caf */,
+				BB07505F19C248520028515E /* game_set.caf */,
+				BB5C576B19B9F27B00AD76E7 /* plant_bomb.caf */,
+				BB5C576C19B9F27B00AD76E7 /* pu_bomb.caf */,
+				BB5C576D19B9F27B00AD76E7 /* pu_fire.caf */,
+				BB5C576E19B9F27B00AD76E7 /* pu_force_field.caf */,
+				BB5C576F19B9F27B00AD76E7 /* pu_push.caf */,
+				BB5C577019B9F27B00AD76E7 /* pu_speed.caf */,
+			);
+			name = sounds;
+			sourceTree = "<group>";
+		};
+		BB07506719C248A90028515E /* music */ = {
+			isa = PBXGroup;
+			children = (
+				BB39D6E8196F01CC00BC895B /* map_base.aifc */,
+				BB9D09AB19155C9E002CBFD3 /* map_grasslands.aifc */,
+				BB39D6E9196F01CC00BC895B /* map_mountains.aifc */,
+				BB39D6E6196EFABD00BC895B /* map_space.aifc */,
+			);
+			name = music;
+			sourceTree = "<group>";
+		};
 		BB695E1E18DB73FA0083C4E3 /* rapidjson */ = {
 			isa = PBXGroup;
 			children = (
@@ -771,31 +816,20 @@
 				BBDE14B0195A2D7400A91FD7 /* char_red.png */,
 				BBDE14B1195A2D7400A91FD7 /* char_white.png */,
 				BBDE14B2195A2D7400A91FD7 /* char_yellow.png */,
-				BB16D969191987B80034BE67 /* death.caf */,
-				BB16D96A191987B80034BE67 /* explosion.caf */,
-				BB5C577719B9F2B500AD76E7 /* force_field_down.caf */,
 				BBB24BA119638A9300EF78B2 /* interface.png */,
 				BB8FF7C519AE3FE4005D0701 /* interface_2.png */,
-				BB39D6E8196F01CC00BC895B /* map_base.aifc */,
 				BB71029A196E079500C7BA2F /* map_base.png */,
-				BB9D09AB19155C9E002CBFD3 /* map_grasslands.aifc */,
 				BB71029B196E079500C7BA2F /* map_grasslands.png */,
-				BB39D6E9196F01CC00BC895B /* map_mountains.aifc */,
 				BB71029C196E079500C7BA2F /* map_mountains.png */,
-				BB39D6E6196EFABD00BC895B /* map_space.aifc */,
 				BB71029D196E079500C7BA2F /* map_space.png */,
+				BB07506719C248A90028515E /* music */,
 				BB4F30FB197C1DCD00270703 /* offline_match_highlighted.png */,
 				BB4F30FC197C1DCD00270703 /* offline_match_normal.png */,
 				BB4F30FD197C1DCD00270703 /* offline_match_pressed.png */,
-				BB5C576B19B9F27B00AD76E7 /* plant_bomb.caf */,
-				BB5C576C19B9F27B00AD76E7 /* pu_bomb.caf */,
-				BB5C576D19B9F27B00AD76E7 /* pu_fire.caf */,
-				BB5C576E19B9F27B00AD76E7 /* pu_force_field.caf */,
-				BB5C576F19B9F27B00AD76E7 /* pu_push.caf */,
-				BB5C577019B9F27B00AD76E7 /* pu_speed.caf */,
 				BB4F30FE197C1DCD00270703 /* quick_match_highlighted.png */,
 				BB4F30FF197C1DCD00270703 /* quick_match_normal.png */,
 				BB4F3100197C1DCD00270703 /* quick_match_pressed.png */,
+				BB07506619C248950028515E /* sounds */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -870,16 +904,21 @@
 				BB4F30F9197C1DC300270703 /* bg@2x~iphone.png in Resources */,
 				BBDE14B7195A2D7400A91FD7 /* char_red.png in Resources */,
 				BBA0A3FD196F549C00737A74 /* bot_black.png in Resources */,
+				BB07506019C248520028515E /* battle.caf in Resources */,
+				BB07506219C248520028515E /* countdown_2.caf in Resources */,
 				BB71029E196E079500C7BA2F /* map_base.png in Resources */,
 				BBB24BA219638A9300EF78B2 /* interface.png in Resources */,
 				BBA0A401196F549C00737A74 /* bot_red.png in Resources */,
 				BBA0A3FE196F549C00737A74 /* bot_green.png in Resources */,
 				BBDE14B6195A2D7400A91FD7 /* char_pink.png in Resources */,
 				BB39D6E7196EFABD00BC895B /* map_space.aifc in Resources */,
+				BB07506519C248520028515E /* game_set.caf in Resources */,
+				BB07506419C248520028515E /* draw.caf in Resources */,
 				BB39D6EA196F01CC00BC895B /* map_base.aifc in Resources */,
 				BB4F3105197C1DCD00270703 /* quick_match_normal.png in Resources */,
 				BB16D96D191987B80034BE67 /* explosion.caf in Resources */,
 				BBDE14B9195A2D7400A91FD7 /* char_yellow.png in Resources */,
+				BB07506319C248520028515E /* countdown_3.caf in Resources */,
 				BB4F3104197C1DCD00270703 /* quick_match_highlighted.png in Resources */,
 				BB7102A1196E079500C7BA2F /* map_space.png in Resources */,
 				BBDE14B3195A2D7400A91FD7 /* char_black.png in Resources */,
@@ -900,6 +939,7 @@
 				BB4F30F7197C1DC300270703 /* bg-568h@2x~iphone.png in Resources */,
 				BBA0A403196F549C00737A74 /* bot_yellow.png in Resources */,
 				0ADF1895178E2185005DA99E /* MainStoryboard_iPhone.storyboard in Resources */,
+				BB07506119C248520028515E /* countdown_1.caf in Resources */,
 				BB4F30F8197C1DC300270703 /* bg@2x~ipad.png in Resources */,
 				BBA0A400196F549C00737A74 /* bot_pink.png in Resources */,
 				0ADF1898178E2185005DA99E /* MainStoryboard_iPad.storyboard in Resources */,
