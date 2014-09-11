@@ -42,12 +42,6 @@ void PlayerRow::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *
 
 void PlayerRow::reset()
 {
-	if (m_playerName != nullptr)
-    {
-        delete m_playerName;
-		m_playerName = nullptr;
-    }
-    
     m_playerRowPlatformAvatar->setPlayerPlatform(PLATFORM_UNKNOWN);
     
     m_isActive = false;
