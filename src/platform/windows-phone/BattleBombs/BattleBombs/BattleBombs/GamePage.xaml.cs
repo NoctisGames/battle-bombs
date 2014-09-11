@@ -61,6 +61,18 @@ namespace BattleBombs
             {
                 Console.WriteLine("m_username = " + m_username);
             }
+
+            string preGameUpdate = "{\"" + EVENT_TYPE + "\":" + PRE_GAME + ",\"" + PHASE + "\":" + CONNECTING + "}";
+
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                m_d3dInterop.onChatReceived(preGameUpdate);
+
+                WarpClient.GetInstance().AddConnectionRequestListener(m_connectionRequestListener);
+                WarpClient.GetInstance().AddNotificationListener(m_notifyListener);
+
+                WarpClient.GetInstance().Connect(m_username, "T3chn3G4m35");
+            });
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -104,18 +116,6 @@ namespace BattleBombs
                 DrawingSurface.SetManipulationHandler(m_d3dInterop);
 
                 m_d3dInterop.setWinRtCallback(new WinRtCallback(ProcessCallback));
-
-                string preGameUpdate = "{\"" + EVENT_TYPE + "\":" + PRE_GAME + ",\"" + PHASE + "\":" + CONNECTING + "}";
-
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    m_d3dInterop.onChatReceived(preGameUpdate);
-
-                    WarpClient.GetInstance().AddConnectionRequestListener(m_connectionRequestListener);
-                    WarpClient.GetInstance().AddNotificationListener(m_notifyListener);
-
-                    WarpClient.GetInstance().Connect(m_username, "T3chn3G4m35");
-                });
             }
         }
 
