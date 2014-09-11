@@ -47,7 +47,7 @@ GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 {
     int usernameLength = (int) strlen(username);
     
-    m_username = std::unique_ptr<char>(new char[usernameLength]);
+    m_username = std::unique_ptr<char>(new char[usernameLength + 1]);
     
     std::strncpy(m_username.get(), username, usernameLength);
     m_username.get()[usernameLength] = '\0';

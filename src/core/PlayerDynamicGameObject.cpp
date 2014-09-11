@@ -493,7 +493,7 @@ void PlayerDynamicGameObject::setUsername(const char *username)
 
 	m_username.release();
     
-    m_username = std::unique_ptr<char>(new char[usernameLength]);
+    m_username = std::unique_ptr<char>(new char[usernameLength + 1]);
     
     std::strncpy(m_username.get(), username, usernameLength);
 	m_username.get()[usernameLength] = '\0';

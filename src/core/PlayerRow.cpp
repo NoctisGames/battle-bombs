@@ -32,7 +32,7 @@ void PlayerRow::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *
 
 		m_playerName.release();
         
-        m_playerName = std::unique_ptr<char>(new char[usernameLength]);
+        m_playerName = std::unique_ptr<char>(new char[usernameLength + 1]);
         
         std::strncpy(m_playerName.get(), username, usernameLength);
 		m_playerName.get()[usernameLength] = '\0';
