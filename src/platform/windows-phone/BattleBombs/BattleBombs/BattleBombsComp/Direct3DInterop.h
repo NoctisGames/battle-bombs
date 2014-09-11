@@ -64,7 +64,6 @@ namespace BattleBombsComp
 		char *m_username;
 		const char *m_gameOverMessage;
 		bool m_playersAlive[8];
-		int m_mapType;
 
 		void pushEvents();
 
