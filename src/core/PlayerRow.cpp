@@ -28,6 +28,8 @@ void PlayerRow::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *
     {
         const char *username = d[keyName].GetString();
         int usernameLength = (int) strlen(username);
+
+		m_playerName.release();
         
         m_playerName = std::unique_ptr<char>(new char[usernameLength]);
         

@@ -488,11 +488,12 @@ char * PlayerDynamicGameObject::getUsername()
 void PlayerDynamicGameObject::setUsername(const char *username)
 {
     int usernameLength = (int) strlen(username);
+
+	m_username.release();
     
     m_username = std::unique_ptr<char>(new char[usernameLength]);
     
     std::strncpy(m_username.get(), username, usernameLength);
-	m_username.get()[usernameLength] = '\0';
 }
 
 void PlayerDynamicGameObject::setClientPlayer(bool isClientPlayer)
