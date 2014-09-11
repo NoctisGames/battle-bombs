@@ -145,11 +145,14 @@ void WaitingForServerInterface::handlePreGameServerUpdate(rapidjson::Document &d
                 m_playerRows.at(playerIndex)->handlePlayerNameAndPlatform(d, playerIndex7Key, playerIndex7PlatformKey, playerIndex);
                 playerIndex++;
             }
-            
-            for(; playerIndex < 8; playerIndex++)
-            {
-                m_playerRows.at(playerIndex)->reset();
-            }
+
+			if (playerIndex < 8)
+			{
+				for (; playerIndex < 8; playerIndex++)
+				{
+					m_playerRows.at(playerIndex)->reset();
+				}
+			}
         }
     }
 }
