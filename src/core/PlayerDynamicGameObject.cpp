@@ -56,65 +56,68 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
 void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
     m_fStateTime += deltaTime;
-
-    if (m_playerState == ALIVE && m_playerActionState != WINNING)
+    
+    if(m_iPlayerForceFieldState != PLAYER_FORCE_FIELD_STATE_OFF)
     {
-        if(m_isDisplayingPointer)
+        m_fPlayerForceFieldStateTime += deltaTime;
+        
+        if(m_iPlayerForceFieldState == PLAYER_FORCE_FIELD_STATE_TURNING_ON)
         {
-            m_fDisplayingPointerStateTime += deltaTime;
-            if(m_fDisplayingPointerStateTime > 1)
+            if(m_fPlayerForceFieldStateTime > 0.5f)
             {
-                m_isDisplayingPointer = false;
+                m_iPlayerForceFieldState = PLAYER_FORCE_FIELD_STATE_ON;
             }
         }
-        
-        if(m_playerActionState == PLACING_BOMB || m_playerActionState == PUSHING_BOMB)
+        else if(m_iPlayerForceFieldState == PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN)
         {
-            if(m_fStateTime > 0.15f)
+            if(m_fPlayerForceFieldStateTime > 0.7f)
             {
-                m_playerActionState = IDLE;
-                m_fStateTime = 0;
+                m_iPlayerForceFieldState = PLAYER_FORCE_FIELD_STATE_OFF;
             }
         }
-        
-        if(m_iPlayerForceFieldState != PLAYER_FORCE_FIELD_STATE_OFF)
+    }
+    
+    if(m_isDisplayingPointer)
+    {
+        m_fDisplayingPointerStateTime += deltaTime;
+        if(m_fDisplayingPointerStateTime > 1)
         {
-            m_fPlayerForceFieldStateTime += deltaTime;
-            
-            if(m_iPlayerForceFieldState == PLAYER_FORCE_FIELD_STATE_TURNING_ON)
-            {
-                if(m_fPlayerForceFieldStateTime > 0.5f)
-                {
-                    m_iPlayerForceFieldState = PLAYER_FORCE_FIELD_STATE_ON;
-                }
-            }
-            else if(m_iPlayerForceFieldState == PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN)
-            {
-                if(m_fPlayerForceFieldStateTime > 0.7f)
-                {
-                    m_iPlayerForceFieldState = PLAYER_FORCE_FIELD_STATE_OFF;
-                }
-            }
+            m_isDisplayingPointer = false;
         }
-        
-        float deltaX = m_velocity->getX() * deltaTime;
-        float deltaY = m_velocity->getY() * deltaTime;
+    }
 
-        m_position->add(deltaX, deltaY);
-        updateBounds();
-        
-        if(m_lastBombDropped != nullptr && !OverlapTester::doRectanglesOverlap(*m_bounds, m_lastBombDropped->getBounds()))
+    if (m_playerState == ALIVE)
+    {
+        if(m_playerActionState != WINNING)
         {
-            m_lastBombDropped = nullptr;
-        }
-        
-        if (isCollision(mapBorders, insideBlocks, breakableBlocks, players, bombs))
-        {
-            m_position->sub(deltaX, deltaY);
+            if(m_playerActionState == PLACING_BOMB || m_playerActionState == PUSHING_BOMB)
+            {
+                if(m_fStateTime > 0.15f)
+                {
+                    m_playerActionState = IDLE;
+                    m_fStateTime = 0;
+                }
+            }
+            
+            float deltaX = m_velocity->getX() * deltaTime;
+            float deltaY = m_velocity->getY() * deltaTime;
+            
+            m_position->add(deltaX, deltaY);
             updateBounds();
+            
+            if(m_lastBombDropped != nullptr && !OverlapTester::doRectanglesOverlap(*m_bounds, m_lastBombDropped->getBounds()))
+            {
+                m_lastBombDropped = nullptr;
+            }
+            
+            if (isCollision(mapBorders, insideBlocks, breakableBlocks, players, bombs))
+            {
+                m_position->sub(deltaX, deltaY);
+                updateBounds();
+            }
+            
+            updateGrid();
         }
-        
-        updateGrid();
     }
     else if (m_playerState == DYING)
     {
