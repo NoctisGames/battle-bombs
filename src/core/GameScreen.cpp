@@ -676,6 +676,8 @@ void GameScreen::beginGame(rapidjson::Document &d)
             {
                 (*itr)->setIsDisplayingName(true);
             }
+
+			m_interfaceOverlay->update(0, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
         }
     }
 }

@@ -38,7 +38,6 @@ void PlayerRow::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *
         m_playerName = new char[usernameLength];
         
         std::strncpy(m_playerName, username, usernameLength);
-        m_playerName[usernameLength] = '\0';
         
         m_playerRowPlatformAvatar->setPlayerPlatform(d[keyPlatform].GetInt());
         
