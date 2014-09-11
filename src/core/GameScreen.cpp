@@ -66,12 +66,18 @@ void GameScreen::handleServerUpdate(const char *message)
 
 void GameScreen::init()
 {
+	m_touchPoint.release();
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
-    m_displayBattle = std::unique_ptr<DisplayBattleGameObject>(new DisplayBattleGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f));
-    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
-    m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10.38805970149248f, 11.2298507475f, m_username.get()));
-    m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface());
-    m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
+	m_displayBattle.release();
+	m_displayBattle = std::unique_ptr<DisplayBattleGameObject>(new DisplayBattleGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f));
+	m_gameListener.release();
+	m_gameListener = std::unique_ptr<GameListener>(new GameListener());
+	m_waitingForServerInterface.release();
+	m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10.38805970149248f, 11.2298507475f, m_username.get()));
+	m_waitingForLocalSettingsInterface.release();
+	m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface());
+	m_interfaceOverlay.release();
+	m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
     
     m_player = nullptr;
     m_sPlayerIndex = -1;

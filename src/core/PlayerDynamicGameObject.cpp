@@ -29,6 +29,8 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
 {
     resetBounds(width * 5 / 32, height / 12);
 
+	m_username = std::unique_ptr<char>(new char[1]);
+
     m_lastBombDropped = nullptr;
     m_fStateTime = 0;
     m_iSpeed = 3;
@@ -494,6 +496,7 @@ void PlayerDynamicGameObject::setUsername(const char *username)
     m_username = std::unique_ptr<char>(new char[usernameLength]);
     
     std::strncpy(m_username.get(), username, usernameLength);
+	m_username.get()[usernameLength] = '\0';
 }
 
 void PlayerDynamicGameObject::setClientPlayer(bool isClientPlayer)

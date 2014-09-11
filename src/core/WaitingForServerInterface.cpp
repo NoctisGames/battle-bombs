@@ -13,7 +13,7 @@
 #include "GameEvent.h"
 #include "PlayerRow.h"
 
-WaitingForServerInterface::WaitingForServerInterface(float x, float y, float width, float height, const char *username) : GameObject(x, y, width, height, 0)
+WaitingForServerInterface::WaitingForServerInterface(float x, float y, float width, float height, char *username) : GameObject(x, y, width, height, 0)
 {
     m_username = username;
     
@@ -147,7 +147,7 @@ void WaitingForServerInterface::handlePreGameServerUpdate(rapidjson::Document &d
     }
 }
 
-const char * WaitingForServerInterface::getUsername()
+char * WaitingForServerInterface::getUsername()
 {
     return m_username;
 }

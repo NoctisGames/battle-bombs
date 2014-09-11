@@ -18,6 +18,7 @@ PlayerRow::PlayerRow(float x, float y, float width, float height)
     m_fFontY = y;
     m_fFontGlyphWidth = (width - height) / 12;
     m_fFontGlyphHeight = m_fFontGlyphWidth * 0.68421052631579;
+	m_playerName = std::unique_ptr<char>(new char[1]);
     m_playerRowPlatformAvatar = std::unique_ptr<PlayerRowPlatformAvatar>(new PlayerRowPlatformAvatar(x - width / 2 + height / 2, y, height, height));
     m_isActive = false;
 }
