@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import com.technegames.battlebombs.api.ServerStatusResponse;
@@ -64,7 +65,8 @@ public final class MainActivity extends Activity
                     else
                     {
                         final EditText usernameEditText = new EditText(MainActivity.this);
-                        usernameEditText.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+                        usernameEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+                        usernameEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
                         usernameEditText.setHint(R.string.enter_username_hint);
 
                         String storedUsername = AppPrefs.getInstance(MainActivity.this).getPlayerName();
@@ -125,7 +127,8 @@ public final class MainActivity extends Activity
     public void startQuickOfflineMatch(View view)
     {
         final EditText usernameEditText = new EditText(this);
-        usernameEditText.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+        usernameEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        usernameEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         usernameEditText.setHint(R.string.enter_username_hint);
 
         String storedUsername = AppPrefs.getInstance(MainActivity.this).getPlayerName();

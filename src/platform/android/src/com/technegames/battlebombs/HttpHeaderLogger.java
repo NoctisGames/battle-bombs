@@ -1,14 +1,14 @@
 package com.technegames.battlebombs;
 
-import org.apache.http.Header;
-import org.apache.http.HttpMessage;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.http.Header;
+import org.apache.http.HttpMessage;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
 
 public final class HttpHeaderLogger
 {

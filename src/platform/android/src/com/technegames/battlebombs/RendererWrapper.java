@@ -17,7 +17,7 @@ import com.technegames.battlebombs.platform.PlatformFileUtils;
 public final class RendererWrapper implements Renderer
 {
     private static final Logger logger = new Logger(RendererWrapper.class);
-    private static final String KEEP_ALIVE = "KEEP_ALIVE";
+    private static final String KEEP_ALIVE = "KEEP_ALIVE,1";
 
     private static final String EVENT_TYPE = "eventType";
     private static final String EVENTS = "events";
