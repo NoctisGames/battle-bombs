@@ -172,6 +172,11 @@
     <ClInclude Include="..\..\..\..\..\core\BreakableBlock.h" />
     <ClInclude Include="..\..\..\..\..\core\ButtonState.h" />
     <ClInclude Include="..\..\..\..\..\core\Color.h" />
+    <ClInclude Include="..\..\..\..\..\core\CountDownNumberGameObject.h" />
+    <ClInclude Include="..\..\..\..\..\core\CountDownNumberType.h" />
+    <ClInclude Include="..\..\..\..\..\core\DisplayBattleGameObject.h" />
+    <ClInclude Include="..\..\..\..\..\core\DisplayGameOverGameObject.h" />
+    <ClInclude Include="..\..\..\..\..\core\DisplayGameOverType.h" />
     <ClInclude Include="..\..\..\..\..\core\DPadControl.h" />
     <ClInclude Include="..\..\..\..\..\core\DPadControlState.h" />
     <ClInclude Include="..\..\..\..\..\core\DynamicGameObject.h" />
@@ -206,6 +211,8 @@
     <ClInclude Include="..\..\..\..\..\core\PlayerAvatar.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerDynamicGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerForceFieldState.h" />
+    <ClInclude Include="..\..\..\..\..\core\PlayerRow.h" />
+    <ClInclude Include="..\..\..\..\..\core\PlayerRowPlatformAvatar.h" />
     <ClInclude Include="..\..\..\..\..\core\PowerUp.h" />
     <ClInclude Include="..\..\..\..\..\core\PowerUpBarItem.h" />
     <ClInclude Include="..\..\..\..\..\core\PowerUpType.h" />
@@ -244,6 +251,9 @@
     <ClCompile Include="..\..\..\..\..\core\BombGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BotPlayerDynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BreakableBlock.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\CountDownNumberGameObject.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\DisplayBattleGameObject.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\DisplayGameOverGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DPadControl.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DynamicGridGameObject.cpp" />
@@ -265,6 +275,8 @@
     <ClCompile Include="..\..\..\..\..\core\PathFinder.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PlayerAvatar.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PlayerDynamicGameObject.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\PlayerRow.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\PlayerRowPlatformAvatar.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PowerUp.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PowerUpBarItem.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Rectangle.cpp" />

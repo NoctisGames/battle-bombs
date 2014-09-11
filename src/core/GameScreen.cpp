@@ -443,6 +443,19 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 
 void GameScreen::updateSpectating(float deltaTime)
 {
+	for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+	{
+		if ((*itr)->isBot())
+		{
+			(*itr)->handlePowerUps(m_powerUps);
+
+			if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
+			{
+				m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+			}
+		}
+	}
+
     std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
     
     for (std::vector<int>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)

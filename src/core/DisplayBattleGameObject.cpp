@@ -20,7 +20,7 @@ void DisplayBattleGameObject::update(float deltaTime)
 {
     m_fStateTime += deltaTime;
     
-    if(m_fStateTime < 0.5f || m_fStateTime > 2.5f)
+    if(m_fStateTime < 0.5f || m_fStateTime > 1.5f)
     {
         m_position->add(SCREEN_WIDTH * deltaTime * 2, 0);
     }

@@ -40,6 +40,11 @@
 #include "PlayerForceFieldState.h"
 #include "SpectatorControls.h"
 #include "PowerUpType.h"
+#include "PlayerRow.h"
+#include "PlayerRowPlatformAvatar.h"
+#include "CountDownNumberGameObject.h"
+#include "DisplayBattleGameObject.h"
+#include "DisplayGameOverGameObject.h"
 
 #include <string>
 #include <sstream>
@@ -321,6 +326,54 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 		{
 			renderGameObjectWithRespectToPlayer((**itr), Assets::getForceFieldTextureRegion((**itr).getPlayerForceFieldState(), (**itr).getPlayerForceFieldStateTime()));
 		}
+
+		if ((*itr)->isDisplayingName())
+		{
+			static TextureRegion tr = Assets::getPlayerNameBubbleTextureRegion();
+			static float playerYModifier = GRID_CELL_HEIGHT * 7 / 8;
+
+			std::stringstream ss;
+			ss << (*itr)->getUsername();
+			std::string playerNameText = ss.str();
+
+			float increaseBubbleModifier = 0;
+			int playerNameTextLength = playerNameText.length();
+			if (playerNameTextLength > 6)
+			{
+				playerNameTextLength -= 6;
+				increaseBubbleModifier = GRID_CELL_WIDTH * 2 / 7;
+			}
+
+			m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates((*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, GRID_CELL_WIDTH * 2 + (increaseBubbleModifier * playerNameTextLength), GRID_CELL_HEIGHT / 2, false), &tr.getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+		}
+		else if ((*itr)->isDisplayingPointer())
+		{
+			static TextureRegion tr = Assets::getPlayerPointerTextureRegion();
+			static float playerYModifier = GRID_CELL_HEIGHT * 7 / 8;
+			m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates((*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, GRID_CELL_WIDTH / 2, GRID_CELL_HEIGHT / 2, false), &tr.getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
+		}
+	}
+
+	m_spriteBatch->End();
+
+	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
+
+	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
+	{
+		if ((*itr)->isDisplayingName())
+		{
+			static DirectX::XMVECTORF32 playerNameColor = { 1, 1, 1, 1 };
+
+			std::stringstream ss;
+			ss << (*itr)->getUsername();
+			std::string playerNameText = ss.str();
+
+			static float playerYModifier = GRID_CELL_HEIGHT * 7 / 8;
+			static float playerNameFontGlyphWidth = GRID_CELL_WIDTH * 2 / 7;
+			static float playerNameFontGlyphHeight = playerNameFontGlyphWidth * 0.68421052631579;
+
+			m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, playerNameText, (*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, playerNameFontGlyphWidth, playerNameFontGlyphHeight, playerNameColor, true);
+		}
 	}
 
 	m_spriteBatch->End();
@@ -349,6 +402,33 @@ void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface
 	{
 		m_spriteBatch->Begin();
 		renderGameObject(waitingForServerInterface, Assets::getWaitingForServerInterfaceTextureRegion());
+
+		for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
+		{
+			if ((*itr)->isActive())
+			{
+				renderGameObject((*itr)->getPlayerPlatformAvatar(), Assets::getPlayerRowPlatformAvatarTextureRegion((*itr)->getPlayerPlatformAvatar()));
+			}
+		}
+
+		m_spriteBatch->End();
+
+		m_spriteBatch->Begin();
+
+		static DirectX::XMVECTORF32 playerNameColor = { 1, 1, 1, 1 };
+
+		for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
+		{
+			if ((*itr)->isActive())
+			{
+				std::stringstream ss;
+				ss << (*itr)->getPlayerName();
+				std::string playerName = ss.str();
+
+				m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, playerName, (*itr)->getFontX(), (*itr)->getFontY(), (*itr)->getFontGlyphWidth(), (*itr)->getFontGlyphHeight(), playerNameColor, true);
+			}
+		}
+
 		m_spriteBatch->End();
 	}
 
@@ -430,6 +510,26 @@ void Direct3DRenderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSet
 	std::string waitingText = "Tap anywhere to play again!";
 
 	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
+
+	m_spriteBatch->End();
+}
+
+void Direct3DRenderer::renderUIEffects(std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject)
+{
+	m_currentShaderResourceView = m_interface2ShaderResourceView;
+	m_spriteBatch->Begin();
+
+	for (std::vector<std::unique_ptr<CountDownNumberGameObject>>::iterator itr = countDownNumbers.begin(); itr != countDownNumbers.end(); itr++)
+	{
+		m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForGameObject((**itr), true), &Assets::getCountDownNumberTextureRegion(**itr).getSourceRECT(), Colors::White, DEGREES_TO_RADIANS_WP((**itr).getAngle()), XMFLOAT2(52, 40), SpriteEffects_None, 0);
+	}
+
+	renderGameObject(displayBattleGameObject, Assets::getDisplayBattleTextureRegion());
+
+	for (std::vector<std::unique_ptr<DisplayGameOverGameObject>>::iterator itr = displayGameOverGameObject.begin(); itr != displayGameOverGameObject.end(); itr++)
+	{
+		renderGameObject((**itr), Assets::getDisplayGameOverTextureRegion(**itr));
+	}
 
 	m_spriteBatch->End();
 }
@@ -716,8 +816,8 @@ void Direct3DRenderer::renderRectangleFill(Rectangle &rectangle, Color &color)
 	XMVECTORF32 bottomRight = { rect.right, rect.bottom, 0.0f };
 	XMVECTORF32 bottomLeft = { rect.left, rect.bottom, 0.0f };
 
-	XMVECTORF32 colorXMVECTORF32 = { color.red, color.green, color.blue, color.alpha }; 
-	
+	XMVECTORF32 colorXMVECTORF32 = { color.red, color.green, color.blue, color.alpha };
+
 	VertexPositionColor topLeftVertexPositionColor = VertexPositionColor(topLeft, colorXMVECTORF32);
 	VertexPositionColor topRightVertexPositionColor = VertexPositionColor(topRight, colorXMVECTORF32);
 	VertexPositionColor bottomRightVertexPositionColor = VertexPositionColor(bottomRight, colorXMVECTORF32);
