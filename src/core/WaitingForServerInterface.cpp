@@ -19,7 +19,6 @@ WaitingForServerInterface::WaitingForServerInterface(float x, float y, float wid
     m_username = new char[usernameLength];
     
     std::strncpy(m_username, username, usernameLength);
-    m_username[usernameLength] = '\0';
     
     float playerRowWidth = width * 0.9f;
     float playerRowHeight = height / 8 * 0.8f;

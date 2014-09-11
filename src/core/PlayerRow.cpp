@@ -14,7 +14,6 @@
 
 PlayerRow::PlayerRow(float x, float y, float width, float height)
 {
-    m_playerName = nullptr;
     m_fFontX = x + height * 3 / 4;
     m_fFontY = y;
     m_fFontGlyphWidth = (width - height) / 12;
@@ -25,11 +24,8 @@ PlayerRow::PlayerRow(float x, float y, float width, float height)
 
 PlayerRow::~PlayerRow()
 {
-    if(m_playerName != nullptr)
-    {
-        delete m_playerName;
-        m_playerName = NULL;
-    }
+	delete m_playerName;
+	m_playerName = NULL;
 }
 
 void PlayerRow::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *keyName, const char *keyPlatform, int playerIndex)
@@ -38,12 +34,6 @@ void PlayerRow::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *
     {
         const char *username = d[keyName].GetString();
         int usernameLength = (int) strlen(username);
-        
-        if(m_playerName != nullptr)
-        {
-            delete m_playerName;
-            m_playerName = nullptr;
-        }
         
         m_playerName = new char[usernameLength];
         
@@ -58,10 +48,10 @@ void PlayerRow::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *
 
 void PlayerRow::reset()
 {
-    if(m_playerName != nullptr)
+	if (m_playerName != nullptr)
     {
         delete m_playerName;
-        m_playerName = nullptr;
+		m_playerName = nullptr;
     }
     
     m_playerRowPlatformAvatar->setPlayerPlatform(PLATFORM_UNKNOWN);
