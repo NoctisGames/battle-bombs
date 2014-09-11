@@ -154,9 +154,9 @@ namespace BattleBombs
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
                         _page.m_d3dInterop.onChatReceived(preGameUpdate);
-                    });
 
-                    WarpClient.GetInstance().JoinRoomInRange(0, 7, true);
+                        WarpClient.GetInstance().JoinRoomInRange(0, 7, true);
+                    });
                 }
                 else
                 {
