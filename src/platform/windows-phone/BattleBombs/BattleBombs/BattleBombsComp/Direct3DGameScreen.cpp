@@ -103,6 +103,18 @@ void Direct3DGameScreen::handleSound()
 
 		switch (soundId)
 		{
+		case SOUND_COUNT_DOWN_3:
+			Direct3DAssets::getInstance()->m_countDown3Sound->play();
+			break;
+		case SOUND_COUNT_DOWN_2:
+			Direct3DAssets::getInstance()->m_countDown2Sound->play();
+			break;
+		case SOUND_COUNT_DOWN_1:
+			Direct3DAssets::getInstance()->m_countDown1Sound->play();
+			break;
+		case SOUND_BATTLE:
+			Direct3DAssets::getInstance()->m_battleSound->play();
+			break;
 		case SOUND_PLANT_BOMB:
 			Direct3DAssets::getInstance()->m_plantBombSound->play();
 			break;
@@ -129,6 +141,12 @@ void Direct3DGameScreen::handleSound()
 			break;
 		case SOUND_DEATH:
 			Direct3DAssets::getInstance()->m_deathSound->play();
+			break;
+		case SOUND_GAME_SET:
+			Direct3DAssets::getInstance()->m_gameSetSound->play();
+			break;
+		case SOUND_DRAW:
+			Direct3DAssets::getInstance()->m_drawSound->play();
 			break;
 		default:
 			continue;
