@@ -22,12 +22,6 @@ PlayerRow::PlayerRow(float x, float y, float width, float height)
     m_isActive = false;
 }
 
-PlayerRow::~PlayerRow()
-{
-	delete m_playerName;
-	m_playerName = NULL;
-}
-
 void PlayerRow::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *keyName, const char *keyPlatform, int playerIndex)
 {
     if(d.HasMember(keyName) && d.HasMember(keyPlatform))
@@ -38,6 +32,7 @@ void PlayerRow::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *
         m_playerName = new char[usernameLength];
         
         std::strncpy(m_playerName, username, usernameLength);
+		m_playerName[usernameLength] = '\0';
         
         m_playerRowPlatformAvatar->setPlayerPlatform(d[keyPlatform].GetInt());
         

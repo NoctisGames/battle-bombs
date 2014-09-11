@@ -7,6 +7,7 @@
 //
 
 #include "WaitingForServerInterface.h"
+#include "PlayerRowPlatformAvatar.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
 #include "GameEvent.h"

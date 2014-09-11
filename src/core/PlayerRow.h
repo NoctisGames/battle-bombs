@@ -12,14 +12,14 @@
 #include "GameObject.h"
 #include "rapidjson/document.h"
 
+#include <memory>
+
 class PlayerRowPlatformAvatar;
 
 class PlayerRow
 {
 public:
 	PlayerRow(float x, float y, float width, float height);
-    
-    ~PlayerRow();
     
     void handlePlayerNameAndPlatform(rapidjson::Document &d, const char *keyName, const char *keyPlatform, int playerIndex);
     
