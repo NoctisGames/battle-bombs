@@ -33,7 +33,7 @@ namespace BattleBombsComp
 		m_username[usernameLength] = '\0';
 
 		m_isOffline = isOffline;
-		m_gameScreen = std::unique_ptr<Direct3DGameScreen>(new Direct3DGameScreen(usernameCharArray, (int)NativeResolution.Width, (int)NativeResolution.Height, isOffline));
+		m_gameScreen = std::unique_ptr<Direct3DGameScreen>(new Direct3DGameScreen(usernameCharArray, (int)NativeResolution.Width, (int)NativeResolution.Height, (int)WindowBounds.Width, (int)WindowBounds.Height, isOffline));
 
 		ComPtr<Direct3DContentProvider> provider = Make<Direct3DContentProvider>(this);
 		return reinterpret_cast<IDrawingSurfaceContentProvider^>(provider.Get());
