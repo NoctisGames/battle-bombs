@@ -262,7 +262,7 @@ namespace BattleBombsComp
 			{
 				m_gameScreen->resetTimeSinceLastClientEvent();
 
-				m_winRtCallback->Invoke("SEND_CHAT", "KEEP_ALIVE");
+				m_winRtCallback->Invoke("SEND_CHAT", "KEEP_ALIVE,3");
 			}
 		}
 	}

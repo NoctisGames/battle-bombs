@@ -107,13 +107,13 @@ namespace BattleBombs
                 if (e.Result == CustomMessageBoxResult.LeftButton)
                 {
                     var username = tb.Text;
-                    if (username.Length >= 3 && username.Length <= 15)
+                    if (username.Length >= 3 && username.Length <= 12)
                     {
                         NavigationService.Navigate(new Uri((forOnlinePlay ? "/GamePage.xaml?username=" : "/OfflineGamePage.xaml?username=") + username, UriKind.Relative));
                     }
                     else
                     {
-                        MessageBox.Show("Please enter a username between 3 and 15 characters.");
+                        MessageBox.Show("Please enter a username between 3 and 12 characters.");
                     }
                 }
             };
