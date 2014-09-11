@@ -109,7 +109,10 @@ namespace BattleBombs
                     var username = tb.Text;
                     if (username.Length >= 3 && username.Length <= 12)
                     {
-                        NavigationService.Navigate(new Uri((forOnlinePlay ? "/GamePage.xaml?username=" : "/OfflineGamePage.xaml?username=") + username, UriKind.Relative));
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                        {
+                            NavigationService.Navigate(new Uri((forOnlinePlay ? "/GamePage.xaml?username=" : "/OfflineGamePage.xaml?username=") + username, UriKind.Relative));
+                        });
                     }
                     else
                     {
