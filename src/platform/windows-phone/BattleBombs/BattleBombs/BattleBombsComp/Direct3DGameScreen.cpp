@@ -25,7 +25,7 @@ Direct3DGameScreen::Direct3DGameScreen(const char *username, int deviceScreenWid
 	m_iDeviceScreenHeight = deviceScreenHeight;
 	m_fGameScreenToDeviceScreenWidthRatio = deviceScreenWidth / SCREEN_WIDTH;
 	m_fGameScreenToDeviceScreenHeightRatio = deviceScreenHeight / SCREEN_HEIGHT;
-	m_fDipToPixelRatio = deviceScreenHeight == 768 ? 1.6f : deviceScreenHeight == 720 ? 1.5f : 1.0f;
+	m_fDipToPixelRatio = (deviceScreenHeight >= 767 && deviceScreenHeight <= 769) ? 1.6f : (deviceScreenHeight >= 719 && deviceScreenHeight <= 721) ? 1.5f : 1.0f;
 }
 
 void Direct3DGameScreen::load(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView)
