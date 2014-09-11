@@ -40,27 +40,23 @@
 #include "CountDownNumberGameObject.h"
 #include "DisplayBattleGameObject.h"
 #include "DisplayGameOverGameObject.h"
+#include "PlayerRow.h"
+#include "PlayerRowPlatformAvatar.h"
 
 GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 {
     int usernameLength = (int) strlen(username);
     
-    m_username = new char[usernameLength];
+    m_username = std::unique_ptr<char>(new char[usernameLength]);
     
-    std::strncpy(m_username, username, usernameLength);
-    m_username[usernameLength] = '\0';
+    std::strncpy(m_username.get(), username, usernameLength);
+    m_username.get()[usernameLength] = '\0';
     
     m_isOffline = isOffline;
     
     init();
     
     m_gameState = m_isOffline ? WAITING : WAITING_FOR_CONNECTION;
-}
-
-GameScreen::~GameScreen()
-{
-    delete m_username;
-    m_username = NULL;
 }
 
 void GameScreen::handleServerUpdate(const char *message)
@@ -73,7 +69,7 @@ void GameScreen::init()
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
     m_displayBattle = std::unique_ptr<DisplayBattleGameObject>(new DisplayBattleGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f));
     m_gameListener = std::unique_ptr<GameListener>(new GameListener());
-    m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10.38805970149248f, 11.2298507475f, m_username));
+    m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10.38805970149248f, 11.2298507475f, m_username.get()));
     m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface());
     m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
     
@@ -110,6 +106,8 @@ void GameScreen::onResume()
 void GameScreen::onPause()
 {
     Assets::getInstance()->setMusicId(MUSIC_STOP);
+    
+    m_renderer->cleanUp();
     
     platformPause();
 }
@@ -812,7 +810,7 @@ void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *
     if(isBeginGame && d.HasMember(keyIndex))
     {
         const char *username = d[keyIndex].GetString();
-        if (std::strcmp(username, m_username) == 0)
+        if (std::strcmp(username, m_username.get()) == 0)
         {
             // Now we know which player index the user is
             m_sPlayerIndex = playerIndex;

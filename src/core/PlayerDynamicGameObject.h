@@ -127,7 +127,7 @@ protected:
     GameListener *m_gameListener;
     
 private:
-    char *m_username;
+    std::unique_ptr<char> m_username;
     bool m_isClientPlayer;
     bool m_isBot;
     bool m_isDisplayingName;

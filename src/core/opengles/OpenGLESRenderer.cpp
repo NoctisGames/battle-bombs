@@ -88,11 +88,6 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     player_sprites_loaded[7] = false;
 }
 
-OpenGLESRenderer::~OpenGLESRenderer()
-{
-    cleanUp();
-}
-
 void OpenGLESRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
     glDeleteTextures(1, &m_gameTexture);

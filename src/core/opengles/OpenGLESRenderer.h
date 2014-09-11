@@ -24,8 +24,6 @@ class OpenGLESRenderer : public Renderer
 public:
     OpenGLESRenderer(int width, int height);
     
-    ~OpenGLESRenderer();
-    
     virtual void loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
     
     virtual void clearScreenWithColor(float r, float g, float b, float a);

@@ -9,23 +9,17 @@
 #ifndef __battle_bombs__Vertices2D__
 #define __battle_bombs__Vertices2D__
 
+#include <memory>
+
 extern "C"
 {
 #include "platform_gl.h"
 }
 
-typedef struct {
-    GLfloat *vertices;
-    GLfloat *textureCoords;
-    GLfloat *colors;
-} VertexData;
-
 class Vertices2D
 {
 public:
     Vertices2D(int maxNumVertices, bool isUsingTextureCoordinates, bool isUsingColors);
-    
-    ~Vertices2D();
     
     void resetIndex();
     
@@ -42,7 +36,9 @@ public:
     void drawPrimitiveType(GLenum mode, int offset, GLshort *indices, int numVertices);
 
 private:
-    VertexData m_vertexData;
+    std::unique_ptr<GLfloat> m_vertices;
+    std::unique_ptr<GLfloat> m_textureCoords;
+    std::unique_ptr<GLfloat> m_colors;
     int m_iVerticesIndex;
     int m_iTextureCoordsIndex;
     int m_iColorsIndex;

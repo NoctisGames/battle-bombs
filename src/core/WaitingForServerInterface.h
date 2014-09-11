@@ -21,13 +21,11 @@ class WaitingForServerInterface : public GameObject
 public:
 	WaitingForServerInterface(float x, float y, float width, float height, const char *username);
     
-    ~WaitingForServerInterface();
-    
     void update(float deltaTime, Game_State gameState);
     
     void handlePreGameServerUpdate(rapidjson::Document &d);
     
-    char * getUsername();
+    const char * getUsername();
     
     std::vector<std::unique_ptr<PlayerRow >> & getPlayerRows();
     
@@ -45,7 +43,7 @@ public:
     
 private:
     std::vector<std::unique_ptr<PlayerRow>> m_playerRows;
-    char *m_username;
+    const char *m_username;
     float m_fTimeToNextRound;
     int m_iPreGamePhase;
     bool m_renderTimeToNextRound;

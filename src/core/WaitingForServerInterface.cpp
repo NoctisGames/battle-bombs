@@ -15,11 +15,7 @@
 
 WaitingForServerInterface::WaitingForServerInterface(float x, float y, float width, float height, const char *username) : GameObject(x, y, width, height, 0)
 {
-    int usernameLength = (int) strlen(username);
-    
-    m_username = new char[usernameLength];
-    
-    std::strncpy(m_username, username, usernameLength);
+    m_username = username;
     
     float playerRowWidth = width * 0.9f;
     float playerRowHeight = height / 8 * 0.8f;
@@ -42,12 +38,6 @@ WaitingForServerInterface::WaitingForServerInterface(float x, float y, float wid
     m_renderTimeToNextRound = false;
     m_renderPlayersList = false;
     m_renderMessage = true;
-}
-
-WaitingForServerInterface::~WaitingForServerInterface()
-{
-    delete m_username;
-    m_username = NULL;
 }
 
 void WaitingForServerInterface::update(float deltaTime, Game_State gameState)
@@ -157,7 +147,7 @@ void WaitingForServerInterface::handlePreGameServerUpdate(rapidjson::Document &d
     }
 }
 
-char * WaitingForServerInterface::getUsername()
+const char * WaitingForServerInterface::getUsername()
 {
     return m_username;
 }

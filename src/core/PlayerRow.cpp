@@ -29,10 +29,10 @@ void PlayerRow::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *
         const char *username = d[keyName].GetString();
         int usernameLength = (int) strlen(username);
         
-        m_playerName = new char[usernameLength];
+        m_playerName = std::unique_ptr<char>(new char[usernameLength]);
         
-        std::strncpy(m_playerName, username, usernameLength);
-		m_playerName[usernameLength] = '\0';
+        std::strncpy(m_playerName.get(), username, usernameLength);
+		m_playerName.get()[usernameLength] = '\0';
         
         m_playerRowPlatformAvatar->setPlayerPlatform(d[keyPlatform].GetInt());
         
@@ -49,7 +49,7 @@ void PlayerRow::reset()
 
 char * PlayerRow::getPlayerName()
 {
-    return m_playerName;
+    return m_playerName.get();
 }
 
 PlayerRowPlatformAvatar & PlayerRow::getPlayerPlatformAvatar()

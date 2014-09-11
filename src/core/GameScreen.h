@@ -30,8 +30,6 @@ class GameScreen : public GameSession
 public:
 	GameScreen(const char *username, bool isOffline = false);
     
-    ~GameScreen();
-    
     virtual void touchToWorld(TouchEvent &touchEvent) = 0;
     
     virtual void platformResume() = 0;
@@ -74,7 +72,7 @@ public:
 
 protected:
     std::unique_ptr<Renderer> m_renderer;
-    char *m_username;
+    std::unique_ptr<char> m_username;
     PlayerDynamicGameObject *m_player; // Set once we figure out which player index we are.
     short m_sPlayerIndex;
 	std::unique_ptr<Vector2D> m_touchPoint;

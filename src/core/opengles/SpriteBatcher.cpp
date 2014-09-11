@@ -22,11 +22,6 @@ SpriteBatcher::SpriteBatcher(int maxSprites, bool useColors)
     generateIndices(maxSprites);
 }
 
-SpriteBatcher::~SpriteBatcher()
-{
-    delete[] m_indices;
-}
-
 void SpriteBatcher::beginBatch()
 {
     m_vertices->resetIndex();
@@ -39,7 +34,7 @@ void SpriteBatcher::endBatchWithTexture(GLuint &texture)
     {
         glBindTexture(GL_TEXTURE_2D, texture);
         m_vertices->bind();
-        m_vertices->drawPrimitiveType(GL_TRIANGLES, 0, m_indices, m_iNumSprites * 6);
+        m_vertices->drawPrimitiveType(GL_TRIANGLES, 0, m_indices.get(), m_iNumSprites * 6);
         m_vertices->unbind();
         glBindTexture(GL_TEXTURE_2D, 0);
     }
@@ -252,17 +247,17 @@ void SpriteBatcher::addColorCoordinates(Color &color)
 void SpriteBatcher::generateIndices(int maxSprites)
 {
     int numIndices = maxSprites * 6;
-    m_indices = new GLshort[numIndices];
+    m_indices = std::unique_ptr<GLshort>(new GLshort[numIndices]);
     
     GLshort j = 0;
     
     for (int i = 0; i < numIndices; i += 6, j += 4)
     {
-        m_indices[i + 0] = j + 0;
-        m_indices[i + 1] = j + 1;
-        m_indices[i + 2] = j + 2;
-        m_indices[i + 3] = j + 2;
-        m_indices[i + 4] = j + 3;
-        m_indices[i + 5] = j + 0;
+        m_indices.get()[i + 0] = j + 0;
+        m_indices.get()[i + 1] = j + 1;
+        m_indices.get()[i + 2] = j + 2;
+        m_indices.get()[i + 3] = j + 2;
+        m_indices.get()[i + 4] = j + 3;
+        m_indices.get()[i + 5] = j + 0;
     }
 }

@@ -40,7 +40,7 @@ public:
     bool isActive();
     
 private:
-    char *m_playerName;
+    std::unique_ptr<char> m_playerName;
     std::unique_ptr<PlayerRowPlatformAvatar> m_playerRowPlatformAvatar;
     float m_fFontX;
     float m_fFontY;

@@ -482,17 +482,17 @@ void PlayerDynamicGameObject::setIsBot(bool isBot)
 
 char * PlayerDynamicGameObject::getUsername()
 {
-    return m_username;
+    return m_username.get();
 }
 
 void PlayerDynamicGameObject::setUsername(const char *username)
 {
     int usernameLength = (int) strlen(username);
     
-    m_username = new char[usernameLength];
+    m_username = std::unique_ptr<char>(new char[usernameLength]);
     
-    std::strncpy(m_username, username, usernameLength);
-	m_username[usernameLength] = '\0';
+    std::strncpy(m_username.get(), username, usernameLength);
+	m_username.get()[usernameLength] = '\0';
 }
 
 void PlayerDynamicGameObject::setClientPlayer(bool isClientPlayer)
