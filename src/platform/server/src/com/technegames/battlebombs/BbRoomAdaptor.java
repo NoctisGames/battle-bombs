@@ -52,6 +52,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final int PLAYER_EVENT_DIRECTION_BASE = 10000000;
     private static final int PLAYER_EVENT_GRID_X_BASE = 100000;
     private static final int PLAYER_EVENT_GRID_Y_BASE = 1000;
+    private static final int PLAYER_EVENT_MOD_BASE = 100;
 
     // smooth constant elements to play with
     private static final float movAveragePeriod = 40; // #frames involved in average calc (suggested values 5-100)
@@ -512,8 +513,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 int eventId = PLAYER_DEATH;
                 eventId += PLAYER_EVENT_BASE * playerIndex;
                 eventId += PLAYER_EVENT_DIRECTION_BASE * get_player_direction(_room.getId(), playerIndex);
-                eventId += PLAYER_EVENT_GRID_X_BASE * get_player_x(_room.getId(), playerIndex);
-                eventId += PLAYER_EVENT_GRID_Y_BASE * get_player_y(_room.getId(), playerIndex);
 
                 String playerDeathEventString = String.valueOf(eventId);
                 playerDeathEventString = playerDeathEventString.concat(",0");
