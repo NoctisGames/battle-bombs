@@ -73,7 +73,7 @@ void GameScreen::init()
 	m_gameListener.release();
 	m_gameListener = std::unique_ptr<GameListener>(new GameListener());
 	m_waitingForServerInterface.release();
-	m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10.38805970149248f, 11.2298507475f, m_username.get()));
+	m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, 5.81492537375f, 10.38805970149248f, 11.2298507475f, m_username.get()));
 	m_waitingForLocalSettingsInterface.release();
 	m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface());
 	m_interfaceOverlay.release();

@@ -43,6 +43,7 @@ WaitingForServerInterface::WaitingForServerInterface(float x, float y, float wid
 void WaitingForServerInterface::update(float deltaTime, Game_State gameState)
 {
     m_renderPlayersList = gameState == WAITING_FOR_SERVER;
+    m_renderMessage = gameState != WAITING_FOR_SERVER;
     
     if(m_fTimeToNextRound > 0)
     {

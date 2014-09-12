@@ -22,12 +22,12 @@ Renderer::Renderer()
 
 void Renderer::calcScrollYForPlayer(PlayerDynamicGameObject &player)
 {
-	if (player.getPosition().getY() > (SCREEN_HEIGHT / 2 + GRID_CELL_HEIGHT))
+	if (player.getPosition().getY() > (SCREEN_HEIGHT / 2))
 	{
-		m_fScrollY = player.getPosition().getY() - (SCREEN_HEIGHT / 2 + GRID_CELL_HEIGHT);
-		if (m_fScrollY > SCREEN_HEIGHT)
+		m_fScrollY = player.getPosition().getY() - (SCREEN_HEIGHT / 2);
+		if (m_fScrollY > (SCREEN_HEIGHT + GRID_CELL_HEIGHT))
 		{
-			m_fScrollY = SCREEN_HEIGHT;
+			m_fScrollY = SCREEN_HEIGHT + GRID_CELL_HEIGHT;
 		}
 	}
 	else

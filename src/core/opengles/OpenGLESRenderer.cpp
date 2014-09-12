@@ -407,7 +407,7 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
             ss2 << waitingForServerInterface.getTimeToNextRound();
             std::string timerText = ss2.str();
             
-            m_font->renderText(*m_spriteBatcherWithColor, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 2.5f, 2.0f, 1.36842105263158f, timerColor, true);
+            m_font->renderText(*m_spriteBatcherWithColor, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 3, 2.0f, 1.36842105263158f, timerColor, true);
         }
         
         if(waitingForServerInterface.renderMessage())
@@ -422,44 +422,37 @@ void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface
             float fontSize = 0.5f;
             
             std::stringstream ss;
-            if(waitingForServerInterface.renderPlayersList())
+            switch (waitingForServerInterface.getPreGamePhase())
             {
-                ss << "Waiting for next Round";
-            }
-            else
-            {
-                switch (waitingForServerInterface.getPreGamePhase())
-                {
-                    case CONNECTING:
-                        ss << "Connecting as " << waitingForServerInterface.getUsername();
-                        break;
-                    case CONNECTION_ERROR:
-                        ss << "There was an error connecting to Battle Bombs...";
-                        fontSize = 0.42f;
-                        break;
-                    case BATTLE_BOMBS_BETA_CLOSED:
-                        ss << "Get the non-Beta Battle Bombs on the app store!";
-                        fontSize = 0.42f;
-                        break;
-                    case FINDING_ROOM_TO_JOIN:
-                        ss << "Finding a room to join";
-                        break;
-                    case ROOM_JOINED_WAITING_FOR_SERVER:
-                        ss << "Waiting for next round";
-                        break;
-                    case DEFAULT:
-                    default:
-                        ss << "...";
-                        break;
-                }
+                case CONNECTING:
+                    ss << "Connecting as " << waitingForServerInterface.getUsername();
+                    break;
+                case CONNECTION_ERROR:
+                    ss << "There was an error connecting to Battle Bombs...";
+                    fontSize = 0.42f;
+                    break;
+                case BATTLE_BOMBS_BETA_CLOSED:
+                    ss << "Get the non-Beta Battle Bombs on the app store!";
+                    fontSize = 0.42f;
+                    break;
+                case FINDING_ROOM_TO_JOIN:
+                    ss << "Finding a room to join";
+                    break;
+                case ROOM_JOINED_WAITING_FOR_SERVER:
+                    ss << "Waiting for next round";
+                    break;
+                case DEFAULT:
+                default:
+                    ss << "...";
+                    break;
             }
             
             std::string waitingText = ss.str();
             
             m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, 0.5f, fontSize, fontSize, interfaceColor, true);
-            
-            m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
         }
+        
+        m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
     }
 }
 
