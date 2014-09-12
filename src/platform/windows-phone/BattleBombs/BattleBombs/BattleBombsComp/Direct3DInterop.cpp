@@ -54,7 +54,7 @@ namespace BattleBombsComp
 {
 	Direct3DInterop::Direct3DInterop() : m_timer(ref new BasicTimer())
 	{
-		m_mapType = 0;
+		// No further setup required
 	}
 
 	IDrawingSurfaceContentProvider^ Direct3DInterop::CreateContentProvider(Platform::String^ username, bool isOffline)
