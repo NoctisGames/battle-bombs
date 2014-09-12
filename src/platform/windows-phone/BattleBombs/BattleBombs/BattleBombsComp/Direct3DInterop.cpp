@@ -44,6 +44,10 @@
 #include <string.h>
 #include <sstream>
 
+// For Randomness
+#include <stdlib.h>
+#include <time.h>
+
 using namespace Windows::Foundation;
 using namespace Windows::UI::Core;
 using namespace Microsoft::WRL;
@@ -318,7 +322,10 @@ namespace BattleBombsComp
 
 		m_gameScreen->clearState();
 
-		static int _beginGameMessagesIndex = 0;
+		srand((int)time(NULL));
+
+		int _beginGameMessagesIndex = rand() % 12;
+		
 		if (_beginGameMessagesIndex == 0)
 		{
 			std::stringstream ss;
@@ -450,13 +457,6 @@ namespace BattleBombsComp
 			const char *beginGameMessage = beginGameMessageString.c_str();
 
 			m_gameScreen->handleServerUpdate(beginGameMessage);
-		}
-
-		_beginGameMessagesIndex++;
-
-		if (_beginGameMessagesIndex >= 12)
-		{
-			_beginGameMessagesIndex -= 12;
 		}
 	}
 

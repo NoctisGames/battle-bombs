@@ -92,7 +92,9 @@ namespace BattleBombs
 
         private void showEnterPlayerNameDialog(Boolean forOnlinePlay)
         {
-            var tb = new TextBox();
+            TextBox tb = new TextBox();
+            String previousUsername = SaveData.getUsername();
+            tb.Text = previousUsername;
             var box = new CustomMessageBox()
             {
                 Caption = "Player Name",
@@ -107,6 +109,7 @@ namespace BattleBombs
                 if (e.Result == CustomMessageBoxResult.LeftButton)
                 {
                     var username = tb.Text;
+                    SaveData.saveUsername(username);
                     if (username.Length >= 3 && username.Length <= 12)
                     {
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
