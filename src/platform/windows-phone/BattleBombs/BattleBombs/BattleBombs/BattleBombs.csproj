@@ -317,6 +317,9 @@
     <Reference Include="AppWarpS2WP">
       <HintPath>..\..\..\..\..\3rdparty\AppWarp\AppWarpS2WP.dll</HintPath>
     </Reference>
+    <Reference Include="GoogleAds">
+      <HintPath>..\..\..\..\..\3rdparty\GoogleMobileAdsSdkWindowsPhone8-6.5.13\GoogleAds.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>

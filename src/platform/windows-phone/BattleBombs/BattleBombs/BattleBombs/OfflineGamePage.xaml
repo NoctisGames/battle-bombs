@@ -5,6 +5,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:GoogleAds="clr-namespace:GoogleAds;assembly=GoogleAds"
     x:Class="BattleBombs.OfflineGamePage"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -16,6 +17,11 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Black">
         <DrawingSurface x:Name="DrawingSurface" Loaded="DrawingSurface_Loaded" />
+
+        <GoogleAds:AdView AdUnitID="ca-app-pub-6190265373070512/5960757181"
+                          Format="Banner"
+                          VerticalAlignment="Top"
+                          HorizontalAlignment="Center"/>
     </Grid>
 
 </phone:PhoneApplicationPage>
