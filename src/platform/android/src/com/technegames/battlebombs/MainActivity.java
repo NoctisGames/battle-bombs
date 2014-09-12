@@ -13,6 +13,7 @@ import android.widget.EditText;
 import com.technegames.battlebombs.api.ServerStatusResponse;
 import com.technegames.battlebombs.async.ApiCallAsyncTask;
 import com.technegames.battlebombs.callback.AsyncTaskCallback;
+import com.technegames.battlebombsbeta.R;
 
 public final class MainActivity extends Activity
 {

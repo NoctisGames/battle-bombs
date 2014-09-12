@@ -12,6 +12,8 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.technegames.battlebombsbeta.R;
+
 public abstract class BaseGameActivity extends Activity
 {
     private static final Logger logger = new Logger(GameActivity.class);
