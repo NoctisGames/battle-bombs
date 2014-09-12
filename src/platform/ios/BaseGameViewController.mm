@@ -15,6 +15,10 @@
 #include "game.h"
 #include "ResourceConstants.h"
 
+// AdMob
+#import "GADBannerView.h"
+#import "GADRequest.h"
+
 @interface BaseGameViewController ()
 {
     // Empty
@@ -94,6 +98,12 @@ static Logger *logger = nil;
                                              selector:@selector(onResume)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+    
+    self.bannerView.adUnitID = @"ca-app-pub-6190265373070512/1530557584";
+    self.bannerView.rootViewController = self;
+    
+    GADRequest *request = [GADRequest request];
+    [self.bannerView loadRequest:request];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -13,16 +13,16 @@ DirectXTK/
 !DirectXTK/DirectXTK_readme.txt
 
 # google-play-services_lib
-#google-play-services_lib/
+google-play-services_lib/
 !google-play-services_lib/google-play-services_lib_readme.txt
 
 # GoogleMobileAdsSdkiOS-6.11
-#GoogleMobileAdsSdkiOS-6.11.1/
-GoogleMobileAdsSdkiOS-6.11.1/GoogleMobileAdsSdkiOS-6.11.1_readme.txt
+GoogleMobileAdsSdkiOS-6.11.1/
+!GoogleMobileAdsSdkiOS-6.11.1/GoogleMobileAdsSdkiOS-6.11.1_readme.txt
 
 # gson
-#gson/
-! gson/gson_readme.txt
+gson/
+!gson/gson_readme.txt
 
 # libpng
 libpng/

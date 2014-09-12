@@ -8,10 +8,14 @@
 
 #import <GLKit/GLKit.h>
 
+@class GADBannerView;
+
 @interface BaseGameViewController : GLKViewController
 {
     
 }
+
+@property (strong, nonatomic) IBOutlet GADBannerView *bannerView;
 
 @property (strong, nonatomic) NSString *username;
 
