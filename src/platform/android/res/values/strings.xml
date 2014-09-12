@@ -33,4 +33,7 @@
     <!-- JSON Request Message -->
     <string name="json_request_progress_message">One Moment&#8230;</string>
 
+    <!-- Google AdMob -->
+    <string name="banner_ad_unit_id">ca-app-pub-6190265373070512/6100357986</string>
+
 </resources>
