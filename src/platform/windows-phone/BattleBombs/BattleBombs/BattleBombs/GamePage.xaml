@@ -21,6 +21,8 @@
 
         <GoogleAds:AdView AdUnitID="ca-app-pub-6190265373070512/5960757181"
                           Format="Banner"
+                          Width="320"
+                          Height="50"
                           VerticalAlignment="Top"
                           HorizontalAlignment="Center"/>
     </Grid>
