@@ -7,6 +7,7 @@ import java.net.URL;
 
 import android.os.AsyncTask;
 
+import com.technegames.battlebombs.ApiConstants;
 import com.technegames.battlebombs.HttpHeaderLogger;
 import com.technegames.battlebombs.IOUtils;
 import com.technegames.battlebombs.InstanceManager;
@@ -43,7 +44,7 @@ public final class ApiCallAsyncTask extends AsyncTask<Object, Void, ServerStatus
         {
             try
             {
-                URL url = new URL("https://s3.amazonaws.com/battlebombs/bb_01.json");
+                URL url = new URL(ApiConstants.SERVER_STATUS_URL);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setReadTimeout(70000);

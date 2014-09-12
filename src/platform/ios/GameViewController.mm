@@ -9,6 +9,7 @@
 #define APPWARP_APP_KEY         @"1bc691b6-8c0f-4247-9"
 #define APPWARP_SECRET_KEY      @"139f6094-4e04-4041-9"
 #define APPWARP_HOST_ADDRESS    @"191.234.54.124"
+#define APPWARP_AUTH_DATA       @"T3chn3G4m35_01"
 
 #import "GameViewController.h"
 
@@ -56,7 +57,7 @@ static NSString * const PHASE = @"phase";
     
     on_chat_received([preGameUpdate UTF8String]);
     
-    [warpClient connectWithUserName:self.username authData:@"T3chn3G4m35"];
+    [warpClient connectWithUserName:self.username authData:APPWARP_AUTH_DATA];
 }
 
 #pragma mark <ConnectionRequestListener>
@@ -73,6 +74,12 @@ static NSString * const PHASE = @"phase";
         on_chat_received([preGameUpdate UTF8String]);
         
         [[WarpClient getInstance] joinRoomInRangeBetweenMinUsers:0 andMaxUsers:7 maxPrefered:YES];
+    }
+    else if(event.result == 2)
+    {
+        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, BATTLE_BOMBS_BETA_CLOSED];
+        
+        on_chat_received([preGameUpdate UTF8String]);
     }
     else
     {

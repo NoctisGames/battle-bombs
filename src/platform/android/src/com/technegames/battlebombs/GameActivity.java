@@ -33,6 +33,7 @@ public final class GameActivity extends BaseGameActivity implements ConnectionRe
     private static final int FINDING_ROOM_TO_JOIN = 2;
     private static final int ROOM_JOINED_WAITING_FOR_SERVER = 3;
     private static final int CONNECTION_ERROR = 4;
+    private static final int BATTLE_BOMBS_BETA_CLOSED = 5;
 
     static
     {
@@ -75,7 +76,7 @@ public final class GameActivity extends BaseGameActivity implements ConnectionRe
                 }
             });
 
-            WarpClient.getInstance().connectWithUserName(_username, "T3chn3G4m35");
+            WarpClient.getInstance().connectWithUserName(_username, AppWarpConstants.APPWARP_AUTH_DATA);
         }
         catch (Exception e)
         {
@@ -131,6 +132,19 @@ public final class GameActivity extends BaseGameActivity implements ConnectionRe
             {
                 logger.error(e.toString(), e);
             }
+        }
+        else if (arg0.getResult() == 2)
+        {
+            final String preGameUpdate = String.format(Locale.US, "{\"%s\":%d,\"%s\":%d}", EVENT_TYPE, PRE_GAME, PHASE, BATTLE_BOMBS_BETA_CLOSED);
+
+            runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    _rendererWrapper.onChatReceived(preGameUpdate);
+                }
+            });
         }
         else
         {

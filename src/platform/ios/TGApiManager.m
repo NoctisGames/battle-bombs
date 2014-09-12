@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
+#define SERVER_STATUS_URL @"https://s3.amazonaws.com/battlebombs/bb_01.json"
+
 #import "TGApiManager.h"
 
 #import "Logger.h"
@@ -44,7 +46,7 @@ static Logger *logger = nil;
 
 - (void)sendJsonRequestWithOnSuccess:(OnComplete)os andOnFailure:(OnComplete)of
 {
-    STHTTPRequest *r = [STHTTPRequest requestWithURLString:@"https://s3.amazonaws.com/battlebombs/bb_01.json"];
+    STHTTPRequest *r = [STHTTPRequest requestWithURLString:SERVER_STATUS_URL];
     [r setHeaderWithName:@"Accept" value:@"application/json"];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
