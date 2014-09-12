@@ -30,6 +30,7 @@ namespace BattleBombs
         private static int FINDING_ROOM_TO_JOIN = 2;
         private static int ROOM_JOINED_WAITING_FOR_SERVER = 3;
         private static int CONNECTION_ERROR = 4;
+        private static int BATTLE_BOMBS_BETA_CLOSED = 5;
 
         static GamePage()
         {
@@ -114,7 +115,7 @@ namespace BattleBombs
                     WarpClient.GetInstance().AddConnectionRequestListener(m_connectionRequestListener);
                     WarpClient.GetInstance().AddNotificationListener(m_notifyListener);
 
-                    WarpClient.GetInstance().Connect(m_username, "T3chn3G4m35");
+                    WarpClient.GetInstance().Connect(m_username, AppWarpConstants.APPWARP_AUTH_DATA);
                 });
             }
         }
@@ -156,6 +157,15 @@ namespace BattleBombs
                         _page.m_d3dInterop.onChatReceived(preGameUpdate);
 
                         WarpClient.GetInstance().JoinRoomInRange(0, 7, true);
+                    });
+                }
+                else if (eventObj.getResult() == 2)
+                {
+                    string preGameUpdate = "{\"" + EVENT_TYPE + "\":" + PRE_GAME + ",\"" + PHASE + "\":" + BATTLE_BOMBS_BETA_CLOSED + "}";
+
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        _page.m_d3dInterop.onChatReceived(preGameUpdate);
                     });
                 }
                 else

@@ -45,7 +45,7 @@ namespace BattleBombs
 
             WebClient webClient = new WebClient();
             webClient.DownloadStringCompleted += webClient_DownloadStringCompleted;
-            webClient.DownloadStringAsync(new Uri("https://s3.amazonaws.com/battlebombs/bb_01.json"));
+            webClient.DownloadStringAsync(new Uri(ApiConstants.SERVER_STATUS_URL));
         }
 
         private void Start_Quick_Offline_Match(object sender, RoutedEventArgs e)
