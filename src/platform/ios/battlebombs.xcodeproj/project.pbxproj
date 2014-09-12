@@ -186,7 +186,7 @@
 		0A8FBF79179E023A0039BA29 /* platform_file_utils.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = platform_file_utils.c; sourceTree = "<group>"; };
 		0A8FBF7A179E023A0039BA29 /* platform_file_utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = platform_file_utils.h; sourceTree = "<group>"; };
 		0ABADED6178E2E7800DED9FD /* platform_gl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = platform_gl.h; sourceTree = "<group>"; };
-		0ADF1874178E2185005DA99E /* Battle Bombs Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Battle Bombs Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0ADF1874178E2185005DA99E /* Battle Bombs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Battle Bombs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ADF1877178E2185005DA99E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0ADF1879178E2185005DA99E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0ADF187B178E2185005DA99E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -630,7 +630,7 @@
 		0ADF1875178E2185005DA99E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0ADF1874178E2185005DA99E /* Battle Bombs Beta.app */,
+				0ADF1874178E2185005DA99E /* Battle Bombs.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -851,7 +851,7 @@
 			);
 			name = battlebombs;
 			productName = airhockey;
-			productReference = 0ADF1874178E2185005DA99E /* Battle Bombs Beta.app */;
+			productReference = 0ADF1874178E2185005DA99E /* Battle Bombs.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1185,7 +1185,7 @@
 					"-lstdc++",
 					"-ObjC\n",
 				);
-				PRODUCT_NAME = "Battle Bombs Beta";
+				PRODUCT_NAME = "Battle Bombs";
 				PROVISIONING_PROFILE = "8EAF4C1E-601A-4C75-93B0-2E536D47D686";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
@@ -1223,7 +1223,7 @@
 					"-lstdc++",
 					"-ObjC\n",
 				);
-				PRODUCT_NAME = "Battle Bombs Beta";
+				PRODUCT_NAME = "Battle Bombs";
 				PROVISIONING_PROFILE = "8EAF4C1E-601A-4C75-93B0-2E536D47D686";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
