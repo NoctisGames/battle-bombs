@@ -33,10 +33,18 @@ public final class BbZoneAdaptor extends BaseZoneAdaptor
     {
         System.out.println("UserRequest " + user.getName());
 
-        if (!authString.equals(Globals.CURRENT_AUTH_DATA))
+        if (authString.equals(Globals.CURRENT_AUTH_DATA))
         {
+            System.out.println("UserRequest " + user.getName() + " is valid");
+        }
+        else
+        {
+            System.out.println(user.getName() + " passed an invalid authString: " + authString);
+
             if (Globals.IS_BATTLE_BOMBS_BETA_CLOSED)
             {
+                System.out.println("Battle Bombs Beta is closed");
+
                 result.code = 2; // Not Successful
                 result.sendNotification = false;
                 result.sendResponse = true;
@@ -44,6 +52,8 @@ public final class BbZoneAdaptor extends BaseZoneAdaptor
             }
             else
             {
+                System.out.println("Connection Error");
+
                 result.code = 1; // Not Successful
                 result.sendNotification = false;
                 result.sendResponse = true;
