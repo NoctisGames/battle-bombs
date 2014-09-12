@@ -1,0 +1,3 @@
+1. Download the GoogleMobileAdsSdkWindowsPhone8-6.5.13 library here: https://developers.google.com/mobile-ads-sdk/download
+2. For instructions on how to set it up, see here: https://developers.google.com/mobile-ads-sdk/docs/admob/wp/
+3. Extract its contents to the 3rdparty\GoogleMobileAdsSdkWindowsPhone8-6.5.13 directory
