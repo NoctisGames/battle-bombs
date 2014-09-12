@@ -472,6 +472,10 @@ void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface
 					ss << "There was an error connecting to Battle Bombs...";
 					fontSize = 0.42f;
 					break;
+				case BATTLE_BOMBS_BETA_CLOSED:
+					ss << "Get the non-Beta Battle Bombs on the app store!";
+					fontSize = 0.42f;
+					break;
 				case FINDING_ROOM_TO_JOIN:
 					ss << "Finding a room to join";
 					break;

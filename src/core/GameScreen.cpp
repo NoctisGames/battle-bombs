@@ -652,7 +652,7 @@ void GameScreen::processServerMessages()
                         {
                             m_gameState = WAITING_FOR_SERVER;
                         }
-                        else if(phase == CONNECTION_ERROR || BATTLE_BOMBS_BETA_CLOSED)
+						else if (phase == CONNECTION_ERROR || phase ==  BATTLE_BOMBS_BETA_CLOSED)
                         {
                             m_gameState = CONNECTION_ERROR_WAITING_FOR_INPUT;
                         }

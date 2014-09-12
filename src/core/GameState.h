@@ -13,7 +13,7 @@ typedef enum
 {
     WAITING, // Temporary state because on the first play of offline mode (it doesn't make sense to make the user tap the screen)
     WAITING_FOR_CONNECTION, // Only set when the GameScreen is first created
-    CONNECTION_ERROR_WAITING_FOR_INPUT, // Only set when the GameScreen is first created
+    CONNECTION_ERROR_WAITING_FOR_INPUT,
     WAITING_FOR_SERVER,
     WAITING_FOR_LOCAL_SETTINGS,
     COUNTING_DOWN,
