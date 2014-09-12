@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/adFragment"
-        android:name="com.technegames.battlebombs.BaseGameActivity.MyActivity$AdFragment"
+        android:name="com.technegames.battlebombs.BaseGameActivity$AdFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
