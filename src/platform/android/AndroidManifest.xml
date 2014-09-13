@@ -4,6 +4,8 @@
     android:versionCode="1"
     android:versionName="0.1.0.0" >
 
+    <!-- Signing Key Info: T3chn3G4m35, T3chn3G4m35 -->
+
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="20" />
