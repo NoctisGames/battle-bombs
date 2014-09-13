@@ -1,6 +1,6 @@
 //
 //  GameScreen.h
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -13,18 +13,22 @@
 #include "DPadControl.h"
 #include "ActiveButton.h"
 
+class GameListener;
 class TouchEvent;
 class Vector2D;
 class Rectangle;
+class Renderer;
+class WaitingForServerInterface;
+class WaitingForLocalSettingsInterface;
+class InterfaceOverlay;
+class CountDownNumberGameObject;
+class DisplayBattleGameObject;
+class DisplayGameOverGameObject;
 
 class GameScreen : public GameSession
 {
 public:
-	GameScreen(const char *username);
-    
-    ~GameScreen();
-    
-    virtual void platformInit() = 0;
+	GameScreen(const char *username, bool isOffline = false);
     
     virtual void touchToWorld(TouchEvent &touchEvent) = 0;
     
@@ -43,6 +47,8 @@ public:
 	void onPause();
     
 	void update(float deltaTime, std::vector<TouchEvent> &touchEvents);
+    
+    void present();
 	
 	int getState();
     
@@ -56,32 +62,44 @@ public:
     
     int getPlayerDirection();
     
-    short getFirstEventId();
-    
-    void eraseFirstEventId();
+    int popOldestEventId();
     
     bool isTimeToSendKeepAlive();
 
 	void resetTimeSinceLastClientEvent();
+    
+    int getNumSecondsLeft();
 
 protected:
-    char *m_username;
+    std::unique_ptr<Renderer> m_renderer;
+    std::unique_ptr<char> m_username;
     PlayerDynamicGameObject *m_player; // Set once we figure out which player index we are.
     short m_sPlayerIndex;
 	std::unique_ptr<Vector2D> m_touchPoint;
-    std::unique_ptr<Rectangle> m_bombButtonBounds;
-	std::unique_ptr<ActiveButton> m_activeButton;
-    std::unique_ptr<DPadControl> m_dPad;
 	float m_fTimeSinceLastClientEvent;
     int m_iDeviceScreenWidth;
 	int m_iDeviceScreenHeight;
 	int m_iScreenState;
 
 private:
-	std::vector<const char *> m_serverMessages;
-    std::vector<const char *> m_serverMessagesBuffer;
-	std::vector<short> m_sLocalEventIds;
-    std::vector<short> m_sLocalConsumedEventIds;
+    std::vector<std::unique_ptr<CountDownNumberGameObject>> m_countDownNumbers;
+    std::unique_ptr<DisplayBattleGameObject> m_displayBattle;
+    std::vector<std::unique_ptr<DisplayGameOverGameObject>> m_displayGameOvers;
+    std::unique_ptr<GameListener> m_gameListener;
+    std::unique_ptr<WaitingForServerInterface> m_waitingForServerInterface;
+    std::unique_ptr<WaitingForLocalSettingsInterface> m_waitingForLocalSettingsInterface;
+    std::unique_ptr<InterfaceOverlay> m_interfaceOverlay;
+    float m_fCountDownTimeLeft;
+    bool m_isGameOver;
+    float m_fTimeSinceGameOver;
+    float m_fBlackCoverTransitionAlpha;
+    bool m_isOffline;
+    bool m_hasDisplayed2;
+    bool m_hasDisplayed1;
+    
+    void updateInputWaitingForLocalSettings(std::vector<TouchEvent> &touchEvents);
+    
+    void updateInputConnectionErrorWaitingForInput(std::vector<TouchEvent> &touchEvents);
     
     virtual void updateRunning(float deltaTime);
     
@@ -91,13 +109,11 @@ private:
     
     void updateInputSpectating(std::vector<TouchEvent> &touchEvents);
     
-    void updateCommon(float deltaTime);
+    void updateGameEnding(float deltaTime);
     
     void spectateNextLivePlayer();
     
-    void updatePlayerDirection();
-    
-    void addEvent(short eventId);
+    void spectatePreviousLivePlayer();
     
     // Server Stuff
     
@@ -107,9 +123,13 @@ private:
     
     void beginSpectate(rapidjson::Document &d);
     
+    bool beginCommon(rapidjson::Document &d, bool isBeginGame);
+    
+    void gameOver(rapidjson::Document &d);
+    
     void handleBreakableBlocksArrayInDocument(rapidjson::Document &d);
     
-    virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex, bool isBeginGame);
+    virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame);
 };
 
 #endif /* GAME_SCREEN_H */

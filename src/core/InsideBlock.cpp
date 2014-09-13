@@ -1,6 +1,6 @@
 //
 //  InsideBlock.cpp
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 3/24/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.

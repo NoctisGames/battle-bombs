@@ -1,6 +1,6 @@
 //
 //  Font.cpp
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -42,7 +42,7 @@ void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, 
 {
 	if (isCentered)
 	{
-		int len = text.length();
+		int len = (int) text.length();
 		float result = width / 2;
 		x -= len * result;
 		x += width / 2;
@@ -54,7 +54,7 @@ void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, 
 
 	for (unsigned int i = 0; i < text.length(); i++)
 	{
-		int c = ((int) text.at(i)) - 16;
+		int c = ((int) text.at(i));
 
 		if (c < 0 || c > 127)
 		{
@@ -83,7 +83,7 @@ void Font::renderText(DirectX::SpriteBatch &spriteBatcher, ID3D11ShaderResourceV
 
 	for (unsigned int i = 0; i < text.length(); i++)
 	{
-		int c = ((int)text.at(i)) - 16;
+		int c = ((int)text.at(i));
 
 		if (c < 0 || c > 127)
 		{

@@ -1,46 +1,64 @@
 //
 //  BombGameObject.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 4/28/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__BombGameObject__
-#define __bomberparty__BombGameObject__
+#ifndef __battlebombs__BombGameObject__
+#define __battlebombs__BombGameObject__
 
 #include "pch.h"
 #include "DynamicGridGameObject.h"
+#include "GameConstants.h"
 
 #include <vector>
 #include <memory>
 
 class PlayerDynamicGameObject;
 class Explosion;
+class MapBorder;
 class InsideBlock;
 class BreakableBlock;
 
 class BombGameObject : public DynamicGridGameObject
 {
 public:
-    BombGameObject(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY, float width = 0.8f, float height = 0.8f);
+    BombGameObject(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY, float width = GRID_CELL_WIDTH * 8 / 5, float height = GRID_CELL_HEIGHT * 8 / 5);
     
-    void update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+    void update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     
     float getStateTime();
     
-    float isExploding();
+    bool isExploding();
+    
+    bool isDestroyed();
+
+	void pushed(int direction);
+
+	void onPickedUp();
+    
+    short getPower();
+
+	virtual void updateBounds();
+
+	virtual Rectangle & getBoundsForGridLogic();
     
 private:
     PlayerDynamicGameObject *m_bombOwner;
+	std::unique_ptr<Rectangle> m_gridBounds;
     float m_fStateTime;
     float m_fSizeScalar;
+    int m_iPushedDirection;
     short m_sPower;
     bool m_isExploding;
-    
-    bool canExplodeAtPosition(Vector2D &position, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);
-    
-    bool willDestroyBlockAtPosition(Vector2D &position, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+    bool m_isDestroyed;
+	bool m_isPushed;
+	bool m_isPickedUp;
+	bool m_isRebounding;
+
+	bool isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
 };
 
-#endif /* defined(__bomberparty__BombGameObject__) */
+#endif /* defined(__battlebombs__BombGameObject__) */

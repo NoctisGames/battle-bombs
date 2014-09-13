@@ -1,6 +1,6 @@
 //
 //  game.cpp
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -52,7 +52,7 @@ void on_surface_changed(int pixelWidth, int pixelHeight, int dpWidth, int dpHeig
     gameScreen->setDpDimensions(dpWidth, dpHeight);
 }
 
-void init(const char *username)
+void init(const char *username, bool isOffline)
 {
     touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
 	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
@@ -71,7 +71,7 @@ void init(const char *username)
 	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
 	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
     
-    gameScreen = new OpenGLESGameScreen(username);
+    gameScreen = new OpenGLESGameScreen(username, isOffline);
 }
 
 void on_resume()
@@ -109,8 +109,6 @@ void present()
 void on_chat_received(const char *message)
 {
     gameScreen->handleServerUpdate(message);
-    // TODO, pass to the GameScreen, where it will be converted
-    // into a JSON Object and processed accordingly.
 }
 
 void on_touch_down(float raw_touch_x, float raw_touch_y)
@@ -145,11 +143,9 @@ short get_current_sound_id()
     return playThisSound;
 }
 
-short get_oldest_event_id()
+int get_oldest_event_id()
 {
-    short latestEventId = gameScreen->getFirstEventId();
-    gameScreen->eraseFirstEventId();
-    return latestEventId;
+    return gameScreen->popOldestEventId();
 }
 
 bool is_time_to_send_keep_alive()
@@ -195,4 +191,11 @@ int get_player_direction()
 bool handle_on_back_pressed()
 {
     return gameScreen->handleOnBackPressed();
+}
+
+#pragma mark <Offline Mode>
+
+int get_num_seconds_left()
+{
+    return gameScreen->getNumSecondsLeft();
 }

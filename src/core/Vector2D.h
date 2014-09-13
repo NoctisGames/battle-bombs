@@ -1,6 +1,6 @@
 //
 //  Vector2D.h
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -11,12 +11,8 @@
 
 class Vector2D
 {
-private:
-    float m_fX;
-    float m_fY;
-    
 public:
-    Vector2D(float x=0, float y=0) : m_fX(x), m_fY(y) {}
+    Vector2D(float x = 0, float y = 0) : m_fX(x), m_fY(y) {}
     
     Vector2D(const Vector2D &cSource);
     
@@ -52,6 +48,10 @@ public:
     
     float getX() const;
     float getY() const;
+    
+private:
+    float m_fX;
+    float m_fY;
 };
 
 #endif /* Vector2D_H */

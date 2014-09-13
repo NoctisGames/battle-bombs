@@ -1,19 +1,25 @@
 //
 //  Color.h
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__Color__
-#define __bomber_party__Color__
+#ifndef __battle_bombs__Color__
+#define __battle_bombs__Color__
 
-typedef struct {
+struct Color
+{
     float red;
     float green;
     float blue;
     float alpha;
-} Color;
 
-#endif /* defined(__bomber_party__Color__) */
+	Color(float redIn, float greenIn, float blueIn, float alphaIn) : red(redIn), green(greenIn), blue(blueIn), alpha(alphaIn)
+	{
+		// Empty
+	}
+};
+
+#endif /* defined(__battle_bombs__Color__) */

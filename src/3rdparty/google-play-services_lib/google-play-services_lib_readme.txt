@@ -1,0 +1,3 @@
+1. To download the google-play-services-lib, follow the instructions here: https://developers.google.com/mobile-ads-sdk/download
+2. Unlike iOS or WP8, there is no standalone solution. You have to use the Android SDK Manager. Once this is done, you will find the project here: …/sdk/extras/google/google_play_services/libproject/google-play-services_lib
+3. Extract its contents to the 3rdparty\google-play-services_lib directory

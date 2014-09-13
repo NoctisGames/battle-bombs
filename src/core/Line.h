@@ -1,13 +1,13 @@
 //
 //  Line.h
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__Line__
-#define __bomber_party__Line__
+#ifndef __battle_bombs__Line__
+#define __battle_bombs__Line__
 
 #include <memory>
 #include "Vector2D.h"
@@ -26,4 +26,4 @@ private:
     std::unique_ptr<Vector2D> m_end;
 };
 
-#endif /* defined(__bomber_party__Line__) */
+#endif /* defined(__battle_bombs__Line__) */

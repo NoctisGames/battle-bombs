@@ -1,6 +1,6 @@
 //
 //  image.c
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -65,7 +65,7 @@ RawImageData get_raw_image_data_from_png(const void* png_data, const int png_dat
     {
         png_info.width,
         png_info.height,
-        raw_image.size,
+        (int) raw_image.size,
         get_gl_color_format(png_info.color_type),
         raw_image.data
     };
@@ -139,7 +139,7 @@ static PngInfo read_and_update_info(const png_structp png_ptr, const png_infop i
 static DataHandle read_entire_png_image(const png_structp png_ptr, const png_infop info_ptr, const png_uint_32 height)
 {
 	const png_size_t row_size = png_get_rowbytes(png_ptr, info_ptr);
-	const int data_length = row_size * height;
+	const int data_length = (int) row_size * height;
 	assert(row_size > 0);
 
 	png_byte* raw_image = malloc(data_length);

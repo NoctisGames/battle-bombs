@@ -1,6 +1,6 @@
 //
 //  GameScreen.cpp
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -18,40 +18,66 @@
 #include "BombGameObject.h"
 #include "Explosion.h"
 #include "PowerUp.h"
+#include "PlayerDynamicGameObject.h"
+#include "BotPlayerDynamicGameObject.h"
+#include "MapSearchNode.h"
+#include "GameListener.h"
+#include "Renderer.h"
+#include "Fire.h"
+#include "Triangle.h"
+#include "MapBorder.h"
+#include "InsideBlock.h"
+#include "BreakableBlock.h"
+#include "PathFinder.h"
+#include "WaitingForServerInterface.h"
+#include "WaitingForLocalSettingsInterface.h"
+#include "InterfaceOverlay.h"
+#include "BombButton.h"
+#include "PowerUpBarItem.h"
+#include "PlayerAvatar.h"
+#include "Font.h"
+#include "SpectatorControls.h"
+#include "CountDownNumberGameObject.h"
+#include "DisplayBattleGameObject.h"
+#include "DisplayGameOverGameObject.h"
+#include "PlayerRow.h"
+#include "PlayerRowPlatformAvatar.h"
 
-GameScreen::GameScreen(const char *username) : GameSession()
+GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 {
-    int usernameLength = strlen(username);
+    int usernameLength = (int) strlen(username);
     
-    m_username = new char[usernameLength];
+    m_username = std::unique_ptr<char>(new char[usernameLength + 1]);
     
-    std::strncpy(m_username, username, usernameLength);
-    m_username[usernameLength] = '\0';
+    std::strncpy(m_username.get(), username, usernameLength);
+    m_username.get()[usernameLength] = '\0';
     
-    m_bombButtonBounds = std::unique_ptr<Rectangle>(new Rectangle(20.536f, 0, 3.456f, 2.916f));
-
-	m_activeButton = std::unique_ptr<ActiveButton>(new ActiveButton(18.5f, 1.2f , 2.5f, 2.5f));
-    
-    m_dPad = std::unique_ptr<DPadControl>(new DPadControl(2.15f, 2.15f, 4.3f, 4.3f));
+    m_isOffline = isOffline;
     
     init();
-}
-
-GameScreen::~GameScreen()
-{
-    delete m_username;
-    m_username = NULL;
+    
+    m_gameState = m_isOffline ? WAITING : WAITING_FOR_CONNECTION;
 }
 
 void GameScreen::handleServerUpdate(const char *message)
 {
-	char *copy = strdup(message);
-	m_serverMessagesBuffer.push_back(copy);
+    m_gameListener->addServerMessage(message);
 }
 
 void GameScreen::init()
 {
+	m_touchPoint.release();
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
+	m_displayBattle.release();
+	m_displayBattle = std::unique_ptr<DisplayBattleGameObject>(new DisplayBattleGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f));
+	m_gameListener.release();
+	m_gameListener = std::unique_ptr<GameListener>(new GameListener());
+	m_waitingForServerInterface.release();
+	m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, 5.81492537375f, 10.38805970149248f, 11.2298507475f, m_username.get()));
+	m_waitingForLocalSettingsInterface.release();
+	m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface());
+	m_interfaceOverlay.release();
+	m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
     
     m_player = nullptr;
     m_sPlayerIndex = -1;
@@ -61,10 +87,18 @@ void GameScreen::init()
     m_bombs.clear();
     m_explosions.clear();
     m_powerUps.clear();
+    m_countDownNumbers.clear();
+    m_displayGameOvers.clear();
     
-    m_gameState = WAITING_FOR_SERVER;
+    m_gameState = m_isOffline ? WAITING_FOR_LOCAL_SETTINGS : WAITING_FOR_SERVER;
     m_iScreenState = 0;
     m_fTimeSinceLastClientEvent = 0;
+    m_fCountDownTimeLeft = 3;
+    m_fTimeSinceGameOver = 0;
+    m_fBlackCoverTransitionAlpha = 0;
+    
+    m_hasDisplayed2 = false;
+    m_hasDisplayed1 = false;
 }
 
 void GameScreen::onResume()
@@ -79,24 +113,185 @@ void GameScreen::onPause()
 {
     Assets::getInstance()->setMusicId(MUSIC_STOP);
     
+    m_renderer->cleanUp();
+    
     platformPause();
 }
 
 void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
 {
-    m_fTimeSinceLastClientEvent += deltaTime;
+    if(m_gameState == WAITING_FOR_SERVER || m_gameState == COUNTING_DOWN || m_gameState == RUNNING || m_gameState == SPECTATING || m_gameState == GAME_ENDING)
+    {
+        m_fTimeSinceLastClientEvent += deltaTime;
+    }
     
     processServerMessages();
     
     switch (m_gameState)
     {
+        case WAITING_FOR_CONNECTION:
+            // See processServerMessages()
+            break;
+        case CONNECTION_ERROR_WAITING_FOR_INPUT:
+            updateInputConnectionErrorWaitingForInput(touchEvents);
+            break;
+        case WAITING_FOR_SERVER:
+            m_waitingForServerInterface->update(deltaTime, m_gameState);
+            break;
+        case WAITING_FOR_LOCAL_SETTINGS:
+            // TODO, allow the user to pick a map and set the number of bots
+            updateInputWaitingForLocalSettings(touchEvents);
+            m_waitingForLocalSettingsInterface->update(deltaTime);
+            break;
+        case COUNTING_DOWN:
+            m_fCountDownTimeLeft -= deltaTime;
+            if(m_fCountDownTimeLeft < 0)
+            {
+                m_countDownNumbers.clear();
+                
+                m_gameListener->playSound(SOUND_BATTLE);
+                m_gameState = RUNNING;
+                
+                for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+                {
+                    (*itr)->setIsDisplayingName(false);
+                }
+                
+                Assets::getInstance()->setMusicId(m_iMapType + 2);
+            }
+            else if(m_fCountDownTimeLeft <= 1 && !m_hasDisplayed1)
+            {
+                m_gameListener->playSound(SOUND_COUNT_DOWN_1);
+                m_countDownNumbers.push_back(std::unique_ptr<CountDownNumberGameObject>(new CountDownNumberGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 2, SCREEN_WIDTH * 2 * 0.76923076923077f, DISPLAY_1)));
+                m_hasDisplayed1 = true;
+            }
+            else if(m_fCountDownTimeLeft <= 2 && !m_hasDisplayed2)
+            {
+                m_gameListener->playSound(SOUND_COUNT_DOWN_2);
+                m_countDownNumbers.push_back(std::unique_ptr<CountDownNumberGameObject>(new CountDownNumberGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 2, SCREEN_WIDTH * 2 * 0.76923076923077f, DISPLAY_2)));
+                m_hasDisplayed2 = true;
+            }
+            
+            for (std::vector < std::unique_ptr < CountDownNumberGameObject >> ::iterator itr = m_countDownNumbers.begin(); itr != m_countDownNumbers.end(); )
+            {
+                (*itr)->update(deltaTime);
+                
+                if ((*itr)->remove())
+                {
+                    itr = m_countDownNumbers.erase(itr);
+                }
+                else
+                {
+                    itr++;
+                }
+            }
+            
+            break;
         case RUNNING:
-            updateInputRunning(touchEvents);
+            if(m_player->getPlayerState() == ALIVE && m_player->getPlayerActionState() != WINNING)
+            {
+                updateInputRunning(touchEvents);
+            }
             updateRunning(deltaTime);
             break;
         case SPECTATING:
             updateInputSpectating(touchEvents);
             updateSpectating(deltaTime);
+            break;
+        case GAME_ENDING:
+            updateGameEnding(deltaTime);
+            break;
+        default:
+            break;
+    }
+}
+
+void GameScreen::present()
+{
+    m_renderer->clearScreenWithColor(0, 0, 0, 1);
+    
+    switch (m_gameState)
+    {
+        case WAITING_FOR_CONNECTION:
+        case CONNECTION_ERROR_WAITING_FOR_INPUT:
+        case WAITING_FOR_SERVER:
+            m_renderer->beginFrame();
+            m_renderer->renderWaitingForServerInterface(*m_waitingForServerInterface);
+            m_renderer->endFrame();
+            break;
+        case WAITING_FOR_LOCAL_SETTINGS:
+            // TODO, Render interface for picking a map and setting # of bots
+            m_renderer->beginFrame();
+            m_renderer->renderWaitingForLocalSettingsInterface(*m_waitingForLocalSettingsInterface);
+            m_renderer->endFrame();
+            break;
+        case COUNTING_DOWN:
+            m_renderer->calcScrollYForPlayer(*m_player);
+            
+            m_renderer->beginFrame();
+            m_renderer->renderWorldBackground();
+            
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
+            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderExplosions(m_explosions);
+            m_renderer->renderPlayers(m_players);
+            m_renderer->renderMapBordersNear(m_mapBorders);
+            
+            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            
+            m_renderer->endFrame();
+            break;
+        case RUNNING:
+            m_renderer->calcScrollYForPlayer(*m_player);
+            
+            m_renderer->beginFrame();
+            m_renderer->renderWorldBackground();
+            
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
+            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderExplosions(m_explosions);
+            m_renderer->renderPlayers(m_players);
+            m_renderer->renderMapBordersNear(m_mapBorders);
+            m_renderer->renderInterface(*m_interfaceOverlay);
+            
+            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            
+            m_renderer->endFrame();
+            break;
+        case SPECTATING:
+            m_renderer->calcScrollYForPlayer(*m_player);
+            
+            m_renderer->beginFrame();
+            m_renderer->renderWorldBackground();
+            
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
+            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderExplosions(m_explosions);
+            m_renderer->renderPlayers(m_players);
+            m_renderer->renderMapBordersNear(m_mapBorders);
+            m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
+            
+            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            
+            m_renderer->endFrame();
+            break;
+        case GAME_ENDING:
+            m_renderer->calcScrollYForPlayer(*m_player);
+            
+            m_renderer->beginFrame();
+            m_renderer->renderWorldBackground();
+            
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
+            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderExplosions(m_explosions);
+            m_renderer->renderPlayers(m_players);
+            m_renderer->renderMapBordersNear(m_mapBorders);
+            
+            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            
+            m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
+            
+            m_renderer->endFrame();
             break;
         default:
             break;
@@ -133,22 +328,9 @@ int GameScreen::getPlayerDirection()
     return getPlayerDirectionAtIndex(m_sPlayerIndex);
 }
 
-short GameScreen::getFirstEventId()
+int GameScreen::popOldestEventId()
 {
-    if(m_sLocalConsumedEventIds.size() > 0)
-    {
-		return m_sLocalConsumedEventIds.front();
-    }
-    
-    return 0;
-}
-
-void GameScreen::eraseFirstEventId()
-{
-    if(m_sLocalConsumedEventIds.size() > 0)
-    {
-        m_sLocalConsumedEventIds.erase(m_sLocalConsumedEventIds.begin());
-    }
+    return m_gameListener->popOldestEventId();
 }
 
 bool GameScreen::isTimeToSendKeepAlive()
@@ -161,28 +343,64 @@ void GameScreen::resetTimeSinceLastClientEvent()
 	m_fTimeSinceLastClientEvent = 0;
 }
 
-// Private Methods
+int GameScreen::getNumSecondsLeft()
+{
+    return m_interfaceOverlay == nullptr ? 0 : m_interfaceOverlay->getNumSecondsLeft();
+}
+
+#pragma mark <Private>
+
+void GameScreen::updateInputWaitingForLocalSettings(std::vector<TouchEvent> &touchEvents)
+{
+    for (std::vector<TouchEvent>::iterator itr = touchEvents.begin(); itr != touchEvents.end(); itr++)
+	{
+        m_iScreenState = 1;
+	}
+}
+
+void GameScreen::updateInputConnectionErrorWaitingForInput(std::vector<TouchEvent> &touchEvents)
+{
+    for (std::vector<TouchEvent>::iterator itr = touchEvents.begin(); itr != touchEvents.end(); itr++)
+	{
+        m_iScreenState = 1;
+	}
+}
 
 void GameScreen::updateRunning(float deltaTime)
 {
-    if(m_player->isHitByExplosion(m_explosions))
+    m_player->handlePowerUps(m_powerUps);
+    
+    if(m_player->isHitByExplosion(m_explosions, m_bombs))
     {
-        addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_DEATH);
+        m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *m_player);
+        
+        m_gameState = SPECTATING;
     }
     
-    for (std::vector<short>::iterator itr = m_sLocalEventIds.begin(); itr != m_sLocalEventIds.end(); itr++)
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        if ((*itr)->isBot())
+        {
+            (*itr)->handlePowerUps(m_powerUps);
+            
+            if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
+            {
+                m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+            }
+        }
+    }
+    
+    std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
+    
+    for (std::vector<int>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)
 	{
         handlePlayerEvent((*itr));
-        
-        m_sLocalConsumedEventIds.push_back(*itr);
 	}
-	
-    m_sLocalEventIds.clear();
     
-    for (std::vector<short>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
+    for (std::vector<int>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
     {
-        short eventId = (*itr);
-        short derivedPlayerIndexFromEvent = 0;
+        int eventId = (*itr);
+        int derivedPlayerIndexFromEvent = 0;
         
         while(eventId > PLAYER_EVENT_BASE)
         {
@@ -199,6 +417,10 @@ void GameScreen::updateRunning(float deltaTime)
     
     m_sEventIds.clear();
     
+    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
+    
+    m_displayBattle->update(deltaTime);
+    
     updateCommon(deltaTime);
 }
 
@@ -211,36 +433,13 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 		switch (itr->getTouchType())
 		{
             case DOWN:
-                if(OverlapTester::isPointInRectangle(*m_touchPoint, *m_bombButtonBounds))
-                {
-                    if(m_player->isAbleToDropAdditionalBomb())
-                    {
-                        addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_PLANT_BOMB);
-                    }
-                }
-				/*else if(m_activeButton->isPointInBounds(*m_touchPoint))
-				{
-
-				}*/
-                else
-                {
-                    updatePlayerDirection();
-                }
+                m_interfaceOverlay->handleTouchDownInputRunning(*m_touchPoint, *m_player, m_players, m_bombs);
                 continue;
             case DRAGGED:
-                if(!OverlapTester::isPointInRectangle(*m_touchPoint, *m_bombButtonBounds))
-                {
-                    updatePlayerDirection();
-                }
+                m_interfaceOverlay->handleTouchDraggedInputRunning(*m_touchPoint, *m_player);
                 continue;
             case UP:
-                if(!OverlapTester::isPointInRectangle(*m_touchPoint, *m_bombButtonBounds))
-                {
-                    if(m_player->getPlayerState() == ALIVE)
-                    {
-                        addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + PLAYER_MOVE_STOP);
-                    }
-                }
+                m_interfaceOverlay->handleTouchUpInputRunning(*m_touchPoint, *m_player);
                 return;
 		}
 	}
@@ -248,12 +447,34 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 
 void GameScreen::updateSpectating(float deltaTime)
 {
-    for (std::vector<short>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
+	for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+	{
+		if ((*itr)->isBot())
+		{
+			(*itr)->handlePowerUps(m_powerUps);
+
+			if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
+			{
+				m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+			}
+		}
+	}
+
+    std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
+    
+    for (std::vector<int>::iterator itr = localConsumedEventIds.begin(); itr != localConsumedEventIds.end(); itr++)
+	{
+        handlePlayerEvent((*itr));
+	}
+    
+    for (std::vector<int>::iterator itr = m_sEventIds.begin(); itr != m_sEventIds.end(); itr++)
     {
         handlePlayerEvent((*itr));
     }
     
     m_sEventIds.clear();
+    
+    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
     
     updateCommon(deltaTime);
 }
@@ -267,144 +488,176 @@ void GameScreen::updateInputSpectating(std::vector<TouchEvent> &touchEvents)
 		switch (itr->getTouchType())
 		{
             case DOWN:
+                if(m_interfaceOverlay->handleTouchDownInputSpectating(*m_touchPoint))
+                {
+                    continue;
+                }
+                
+                // Basically, if the user isn't touching the arrows,
+                // assume they want to pan the game world using their finger
                 continue;
             case DRAGGED:
+                if(m_interfaceOverlay->handleTouchDraggedInputSpectating(*m_touchPoint))
+                {
+                    continue;
+                }
+                
+                // Basically, if the user isn't touching the arrows,
+                // assume they want to pan the game world using their finger
                 continue;
             case UP:
-                spectateNextLivePlayer();
+                Spectator_Control_State spectatorControlState = m_interfaceOverlay->handleTouchUpInputSpectating(*m_touchPoint);
+                if(spectatorControlState == LEFT_ARROW_HIGHLIGHTED)
+                {
+                    spectatePreviousLivePlayer();
+                }
+                else if(spectatorControlState == RIGHT_ARROW_HIGHLIGHTED)
+                {
+                    spectateNextLivePlayer();
+                }
                 return;
 		}
 	}
 }
 
-void GameScreen::updateCommon(float deltaTime)
+void GameScreen::updateGameEnding(float deltaTime)
 {
-    for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = m_bombs.begin(); itr != m_bombs.end(); )
+    m_fTimeSinceGameOver += deltaTime;
+    
+    for (std::vector < std::unique_ptr < DisplayGameOverGameObject >> ::iterator itr = m_displayGameOvers.begin(); itr != m_displayGameOvers.end(); itr++)
     {
-		(**itr).update(deltaTime, m_explosions, m_insideBlocks, m_breakableBlocks);
-        
-        if((**itr).isExploding())
-        {
-            itr = m_bombs.erase(itr);
-        }
-        else
-        {
-            itr++;
-        }
+        (*itr)->update(deltaTime);
     }
     
-    for (std::vector<std::unique_ptr<BreakableBlock>>::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end(); )
+    if(m_fTimeSinceGameOver > 6)
     {
-        if((**itr).isDestroyed())
+        m_fBlackCoverTransitionAlpha += deltaTime * 0.40f;
+        if(m_fBlackCoverTransitionAlpha > 1)
         {
-			if((**itr).hasPowerUp())
-			{
-				m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp((**itr).getX(), (**itr).getY(), (**itr).getPowerUpFlag())));
-			}
-            itr = m_breakableBlocks.erase(itr);
-        }
-        else
-        {
-            itr++;
+            Assets::getInstance()->setMusicId(MUSIC_STOP);
+            
+            init();
         }
     }
-    
-    for (std::vector<std::unique_ptr<Explosion>>::iterator itr = m_explosions.begin(); itr != m_explosions.end(); )
+    else
     {
-		(**itr).update(deltaTime);
-        
-        if((**itr).isComplete())
-        {
-            itr = m_explosions.erase(itr);
-        }
-        else
-        {
-            itr++;
-        }
+        updateSpectating(deltaTime / (m_fTimeSinceGameOver + 1));
     }
-    
-    for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-    {
-		(**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks, m_powerUps);
-    }
-    
-	for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = m_powerUps.begin(); itr != m_powerUps.end(); )
-	{
-		if((**itr).isPickedUp())
-		{
-			itr = m_powerUps.erase(itr);
-		}
-		else
-		{
-			itr++;
-		}
-	}
 }
 
 void GameScreen::spectateNextLivePlayer()
 {
     short playerIndex = m_sPlayerIndex >= 0 ? m_sPlayerIndex : 0;
-    playerIndex++;
-    if (playerIndex < m_players.size())
+    for(int i = 0; i < m_players.size(); i++)
     {
-        while (playerIndex < m_players.size() && m_players.at(playerIndex)->getPlayerState() != ALIVE)
+        playerIndex++;
+        if(playerIndex == m_players.size())
         {
-            playerIndex++;
+            playerIndex = 0;
+        }
+        
+        if(m_players.at(playerIndex)->getPlayerState() == ALIVE)
+        {
+            break;
         }
     }
     
-    m_sPlayerIndex = playerIndex >= m_players.size() || playerIndex < 0 ? 0 : playerIndex;
+    m_sPlayerIndex = playerIndex;
     
     m_player = m_players.at(m_sPlayerIndex).get();
+    
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        (*itr)->setIsDisplayingPointer(false);
+    }
+    m_player->setIsDisplayingPointer(true);
 }
 
-void GameScreen::updatePlayerDirection()
+void GameScreen::spectatePreviousLivePlayer()
 {
-    if(m_player->getPlayerState() == ALIVE)
+    short playerIndex = m_sPlayerIndex >= 0 ? m_sPlayerIndex : 0;
+    for(int i = 0; i < m_players.size(); i++)
     {
-        int directionInput = m_dPad->getDirectionForTouchPoint(*m_touchPoint);
-        
-        if(m_player->getDirection() != directionInput || !m_player->isMoving())
+        playerIndex--;
+        if(playerIndex <= 0)
         {
-            addEvent(m_sPlayerIndex * PLAYER_EVENT_BASE + directionInput + 1);
+            playerIndex = m_players.size() - 1;
+        }
+        
+        if(m_players.at(playerIndex)->getPlayerState() == ALIVE)
+        {
+            break;
         }
     }
-}
-
-void GameScreen::addEvent(short eventId)
-{
-    m_sLocalEventIds.push_back(eventId);
+    
+    m_sPlayerIndex = playerIndex;
+    
+    m_player = m_players.at(m_sPlayerIndex).get();
+    
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        (*itr)->setIsDisplayingPointer(false);
+    }
+    m_player->setIsDisplayingPointer(true);
 }
 
 // Server Stuff
 
 void GameScreen::processServerMessages()
 {
-    m_serverMessages.clear();
-	m_serverMessages.swap(m_serverMessagesBuffer);
-	m_serverMessagesBuffer.clear();
+    std::vector<const char *> serverMessages = m_gameListener->freeServerMessages();
     
-	for (std::vector<const char *>::iterator itr = m_serverMessages.begin(); itr != m_serverMessages.end(); itr++)
+	for (std::vector<const char *>::iterator itr = serverMessages.begin(); itr != serverMessages.end(); itr++)
 	{
-		static const char *eventTypeKey = "eventType";
-        
-		rapidjson::Document d;
+        rapidjson::Document d;
 		d.Parse<0>(*itr);
-        if(d.HasMember(eventTypeKey))
+        if(d.IsObject())
         {
-            int eventType = d[eventTypeKey].GetInt();
+            static const char *eventTypeKey = "eventType";
             
-            if (eventType == BEGIN_GAME)
+            if(d.HasMember(eventTypeKey))
             {
-                beginGame(d);
-            }
-            else if (eventType == CLIENT_UPDATE && (m_gameState == RUNNING || m_gameState == SPECTATING))
-            {
-                clientUpdate(d, false);
-            }
-            else if(m_gameState == WAITING_FOR_SERVER && eventType == BEGIN_SPECTATE)
-            {
-                beginSpectate(d);
+                int eventType = d[eventTypeKey].GetInt();
+                
+                if (eventType == BEGIN_GAME)
+                {
+                    beginGame(d);
+                }
+                else if (eventType == CLIENT_UPDATE && (m_gameState == RUNNING || m_gameState == SPECTATING))
+                {
+                    clientUpdate(d, false);
+                }
+                else if(eventType == BEGIN_SPECTATE && m_gameState == WAITING_FOR_SERVER)
+                {
+                    beginSpectate(d);
+                }
+                else if(eventType == GAME_OVER && (m_gameState == RUNNING || m_gameState == SPECTATING))
+                {
+                    gameOver(d);
+                }
+                else if(eventType == PRE_GAME_SERVER_UPDATE && m_gameState == WAITING_FOR_SERVER)
+                {
+                    m_waitingForServerInterface->handlePreGameServerUpdate(d);
+                }
+                else if(eventType == PRE_GAME && m_gameState == WAITING_FOR_CONNECTION)
+                {
+                    static const char *phaseKey = "phase";
+                    
+                    if(d.HasMember(phaseKey))
+                    {
+                        int phase = d[phaseKey].GetInt();
+                        m_waitingForServerInterface->setPreGamePhase(phase);
+                        
+                        if(phase == ROOM_JOINED_WAITING_FOR_SERVER)
+                        {
+                            m_gameState = WAITING_FOR_SERVER;
+                        }
+						else if (phase == CONNECTION_ERROR || phase ==  BATTLE_BOMBS_BETA_CLOSED)
+                        {
+                            m_gameState = CONNECTION_ERROR_WAITING_FOR_INPUT;
+                        }
+                    }
+                }
             }
         }
 	}
@@ -412,31 +665,48 @@ void GameScreen::processServerMessages()
 
 void GameScreen::beginGame(rapidjson::Document &d)
 {
-    static const char *numPlayersKey = "numPlayers";
-    
-    if(d.HasMember(numPlayersKey))
+    if(beginCommon(d, true))
     {
-        init();
-        
-        int numPlayers = d[numPlayersKey].GetInt();
-        for(int i = 0; i < numPlayers; i++)
+        if(m_sPlayerIndex != -1)
         {
-            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(0, 0)));
+            m_player = m_players.at(m_sPlayerIndex).get();
+            
+            m_gameState = COUNTING_DOWN;
+            
+            m_gameListener->playSound(SOUND_COUNT_DOWN_3);
+            m_countDownNumbers.push_back(std::unique_ptr<CountDownNumberGameObject>(new CountDownNumberGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 2, SCREEN_WIDTH * 2 * 0.76923076923077f, DISPLAY_3)));
+            
+            for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+            {
+                (*itr)->setIsDisplayingName(true);
+            }
+
+			m_interfaceOverlay->update(0, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
         }
-        
-        clientUpdate(d, true);
-        
-        handleBreakableBlocksArrayInDocument(d);
-        
-        Assets::getInstance()->setMusicId(MUSIC_PLAY);
-        
-        m_gameState = RUNNING;
     }
 }
 
 void GameScreen::beginSpectate(rapidjson::Document &d)
 {
+    if(beginCommon(d, true))
+    {
+        m_sPlayerIndex = 0;
+        m_player = m_players.at(m_sPlayerIndex).get();
+        
+        spectateNextLivePlayer();
+        
+        m_gameState = SPECTATING;
+        
+        Assets::getInstance()->setMusicId(m_iMapType + 2);
+    }
+}
+
+bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
+{
     static const char *numPlayersKey = "numPlayers";
+    static const char *numClientBotsKey = "numClientBots";
+    static const char *mapTypeKey = "mapType";
+    static const char *numSecondsLeftForRoundKey = "numSecondsLeftForRound";
     
     if(d.HasMember(numPlayersKey))
     {
@@ -445,20 +715,76 @@ void GameScreen::beginSpectate(rapidjson::Document &d)
         int numPlayers = d[numPlayersKey].GetInt();
         for(int i = 0; i < numPlayers; i++)
         {
-            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(0, 0)));
+            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(i, 0, 0, m_gameListener.get())));
         }
         
-        clientUpdate(d, false);
+        if(d.HasMember(numClientBotsKey))
+        {
+            int numClientBots = d[numClientBotsKey].GetInt();
+            for(int i = 0; i < numClientBots; i++)
+            {
+                m_players.push_back(std::unique_ptr<BotPlayerDynamicGameObject>(new BotPlayerDynamicGameObject(i + numPlayers, 0, 0, m_gameListener.get())));
+            }
+        }
+        
+        clientUpdate(d, isBeginGame);
         
         handleBreakableBlocksArrayInDocument(d);
         
-        Assets::getInstance()->setMusicId(MUSIC_PLAY);
+        int mapType = d[mapTypeKey].GetInt();
+        initializeInsideBlocksAndMapBordersForMapType(mapType);
+        m_renderer->loadMapType(mapType, m_players);
         
-        m_sPlayerIndex = 0;
-        m_player = m_players.at(m_sPlayerIndex).get();
+        if(d.HasMember(numSecondsLeftForRoundKey))
+        {
+            int numSecondsLeftForRound = d[numSecondsLeftForRoundKey].GetInt();
+            m_interfaceOverlay->setNumSecondsLeft(numSecondsLeftForRound);
+        }
         
-        m_gameState = SPECTATING;
+        PathFinder::getInstance().resetGameGrid();
+        PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks, m_iMapType);
+        m_interfaceOverlay->initializeMiniMap(m_insideBlocks, m_breakableBlocks, m_iMapType);
+        
+        return true;
     }
+    
+    return false;
+}
+
+void GameScreen::gameOver(rapidjson::Document &d)
+{
+    static const char *hasWinnerKey = "hasWinner";
+    
+    if(d.HasMember(hasWinnerKey))
+    {
+        bool hasWinner = d[hasWinnerKey].GetBool();
+        
+        if(hasWinner)
+        {
+            static const char *winningPlayerIndexKey = "winningPlayerIndex";
+            int winningPlayerIndex = d[winningPlayerIndexKey].GetInt();
+            m_players.at(winningPlayerIndex).get()->onWin();
+            
+            // Adjusts the camera
+            m_sPlayerIndex = winningPlayerIndex;
+            m_player = m_players.at(m_sPlayerIndex).get();
+            
+            m_player->setIsDisplayingName(true);
+            m_player->setIsDisplayingPointer(false);
+            
+            m_gameListener->playSound(SOUND_GAME_SET);
+            
+            m_displayGameOvers.push_back(std::unique_ptr<DisplayGameOverGameObject>(new DisplayGameOverGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.25f, GRID_CELL_WIDTH * 14.75f, GRID_CELL_HEIGHT * 1.5f, GAME_SET)));
+        }
+        else
+        {
+            m_gameListener->playSound(SOUND_DRAW);
+            
+            m_displayGameOvers.push_back(std::unique_ptr<DisplayGameOverGameObject>(new DisplayGameOverGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.25f, GRID_CELL_WIDTH * 11.25f, GRID_CELL_HEIGHT * 1.75f, DRAW)));
+        }
+    }
+    
+    m_gameState = GAME_ENDING;
 }
 
 void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)
@@ -467,7 +793,7 @@ void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)
     
     if(d.HasMember(numBreakableBlocksKey))
     {
-        int numBreakableBlocks = d[numBreakableBlocksKey].GetInt();
+        m_breakableBlocks.clear();
         
         static const char *breakableBlockXValuesKey = "breakableBlockXValues";
         static const char *breakableBlockYValuesKey = "breakableBlockYValues";
@@ -477,66 +803,11 @@ void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)
         std::vector<int> breakableBlockYValues;
         std::vector<int> breakableBlockPowerUpFlags;
         
-        if (d.HasMember(breakableBlockXValuesKey))
-        {
-            const char *breakableBlockXValuesArray = d[breakableBlockXValuesKey].GetString();
-            
-            char *copy = strdup(breakableBlockXValuesArray);
-            
-            char *breakableBlockXValue = std::strtok(copy, ",");
-            
-            while (breakableBlockXValue != NULL)
-            {
-                int breakableBlockXValueInt = atoi(breakableBlockXValue);
-                breakableBlockXValues.push_back(breakableBlockXValueInt);
-                
-                breakableBlockXValue = strtok(NULL, ","); // Get next breakable block X Value
-            }
-            
-            free(copy);
-            free(breakableBlockXValue);
-        }
+        handleIntArrayInDocument(d, breakableBlockXValuesKey, breakableBlockXValues, -1);
+        handleIntArrayInDocument(d, breakableBlockYValuesKey, breakableBlockYValues, -1);
+        handleIntArrayInDocument(d, breakableBlockPowerUpFlagsKey, breakableBlockPowerUpFlags, -1);
         
-        if (d.HasMember(breakableBlockYValuesKey))
-        {
-            const char *breakableBlockYValuesArray = d[breakableBlockYValuesKey].GetString();
-            
-            char *copy = strdup(breakableBlockYValuesArray);
-            
-            char *breakableBlockYValue = std::strtok(copy, ",");
-            
-            while (breakableBlockYValue != NULL)
-            {
-                int breakableBlockYValueInt = atoi(breakableBlockYValue);
-                breakableBlockYValues.push_back(breakableBlockYValueInt);
-                
-                breakableBlockYValue = strtok(NULL, ","); // Get next breakable block Y Value
-            }
-            
-            free(copy);
-            free(breakableBlockYValue);
-        }
-        
-        if (d.HasMember(breakableBlockPowerUpFlagsKey))
-        {
-            const char *breakableBlockPowerUpFlagsArray = d[breakableBlockPowerUpFlagsKey].GetString();
-            
-            char *copy = strdup(breakableBlockPowerUpFlagsArray);
-            
-            char *breakableBlockPowerUpFlag = std::strtok(copy, ",");
-            
-            while (breakableBlockPowerUpFlag != NULL)
-            {
-                int breakableBlockPowerUpFlagInt = atoi(breakableBlockPowerUpFlag);
-                breakableBlockPowerUpFlags.push_back(breakableBlockPowerUpFlagInt);
-                
-                breakableBlockPowerUpFlag = strtok(NULL, ","); // Get next breakable block Power Up Flag
-            }
-            
-            free(copy);
-            free(breakableBlockPowerUpFlag);
-        }
-        
+        int numBreakableBlocks = d[numBreakableBlocksKey].GetInt();
         for(int i = 0; i < numBreakableBlocks; i++)
         {
             m_breakableBlocks.push_back(std::unique_ptr<BreakableBlock>(new BreakableBlock(breakableBlockXValues.at(i), breakableBlockYValues.at(i), breakableBlockPowerUpFlags.at(i))));
@@ -544,36 +815,23 @@ void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)
     }
 }
 
-void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyX, const char *keyY, const char *keyDirection, short playerIndex, bool isBeginGame)
+void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame)
 {
     if(isBeginGame && d.HasMember(keyIndex))
     {
         const char *username = d[keyIndex].GetString();
-        if (std::strcmp(username, m_username) == 0)
+        if (std::strcmp(username, m_username.get()) == 0)
         {
             // Now we know which player index the user is
-            m_player = m_players.at(playerIndex).get();
             m_sPlayerIndex = playerIndex;
-        }
-    }
-    
-    if(isBeginGame || m_gameState == SPECTATING || playerIndex != m_sPlayerIndex)
-    {
-        if(d.HasMember(keyX) && d.HasMember(keyY))
-        {
-            float playerX = d[keyX].GetDouble();
-            m_players.at(playerIndex).get()->getPosition().setX(playerX);
-            
-            float playerY = d[keyY].GetDouble();
-            m_players.at(playerIndex).get()->getPosition().setY(playerY);
+            m_players.at(playerIndex)->setClientPlayer(true);
         }
         
-        if(d.HasMember(keyDirection))
-        {
-            int playerDirection = d[keyDirection].GetInt();
-            m_players.at(playerIndex).get()->setDirection(playerDirection);
-        }
+        m_players.at(playerIndex)->setUsername(username);
     }
     
-    handleClientEventsArrayInDocument(d);
+    if(isBeginGame || playerIndex != m_sPlayerIndex)
+    {
+        handlePlayerDataUpdate(d, keyIsBot, keyX, keyY, keyDirection, keyAlive, playerIndex, isBeginGame);
+    }
 }

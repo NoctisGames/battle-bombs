@@ -1,13 +1,13 @@
 //
 //  OverlapTester.h
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__OverlapTester__
-#define __bomber_party__OverlapTester__
+#ifndef __battle_bombs__OverlapTester__
+#define __battle_bombs__OverlapTester__
 
 class Vector2D;
 class Rectangle;
@@ -36,4 +36,4 @@ private:
     OverlapTester();
 };
 
-#endif /* defined(__bomber_party__OverlapTester__) */
+#endif /* defined(__battle_bombs__OverlapTester__) */

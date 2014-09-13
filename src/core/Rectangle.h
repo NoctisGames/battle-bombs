@@ -1,6 +1,6 @@
 //
 //  Rectangle.h
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -9,14 +9,14 @@
 #ifndef Rectangle_H
 #define Rectangle_H
 
+#include <memory>
+
 class Vector2D;
 
 class Rectangle
 {
 public:
     Rectangle(float x, float y, float width, float height, float angle = 0);
-    
-    ~Rectangle();
     
     Vector2D& getLowerLeft();
     
@@ -33,7 +33,7 @@ public:
     const void setAngle(float angle);
     
 private:
-    Vector2D *m_LowerLeft;
+    std::unique_ptr<Vector2D> m_LowerLeft;
     float m_fWidth;
     float m_fHeight;
     float m_fAngle;

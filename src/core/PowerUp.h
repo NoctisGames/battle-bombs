@@ -1,34 +1,36 @@
 //
 //  PowerUp.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Mikel Adkins on 5/10/2014.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__PowerUp__
-#define __bomberparty__PowerUp__
+#ifndef __battlebombs__PowerUp__
+#define __battlebombs__PowerUp__
 
-#include "GameObject.h"
+#include "GridGameObject.h"
 #include "PowerUpType.h"
 
-class PowerUp : public GameObject
+class PowerUp : public GridGameObject
 {
 public:
-	PowerUp(float x, float y, int powerUpFlag);
+	PowerUp(int gridX, int gridY, int powerUpType);
+    
+    void update(float deltaTime);
 
 	void onPickedUp();
 
 	bool isPickedUp();
+    
+    float getStateTime();
 
-	int getPowerUpFlag();
-
-	Power_Up_Type getType();
+	int getType();
 
 private:
-	int m_powerUpFlag;
+    float m_fStateTime;
     bool m_isPickedUp;
-	Power_Up_Type m_powerUpType;
+	int m_powerUpType;
 };
 
-#endif /* defined (__bomberparty__PowerUp__) */
+#endif /* defined (__battlebombs__PowerUp__) */

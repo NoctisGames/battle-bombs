@@ -1,6 +1,9 @@
 # Mac
 .DS_Store
 
+# Windows
+Thumbs.db
+
 # AppWarp
 AppWarp/
 !AppWarp_readme.txt
@@ -8,6 +11,22 @@ AppWarp/
 # DirectXTK
 DirectXTK/
 !DirectXTK/DirectXTK_readme.txt
+
+# GoogleMobileAdsSdkWindowsPhone8-6.5.13
+GoogleMobileAdsSdkWindowsPhone8-6.5.13/
+!GoogleMobileAdsSdkWindowsPhone8-6.5.13/GoogleMobileAdsSdkWindowsPhone8-6.5.13_readme.txt
+
+# GoogleMobileAdsSdkiOS-6.11
+GoogleMobileAdsSdkiOS-6.11.1/
+!GoogleMobileAdsSdkiOS-6.11.1/GoogleMobileAdsSdkiOS-6.11.1_readme.txt
+
+# google-play-services_lib
+google-play-services_lib/
+!google-play-services_lib/google-play-services_lib_readme.txt
+
+# gson
+gson/
+!gson/gson_readme.txt
 
 # libpng
 libpng/
@@ -17,6 +36,12 @@ libpng/
 # rapidjson
 rapidjson/
 !rapidjson/rapidjson_readme.txt
+
+# Newtonsoft.Json, Windows Phone Toolkit
+packages/
+
+# Windows Phone Toolkit
+Toolkit.Content/
 
 # Eclipse
 bin/
@@ -33,15 +58,17 @@ x86/
 
 # Xcode
 *.xcuserdatad/
+xcuserdata/
 xcshareddata/
 
 # Visual Studio
+*.ipch
 *.user
 *.*sdf
 *.suo
 ARM/
 Debug/
-/src/platform/server/build/
+Release/
 
 # NetBeans
 dist/

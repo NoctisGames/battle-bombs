@@ -1,6 +1,6 @@
 //
 //  Vertices2D.cpp
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -11,12 +11,12 @@
 
 Vertices2D::Vertices2D(int maxNumVertices, bool isUsingTextureCoordinates, bool isUsingColors)
 {
-    m_vertexData.vertices = new GLfloat[maxNumVertices * 2];
-    m_vertexData.textureCoords = new GLfloat[maxNumVertices * 2];
+    m_vertices = std::unique_ptr<GLfloat>(new GLfloat[maxNumVertices * 2]);
+    m_textureCoords = std::unique_ptr<GLfloat>(new GLfloat[maxNumVertices * 2]);
     
     if(isUsingColors)
     {
-        m_vertexData.colors = new GLfloat[maxNumVertices * 4];
+        m_colors = std::unique_ptr<GLfloat>(new GLfloat[maxNumVertices * 4]);
     }
     
     m_iVerticesIndex = 0;
@@ -25,17 +25,6 @@ Vertices2D::Vertices2D(int maxNumVertices, bool isUsingTextureCoordinates, bool 
     
     m_hasColor = isUsingColors;
     m_hasTextureCoordinates = isUsingTextureCoordinates;
-}
-
-Vertices2D::~Vertices2D()
-{
-    delete[] m_vertexData.vertices;
-    delete[] m_vertexData.textureCoords;
-    
-    if(m_hasColor)
-    {
-        delete[] m_vertexData.colors;
-    }
 }
 
 void Vertices2D::resetIndex()
@@ -47,34 +36,34 @@ void Vertices2D::resetIndex()
 
 void Vertices2D::addVertexCoordinate(float vc)
 {
-    m_vertexData.vertices[m_iVerticesIndex++] = vc;
+    m_vertices.get()[m_iVerticesIndex++] = vc;
 }
 
 void Vertices2D::addTextureCoordinate(float tc)
 {
-    m_vertexData.textureCoords[m_iTextureCoordsIndex++] = tc;
+    m_textureCoords.get()[m_iTextureCoordsIndex++] = tc;
 }
 
 void Vertices2D::addColorCoordinate(float cc)
 {
-    m_vertexData.colors[m_iColorsIndex++] = cc;
+    m_colors.get()[m_iColorsIndex++] = cc;
 }
 
 void Vertices2D::bind()
 {
     glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(2, GL_FLOAT, 0, m_vertexData.vertices);
+    glVertexPointer(2, GL_FLOAT, 0, m_vertices.get());
     
     if (m_hasColor)
     {
         glEnableClientState(GL_COLOR_ARRAY);
-        glColorPointer(4, GL_FLOAT, 0, m_vertexData.colors);
+        glColorPointer(4, GL_FLOAT, 0, m_colors.get());
     }
     
     if (m_hasTextureCoordinates)
     {
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        glTexCoordPointer(2, GL_FLOAT, 0, m_vertexData.textureCoords);
+        glTexCoordPointer(2, GL_FLOAT, 0, m_textureCoords.get());
     }
 }
 
@@ -93,12 +82,12 @@ void Vertices2D::unbind()
 
 void Vertices2D::drawPrimitiveType(GLenum mode, int offset, GLshort *indices, int numVertices)
 {
-    if (indices != nullptr)
+    if (indices == nullptr)
     {
-        glDrawElements(mode, numVertices, GL_UNSIGNED_SHORT, indices);
+        glDrawArrays(mode, offset, numVertices);
     }
     else
     {
-        glDrawArrays(mode, offset, numVertices);
+        glDrawElements(mode, numVertices, GL_UNSIGNED_SHORT, indices);
     }
 }

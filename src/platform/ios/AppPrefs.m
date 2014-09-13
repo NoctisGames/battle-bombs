@@ -1,6 +1,6 @@
 //
 //  AppPrefs.m
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -60,7 +60,7 @@ static AppPrefs *instance = nil;
 - (int)getInt:(NSString *)key
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return [userDefaults integerForKey:key];
+    return (int)[userDefaults integerForKey:key];
 }
 
 @end

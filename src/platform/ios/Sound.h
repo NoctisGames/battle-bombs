@@ -1,6 +1,6 @@
 //
 //  Sound.h
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -17,10 +17,10 @@
     int soundIndex;
 }
 
-- (id) initWithSoundNamed:(NSString *)fileName fromBundle:(NSBundle *)bundle andMaxNumOfSimultaneousPlays:(int)mnsp;
+- (id)initWithSoundNamed:(NSString *)fileName fromBundle:(NSBundle *)bundle andMaxNumOfSimultaneousPlays:(int)mnsp;
 
-- (void) play;
+- (void)play;
 
-- (NSString *) getFileName;
+- (NSString *)getFileName;
 
 @end

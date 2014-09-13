@@ -1,19 +1,37 @@
 /* 
   Localizable.strings
-  bomber-party
+  battlebombs
 
   Created by Stephen Gowen on 3/1/14.
   Copyright (c) 2014 Techne Games. All rights reserved.
 */
 
-// Chat Log Messages
-"you_have_connected" = "You have connected";
+// Update Required Dialog
+"update_required_title" = "Update Required";
+"update_required_message" = "A new version of Battle Bombs is available, please update before playing online.";
+"update_required_cancel" = "OK";
 
-// Dialogs
-"welcome_title" = "Welcome To Bomber Party!";
-"username_hint" = "Enter a Username...";
-"connect" = "Connect";
+// Down for Maintenance Dialog
+"down_for_maintenance_title" = "Down for Maintenance";
+"down_for_maintenance_message" = "Techne Games is down for maintenance, but will be back online soon.\nFeel free to enjoy the offline mode in the meantime.";
+"down_for_maintenance_cancel" = "OK";
 
-"join_message" = "Join?";
-"join" = "Join";
-"cancel" = "Cancel";
+// Connection Error Dialog
+"connection_error_title" = "Connection Error";
+"connection_error_message" = "Your device is unable to connect to Techne Games. Please check your connection and try again.";
+"connection_error_cancel" = "OK";
+
+// Enter Username Dialog
+"enter_username_title" = "Player Name";
+"enter_username_hint" = "Enter your Battle Bombs name";
+"enter_username_button" = "Connect";
+"enter_username_play" = "Play";
+"enter_username_cancel" = "Cancel";
+
+// Invalid Username Dialog
+"invalid_username_title" = "Invalid Username";
+"invalid_username_message" = "Please enter a username between 3 and 12 characters.";
+"invalid_username_cancel" = "OK";
+
+// JSON Request Message
+"json_request_progress_message" = "One Moment...";

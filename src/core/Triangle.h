@@ -1,13 +1,13 @@
 //
 //  Triangle.h
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__Triangle__
-#define __bomber_party__Triangle__
+#ifndef __battle_bombs__Triangle__
+#define __battle_bombs__Triangle__
 
 #include <memory>
 #include "Line.h"
@@ -38,4 +38,4 @@ private:
     std::unique_ptr<Line> m_sideC;
 };
 
-#endif /* defined(__bomber_party__Triangle__) */
+#endif /* defined(__battle_bombs__Triangle__) */

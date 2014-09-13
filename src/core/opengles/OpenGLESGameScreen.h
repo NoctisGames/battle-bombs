@@ -1,13 +1,13 @@
 //
 //  OpenGLESGameScreen.h
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__OpenGLESGameScreen__
-#define __bomber_party__OpenGLESGameScreen__
+#ifndef __battle_bombs__OpenGLESGameScreen__
+#define __battle_bombs__OpenGLESGameScreen__
 
 #include "GameScreen.h"
 
@@ -16,9 +16,7 @@ class OpenGLESRenderer;
 class OpenGLESGameScreen : public GameScreen
 {
 public:
-    OpenGLESGameScreen(const char *username);
-    
-    virtual void platformInit();
+    OpenGLESGameScreen(const char *username, bool isOffline = false);
     
     virtual void touchToWorld(TouchEvent &touchEvent);
     
@@ -33,13 +31,10 @@ public:
 	void onSurfaceChanged(int deviceScreenWidth, int deviceScreenHeight);
     
 	void setDpDimensions(int dpWidth, int dpHeight);
-    
-    void present();
 
 private:
-    std::unique_ptr<OpenGLESRenderer> m_renderer;
     int m_iDeviceScreenDpWidth;
     int m_iDeviceScreenDpHeight;
 };
 
-#endif /* defined(__bomber_party__OpenGLESGameScreen__) */
+#endif /* defined(__battle_bombs__OpenGLESGameScreen__) */

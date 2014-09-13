@@ -1,4 +1,4 @@
-Bomber Party
+Battle Bombs
 ============
 
 We are creating a Bomberman clone for Android, iOS, and Windows Phone 8 (and potentially Windows 8 and Ouya further on down the line). Right now, we are using graphics ripped from the official Bomberman game developed by Konami for iOS.

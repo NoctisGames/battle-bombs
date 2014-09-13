@@ -1,6 +1,6 @@
 //
 //  Logger.h
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/27/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -12,28 +12,28 @@
     NSString *TAG;
 }
 
-+ (void) initializeLoggingLevelFromNSString:(NSString *)loggingLevelName;
++ (void)initializeLoggingLevelFromNSString:(NSString *)loggingLevelName;
 
-- (id) initWithClass:(Class)c;
+- (id)initWithClass:(Class)c;
 
-- (void) debug:(NSString *)message;
+- (void)debug:(NSString *)message;
 
-- (void) info:(NSString *)message;
+- (void)info:(NSString *)message;
 
-- (void) warn:(NSString *)message;
+- (void)warn:(NSString *)message;
 
-- (void) error:(NSString *)message;
+- (void)error:(NSString *)message;
 
-- (void) error:(NSString *)message withException:(NSException *)e;
+- (void)error:(NSString *)message withException:(NSException *)e;
 
-- (void) error:(NSString *)message withError:(NSError *)e;
+- (void)error:(NSString *)message withError:(NSError *)e;
 
-+ (bool) isErrorEnabled;
++ (bool)isErrorEnabled;
 
-+ (bool) isWarnEnabled;
++ (bool)isWarnEnabled;
 
-+ (bool) isInfoEnabled;
++ (bool)isInfoEnabled;
 
-+ (bool) isDebugEnabled;
++ (bool)isDebugEnabled;
 
 @end

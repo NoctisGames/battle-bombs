@@ -1,25 +1,26 @@
 //
 //  BreakableBlock.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Mikel Adkins on 3/25/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__BreakableBlock__
-#define __bomberparty__BreakableBlock__
+#ifndef __battlebombs__BreakableBlock__
+#define __battlebombs__BreakableBlock__
 
 #include "GridGameObject.h"
 #include "PowerUp.h"
+#include "BreakableBlockState.h"
 
 class BreakableBlock : public GridGameObject
 {
 public:
 	BreakableBlock(int gridX, int gridY, int powerUpFlag);
+    
+    void update(float deltaTime);
 
     void onDestroy();
-
-    bool isDestroyed();
 
     bool hasPowerUp();
 
@@ -27,12 +28,16 @@ public:
 
     float getY();
 
+    Breakable_Block_State getBreakableBlockState();
+    
+    float getStateTime();
+    
 	int getPowerUpFlag();
 
 private:
-    bool m_isDestroyed;
-    bool m_hasPowerUp;
+    Breakable_Block_State m_breakableBlockState;
+    float m_fStateTime;
 	int m_powerUpFlag;
 };
 
-#endif /* defined (__bomberparty__BreakableBlock__) */
+#endif /* defined (__battlebombs__BreakableBlock__) */

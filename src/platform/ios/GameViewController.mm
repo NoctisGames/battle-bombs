@@ -1,264 +1,154 @@
 //
 //  GameViewController.mm
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#import "GameViewController.h"
-#import "Logger.h"
-#import "Music.h"
-#import "Sound.h"
+#define APPWARP_APP_KEY         @"1bc691b6-8c0f-4247-9"
+#define APPWARP_SECRET_KEY      @"139f6094-4e04-4041-9"
+#define APPWARP_HOST_ADDRESS    @"191.234.54.124"
+#define APPWARP_AUTH_DATA       @"T3chn3G4m35_01"
 
+#import "GameViewController.h"
+
+// C++
 #include "game.h"
-#include "Assets.h"
+#include "GameEvent.h"
 
 @interface GameViewController ()
 {
     // Empty
 }
 
-@property (strong, nonatomic) EAGLContext *context;
-@property (strong, nonatomic) Music *bgm;
-@property (strong, nonatomic) Sound *plantBombSound;
-@property (strong, nonatomic) Sound *explosionSound;
-@property (strong, nonatomic) Sound *deathSound;
+@property (strong, nonatomic) NSString *joinedRoomId;
 
 @end
 
 @implementation GameViewController
 
-static NSString *KEEP_ALIVE = @"KEEP_ALIVE";
-static NSString *EVENT_TYPE = @"eventType";
-static int CLIENT_UPDATE = 1338;
-static NSString *EVENTS = @"events";
-static NSString *PLAYER_INDEX = @"playerIndex";
-static NSString *X = @"X";
-static NSString *Y = @"Y";
-static NSString *DIRECTION = @"Direction";
+static NSString * const KEEP_ALIVE = [@"KEEP_ALIVE_" stringByAppendingFormat:@"%i", PLATFORM_IOS];
+static NSString * const EVENT_TYPE = @"eventType";
+static NSString * const EVENTS = @"events";
+static NSString * const PLAYER_INDEX = @"playerIndex";
+static NSString * const X = @"X";
+static NSString * const Y = @"Y";
+static NSString * const DIRECTION = @"Direction";
 
-static Logger *logger = nil;
+// PRE_GAME_SERVER_UPDATE
+static NSString * const PHASE = @"phase";
 
 + (void)initialize
 {
-    logger = [[Logger alloc] initWithClass:[GameViewController class]];
+    [WarpClient initWarp:APPWARP_APP_KEY server:APPWARP_HOST_ADDRESS];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
-    if (!self.context)
-    {
-        [logger error:@"Failed to create ES context"];
-    }
+    WarpClient *warpClient = [WarpClient getInstance];
     
-    GLKView *view = (GLKView *)self.view;
+    [warpClient addConnectionRequestListener:self];
+    [warpClient addNotificationListener:self];
     
-    view.context = self.context;
-    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
-    view.userInteractionEnabled = YES;
+    NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, CONNECTING];
     
-    [view setMultipleTouchEnabled:YES];
+    on_chat_received([preGameUpdate UTF8String]);
     
-    [self setupGL];
-    
-    self.bgm = [[Music alloc] initWithMusicNamed:@"bg_game" fromBundle:[NSBundle mainBundle]];
-    [self.bgm setLooping:true];
-    [self.bgm setVolume:1.0f];
-    
-    self.plantBombSound = [[Sound alloc] initWithSoundNamed:@"plant_bomb.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:3];
-    self.explosionSound = [[Sound alloc] initWithSoundNamed:@"explosion.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
-    self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onPause)
-                                                 name:UIApplicationWillResignActiveNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onResume)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
-    
-    [[WarpClient getInstance] addChatRequestListener:self];
-    [[WarpClient getInstance] addConnectionRequestListener:self];
-    [[WarpClient getInstance] addLobbyRequestListener:self];
-    [[WarpClient getInstance] addNotificationListener:self];
-    [[WarpClient getInstance] addRoomRequestListener:self];
-    [[WarpClient getInstance] addZoneRequestListener:self];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    [self onPause];
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    on_touch_down(pos.x, pos.y);
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    on_touch_dragged(pos.x, pos.y);
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    on_touch_up(pos.x, pos.y);
-}
-
-#pragma mark <GLKViewControllerDelegate>
-
-- (void)update
-{
-    int gameState = get_state();
-    switch (gameState)
-    {
-        case 0:
-            update(self.timeSinceLastUpdate);
-            [self pushEvents];
-            break;
-        case 1:
-            init([self.username UTF8String]);
-            break;
-        case 2:
-            [self dismissViewControllerAnimated:true completion:nil];
-            break;
-        default:
-            break;
-    }
-}
-
-#pragma mark <GLKViewDelegate>
-
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
-{
-    present();
-    [self handleSound];
-    [self handleMusic];
-}
-
-#pragma mark <ChatRequestListener>
-
-- (void)onSendChatDone:(Byte)result
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onSendPrivateChatDone:(Byte)result
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    [warpClient connectWithUserName:self.username authData:APPWARP_AUTH_DATA];
 }
 
 #pragma mark <ConnectionRequestListener>
 
-- (void)onConnectDone:(ConnectEvent*) event
+- (void)onConnectDone:(ConnectEvent *)event
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
+    NSLog(@"event.result: %hhu", event.result);
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if(event.result == 0)
+    {
+        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, FINDING_ROOM_TO_JOIN];
+        
+        on_chat_received([preGameUpdate UTF8String]);
+        
+        [[WarpClient getInstance] joinRoomInRangeBetweenMinUsers:0 andMaxUsers:7 maxPrefered:YES];
+    }
+    else if(event.result == 2)
+    {
+        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, BATTLE_BOMBS_BETA_CLOSED];
+        
+        on_chat_received([preGameUpdate UTF8String]);
+    }
+    else
+    {
+        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, CONNECTION_ERROR];
+        
+        on_chat_received([preGameUpdate UTF8String]);
+    }
 }
 
-- (void)onDisconnectDone:(ConnectEvent*) event
+- (void)onDisconnectDone:(ConnectEvent *)event
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onInitUDPDone:(Byte)result
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-#pragma mark <LobbyRequestListener>
-
-- (void)onJoinLobbyDone:(LobbyEvent*)lobbyEvent
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onLeaveLobbyDone:(LobbyEvent*)lobbyEvent
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onSubscribeLobbyDone:(LobbyEvent*)lobbyEvent
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onUnSubscribeLobbyDone:(LobbyEvent*)lobbyEvent
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onGetLiveLobbyInfoDone:(LiveRoomInfoEvent*)event
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 #pragma mark <NotifyListener>
 
 - (void)onRoomCreated:(RoomData *)roomEvent
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onRoomDestroyed:(RoomData *)roomEvent
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserLeftRoom:(RoomData *)roomData username:(NSString *)username
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
     
-    if([username isEqualToString:self.username])
+    if(roomData)
     {
-        [self onPause];
+        if([username isEqualToString:self.username])
+        {
+            [self onPause];
+        }
     }
 }
 
 - (void)onUserJoinedRoom:(RoomData *)roomData username:(NSString *)username
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
+    
+    if(roomData)
+    {
+        if([username isEqualToString:self.username])
+        {
+            self.joinedRoomId = roomData.roomId;
+            
+            NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, ROOM_JOINED_WAITING_FOR_SERVER];
+            
+            on_chat_received([preGameUpdate UTF8String]);
+        }
+    }
 }
 
 - (void)onUserLeftLobby:(LobbyData *)lobbyData username:(NSString *)username
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserJoinedLobby:(LobbyData *)lobbyData username:(NSString *)username
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onChatReceived:(ChatEvent *)chatEvent
@@ -270,273 +160,97 @@ static Logger *logger = nil;
     on_chat_received([chatEvent.message UTF8String]);
 }
 
--(void)onPrivateChatReceived:(NSString *)message fromUser:(NSString *)senderName
+- (void)onPrivateChatReceived:(NSString *)message fromUser:(NSString *)senderName
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUpdatePeersReceived:(UpdateEvent *)updateEvent
 {
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 -(void)onUserChangeRoomProperty:(RoomData *)event username:(NSString *)username properties:(NSDictionary *)properties lockedProperties:(NSDictionary *)lockedProperties
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onMoveCompleted:(MoveEvent *) moveEvent
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserPaused:(NSString *)userName withLocation:(NSString *)locId isLobby:(BOOL)isLobby
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onUserResumed:(NSString *)userName withLocation:(NSString *)locId isLobby:(BOOL)isLobby
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGameStarted:(NSString *)sender roomId:(NSString *)roomId  nextTurn:(NSString *)nextTurn
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)onGameStopped:(NSString *)sender roomId:(NSString *)roomId
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
-#pragma mark <RoomRequestListener>
+#pragma mark <Protected>
 
-- (void)onSubscribeRoomDone:(RoomEvent*)roomEvent
+- (void)handleGameState:(int)gameState
 {
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onUnSubscribeRoomDone:(RoomEvent*)roomEvent
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onJoinRoomDone:(RoomEvent*)roomEvent
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onLeaveRoomDone:(RoomEvent*)roomEvent
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onGetLiveRoomInfoDone:(LiveRoomInfoEvent*)event
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onSetCustomRoomDataDone:(LiveRoomInfoEvent*)event
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onUpdatePropertyDone:(LiveRoomInfoEvent *)event
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onLockPropertiesDone:(Byte)result
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onUnlockPropertiesDone:(Byte)result
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-#pragma mark <ZoneRequestListener>
-
-- (void)onCreateRoomDone:(RoomEvent*)roomEvent
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onDeleteRoomDone:(RoomEvent*)roomEvent
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onGetAllRoomsDone:(AllRoomsEvent*)event
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onGetOnlineUsersDone:(AllUsersEvent*)event
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onGetLiveUserInfoDone:(LiveUserInfoEvent*)event
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onSetCustomUserDataDone:(LiveUserInfoEvent*)event
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onGetMatchedRoomsDone:(MatchedRoomsEvent*)event
-{
-    // TODO
-    NSLog(@"%s",__FUNCTION__);
-}
-
-#pragma mark <Private>
-
-- (void)setupGL
-{
-    [EAGLContext setCurrentContext:self.context];
-    
-    self.preferredFramesPerSecond = 60;
-    
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-    CGSize screenSize = CGSizeMake(screenBounds.size.width * screenScale, screenBounds.size.height * screenScale);
-    
-    CGSize newSize = CGSizeMake(screenSize.width, screenSize.height);
-    newSize.width = roundf(newSize.width);
-	newSize.height = roundf(newSize.height);
-    
-    if([Logger isDebugEnabled])
+    if(gameState == 1)
     {
-        [logger debug:[NSString stringWithFormat:@"dimension %f x %f", newSize.width, newSize.height]];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-    
-    init([self.username UTF8String]);
-    on_surface_created(newSize.width, newSize.height);
-    on_surface_changed(newSize.width, newSize.height, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
-    on_resume();
 }
 
 - (void)pushEvents
 {
-    if(is_time_to_send_keep_alive())
+    int eventId = get_oldest_event_id();
+    if(eventId > 0)
+    {
+        NSString *eventsMessage = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%i,", EVENT_TYPE, CLIENT_UPDATE, EVENTS, eventId];
+        while ((eventId = get_oldest_event_id()) > 0)
+        {
+            eventsMessage = [eventsMessage stringByAppendingFormat:@"%i,", eventId];
+        }
+        eventsMessage = [eventsMessage stringByAppendingFormat:@"%i\"", 0]; // Terminate with 0
+        
+        eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%f", PLAYER_INDEX, get_player_index(), X, get_player_x()];
+        eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%f", PLAYER_INDEX, get_player_index(), Y, get_player_y()];
+        eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%i}", PLAYER_INDEX, get_player_index(), DIRECTION, get_player_direction()];
+        
+        reset_time_since_last_client_event();
+        
+        WarpClient *warpClient = [WarpClient getInstance];
+        [warpClient sendChat:eventsMessage];
+    }
+    else if(is_time_to_send_keep_alive())
     {
         reset_time_since_last_client_event();
         
-        [[WarpClient getInstance] sendChat:KEEP_ALIVE];
+        WarpClient *warpClient = [WarpClient getInstance];
+        [warpClient sendChat:KEEP_ALIVE];
     }
-    else
-    {
-        short eventId = get_oldest_event_id();
-        if(eventId > 0)
-        {
-            NSString *eventsMessage = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":\"%hd,", EVENT_TYPE, CLIENT_UPDATE, EVENTS, eventId];
-            while ((eventId = get_oldest_event_id()) > 0)
-            {
-                eventsMessage = [eventsMessage stringByAppendingFormat:@"%hd,", eventId];
-            }
-            eventsMessage = [eventsMessage stringByAppendingFormat:@"%i\"", 0]; // Terminate with 0
-            
-            eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%f", PLAYER_INDEX, get_player_index(), X, get_player_x()];
-            eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%f", PLAYER_INDEX, get_player_index(), Y, get_player_y()];
-            eventsMessage = [eventsMessage stringByAppendingFormat:@",\"%@%i%@\":%i}", PLAYER_INDEX, get_player_index(), DIRECTION, get_player_direction()];
-            
-            reset_time_since_last_client_event();
-            
-            [[WarpClient getInstance] sendChat:eventsMessage];
-        }
-    }
-}
-
-- (void)handleSound
-{
-    short soundId;
-    while ((soundId = get_current_sound_id()) > 0)
-    {
-        switch (soundId)
-        {
-            case SOUND_PLANT_BOMB:
-                [self.plantBombSound play];
-                break;
-            case SOUND_EXPLOSION:
-                [self.explosionSound play];
-                break;
-            case SOUND_DEATH:
-                [self.deathSound play];
-                break;
-            default:
-                continue;
-        }
-    }
-}
-
-- (void)handleMusic
-{
-    short musicId = get_current_music_id();
-    switch (musicId)
-    {
-        case MUSIC_STOP:
-            [self.bgm stop];
-            break;
-        case MUSIC_PLAY:
-            [self.bgm play];
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)onResume
-{
-    on_resume();
 }
 
 - (void)onPause
 {
-    [self.bgm stop];
-    
-    on_pause();
-    
     WarpClient *warpClient = [WarpClient getInstance];
     
-    [warpClient removeChatRequestListener:self];
     [warpClient removeConnectionRequestListener:self];
-    [warpClient removeLobbyRequestListener:self];
     [warpClient removeNotificationListener:self];
-    [warpClient removeRoomRequestListener:self];
-    [warpClient removeZoneRequestListener:self];
     
-    [[WarpClient getInstance] leaveRoom:self.joinedRoomId];
-    [[WarpClient getInstance] disconnect];
+    [warpClient leaveRoom:self.joinedRoomId];
+    [warpClient disconnect];
     
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [super onPause];
 }
 
 @end

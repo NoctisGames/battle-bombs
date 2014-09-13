@@ -1,13 +1,13 @@
 //
 //  DynamicGridGameObject.h
-//  bomberparty
+//  battlebombs
 //
 //  Created by Stephen Gowen on 5/15/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomberparty__DynamicGridGameObject__
-#define __bomberparty__DynamicGridGameObject__
+#ifndef __battlebombs__DynamicGridGameObject__
+#define __battlebombs__DynamicGridGameObject__
 
 #include "DynamicGameObject.h"
 
@@ -20,9 +20,17 @@ protected:
 public:
     DynamicGridGameObject(int gridX, int gridY, float width, float height, float angle);
     
+    virtual Rectangle & getBoundsForGridLogic();
+    
+    void updateGrid();
+    
+    void setGridX(int gridX);
+    
     int getGridX();
+    
+    void setGridY(int gridY);
     
     int getGridY();
 };
 
-#endif /* defined(__bomberparty__DynamicGridGameObject__) */
+#endif /* defined(__battlebombs__DynamicGridGameObject__) */

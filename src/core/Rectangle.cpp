@@ -1,6 +1,6 @@
 //
 //  Rectangle.cpp
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -12,16 +12,10 @@
 
 Rectangle::Rectangle(float x, float y, float width, float height, float angle)
 {
-    m_LowerLeft = new Vector2D(x, y);
+    m_LowerLeft = std::unique_ptr<Vector2D>(new Vector2D(x, y));
     m_fWidth = width;
     m_fHeight = height;
     m_fAngle = angle;
-}
-
-Rectangle::~Rectangle()
-{
-    delete m_LowerLeft;
-    m_LowerLeft = 0;
 }
 
 Vector2D& Rectangle::getLowerLeft()

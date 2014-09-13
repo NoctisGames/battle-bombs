@@ -1,6 +1,6 @@
 //
 //  game.h
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
@@ -13,7 +13,7 @@ void on_surface_created(int pixelWidth, int pixelHeight);
 
 void on_surface_changed(int pixelWidth, int pixelHeight, int dpWidth, int dpHeight);
 
-void init(const char *username);
+void init(const char *username, bool isOffline);
 
 void on_resume();
 
@@ -35,7 +35,7 @@ short get_current_music_id();
 
 short get_current_sound_id();
 
-short get_oldest_event_id();
+int get_oldest_event_id();
 
 bool is_time_to_send_keep_alive();
 
@@ -54,5 +54,9 @@ float get_player_y();
 int get_player_direction();
 
 bool handle_on_back_pressed();
+
+#pragma mark <Offline Mode>
+
+int get_num_seconds_left();
 
 #endif /* GAME_H */

@@ -1,13 +1,13 @@
 //
 //  SpriteBatcher.h
-//  bomber-party
+//  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __bomber_party__SpriteBatcher__
-#define __bomber_party__SpriteBatcher__
+#ifndef __battle_bombs__SpriteBatcher__
+#define __battle_bombs__SpriteBatcher__
 
 #include <memory>
 #include "Color.h"
@@ -25,8 +25,6 @@ class SpriteBatcher
 public:
     SpriteBatcher(int maxSprites, bool useColors);
     
-    ~SpriteBatcher();
-    
     void beginBatch();
     
     void endBatchWithTexture(GLuint &texture);
@@ -37,7 +35,7 @@ public:
     
 private:
     std::unique_ptr<Vertices2D> m_vertices;
-    GLshort *m_indices;
+    std::unique_ptr<GLshort> m_indices;
     int m_iNumSprites;
     
     void drawSprite(float x, float y, float width, float height, TextureRegion tr);
@@ -49,4 +47,4 @@ private:
     void generateIndices(int maxSprites);
 };
 
-#endif /* defined(__bomber_party__SpriteBatcher__) */
+#endif /* defined(__battle_bombs__SpriteBatcher__) */
