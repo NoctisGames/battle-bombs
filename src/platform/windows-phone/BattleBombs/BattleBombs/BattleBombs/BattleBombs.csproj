@@ -19,7 +19,7 @@
     </SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
-    <XapFilename>BattleBombs_Debug_x86.xap</XapFilename>
+    <XapFilename>BattleBombs_Release_Arm.xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
     <SilverlightAppEntry>BattleBombs.App</SilverlightAppEntry>
     <ValidateXaml>true</ValidateXaml>
