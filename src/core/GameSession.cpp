@@ -78,7 +78,7 @@ void GameSession::initializeInsideBlocksAndMapBordersForMapType(int mapType)
     
     if(mapType == MAP_MOUNTAINS)
     {
-        m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(MOUNTAINS_DOOR, GAME_X + GRID_CELL_WIDTH * 7 + GRID_CELL_WIDTH / 2.0f, GAME_Y + GRID_CELL_HEIGHT * GRID_CELL_NUM_ROWS + GRID_CELL_HEIGHT / 2.0f, GRID_CELL_WIDTH * 3, GRID_CELL_HEIGHT * 2)));
+        m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(MOUNTAINS_DOOR, GAME_X + GRID_CELL_WIDTH * 7 + GRID_CELL_WIDTH / 2.0f, GAME_Y + GRID_CELL_HEIGHT * GRID_CELL_NUM_ROWS, GRID_CELL_WIDTH * 3, GRID_CELL_HEIGHT * 2)));
     }
     
     // BEGIN BOTTOM CENTER
