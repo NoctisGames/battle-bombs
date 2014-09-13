@@ -155,7 +155,7 @@ void ServerGameSession::init()
 
     srand((int) time(NULL));
 
-    m_fCountDownTimeLeft = 3;
+    m_fCountDownTimeLeft = 4;
 }
 
 void ServerGameSession::handleServerUpdate(const char *message)
