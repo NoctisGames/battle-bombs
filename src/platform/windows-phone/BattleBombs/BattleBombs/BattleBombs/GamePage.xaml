@@ -11,7 +11,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Landscape" Orientation="LandscapeRight"
+    SupportedOrientations="Landscape" Orientation="LandscapeLeft"
     shell:SystemTray.IsVisible="False">
     
     <!--LayoutRoot is the root grid where all page content is placed-->

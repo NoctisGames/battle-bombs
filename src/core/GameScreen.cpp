@@ -830,7 +830,7 @@ void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *
         m_players.at(playerIndex)->setUsername(username);
     }
     
-    if(isBeginGame || playerIndex != m_sPlayerIndex)
+    if(isBeginGame || m_gameState == SPECTATING || playerIndex != m_sPlayerIndex)
     {
         handlePlayerDataUpdate(d, keyIsBot, keyX, keyY, keyDirection, keyAlive, playerIndex, isBeginGame);
     }
