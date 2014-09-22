@@ -50,18 +50,6 @@ extern "C"
 
 OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
 {
-    glViewport(0, 0, width, height);
-	glScissor(0, 0, width, height);
-    
-	glLoadIdentity();
-    
-	glMatrixMode(GL_PROJECTION);
-	glOrthof(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-    
-	glLoadIdentity();
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    
     m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(4000, false));
     m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(1000, true));
     m_rectangleRenderer = std::unique_ptr<OpenGLESRectangleRenderer>(new OpenGLESRectangleRenderer(true, true));

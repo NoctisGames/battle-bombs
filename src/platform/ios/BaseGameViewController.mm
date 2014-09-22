@@ -104,6 +104,8 @@ static Logger *logger = nil;
     
     GADRequest *request = [GADRequest request];
     [self.bannerView loadRequest:request];
+    
+    init([self.username UTF8String], [self isOffline]);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -312,8 +314,8 @@ static Logger *logger = nil;
         [logger debug:[NSString stringWithFormat:@"dimension %f x %f", newSize.width, newSize.height]];
     }
     
-    init([self.username UTF8String], [self isOffline]);
     on_surface_created(newSize.width, newSize.height);
+    
     on_surface_changed(newSize.width, newSize.height, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
     on_resume();
 }

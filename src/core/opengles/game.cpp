@@ -48,8 +48,7 @@ void on_surface_created(int pixelWidth, int pixelHeight)
 
 void on_surface_changed(int pixelWidth, int pixelHeight, int dpWidth, int dpHeight)
 {
-    gameScreen->onSurfaceChanged(pixelWidth, pixelHeight);
-    gameScreen->setDpDimensions(dpWidth, dpHeight);
+    gameScreen->onSurfaceChanged(pixelWidth, pixelHeight, dpWidth, dpHeight);
 }
 
 void init(const char *username, bool isOffline)

@@ -18,6 +18,10 @@ class OpenGLESGameScreen : public GameScreen
 public:
     OpenGLESGameScreen(const char *username, bool isOffline = false);
     
+    void onSurfaceCreated(int deviceScreenWidth, int deviceScreenHeight);
+    
+	void onSurfaceChanged(int deviceScreenWidth, int deviceScreenHeight, int dpWidth, int dpHeight);
+    
     virtual void touchToWorld(TouchEvent &touchEvent);
     
     virtual void platformResume();
@@ -25,12 +29,6 @@ public:
     virtual void platformPause();
     
     virtual bool handleOnBackPressed();
-    
-    void onSurfaceCreated(int deviceScreenWidth, int deviceScreenHeight);
-    
-	void onSurfaceChanged(int deviceScreenWidth, int deviceScreenHeight);
-    
-	void setDpDimensions(int dpWidth, int dpHeight);
 
 private:
     int m_iDeviceScreenDpWidth;
