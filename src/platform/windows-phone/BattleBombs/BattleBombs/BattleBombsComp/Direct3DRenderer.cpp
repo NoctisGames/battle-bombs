@@ -46,6 +46,7 @@
 #include "BasicReaderWriter.h"
 #include "DDSTextureLoader.h"
 #include "SpriteBatcher.h"
+#include "Direct3DRectangleRenderer.h"
 #include "Vertices2D.h"
 #include <string>
 #include <sstream>
@@ -62,6 +63,7 @@ Direct3DRenderer::Direct3DRenderer(ComPtr<ID3D11Device1> d3dDevice, ComPtr<ID3D1
 
 	m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(d3dDevice, d3dContext, 4000, false));
 	m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(d3dDevice, d3dContext, 1000, true));
+	m_rectangleRenderer = std::unique_ptr<Direct3DRectangleRenderer>(new Direct3DRectangleRenderer(d3dDevice, d3dContext, true, true));
 
 	// Initialize Textures
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
@@ -557,7 +559,7 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 
 				float leftX = miniMapLeftX + miniMapGridWidth * j;
 				float bottomY = miniMapBottomY + miniMapGridHeight * i;
-				//m_rectangleRenderer->renderRectangle(leftX, bottomY, leftX + miniMapGridWidth, bottomY + miniMapGridHeight, interfaceOverlay.getColorForMiniMapGridType(miniMapGridType));
+				m_rectangleRenderer->renderRectangle(leftX, bottomY, leftX + miniMapGridWidth, bottomY + miniMapGridHeight, interfaceOverlay.getColorForMiniMapGridType(miniMapGridType));
 			}
 		}
 	}
@@ -608,7 +610,7 @@ void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
 
 				float leftX = miniMapLeftX + miniMapGridWidth * j;
 				float bottomY = miniMapBottomY + miniMapGridHeight * i;
-				//m_rectangleRenderer->renderRectangle(leftX, bottomY, leftX + miniMapGridWidth, bottomY + miniMapGridHeight, interfaceOverlay.getColorForMiniMapGridType(miniMapGridType));
+				m_rectangleRenderer->renderRectangle(leftX, bottomY, leftX + miniMapGridWidth, bottomY + miniMapGridHeight, interfaceOverlay.getColorForMiniMapGridType(miniMapGridType));
 			}
 		}
 	}
@@ -619,8 +621,7 @@ void Direct3DRenderer::renderGameOverBlackCover(float alpha)
 	static Color transitionCoverColor = Color(0, 0, 0, 0);
 	transitionCoverColor.alpha = alpha;
 
-	static Rectangle gameOverBlackCoverRectangle = Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	renderRectangleFill(gameOverBlackCoverRectangle, transitionCoverColor);
+	m_rectangleRenderer->renderRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, transitionCoverColor);
 }
 
 void Direct3DRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
@@ -671,107 +672,4 @@ void Direct3DRenderer::renderGameObjectWithRespectToPlayer(GameObject &go, Textu
 	{
 		renderGameObject(go, tr);
 	}
-}
-
-void Direct3DRenderer::renderLine(Line &line, Color &color)
-{
-	/*Vector2D origin = line.getOrigin();
-	float originX = origin.getX();
-	float originY = origin.getY();
-
-	float scaledOriginX = RECTUtils::getInstance()->convertGameXToScreenX(originX);
-	float scaledOriginY = RECTUtils::getInstance()->convertGameYToScreenY(originY);
-
-	XMVECTORF32 originVector = { scaledOriginX, scaledOriginY, 0.0f };
-	XMVECTORF32 colorXMVECTORF32 = { color.red, color.green, color.blue, color.alpha };
-	VertexPositionColor originVertexPositionColor = VertexPositionColor(originVector, colorXMVECTORF32);
-
-	Vector2D end = line.getEnd();
-	float endX = end.getX();
-	float endY = end.getY();
-
-	float scaledEndX = RECTUtils::getInstance()->convertGameXToScreenX(endX);
-	float scaledEndY = RECTUtils::getInstance()->convertGameYToScreenY(endY);
-
-	XMVECTORF32 endVector = { scaledEndX, scaledEndY, 0.0f };
-	VertexPositionColor endVertexPositionColor = VertexPositionColor(endVector, colorXMVECTORF32);
-
-	m_basicEffect->SetAlpha(colorXMVECTORF32.f[3]);
-	m_basicEffect->Apply(m_d3dContext);
-	m_d3dContext->IASetInputLayout(m_inputLayout.Get());
-
-	m_primitiveBatch->Begin();
-
-	m_primitiveBatch->DrawLine(originVertexPositionColor, endVertexPositionColor);
-
-	m_primitiveBatch->End();*/
-}
-
-void Direct3DRenderer::renderRectangleStroke(Rectangle &rectangle, Color &color)
-{
-	/*Vector2D lowerLeft = rectangle.getLowerLeft();
-	float lowerLeftX = lowerLeft.getX();
-	float lowerLeftY = lowerLeft.getY();
-	float width = rectangle.getWidth();
-	float height = rectangle.getHeight();
-
-	RECT rect = RECTUtils::getInstance()->getRECTForCoordinates(lowerLeftX + width / 2, lowerLeftY + height / 2, width, height, false);
-
-	XMVECTORF32 topLeft = { rect.left, rect.top, 0.0f };
-	XMVECTORF32 topRight = { rect.right, rect.top, 0.0f };
-	XMVECTORF32 bottomRight = { rect.right, rect.bottom, 0.0f };
-	XMVECTORF32 bottomLeft = { rect.left, rect.bottom, 0.0f };
-
-	XMVECTORF32 colorXMVECTORF32 = { color.red, color.green, color.blue, color.alpha };
-
-	VertexPositionColor topLeftVertexPositionColor = VertexPositionColor(topLeft, colorXMVECTORF32);
-	VertexPositionColor topRightVertexPositionColor = VertexPositionColor(topRight, colorXMVECTORF32);
-	VertexPositionColor bottomRightVertexPositionColor = VertexPositionColor(bottomRight, colorXMVECTORF32);
-	VertexPositionColor bottomLeftVertexPositionColor = VertexPositionColor(bottomLeft, colorXMVECTORF32);
-
-	m_basicEffect->SetAlpha(colorXMVECTORF32.f[3]);
-	m_basicEffect->Apply(m_d3dContext);
-	m_d3dContext->IASetInputLayout(m_inputLayout.Get());
-
-	m_primitiveBatch->Begin();
-
-	m_primitiveBatch->DrawLine(topLeftVertexPositionColor, topRightVertexPositionColor);
-	m_primitiveBatch->DrawLine(topRightVertexPositionColor, bottomRightVertexPositionColor);
-	m_primitiveBatch->DrawLine(bottomRightVertexPositionColor, bottomLeftVertexPositionColor);
-	m_primitiveBatch->DrawLine(bottomLeftVertexPositionColor, topLeftVertexPositionColor);
-
-	m_primitiveBatch->End();*/
-}
-
-void Direct3DRenderer::renderRectangleFill(Rectangle &rectangle, Color &color)
-{
-	/*Vector2D lowerLeft = rectangle.getLowerLeft();
-	float lowerLeftX = lowerLeft.getX();
-	float lowerLeftY = lowerLeft.getY();
-	float width = rectangle.getWidth();
-	float height = rectangle.getHeight();
-
-	RECT rect = RECTUtils::getInstance()->getRECTForCoordinates(lowerLeftX + width / 2, lowerLeftY + height / 2, width, height, false);
-
-	XMVECTORF32 topLeft = { rect.left, rect.top, 0.0f };
-	XMVECTORF32 topRight = { rect.right, rect.top, 0.0f };
-	XMVECTORF32 bottomRight = { rect.right, rect.bottom, 0.0f };
-	XMVECTORF32 bottomLeft = { rect.left, rect.bottom, 0.0f };
-
-	XMVECTORF32 colorXMVECTORF32 = { color.red, color.green, color.blue, color.alpha };
-
-	VertexPositionColor topLeftVertexPositionColor = VertexPositionColor(topLeft, colorXMVECTORF32);
-	VertexPositionColor topRightVertexPositionColor = VertexPositionColor(topRight, colorXMVECTORF32);
-	VertexPositionColor bottomRightVertexPositionColor = VertexPositionColor(bottomRight, colorXMVECTORF32);
-	VertexPositionColor bottomLeftVertexPositionColor = VertexPositionColor(bottomLeft, colorXMVECTORF32);
-
-	m_basicEffect->SetAlpha(colorXMVECTORF32.f[3]);
-	m_basicEffect->Apply(m_d3dContext);
-	m_d3dContext->IASetInputLayout(m_inputLayout.Get());
-
-	m_primitiveBatch->Begin();
-
-	m_primitiveBatch->DrawQuad(topLeftVertexPositionColor, topRightVertexPositionColor, bottomRightVertexPositionColor, bottomLeftVertexPositionColor);
-
-	m_primitiveBatch->End();*/
 }

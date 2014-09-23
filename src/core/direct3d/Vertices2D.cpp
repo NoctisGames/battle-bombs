@@ -10,6 +10,7 @@
 #include "Vertices2D.h"
 #include "BasicReaderWriter.h"
 #include "DirectXMath.h"
+#include "GameConstants.h"
 #include <stdlib.h>
 
 using namespace DirectX;
@@ -173,20 +174,17 @@ void Vertices2D::bind()
 	UINT offset = 0;
 	devcon->IASetVertexBuffers(0, 1, vertexbuffer.GetAddressOf(), &stride, &offset);
 
-	// calculate the world matrices
-	XMMATRIX matRotate = XMMatrixRotationY(0);
-
 	// calculate the view transformation
-	XMVECTOR vecCamPosition = XMVectorSet(12.0f, 6.80597015f, flatSceneZ, 0);
-	XMVECTOR vecCamLookAt = XMVectorSet(12.0f, 6.80597015f, 0, 0);
+	XMVECTOR vecCamPosition = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1, 0);
+	XMVECTOR vecCamLookAt = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0);
 	XMVECTOR vecCamUp = XMVectorSet(0, 1, 0, 0);
 	XMMATRIX matView = XMMatrixLookAtRH(vecCamPosition, vecCamLookAt, vecCamUp);
 
 	// calculate the projection transformation
-	XMMATRIX matProjection = XMMatrixPerspectiveFovRH(XMConvertToRadians(45), aspectRatio, 1, 100);
+	XMMATRIX matProjection = XMMatrixOrthographicRH(SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
 
 	// calculate the final matrix
-	XMMATRIX matFinal = matRotate * matView * matProjection;
+	XMMATRIX matFinal = matView * matProjection;
 
 	// send the final matrix to video memory
 	devcon->UpdateSubresource(constantbuffer.Get(), 0, 0, &matFinal, 0, 0);

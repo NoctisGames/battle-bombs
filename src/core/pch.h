@@ -11,9 +11,6 @@
 
 #define LOGGING_ON 1
 
-#define aspectRatio 1.7777777777777777777777777777778f
-#define flatSceneZ 28.970562748477140585620264690516f / aspectRatio
-
 #define _USE_MATH_DEFINES
 #include <math.h>
 
