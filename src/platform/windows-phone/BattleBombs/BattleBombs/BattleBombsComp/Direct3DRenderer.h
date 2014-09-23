@@ -9,25 +9,21 @@
 #pragma once
 
 #include "Renderer.h"
-#include <DDSTextureLoader.h>
-#include <SpriteBatch.h>
-#include <PrimitiveBatch.h>
-#include "CommonStates.h"
-#include "VertexTypes.h"
-#include "PowerUpType.h"
-#include <Effects.h>
 #include "Color.h"
 
 class Line;
 class Rectangle;
+class SpriteBatcher;
+
+using namespace Microsoft::WRL;
 
 class Direct3DRenderer : public Renderer
 {
 public:
-	Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView, int deviceScreenWidth, int deviceScreenHeight);
+	Direct3DRenderer(ComPtr<ID3D11Device1> d3dDevice, ComPtr<ID3D11DeviceContext1> d3dContext, ComPtr<ID3D11RenderTargetView> rendertargetIn, ComPtr<ID3D11DepthStencilView> zbufferIn);
 
 	virtual void loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
-	
+
 	virtual void clearScreenWithColor(float r, float g, float b, float a);
 
 	virtual void beginFrame();
@@ -63,31 +59,26 @@ public:
 	virtual void cleanUp();
 
 private:
-	ID3D11Device1 *m_d3dDevice;
-	ID3D11DeviceContext1 *m_d3dContext;
-	ID3D11RenderTargetView *m_renderTargetView;
-	ID3D11DepthStencilView *m_depthStencilView;
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
-	ID3D11ShaderResourceView *m_gameShaderResourceView;
-	ID3D11ShaderResourceView *m_interfaceShaderResourceView;
-	ID3D11ShaderResourceView *m_interface2ShaderResourceView;
-	ID3D11ShaderResourceView *m_charBlackShaderResourceView;
-	ID3D11ShaderResourceView *m_charBlueShaderResourceView;
-	ID3D11ShaderResourceView *m_charGreenShaderResourceView;
-	ID3D11ShaderResourceView *m_charOrangeShaderResourceView;
-	ID3D11ShaderResourceView *m_charPinkShaderResourceView;
-	ID3D11ShaderResourceView *m_charRedShaderResourceView;
-	ID3D11ShaderResourceView *m_charWhiteShaderResourceView;
-	ID3D11ShaderResourceView *m_charYellowShaderResourceView;
+	// Direct3D Objects.
+	ComPtr<ID3D11Device1> dev;                      // the device interface
+	ComPtr<ID3D11DeviceContext1> devcon;            // the device context interface
+	ComPtr<ID3D11RenderTargetView> rendertarget;    // the render target interface
+	ComPtr<ID3D11DepthStencilView> zbuffer;         // the depth buffer interface
 
-	ID3D11ShaderResourceView *m_currentShaderResourceView;
-	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
-	ID3D11BlendState *m_alphaEnableBlendingState;
+	ComPtr<ID3D11ShaderResourceView> m_gameShaderResourceView;
+	ComPtr<ID3D11ShaderResourceView> m_interfaceShaderResourceView;
+	ComPtr<ID3D11ShaderResourceView> m_interface2ShaderResourceView;
+	ComPtr<ID3D11ShaderResourceView> m_charBlackShaderResourceView;
+	ComPtr<ID3D11ShaderResourceView> m_charBlueShaderResourceView;
+	ComPtr<ID3D11ShaderResourceView> m_charGreenShaderResourceView;
+	ComPtr<ID3D11ShaderResourceView> m_charOrangeShaderResourceView;
+	ComPtr<ID3D11ShaderResourceView> m_charPinkShaderResourceView;
+	ComPtr<ID3D11ShaderResourceView> m_charRedShaderResourceView;
+	ComPtr<ID3D11ShaderResourceView> m_charWhiteShaderResourceView;
+	ComPtr<ID3D11ShaderResourceView> m_charYellowShaderResourceView;
 
-	int m_iDeviceScreenWidth;
-	int m_iDeviceScreenHeight;
+	std::unique_ptr<SpriteBatcher> m_spriteBatcher;
+	std::unique_ptr<SpriteBatcher> m_spriteBatcherWithColor;
 
 	virtual void renderGameObject(GameObject &go, TextureRegion tr);
 
@@ -98,4 +89,7 @@ private:
 	void renderRectangleStroke(Rectangle &rectangle, Color &color);
 
 	void renderRectangleFill(Rectangle &rectangle, Color &color);
+
+	void InitPipeline();
+	void InitGraphics();
 };

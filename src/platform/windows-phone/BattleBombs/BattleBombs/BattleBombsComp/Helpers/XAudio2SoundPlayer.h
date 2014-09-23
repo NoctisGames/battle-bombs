@@ -7,9 +7,6 @@
 
 #pragma once
 
-
-#include "Direct3DBase.h"
-
 #include "mmreg.h"
 #include <vector>
 #include <memory>
