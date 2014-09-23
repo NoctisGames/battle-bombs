@@ -35,7 +35,7 @@ Direct3DRectangleRenderer::Direct3DRectangleRenderer(ComPtr<ID3D11Device1> d3dDe
 	bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 	bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 	bd.IndependentBlendEnable = FALSE;
-	bd.AlphaToCoverageEnable = TRUE;
+	bd.AlphaToCoverageEnable = FALSE;
 
 	dev->CreateBlendState(&bd, &blendstate);
 }
