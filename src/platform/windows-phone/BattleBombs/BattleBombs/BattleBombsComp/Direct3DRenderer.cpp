@@ -54,12 +54,11 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-Direct3DRenderer::Direct3DRenderer(ComPtr<ID3D11Device1> d3dDevice, ComPtr<ID3D11DeviceContext1> d3dContext, ComPtr<ID3D11RenderTargetView> rendertargetIn, ComPtr<ID3D11DepthStencilView> zbufferIn) : Renderer()
+Direct3DRenderer::Direct3DRenderer(ComPtr<ID3D11Device1> d3dDevice, ComPtr<ID3D11DeviceContext1> d3dContext, ComPtr<ID3D11RenderTargetView> rendertargetIn) : Renderer()
 {
 	dev = d3dDevice;
 	devcon = d3dContext;
 	rendertarget = rendertargetIn;
-	zbuffer = zbufferIn;
 
 	m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(d3dDevice, d3dContext, 4000, false));
 	m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(d3dDevice, d3dContext, 1000, true));
@@ -167,9 +166,6 @@ void Direct3DRenderer::clearScreenWithColor(float r, float g, float b, float a)
 
 	// clear the back buffer to a deep blue
 	devcon->ClearRenderTargetView(rendertarget.Get(), color);
-
-	// clear the depth buffer
-	devcon->ClearDepthStencilView(zbuffer.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 void Direct3DRenderer::beginFrame()
