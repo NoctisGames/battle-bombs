@@ -9,17 +9,6 @@
 #ifndef __battlebombs__Direct3DRectangleRenderer__
 #define __battlebombs__Direct3DRectangleRenderer__
 
-struct BASIC_VERTEX
-{
-	float X, Y, Z; // vertex position
-};
-
-struct COLOR_VERTEX
-{
-	float X, Y, Z; // vertex position
-	float R, G, B, A; // vertex color
-};
-
 #include <d3d11_1.h>
 #include <memory>
 #include "Color.h"
@@ -39,8 +28,8 @@ public:
 	void renderRectangle(float x1, float y1, float x2, float y2, Color &color);
     
 private:
-	ID3D11Device1 *dev;                      // the device interface
-	ID3D11DeviceContext1 *devcon;            // the device context interface
+	ComPtr<ID3D11Device1> dev;                      // the device interface
+	ComPtr<ID3D11DeviceContext1> devcon;            // the device context interface
 	ComPtr<ID3D11BlendState> blendstate;            // the blend state interface
 	ComPtr<ID3D11Buffer> indexbuffer;               // the index buffer interface
     std::unique_ptr<Vertices2D> m_vertices;

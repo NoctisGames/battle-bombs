@@ -32,8 +32,8 @@ public:
     void drawSprite(float x, float y, float width, float height, float angle, Color &color, TextureRegion tr);
     
 private:
-	ID3D11Device1 *dev;                      // the device interface
-	ID3D11DeviceContext1 *devcon;            // the device context interface
+	ComPtr<ID3D11Device1> dev;                      // the device interface
+	ComPtr<ID3D11DeviceContext1> devcon;            // the device context interface
 	ComPtr<ID3D11BlendState> blendstate;            // the blend state interface
 	ComPtr<ID3D11SamplerState> samplerstate;        // the sampler state interfaces
 	ComPtr<ID3D11Buffer> indexbuffer;               // the index buffer interface

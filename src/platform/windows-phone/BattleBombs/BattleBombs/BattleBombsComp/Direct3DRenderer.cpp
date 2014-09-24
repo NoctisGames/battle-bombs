@@ -54,28 +54,25 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *rendertargetIn) : Renderer()
+Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *rendertargetIn) : Renderer(), dev(d3dDevice), devcon(d3dContext), rendertarget(rendertargetIn)
 {
-	dev = d3dDevice;
-	devcon = d3dContext;
-	rendertarget = rendertargetIn;
-	m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(dev, devcon, 4000, false));
-	m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(dev, devcon, 1000, true));
-	m_rectangleRenderer = std::unique_ptr<Direct3DRectangleRenderer>(new Direct3DRectangleRenderer(dev, devcon, true, true));
+	m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(dev.Get(), devcon.Get(), 4000, false));
+	m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(dev.Get(), devcon.Get(), 1000, true));
+	m_rectangleRenderer = std::unique_ptr<Direct3DRectangleRenderer>(new Direct3DRectangleRenderer(dev.Get(), devcon.Get(), true, true));
 
 	// Initialize Textures
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\interface_2.dds", NULL, &m_interface2ShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\interface_2.dds", NULL, &m_interface2ShaderResourceView, NULL));
 
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_red.dds", NULL, &m_charRedShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\bot_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\bot_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\bot_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\bot_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\bot_red.dds", NULL, &m_charRedShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\bot_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\bot_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
 
 	player_sprites_loaded[0] = true;
 	player_sprites_loaded[1] = false;
@@ -92,58 +89,58 @@ void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
 	switch (mapType)
 	{
 	case MAP_SPACE:
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
 		break;
 	case MAP_GRASSLANDS:
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\map_grasslands.dds", NULL, &m_gameShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\map_grasslands.dds", NULL, &m_gameShaderResourceView, NULL));
 		break;
 	case MAP_MOUNTAINS:
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\map_mountains.dds", NULL, &m_gameShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\map_mountains.dds", NULL, &m_gameShaderResourceView, NULL));
 		break;
 	case MAP_BASE:
 	default:
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\map_base.dds", NULL, &m_gameShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\map_base.dds", NULL, &m_gameShaderResourceView, NULL));
 		break;
 	}
 
 	if ((players.at(0)->isBot() && player_sprites_loaded[0]) || (!players.at(0)->isBot() && !player_sprites_loaded[0]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(0)->isBot() ? L"Assets\\bot_black.dds" : L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), players.at(0)->isBot() ? L"Assets\\bot_black.dds" : L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
 	}
 
 	if ((players.at(1)->isBot() && player_sprites_loaded[1]) || (!players.at(1)->isBot() && !player_sprites_loaded[1]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(1)->isBot() ? L"Assets\\bot_blue.dds" : L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), players.at(1)->isBot() ? L"Assets\\bot_blue.dds" : L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
 	}
 
 	if ((players.at(2)->isBot() && player_sprites_loaded[2]) || (!players.at(2)->isBot() && !player_sprites_loaded[2]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(2)->isBot() ? L"Assets\\bot_green.dds" : L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), players.at(2)->isBot() ? L"Assets\\bot_green.dds" : L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
 	}
 
 	if ((players.at(3)->isBot() && player_sprites_loaded[3]) || (!players.at(3)->isBot() && !player_sprites_loaded[3]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(3)->isBot() ? L"Assets\\bot_orange.dds" : L"Assets\\char_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), players.at(3)->isBot() ? L"Assets\\bot_orange.dds" : L"Assets\\char_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
 	}
 
 	if ((players.at(4)->isBot() && player_sprites_loaded[4]) || (!players.at(4)->isBot() && !player_sprites_loaded[4]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(4)->isBot() ? L"Assets\\bot_pink.dds" : L"Assets\\char_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), players.at(4)->isBot() ? L"Assets\\bot_pink.dds" : L"Assets\\char_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
 	}
 
 	if ((players.at(5)->isBot() && player_sprites_loaded[5]) || (!players.at(5)->isBot() && !player_sprites_loaded[5]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(5)->isBot() ? L"Assets\\bot_red.dds" : L"Assets\\char_red.dds", NULL, &m_charRedShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), players.at(5)->isBot() ? L"Assets\\bot_red.dds" : L"Assets\\char_red.dds", NULL, &m_charRedShaderResourceView, NULL));
 	}
 
 	if ((players.at(6)->isBot() && player_sprites_loaded[6]) || (!players.at(6)->isBot() && !player_sprites_loaded[6]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(6)->isBot() ? L"Assets\\bot_white.dds" : L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), players.at(6)->isBot() ? L"Assets\\bot_white.dds" : L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
 	}
 
 	if ((players.at(7)->isBot() && player_sprites_loaded[7]) || (!players.at(7)->isBot() && !player_sprites_loaded[7]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
 	}
 
 	player_sprites_loaded[0] = !players.at(0)->isBot();
@@ -161,10 +158,10 @@ void Direct3DRenderer::clearScreenWithColor(float r, float g, float b, float a)
 	float color[] = { r, g, b, a };
 
 	// set our new render target object as the active render target
-	devcon->OMSetRenderTargets(1, &rendertarget, nullptr);
+	devcon->OMSetRenderTargets(1, rendertarget.GetAddressOf(), nullptr);
 
 	// clear the back buffer to a deep blue
-	devcon->ClearRenderTargetView(rendertarget, color);
+	devcon->ClearRenderTargetView(rendertarget.Get(), color);
 }
 
 void Direct3DRenderer::beginFrame()
