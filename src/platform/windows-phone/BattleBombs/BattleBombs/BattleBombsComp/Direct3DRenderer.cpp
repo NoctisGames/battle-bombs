@@ -54,11 +54,15 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *rendertargetIn) : Renderer(), dev(d3dDevice), devcon(d3dContext), rendertarget(rendertargetIn)
+Direct3DRenderer::Direct3DRenderer(ComPtr<ID3D11Device1> d3dDevice, ComPtr<ID3D11DeviceContext1> d3dContext, ComPtr<ID3D11RenderTargetView> rendertargetIn) : Renderer()
 {
-	m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(dev.Get(), devcon.Get(), 4000, false));
-	m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(dev.Get(), devcon.Get(), 1000, true));
-	m_rectangleRenderer = std::unique_ptr<Direct3DRectangleRenderer>(new Direct3DRectangleRenderer(dev.Get(), devcon.Get(), true, true));
+	dev = d3dDevice;
+	devcon = d3dContext;
+	rendertarget = rendertargetIn;
+
+	m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(d3dDevice, d3dContext, 4000, false));
+	m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(d3dDevice, d3dContext, 1000, true));
+	m_rectangleRenderer = std::unique_ptr<Direct3DRectangleRenderer>(new Direct3DRectangleRenderer(d3dDevice, d3dContext, true, true));
 
 	// Initialize Textures
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev.Get(), L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));

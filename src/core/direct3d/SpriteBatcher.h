@@ -21,7 +21,7 @@ using namespace Microsoft::WRL;
 class SpriteBatcher
 {
 public:
-	SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, int maxSprites, bool useColors);
+	SpriteBatcher(ComPtr<ID3D11Device1> d3dDevice, ComPtr<ID3D11DeviceContext1> d3dContext, int maxSprites, bool useColors);
     
     void beginBatch();
 

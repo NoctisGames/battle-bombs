@@ -15,8 +15,10 @@
 
 using namespace DirectX;
 
-Vertices2D::Vertices2D(ID3D11Device1 &dev, ID3D11DeviceContext1 &devcon, int maxNumVertices, bool isUsingTextureCoordinates, bool isUsingColors)
+Vertices2D::Vertices2D(ComPtr<ID3D11Device1> d3dDevice, ComPtr<ID3D11DeviceContext1> d3dContext, int maxNumVertices, bool isUsingTextureCoordinates, bool isUsingColors)
 {
+	dev = d3dDevice;
+	devcon = d3dContext;
 	m_iMaxNumVertices = maxNumVertices;
 
 	// Create a Basic Reader-Writer class to load data from disk.  This class is examined
@@ -42,7 +44,7 @@ Vertices2D::Vertices2D(ID3D11Device1 &dev, ID3D11DeviceContext1 &devcon, int max
 		};
 
 		// create and set the input layout
-		dev.CreateInputLayout(ied, ARRAYSIZE(ied), vertexShaderBytecode->Data, vertexShaderBytecode->Length, &inputlayout);
+		dev->CreateInputLayout(ied, ARRAYSIZE(ied), vertexShaderBytecode->Data, vertexShaderBytecode->Length, &inputlayout);
 	}
 	else if (isUsingColors)
 	{
@@ -60,7 +62,7 @@ Vertices2D::Vertices2D(ID3D11Device1 &dev, ID3D11DeviceContext1 &devcon, int max
 		};
 
 		// create and set the input layout
-		dev.CreateInputLayout(ied, ARRAYSIZE(ied), vertexShaderBytecode->Data, vertexShaderBytecode->Length, &inputlayout);
+		dev->CreateInputLayout(ied, ARRAYSIZE(ied), vertexShaderBytecode->Data, vertexShaderBytecode->Length, &inputlayout);
 	}
 	else
 	{
@@ -77,11 +79,11 @@ Vertices2D::Vertices2D(ID3D11Device1 &dev, ID3D11DeviceContext1 &devcon, int max
 		};
 
 		// create and set the input layout
-		dev.CreateInputLayout(ied, ARRAYSIZE(ied), vertexShaderBytecode->Data, vertexShaderBytecode->Length, &inputlayout);
+		dev->CreateInputLayout(ied, ARRAYSIZE(ied), vertexShaderBytecode->Data, vertexShaderBytecode->Length, &inputlayout);
 	}
 	
-	dev.CreateVertexShader(vertexShaderBytecode->Data, vertexShaderBytecode->Length, nullptr, &vertexshader);
-	dev.CreatePixelShader(pixelShaderBytecode->Data, pixelShaderBytecode->Length, nullptr, &pixelshader);
+	dev->CreateVertexShader(vertexShaderBytecode->Data, vertexShaderBytecode->Length, nullptr, &vertexshader);
+	dev->CreatePixelShader(pixelShaderBytecode->Data, pixelShaderBytecode->Length, nullptr, &pixelshader);
 
 	D3D11_BUFFER_DESC bd2 = { 0 };
 
@@ -89,9 +91,9 @@ Vertices2D::Vertices2D(ID3D11Device1 &dev, ID3D11DeviceContext1 &devcon, int max
 	bd2.ByteWidth = 64;
 	bd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
-	dev.CreateBuffer(&bd2, nullptr, &constantbuffer);
+	dev->CreateBuffer(&bd2, nullptr, &constantbuffer);
 
-	devcon.VSSetConstantBuffers(0, 1, constantbuffer.GetAddressOf());
+	devcon->VSSetConstantBuffers(0, 1, constantbuffer.GetAddressOf());
     
     m_iVerticesIndex = 0;
     
@@ -123,7 +125,7 @@ void Vertices2D::addVertexCoordinate(float x, float y, float z, float r, float g
 	}
 }
 
-void Vertices2D::bind(ID3D11Device1 &dev, ID3D11DeviceContext1 &devcon)
+void Vertices2D::bind()
 {
 	// create the vertex buffer
 	D3D11_BUFFER_DESC bd = { 0 };
@@ -147,13 +149,13 @@ void Vertices2D::bind(ID3D11Device1 &dev, ID3D11DeviceContext1 &devcon)
 
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
-	dev.CreateBuffer(&bd, &srd, &vertexbuffer);
+	dev->CreateBuffer(&bd, &srd, &vertexbuffer);
 
 	// set the shader objects as the active shaders
-	devcon.VSSetShader(vertexshader.Get(), nullptr, 0);
-	devcon.PSSetShader(pixelshader.Get(), nullptr, 0);
+	devcon->VSSetShader(vertexshader.Get(), nullptr, 0);
+	devcon->PSSetShader(pixelshader.Get(), nullptr, 0);
 
-	devcon.IASetInputLayout(inputlayout.Get());
+	devcon->IASetInputLayout(inputlayout.Get());
 
 	// set the vertex buffer
 	UINT stride;
@@ -170,7 +172,7 @@ void Vertices2D::bind(ID3D11Device1 &dev, ID3D11DeviceContext1 &devcon)
 		stride = sizeof(BASIC_VERTEX);
 	}
 	UINT offset = 0;
-	devcon.IASetVertexBuffers(0, 1, vertexbuffer.GetAddressOf(), &stride, &offset);
+	devcon->IASetVertexBuffers(0, 1, vertexbuffer.GetAddressOf(), &stride, &offset);
 
 	// calculate the view transformation
 	XMVECTOR vecCamPosition = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1, 0);
@@ -185,5 +187,5 @@ void Vertices2D::bind(ID3D11Device1 &dev, ID3D11DeviceContext1 &devcon)
 	XMMATRIX matFinal = matView * matProjection;
 
 	// send the final matrix to video memory
-	devcon.UpdateSubresource(constantbuffer.Get(), 0, 0, &matFinal, 0, 0);
+	devcon->UpdateSubresource(constantbuffer.Get(), 0, 0, &matFinal, 0, 0);
 }
