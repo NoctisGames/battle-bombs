@@ -11,7 +11,6 @@
 
 #include <d3d11_1.h>
 #include <memory>
-#include <vector>
 #include "Color.h"
 
 class TextureRegion;
@@ -39,7 +38,7 @@ private:
 	ComPtr<ID3D11SamplerState> samplerstate;        // the sampler state interfaces
 	ComPtr<ID3D11Buffer> indexbuffer;               // the index buffer interface
 	std::unique_ptr<Vertices2D> m_vertices;
-	std::vector<short> m_indices;
+	std::unique_ptr<short> m_indices;
 	int m_iNumSprites;
     
     void drawSprite(float x, float y, float width, float height, TextureRegion tr);

@@ -29,6 +29,8 @@ Vertices2D::Vertices2D(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContex
 
 	if (isUsingTextureCoordinates)
 	{
+		m_textureVertices = std::unique_ptr<TEXTURE_VERTEX>(new TEXTURE_VERTEX[maxNumVertices]);
+
 		// Load the raw shader bytecode from disk and create shader objects with it.
 		vertexShaderBytecode = reader->ReadData("TextureVertexShader.cso");
 		pixelShaderBytecode = reader->ReadData("TexturePixelShader.cso");
@@ -46,6 +48,8 @@ Vertices2D::Vertices2D(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContex
 	}
 	else if (isUsingColors)
 	{
+		m_colorVertices = std::unique_ptr<COLOR_VERTEX>(new COLOR_VERTEX[maxNumVertices]);
+
 		// Load the raw shader bytecode from disk and create shader objects with it.
 		vertexShaderBytecode = reader->ReadData("ColorVertexShader.cso");
 		pixelShaderBytecode = reader->ReadData("ColorPixelShader.cso");
@@ -62,6 +66,8 @@ Vertices2D::Vertices2D(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContex
 	}
 	else
 	{
+		m_basicVertices = std::unique_ptr<BASIC_VERTEX>(new BASIC_VERTEX[maxNumVertices]);
+
 		// Load the raw shader bytecode from disk and create shader objects with it.
 		vertexShaderBytecode = reader->ReadData("BasicVertexShader.cso");
 		pixelShaderBytecode = reader->ReadData("BasicPixelShader.cso");
@@ -105,20 +111,18 @@ void Vertices2D::addVertexCoordinate(float x, float y, float z, float r, float g
 	if (m_hasTextureCoordinates)
 	{
 		TEXTURE_VERTEX tv = { x, y, z, r, g, b, a, u, v };
-		m_textureVertices.push_back(tv);
+		m_textureVertices.get()[m_iVerticesIndex++] = tv;
 	}
 	else if (m_hasColor)
 	{
 		COLOR_VERTEX cv = { x, y, z, r, g, b, a };
-		m_colorVertices.push_back(cv);
+		m_colorVertices.get()[m_iVerticesIndex++] = cv;
 	}
 	else
 	{
 		BASIC_VERTEX bv = { x, y, z };
-		m_basicVertices.push_back(bv);
+		m_basicVertices.get()[m_iVerticesIndex++] = bv;
 	}
-
-	m_iVerticesIndex++;
 }
 
 void Vertices2D::bind()
@@ -129,18 +133,18 @@ void Vertices2D::bind()
 
 	if (m_hasTextureCoordinates)
 	{
-		bd.ByteWidth = sizeof(TEXTURE_VERTEX)* m_iVerticesIndex;
-		srd.pSysMem = &m_textureVertices[0];
+		bd.ByteWidth = sizeof(TEXTURE_VERTEX) * m_iMaxNumVertices;
+		srd.pSysMem = m_textureVertices.get();
 	}
 	else if (m_hasColor)
 	{
-		bd.ByteWidth = sizeof(COLOR_VERTEX)* m_iVerticesIndex;
-		srd.pSysMem = &m_colorVertices[0];
+		bd.ByteWidth = sizeof(COLOR_VERTEX) * m_iMaxNumVertices;
+		srd.pSysMem = m_colorVertices.get();
 	}
 	else
 	{
-		bd.ByteWidth = sizeof(BASIC_VERTEX)* m_iVerticesIndex;
-		srd.pSysMem = &m_basicVertices[0];
+		bd.ByteWidth = sizeof(BASIC_VERTEX) * m_iMaxNumVertices;
+		srd.pSysMem = m_basicVertices.get();
 	}
 
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
