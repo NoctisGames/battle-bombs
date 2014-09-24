@@ -29,7 +29,6 @@ struct TEXTURE_VERTEX
 
 #include <d3d11_1.h>
 #include <memory>
-#include <vector>
 
 using namespace Microsoft::WRL;
 
@@ -52,9 +51,9 @@ private:
 	ComPtr<ID3D11InputLayout> inputlayout;          // the input layout interface
 	ComPtr<ID3D11Buffer> constantbuffer;            // the constant buffer interface
 	ComPtr<ID3D11Buffer> vertexbuffer;              // the vertex buffer interface
-	std::vector<BASIC_VERTEX> m_basicVertices;
-	std::vector<COLOR_VERTEX> m_colorVertices;
-	std::vector<TEXTURE_VERTEX> m_textureVertices;
+	std::unique_ptr<BASIC_VERTEX> m_basicVertices;
+	std::unique_ptr<COLOR_VERTEX> m_colorVertices;
+	std::unique_ptr<TEXTURE_VERTEX> m_textureVertices;
     int m_iVerticesIndex;
 	int m_iMaxNumVertices;
     bool m_hasColor;
