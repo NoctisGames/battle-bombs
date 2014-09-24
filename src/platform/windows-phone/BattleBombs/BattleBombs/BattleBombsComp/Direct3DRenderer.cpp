@@ -59,11 +59,12 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 	dev = d3dDevice;
 	devcon = d3dContext;
 	rendertarget = rendertargetIn;
-
 	m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(dev, devcon, 4000, false));
 	m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(dev, devcon, 1000, true));
 	m_rectangleRenderer = std::unique_ptr<Direct3DRectangleRenderer>(new Direct3DRectangleRenderer(dev, devcon, true, true));
 
+	// Initialize Textures
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\interface_2.dds", NULL, &m_interface2ShaderResourceView, NULL));
 
