@@ -101,6 +101,27 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	D3D11_TEXTURE2D_DESC backBufferDesc;
 	backBuffer->GetDesc(&backBufferDesc);
 
+	// create a zbuffer
+	D3D11_TEXTURE2D_DESC texd = { 0 };
+
+	texd.Width = static_cast<float>(backBufferDesc.Width);
+	texd.Height = static_cast<float>(backBufferDesc.Height);
+	texd.ArraySize = 1;
+	texd.MipLevels = 1;
+	texd.SampleDesc.Count = 1;
+	texd.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	texd.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+	ComPtr<ID3D11Texture2D> zbuffertexture;
+	dev->CreateTexture2D(&texd, nullptr, &zbuffertexture);
+
+	D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
+	ZeroMemory(&dsvd, sizeof(dsvd));
+
+	dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+
+	dev->CreateDepthStencilView(zbuffertexture.Get(), &dsvd, &zbuffer);
+
 	// set the viewport
 	D3D11_VIEWPORT viewport = { 0 };
 	viewport.TopLeftX = 0;
@@ -112,7 +133,7 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 
 	devcon->RSSetViewports(1, &viewport);
 
-	m_renderer = std::unique_ptr<Direct3DRenderer>(new Direct3DRenderer(dev, devcon, rendertarget));
+	m_renderer = std::unique_ptr<Direct3DRenderer>(new Direct3DRenderer(dev, devcon, rendertarget, zbuffer));
 
 	// Load Background Music
 	m_mediaPlayer = std::unique_ptr<MediaEnginePlayer>(new MediaEnginePlayer);

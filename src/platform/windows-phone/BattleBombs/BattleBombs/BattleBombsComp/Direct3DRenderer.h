@@ -21,7 +21,7 @@ using namespace Microsoft::WRL;
 class Direct3DRenderer : public Renderer
 {
 public:
-	Direct3DRenderer(ComPtr<ID3D11Device1> d3dDevice, ComPtr<ID3D11DeviceContext1> d3dContext, ComPtr<ID3D11RenderTargetView> rendertargetIn);
+	Direct3DRenderer(ComPtr<ID3D11Device1> d3dDevice, ComPtr<ID3D11DeviceContext1> d3dContext, ComPtr<ID3D11RenderTargetView> rendertargetIn, ComPtr<ID3D11DepthStencilView> zbufferIn);
 
 	virtual void loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
 
@@ -64,6 +64,7 @@ private:
 	ComPtr<ID3D11Device1> dev;                      // the device interface
 	ComPtr<ID3D11DeviceContext1> devcon;            // the device context interface
 	ComPtr<ID3D11RenderTargetView> rendertarget;    // the render target interface
+	ComPtr<ID3D11DepthStencilView> zbuffer;         // the depth buffer interface
 
 	ComPtr<ID3D11ShaderResourceView> m_gameShaderResourceView;
 	ComPtr<ID3D11ShaderResourceView> m_interfaceShaderResourceView;
