@@ -193,7 +193,6 @@
     <ClInclude Include="..\..\..\..\..\core\Color.h" />
     <ClInclude Include="..\..\..\..\..\core\CountDownNumberGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\CountDownNumberType.h" />
-    <ClInclude Include="..\..\..\..\..\core\direct3d\Direct3DRectangleRenderer.h" />
     <ClInclude Include="..\..\..\..\..\core\direct3d\SpriteBatcher.h" />
     <ClInclude Include="..\..\..\..\..\core\direct3d\Vertices2D.h" />
     <ClInclude Include="..\..\..\..\..\core\DisplayBattleGameObject.h" />
@@ -278,7 +277,6 @@
     <ClCompile Include="..\..\..\..\..\core\BotPlayerDynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BreakableBlock.cpp" />
     <ClCompile Include="..\..\..\..\..\core\CountDownNumberGameObject.cpp" />
-    <ClCompile Include="..\..\..\..\..\core\direct3d\Direct3DRectangleRenderer.cpp" />
     <ClCompile Include="..\..\..\..\..\core\direct3d\SpriteBatcher.cpp" />
     <ClCompile Include="..\..\..\..\..\core\direct3d\Vertices2D.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DisplayBattleGameObject.cpp" />

@@ -14,7 +14,6 @@
 class Line;
 class Rectangle;
 class SpriteBatcher;
-class Direct3DRectangleRenderer;
 
 using namespace Microsoft::WRL;
 
@@ -80,9 +79,17 @@ private:
 
 	std::unique_ptr<SpriteBatcher> m_spriteBatcher;
 	std::unique_ptr<SpriteBatcher> m_spriteBatcherWithColor;
-	std::unique_ptr<Direct3DRectangleRenderer> m_rectangleRenderer;
 
 	virtual void renderGameObject(GameObject &go, TextureRegion tr);
 
 	virtual void renderGameObjectWithRespectToPlayer(GameObject &go, TextureRegion tr);
+
+	void renderLine(Line &line, Color &color);
+
+	void renderRectangleStroke(Rectangle &rectangle, Color &color);
+
+	void renderRectangleFill(Rectangle &rectangle, Color &color);
+
+	void InitPipeline();
+	void InitGraphics();
 };

@@ -49,7 +49,6 @@
 #include "GameSound.h"
 #include "SpriteBatcher.h"
 #include "Vertices2D.h"
-#include "Direct3DRectangleRenderer.h"
 
 Direct3DGameScreen::Direct3DGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
 {
