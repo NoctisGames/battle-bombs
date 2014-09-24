@@ -18,7 +18,6 @@ SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3d
 {
 	dev = d3dDevice;
 	devcon = d3dContext;
-	m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(d3dDevice, d3dContext, maxSprites * 4, true, useColors));
     m_iNumSprites = 0;
     
     generateIndices(maxSprites);
