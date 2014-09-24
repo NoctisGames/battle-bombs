@@ -47,101 +47,51 @@
 #include "Global.h"
 #include "Direct3DAssets.h"
 #include "GameSound.h"
-#include "SpriteBatcher.h"
-#include "Vertices2D.h"
 
-Direct3DGameScreen::Direct3DGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
-{
-	// No further setup
-}
-
-void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight, int deviceScreenDpWidth, int deviceScreenDpHeight)
+Direct3DGameScreen::Direct3DGameScreen(const char *username, int deviceScreenWidth, int deviceScreenHeight, int deviceScreenDpWidth, int deviceScreenDpHeight, bool isOffline) : GameScreen(username, isOffline)
 {
 	m_iDeviceScreenWidth = deviceScreenWidth;
 	m_iDeviceScreenHeight = deviceScreenHeight;
 	m_fGameScreenToDeviceScreenWidthRatio = deviceScreenWidth / SCREEN_WIDTH;
 	m_fGameScreenToDeviceScreenHeightRatio = deviceScreenHeight / SCREEN_HEIGHT;
 	m_fDipToPixelRatio = (float)deviceScreenWidth / (float)deviceScreenDpWidth;
+}
 
-	// Define temporary pointers to a device and a device context
-	ComPtr<ID3D11Device> dev11;
-	ComPtr<ID3D11DeviceContext> devcon11;
+void Direct3DGameScreen::load(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView)
+{
+	m_renderer = std::unique_ptr<Direct3DRenderer>(new Direct3DRenderer(d3dDevice, d3dContext, renderTargetView, depthStencilView, m_iDeviceScreenWidth, m_iDeviceScreenHeight));
 
-	// Create the device and device context objects
-	D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &dev11, nullptr, &devcon11);
-
-	// Convert the pointers from the DirectX 11 versions to the DirectX 11.1 versions
-	dev11.As(&dev);
-	devcon11.As(&devcon);
-
-	// Create a descriptor for the render target buffer.
-	CD3D11_TEXTURE2D_DESC renderTargetDesc(
-		DXGI_FORMAT_B8G8R8A8_UNORM,
-		static_cast<UINT>(m_iDeviceScreenWidth),
-		static_cast<UINT>(m_iDeviceScreenHeight),
-		1,
-		1,
-		D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE
-		);
-	renderTargetDesc.MiscFlags = D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX | D3D11_RESOURCE_MISC_SHARED_NTHANDLE;
-
-	// Allocate a 2-D surface as the render target buffer.
-	DX::ThrowIfFailed(dev->CreateTexture2D(&renderTargetDesc, nullptr, &m_renderTarget));
-
-	DX::ThrowIfFailed(dev->CreateRenderTargetView(m_renderTarget.Get(), nullptr, &rendertarget));
-
-	ComPtr<ID3D11Resource> renderTargetViewResource;
-	rendertarget->GetResource(&renderTargetViewResource);
-
-	ComPtr<ID3D11Texture2D> backBuffer;
-	DX::ThrowIfFailed(renderTargetViewResource.As(&backBuffer));
-
-	// Cache the rendertarget dimensions in our helper class for convenient use.
-	D3D11_TEXTURE2D_DESC backBufferDesc;
-	backBuffer->GetDesc(&backBufferDesc);
-
-	// create a zbuffer
-	D3D11_TEXTURE2D_DESC texd = { 0 };
-
-	texd.Width = static_cast<float>(backBufferDesc.Width);
-	texd.Height = static_cast<float>(backBufferDesc.Height);
-	texd.ArraySize = 1;
-	texd.MipLevels = 1;
-	texd.SampleDesc.Count = 1;
-	texd.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	texd.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-
-	ComPtr<ID3D11Texture2D> zbuffertexture;
-	dev->CreateTexture2D(&texd, nullptr, &zbuffertexture);
-
-	D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
-	ZeroMemory(&dsvd, sizeof(dsvd));
-
-	dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-
-	dev->CreateDepthStencilView(zbuffertexture.Get(), &dsvd, &zbuffer);
-
-	// set the viewport
-	D3D11_VIEWPORT viewport = { 0 };
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	viewport.Width = static_cast<float>(backBufferDesc.Width);
-	viewport.Height = static_cast<float>(backBufferDesc.Height);
-	viewport.MinDepth = 0;    // the closest an object can be on the depth buffer is 0.0
-	viewport.MaxDepth = 1;    // the farthest an object can be on the depth buffer is 1.0
-
-	devcon->RSSetViewports(1, &viewport);
-
-	m_renderer = std::unique_ptr<Direct3DRenderer>(new Direct3DRenderer(dev, devcon, rendertarget, zbuffer));
+	RECTUtils::getInstance()->setGameScreenToDeviceScreenRatio(m_fGameScreenToDeviceScreenWidthRatio, m_fGameScreenToDeviceScreenHeightRatio);
 
 	// Load Background Music
 	m_mediaPlayer = std::unique_ptr<MediaEnginePlayer>(new MediaEnginePlayer);
-	m_mediaPlayer->Initialize(dev, DXGI_FORMAT_B8G8R8A8_UNORM);
+	m_mediaPlayer->Initialize(d3dDevice, DXGI_FORMAT_B8G8R8A8_UNORM);
 }
 
-ID3D11Texture2D* Direct3DGameScreen::getTexture()
+void Direct3DGameScreen::platformResume()
 {
-	return m_renderTarget.Get();
+	Global::getSoundPlayerInstance()->Resume();
+}
+
+void Direct3DGameScreen::platformPause()
+{
+	Global::getSoundPlayerInstance()->Suspend();
+}
+
+void Direct3DGameScreen::touchToWorld(TouchEvent &touchEvent)
+{
+	m_touchPoint->set(touchEvent.getX() * m_fDipToPixelRatio / m_fGameScreenToDeviceScreenWidthRatio, SCREEN_HEIGHT - (touchEvent.getY() * m_fDipToPixelRatio / m_fGameScreenToDeviceScreenHeightRatio));
+}
+
+void Direct3DGameScreen::unload()
+{
+	if (m_gameState == RUNNING)
+	{
+		onPause();
+	}
+
+	m_mediaPlayer->Shutdown();
+	m_renderer->cleanUp();
 }
 
 void Direct3DGameScreen::handleSound()
@@ -233,31 +183,6 @@ void Direct3DGameScreen::handleMusic()
 	default:
 		break;
 	}
-}
-
-void Direct3DGameScreen::unload()
-{
-	if (m_gameState == RUNNING)
-	{
-		onPause();
-	}
-
-	m_mediaPlayer->Shutdown();
-}
-
-void Direct3DGameScreen::touchToWorld(TouchEvent &touchEvent)
-{
-	m_touchPoint->set(touchEvent.getX() * m_fDipToPixelRatio / m_fGameScreenToDeviceScreenWidthRatio, SCREEN_HEIGHT - (touchEvent.getY() * m_fDipToPixelRatio / m_fGameScreenToDeviceScreenHeightRatio));
-}
-
-void Direct3DGameScreen::platformResume()
-{
-	Global::getSoundPlayerInstance()->Resume();
-}
-
-void Direct3DGameScreen::platformPause()
-{
-	Global::getSoundPlayerInstance()->Suspend();
 }
 
 bool Direct3DGameScreen::handleOnBackPressed()

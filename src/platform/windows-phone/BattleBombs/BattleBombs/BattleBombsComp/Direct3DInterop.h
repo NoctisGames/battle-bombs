@@ -2,8 +2,8 @@
 
 #include "pch.h"
 #include "BasicTimer.h"
+#include "Direct3DBase.h"
 #include "Direct3DGameScreen.h"
-#include "TouchEvent.h"
 #include <DrawingSurfaceNative.h>
 
 namespace BattleBombsComp
@@ -35,7 +35,11 @@ namespace BattleBombsComp
 
 		property Windows::Foundation::Size WindowBounds;
 		property Windows::Foundation::Size NativeResolution;
-		property Windows::Foundation::Size RenderResolution;
+		property Windows::Foundation::Size RenderResolution
+		{
+			Windows::Foundation::Size get(){ return m_renderResolution; }
+			void set(Windows::Foundation::Size renderResolution);
+		}
 
 	protected:
 		// Event Handlers
@@ -53,15 +57,13 @@ namespace BattleBombsComp
 	private:
 		WinRtCallback^ m_winRtCallback;
 		std::unique_ptr<Direct3DGameScreen> m_gameScreen;
+		Direct3DBase^ m_direct3DBase;
 		BasicTimer^ m_timer;
 		Windows::Foundation::Size m_renderResolution;
 		bool m_isOffline;
 		char *m_username;
 		const char *m_gameOverMessage;
 		bool m_playersAlive[8];
-		std::vector<TouchEvent> m_touchEvents;
-		std::vector<TouchEvent> m_touchEventsPool;
-		std::vector<TouchEvent> m_touchEventsBuffer;
 
 		void pushEvents();
 
@@ -69,8 +71,6 @@ namespace BattleBombsComp
 
 		void handleDeathForPlayerIndex(int playerIndex);
 
-		void addTouchEventForType(Touch_Type touchType, float x, float y);
-
-		TouchEvent newTouchEvent();
+		short getOldestEventId();
 	};
 }
