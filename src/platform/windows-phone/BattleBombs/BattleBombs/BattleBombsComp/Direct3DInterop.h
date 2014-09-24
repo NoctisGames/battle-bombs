@@ -51,6 +51,10 @@ namespace BattleBombsComp
 		ID3D11Texture2D* GetTexture();
 
 	private:
+		ComPtr<ID3D11Device1> dev;                      // the device interface
+		ComPtr<ID3D11DeviceContext1> devcon;            // the device context interface
+		ComPtr<ID3D11Texture2D> m_renderTarget;         // the render target texture
+		ComPtr<ID3D11RenderTargetView> rendertarget;    // the render target interface
 		WinRtCallback^ m_winRtCallback;
 		std::unique_ptr<Direct3DGameScreen> m_gameScreen;
 		BasicTimer^ m_timer;
