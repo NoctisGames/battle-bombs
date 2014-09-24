@@ -14,11 +14,9 @@
 #include "TextureRegion.h"
 #include "Color.h"
 
-SpriteBatcher::SpriteBatcher(ComPtr<ID3D11Device1> d3dDevice, ComPtr<ID3D11DeviceContext1> d3dContext, int maxSprites, bool useColors)
+SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, int maxSprites, bool useColors) : dev(d3dDevice), devcon(d3dContext)
 {
-	dev = d3dDevice;
-	devcon = d3dContext;
-	m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(d3dDevice, d3dContext, maxSprites, true, useColors));
+	m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(*d3dDevice, *d3dContext, maxSprites, true, useColors));
     m_iNumSprites = 0;
     
     generateIndices(maxSprites);
@@ -66,7 +64,7 @@ void SpriteBatcher::endBatchWithTexture(ComPtr<ID3D11ShaderResourceView> texture
 {
     if(m_iNumSprites > 0)
     {
-		m_vertices->bind();
+		m_vertices->bind(*dev.Get(), *devcon.Get());
 
 		// set the blend state
 		devcon->OMSetBlendState(blendstate.Get(), 0, 0xffffffff);

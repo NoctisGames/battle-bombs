@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#pragma once
+#ifndef __battle_bombs__Direct3DRenderer__
+#define __battle_bombs__Direct3DRenderer__
 
 #include "Renderer.h"
 #include "Color.h"
@@ -21,7 +22,7 @@ using namespace Microsoft::WRL;
 class Direct3DRenderer : public Renderer
 {
 public:
-	Direct3DRenderer(ComPtr<ID3D11Device1> d3dDevice, ComPtr<ID3D11DeviceContext1> d3dContext, ComPtr<ID3D11RenderTargetView> rendertargetIn);
+	Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *rendertargetIn);
 
 	virtual void loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
 
@@ -85,3 +86,5 @@ private:
 
 	virtual void renderGameObjectWithRespectToPlayer(GameObject &go, TextureRegion tr);
 };
+
+#endif /* defined(__battle_bombs__Direct3DRenderer__) */

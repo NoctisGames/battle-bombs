@@ -21,7 +21,7 @@ using namespace Microsoft::WRL;
 class Direct3DRectangleRenderer
 {
 public:
-	Direct3DRectangleRenderer(ComPtr<ID3D11Device1> d3dDevice, ComPtr<ID3D11DeviceContext1> d3dContext, bool useColor, bool isFill);
+	Direct3DRectangleRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, bool useColor, bool isFill);
     
     void renderRectangle(Rectangle &rectangle, Color &color);
     

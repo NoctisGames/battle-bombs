@@ -112,7 +112,7 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 
 	devcon->RSSetViewports(1, &viewport);
 
-	m_renderer = std::unique_ptr<Direct3DRenderer>(new Direct3DRenderer(dev, devcon, rendertarget));
+	m_renderer = std::unique_ptr<Direct3DRenderer>(new Direct3DRenderer(dev.Get(), devcon.Get(), rendertarget.Get()));
 
 	// Load Background Music
 	m_mediaPlayer = std::unique_ptr<MediaEnginePlayer>(new MediaEnginePlayer);
