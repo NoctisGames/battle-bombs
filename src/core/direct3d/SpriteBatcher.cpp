@@ -217,18 +217,17 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, Colo
 void SpriteBatcher::generateIndices(int maxSprites)
 {
     int numIndices = maxSprites * 6;
-	m_indices = std::unique_ptr<short>(new short[numIndices]);
     
 	short j = 0;
     
     for (int i = 0; i < numIndices; i += 6, j += 4)
     {
-		m_indices.get()[i + 0] = j + 0;
-		m_indices.get()[i + 1] = j + 1;
-		m_indices.get()[i + 2] = j + 2;
-		m_indices.get()[i + 3] = j + 2;
-		m_indices.get()[i + 4] = j + 3;
-		m_indices.get()[i + 5] = j + 0;
+		m_indices.push_back(j + 0);
+		m_indices.push_back(j + 1);
+		m_indices.push_back(j + 2);
+		m_indices.push_back(j + 2);
+		m_indices.push_back(j + 3);
+		m_indices.push_back(j + 0);
     }
 
 	// create the index buffer
@@ -236,7 +235,7 @@ void SpriteBatcher::generateIndices(int maxSprites)
 	ibd.ByteWidth = sizeof(short) * numIndices;
 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 
-	D3D11_SUBRESOURCE_DATA isrd = { m_indices.get(), 0, 0 };
+	D3D11_SUBRESOURCE_DATA isrd = { &m_indices[0], 0, 0 };
 
 	dev->CreateBuffer(&ibd, &isrd, &indexbuffer);
 }

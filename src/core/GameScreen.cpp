@@ -209,6 +209,12 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
 void GameScreen::present()
 {
     m_renderer->clearScreenWithColor(0, 0, 0, 1);
+
+	m_renderer->calcScrollYForPlayer(*m_player);
+
+	m_renderer->beginFrame();
+	m_renderer->renderWorldBackground();
+	return;
     
     switch (m_gameState)
     {
