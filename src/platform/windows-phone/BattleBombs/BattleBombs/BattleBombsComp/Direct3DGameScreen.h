@@ -16,9 +16,7 @@ class Direct3DGameScreen : public GameScreen
 public:
 	Direct3DGameScreen(const char *username, bool isOffline = false);
 
-	void load(float deviceScreenWidth, float deviceScreenHeight, int deviceScreenDpWidth, int deviceScreenDpHeight);
-
-	ID3D11Texture2D* getTexture();
+	void load(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *rendertargetIn, float deviceScreenWidth, float deviceScreenHeight, int deviceScreenDpWidth, int deviceScreenDpHeight);
 
 	void handleSound();
 
@@ -35,11 +33,6 @@ public:
 	virtual bool handleOnBackPressed();
 
 private:
-	ComPtr<ID3D11Device1> dev;                      // the device interface
-	ComPtr<ID3D11DeviceContext1> devcon;            // the device context interface
-	ComPtr<ID3D11Texture2D> m_renderTarget;         // the render target texture
-	ComPtr<ID3D11RenderTargetView> rendertarget;    // the render target interface
-	ComPtr<ID3D11DepthStencilView> zbuffer;         // the depth buffer interface
 	std::unique_ptr<MediaEnginePlayer> m_mediaPlayer;
 
 	float m_fGameScreenToDeviceScreenWidthRatio;

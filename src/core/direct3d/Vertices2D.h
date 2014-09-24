@@ -35,15 +35,17 @@ using namespace Microsoft::WRL;
 class Vertices2D
 {
 public:
-	Vertices2D(ID3D11Device1 &d3dDevice, ID3D11DeviceContext1 &d3dContext, int maxNumVertices, bool isUsingTextureCoordinates, bool isUsingColors);
+	Vertices2D(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, int maxNumVertices, bool isUsingTextureCoordinates, bool isUsingColors);
     
     void resetIndex();
     
 	void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
     
-	void bind(ID3D11Device1 &d3dDevice, ID3D11DeviceContext1 &d3dContext);
+	void bind();
 
 private:
+	ID3D11Device1 *dev;                      // the device interface
+	ID3D11DeviceContext1 *devcon;            // the device context interface
 	ComPtr<ID3D11VertexShader> vertexshader;        // the vertex shader interface
 	ComPtr<ID3D11PixelShader> pixelshader;          // the pixel shader interface
 	ComPtr<ID3D11InputLayout> inputlayout;          // the input layout interface

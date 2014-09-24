@@ -61,10 +61,9 @@ public:
 	virtual void cleanUp();
 
 private:
-	// Direct3D Objects.
-	ComPtr<ID3D11Device1> dev;                      // the device interface
-	ComPtr<ID3D11DeviceContext1> devcon;            // the device context interface
-	ComPtr<ID3D11RenderTargetView> rendertarget;    // the render target interface
+	ID3D11Device1 *dev;                      // the device interface
+	ID3D11DeviceContext1 *devcon;            // the device context interface
+	ID3D11RenderTargetView *rendertarget;    // the render target interface
 
 	ComPtr<ID3D11ShaderResourceView> m_gameShaderResourceView;
 	ComPtr<ID3D11ShaderResourceView> m_interfaceShaderResourceView;

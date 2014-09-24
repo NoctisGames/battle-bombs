@@ -13,10 +13,12 @@
 #include "Vertices2D.h"
 #include "TextureRegion.h"
 #include "Color.h"
+#include "GameConstants.h"
 
-SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, int maxSprites, bool useColors) : dev(d3dDevice), devcon(d3dContext)
+SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, int maxSprites, bool useColors)
 {
-	m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(*d3dDevice, *d3dContext, maxSprites, true, useColors));
+	dev = d3dDevice;
+	devcon = d3dContext;
     m_iNumSprites = 0;
     
     generateIndices(maxSprites);
@@ -64,7 +66,7 @@ void SpriteBatcher::endBatchWithTexture(ComPtr<ID3D11ShaderResourceView> texture
 {
     if(m_iNumSprites > 0)
     {
-		m_vertices->bind(*dev.Get(), *devcon.Get());
+		m_vertices->bind();
 
 		// set the blend state
 		devcon->OMSetBlendState(blendstate.Get(), 0, 0xffffffff);
@@ -210,6 +212,59 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, Colo
 	m_vertices->addVertexCoordinate(x1, y2, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v1);
 	m_vertices->addVertexCoordinate(x2, y2, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v1);
 	m_vertices->addVertexCoordinate(x2, y1, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v2);
+}
+
+void SpriteBatcher::resetIndex()
+{
+	m_iVerticesIndex = 0;
+}
+
+void SpriteBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
+{
+	TEXTURE_VERTEX tv = { x, y, z, r, g, b, a, u, v };
+	m_textureVertices.get()[m_iVerticesIndex++] = tv;
+}
+
+void SpriteBatcher::bind()
+{
+	// create the vertex buffer
+	D3D11_BUFFER_DESC bd = { 0 };
+	D3D11_SUBRESOURCE_DATA srd = { 0 };
+
+	bd.ByteWidth = sizeof(TEXTURE_VERTEX)* m_iMaxNumVertices;
+	srd.pSysMem = m_textureVertices.get();
+
+	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+	dev->CreateBuffer(&bd, &srd, &vertexbuffer);
+
+	// set the shader objects as the active shaders
+	devcon->VSSetShader(vertexshader.Get(), nullptr, 0);
+	devcon->PSSetShader(pixelshader.Get(), nullptr, 0);
+
+	devcon->IASetInputLayout(inputlayout.Get());
+
+	// set the vertex buffer
+	UINT stride = sizeof(TEXTURE_VERTEX);
+	UINT offset = 0;
+	devcon->IASetVertexBuffers(0, 1, vertexbuffer.GetAddressOf(), &stride, &offset);
+
+	using namespace DirectX;
+
+	// calculate the view transformation
+	XMVECTOR vecCamPosition = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1, 0);
+	XMVECTOR vecCamLookAt = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0);
+	XMVECTOR vecCamUp = XMVectorSet(0, 1, 0, 0);
+	XMMATRIX matView = XMMatrixLookAtRH(vecCamPosition, vecCamLookAt, vecCamUp);
+
+	// calculate the projection transformation
+	XMMATRIX matProjection = XMMatrixOrthographicRH(SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
+
+	// calculate the final matrix
+	XMMATRIX matFinal = matView * matProjection;
+
+	// send the final matrix to video memory
+	devcon->UpdateSubresource(constantbuffer.Get(), 0, 0, &matFinal, 0, 0);
 }
 
 void SpriteBatcher::generateIndices(int maxSprites)

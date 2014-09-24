@@ -14,9 +14,11 @@
 #include "Rectangle.h"
 #include "Vector2D.h"
 
-Direct3DRectangleRenderer::Direct3DRectangleRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, bool useColor, bool isFill) : dev(d3dDevice), devcon(d3dContext)
+Direct3DRectangleRenderer::Direct3DRectangleRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, bool useColor, bool isFill)
 {
-	m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(*d3dDevice, *d3dContext, numPointsOnRectangle, false, useColor));
+	dev = d3dDevice;
+	devcon = d3dContext;
+	m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(d3dDevice, d3dContext, numPointsOnRectangle, false, useColor));
 	m_iNumRectangles = 1;
 	m_useColor = useColor;
     m_isFill = isFill;
@@ -57,7 +59,7 @@ void Direct3DRectangleRenderer::renderRectangle(float x1, float y1, float x2, fl
 	m_vertices->addVertexCoordinate(x2, y2, 0, color.red, color.green, color.blue, color.alpha, 0, 0);
 	m_vertices->addVertexCoordinate(x2, y1, 0, color.red, color.green, color.blue, color.alpha, 0, 0);
     
-	m_vertices->bind(*dev.Get(), *devcon.Get());
+	m_vertices->bind();
 
 	// set the blend state
 	devcon->OMSetBlendState(blendstate.Get(), 0, 0xffffffff);
