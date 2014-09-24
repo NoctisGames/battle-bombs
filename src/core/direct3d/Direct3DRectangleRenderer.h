@@ -9,17 +9,6 @@
 #ifndef __battlebombs__Direct3DRectangleRenderer__
 #define __battlebombs__Direct3DRectangleRenderer__
 
-struct BASIC_VERTEX
-{
-	float X, Y, Z; // vertex position
-};
-
-struct COLOR_VERTEX
-{
-	float X, Y, Z; // vertex position
-	float R, G, B, A; // vertex color
-};
-
 #include <d3d11_1.h>
 #include <memory>
 #include "Color.h"
