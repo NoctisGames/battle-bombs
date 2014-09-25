@@ -10,7 +10,6 @@
 #include "macros.h"
 #include "DirectXHelper.h"
 #include "Direct3DRenderer.h"
-#include "RECTUtils.h"
 #include "GameObject.h"
 #include "TextureRegion.h"
 #include "Assets.h"

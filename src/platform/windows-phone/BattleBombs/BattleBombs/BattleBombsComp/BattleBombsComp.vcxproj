@@ -217,19 +217,22 @@
     <ClInclude Include="..\..\..\..\..\core\WaitingForServerInterface.h" />
     <ClInclude Include="BasicReaderWriter.h" />
     <ClInclude Include="BasicTimer.h" />
+    <ClInclude Include="dds.h" />
+    <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="Direct3DAssets.h" />
     <ClInclude Include="Direct3DContentProvider.h" />
     <ClInclude Include="Direct3DGameScreen.h" />
     <ClInclude Include="Direct3DInterop.h" />
     <ClInclude Include="Direct3DRenderer.h" />
     <ClInclude Include="DirectXHelper.h" />
+    <ClInclude Include="DirectXHelpers.h" />
     <ClInclude Include="GameSound.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Helpers\MediaEnginePlayer.h" />
     <ClInclude Include="Helpers\RandomAccessReader.h" />
     <ClInclude Include="Helpers\SoundFileReader.h" />
     <ClInclude Include="Helpers\XAudio2SoundPlayer.h" />
-    <ClInclude Include="RECTUtils.h" />
+    <ClInclude Include="PlatformHelpers.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\core\ActiveButton.cpp" />
@@ -278,6 +281,7 @@
     <ClCompile Include="..\..\..\..\..\core\WaitingForLocalSettingsInterface.cpp" />
     <ClCompile Include="..\..\..\..\..\core\WaitingForServerInterface.cpp" />
     <ClCompile Include="BasicReaderWriter.cpp" />
+    <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="Direct3DAssets.cpp" />
     <ClCompile Include="Direct3DContentProvider.cpp" />
     <ClCompile Include="Direct3DGameScreen.cpp" />
@@ -290,7 +294,6 @@
     <ClCompile Include="Helpers\SoundFileReader.cpp" />
     <ClCompile Include="Helpers\XAudio2SoundPlayer.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="RECTUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ColorPixelShader.hlsl">
