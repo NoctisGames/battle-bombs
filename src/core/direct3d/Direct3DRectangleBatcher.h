@@ -1,13 +1,13 @@
 //
-//  Direct3DRectangleRenderer.h
+//  Direct3DRectangleBatcher.h
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __battlebombs__Direct3DRectangleRenderer__
-#define __battlebombs__Direct3DRectangleRenderer__
+#ifndef __battlebombs__Direct3DRectangleBatcher__
+#define __battlebombs__Direct3DRectangleBatcher__
 
 struct COLOR_VERTEX
 {
@@ -22,10 +22,10 @@ struct COLOR_VERTEX
 
 class Rectangle;
 
-class Direct3DRectangleRenderer
+class Direct3DRectangleBatcher
 {
 public:
-	Direct3DRectangleRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, bool isFill);
+	Direct3DRectangleBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, bool isFill);
 
 	void beginBatch();
 
@@ -46,4 +46,4 @@ private:
 	std::vector<short> createIndexValues();
 };
 
-#endif /* defined(__battlebombs__Direct3DRectangleRenderer__) */
+#endif /* defined(__battlebombs__Direct3DRectangleBatcher__) */

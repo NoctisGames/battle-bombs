@@ -159,7 +159,7 @@
     <ClInclude Include="..\..\..\..\..\core\Color.h" />
     <ClInclude Include="..\..\..\..\..\core\CountDownNumberGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\CountDownNumberType.h" />
-    <ClInclude Include="..\..\..\..\..\core\direct3d\Direct3DRectangleRenderer.h" />
+    <ClInclude Include="..\..\..\..\..\core\direct3d\Direct3DRectangleBatcher.h" />
     <ClInclude Include="..\..\..\..\..\core\direct3d\SpriteBatcher.h" />
     <ClInclude Include="..\..\..\..\..\core\DisplayBattleGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\DisplayGameOverGameObject.h" />
@@ -242,7 +242,7 @@
     <ClCompile Include="..\..\..\..\..\core\BotPlayerDynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BreakableBlock.cpp" />
     <ClCompile Include="..\..\..\..\..\core\CountDownNumberGameObject.cpp" />
-    <ClCompile Include="..\..\..\..\..\core\direct3d\Direct3DRectangleRenderer.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\direct3d\Direct3DRectangleBatcher.cpp" />
     <ClCompile Include="..\..\..\..\..\core\direct3d\SpriteBatcher.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DisplayBattleGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DisplayGameOverGameObject.cpp" />

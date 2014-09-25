@@ -45,7 +45,7 @@
 #include "BasicReaderWriter.h"
 #include "DDSTextureLoader.h"
 #include "SpriteBatcher.h"
-#include "Direct3DRectangleRenderer.h"
+#include "Direct3DRectangleBatcher.h"
 #include <string>
 #include <sstream>
 
@@ -75,7 +75,7 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 	m_rendertarget3 = ComPtr<ID3D11RenderTargetView>(rendertarget);
 
 	m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(d3dDevice, d3dContext));
-	m_rectangleRenderer = std::unique_ptr<Direct3DRectangleRenderer>(new Direct3DRectangleRenderer(d3dDevice, d3dContext, true));
+	m_rectangleBatcher = std::unique_ptr<Direct3DRectangleBatcher>(new Direct3DRectangleBatcher(d3dDevice, d3dContext, true));
 
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\interface_2.dds", NULL, &m_interface2ShaderResourceView, NULL));
@@ -264,66 +264,6 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 			}
 		}
 	}
-
-	m_spriteBatcher->beginBatch();
-
-	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
-	{
-		if ((**itr).getPlayerState() != Player_State::DEAD && (**itr).getPlayerForceFieldState() != PLAYER_FORCE_FIELD_STATE_OFF)
-		{
-			renderGameObjectWithRespectToPlayer((**itr), Assets::getForceFieldTextureRegion((**itr).getPlayerForceFieldState(), (**itr).getPlayerForceFieldStateTime()));
-		}
-
-		if ((*itr)->isDisplayingName())
-		{
-			static TextureRegion tr = Assets::getPlayerNameBubbleTextureRegion();
-			static float playerYModifier = GRID_CELL_HEIGHT * 7 / 8;
-
-			std::stringstream ss;
-			ss << (*itr)->getUsername();
-			std::string playerNameText = ss.str();
-
-			float increaseBubbleModifier = 0;
-			int playerNameTextLength = playerNameText.length();
-			if (playerNameTextLength > 6)
-			{
-				playerNameTextLength -= 6;
-				increaseBubbleModifier = GRID_CELL_WIDTH * 2 / 7;
-			}
-
-			m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, GRID_CELL_WIDTH * 2 + (increaseBubbleModifier * playerNameTextLength), GRID_CELL_HEIGHT / 2, 0, tr);
-		}
-		else if ((*itr)->isDisplayingPointer())
-		{
-			static TextureRegion tr = Assets::getPlayerPointerTextureRegion();
-			static float playerYModifier = GRID_CELL_HEIGHT * 7 / 8;
-			m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, GRID_CELL_WIDTH / 2, GRID_CELL_HEIGHT / 2, 0, tr);
-		}
-	}
-
-	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
-
-	m_spriteBatcher->beginBatch();
-
-	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
-	{
-		if ((*itr)->isDisplayingName())
-		{
-			static Color playerNameColor = Color(1, 1, 1, 1);
-
-			std::stringstream ss;
-			ss << (*itr)->getUsername();
-			std::string playerNameText = ss.str();
-
-			static float playerYModifier = GRID_CELL_HEIGHT * 7 / 8;
-			static float playerNameFontGlyphWidth = GRID_CELL_WIDTH * 2 / 7;
-			static float playerNameFontGlyphHeight = playerNameFontGlyphWidth * 0.68421052631579;
-
-			m_font->renderText(*m_spriteBatcher, playerNameText, (*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, playerNameFontGlyphWidth, playerNameFontGlyphHeight, playerNameColor, true);
-		}
-	}
-
-	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 }
 
 void Direct3DRenderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
@@ -479,8 +419,68 @@ void Direct3DRenderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSet
 	m_spriteBatcher->endBatchWithTexture(m_interface2ShaderResourceView.Get());
 }
 
-void Direct3DRenderer::renderUIEffects(std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject)
+void Direct3DRenderer::renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject)
 {
+	m_spriteBatcher->beginBatch();
+
+	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
+	{
+		if ((**itr).getPlayerState() != Player_State::DEAD && (**itr).getPlayerForceFieldState() != PLAYER_FORCE_FIELD_STATE_OFF)
+		{
+			renderGameObjectWithRespectToPlayer((**itr), Assets::getForceFieldTextureRegion((**itr).getPlayerForceFieldState(), (**itr).getPlayerForceFieldStateTime()));
+		}
+
+		if ((*itr)->isDisplayingName())
+		{
+			static TextureRegion tr = Assets::getPlayerNameBubbleTextureRegion();
+			static float playerYModifier = GRID_CELL_HEIGHT * 7 / 8;
+
+			std::stringstream ss;
+			ss << (*itr)->getUsername();
+			std::string playerNameText = ss.str();
+
+			float increaseBubbleModifier = 0;
+			int playerNameTextLength = playerNameText.length();
+			if (playerNameTextLength > 6)
+			{
+				playerNameTextLength -= 6;
+				increaseBubbleModifier = GRID_CELL_WIDTH * 2 / 7;
+			}
+
+			m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, GRID_CELL_WIDTH * 2 + (increaseBubbleModifier * playerNameTextLength), GRID_CELL_HEIGHT / 2, 0, tr);
+		}
+		else if ((*itr)->isDisplayingPointer())
+		{
+			static TextureRegion tr = Assets::getPlayerPointerTextureRegion();
+			static float playerYModifier = GRID_CELL_HEIGHT * 7 / 8;
+			m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, GRID_CELL_WIDTH / 2, GRID_CELL_HEIGHT / 2, 0, tr);
+		}
+	}
+
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
+
+	m_spriteBatcher->beginBatch();
+
+	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
+	{
+		if ((*itr)->isDisplayingName())
+		{
+			static Color playerNameColor = Color(1, 1, 1, 1);
+
+			std::stringstream ss;
+			ss << (*itr)->getUsername();
+			std::string playerNameText = ss.str();
+
+			static float playerYModifier = GRID_CELL_HEIGHT * 7 / 8;
+			static float playerNameFontGlyphWidth = GRID_CELL_WIDTH * 2 / 7;
+			static float playerNameFontGlyphHeight = playerNameFontGlyphWidth * 0.68421052631579;
+
+			m_font->renderText(*m_spriteBatcher, playerNameText, (*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, playerNameFontGlyphWidth, playerNameFontGlyphHeight, playerNameColor, true);
+		}
+	}
+
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
+
 	m_spriteBatcher->beginBatch();
 
 	for (std::vector<std::unique_ptr<CountDownNumberGameObject>>::iterator itr = countDownNumbers.begin(); itr != countDownNumbers.end(); itr++)
@@ -555,7 +555,7 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 
 	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 
-	m_rectangleRenderer->beginBatch();
+	m_rectangleBatcher->beginBatch();
 	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
 	{
 		for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
@@ -570,11 +570,11 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 
 				float leftX = miniMapLeftX + miniMapGridWidth * j;
 				float bottomY = miniMapBottomY + miniMapGridHeight * i;
-				m_rectangleRenderer->renderRectangle(leftX, bottomY, leftX + miniMapGridWidth, bottomY + miniMapGridHeight, interfaceOverlay.getColorForMiniMapGridType(miniMapGridType));
+				m_rectangleBatcher->renderRectangle(leftX, bottomY, leftX + miniMapGridWidth, bottomY + miniMapGridHeight, interfaceOverlay.getColorForMiniMapGridType(miniMapGridType));
 			}
 		}
 	}
-	m_rectangleRenderer->endBatch();
+	m_rectangleBatcher->endBatch();
 }
 
 void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverlay)
@@ -608,7 +608,7 @@ void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
 
 	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 
-	m_rectangleRenderer->beginBatch();
+	m_rectangleBatcher->beginBatch();
 	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
 	{
 		for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
@@ -623,11 +623,11 @@ void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
 
 				float leftX = miniMapLeftX + miniMapGridWidth * j;
 				float bottomY = miniMapBottomY + miniMapGridHeight * i;
-				m_rectangleRenderer->renderRectangle(leftX, bottomY, leftX + miniMapGridWidth, bottomY + miniMapGridHeight, interfaceOverlay.getColorForMiniMapGridType(miniMapGridType));
+				m_rectangleBatcher->renderRectangle(leftX, bottomY, leftX + miniMapGridWidth, bottomY + miniMapGridHeight, interfaceOverlay.getColorForMiniMapGridType(miniMapGridType));
 			}
 		}
 	}
-	m_rectangleRenderer->endBatch();
+	m_rectangleBatcher->endBatch();
 }
 
 void Direct3DRenderer::renderGameOverBlackCover(float alpha)
@@ -635,9 +635,9 @@ void Direct3DRenderer::renderGameOverBlackCover(float alpha)
 	static Color transitionCoverColor = Color(0, 0, 0, 0);
 	transitionCoverColor.alpha = alpha;
 
-	m_rectangleRenderer->beginBatch();
-	m_rectangleRenderer->renderRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, transitionCoverColor);
-	m_rectangleRenderer->endBatch();
+	m_rectangleBatcher->beginBatch();
+	m_rectangleBatcher->renderRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, transitionCoverColor);
+	m_rectangleBatcher->endBatch();
 }
 
 void Direct3DRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])

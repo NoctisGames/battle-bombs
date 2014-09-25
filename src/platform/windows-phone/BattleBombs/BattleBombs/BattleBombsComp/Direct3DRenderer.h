@@ -15,7 +15,7 @@
 class Line;
 class Rectangle;
 class SpriteBatcher;
-class Direct3DRectangleRenderer;
+class Direct3DRectangleBatcher;
 
 class Direct3DRenderer : public Renderer
 {
@@ -44,7 +44,7 @@ public:
 
 	virtual void renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
 
-	virtual void renderUIEffects(std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject);
+	virtual void renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject);
 
 	virtual void renderInterface(InterfaceOverlay &interfaceOverlay);
 
@@ -60,7 +60,7 @@ public:
 
 private:
 	std::unique_ptr<SpriteBatcher> m_spriteBatcher;
-	std::unique_ptr<Direct3DRectangleRenderer> m_rectangleRenderer;
+	std::unique_ptr<Direct3DRectangleBatcher> m_rectangleBatcher;
 
 	virtual void renderGameObject(GameObject &go, TextureRegion tr);
 

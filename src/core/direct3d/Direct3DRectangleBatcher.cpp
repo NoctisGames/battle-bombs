@@ -1,5 +1,5 @@
 //
-//  Direct3DRectangleRenderer.cpp
+//  Direct3DRectangleBatcher.cpp
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/22/14.
@@ -7,7 +7,7 @@
 //
 
 #include "pch.h"
-#include "Direct3DRectangleRenderer.h"
+#include "Direct3DRectangleBatcher.h"
 #include "BasicReaderWriter.h"
 #include "DirectXHelper.h"
 #include "GameConstants.h"
@@ -34,7 +34,7 @@ static const size_t IndicesPerRectangle = 6;
 
 std::deque<COLOR_VERTEX> m_colorVertices;
 
-Direct3DRectangleRenderer::Direct3DRectangleRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, bool isFill)
+Direct3DRectangleBatcher::Direct3DRectangleBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, bool isFill)
 {
 	m_d3dDevice1 = ComPtr<ID3D11Device1>(d3dDevice);
 	m_d3dContext1 = ComPtr<ID3D11DeviceContext1>(d3dContext);
@@ -88,13 +88,13 @@ Direct3DRectangleRenderer::Direct3DRectangleRenderer(ID3D11Device1 *d3dDevice, I
 	m_d3dDevice1->CreateBuffer(&bd2, nullptr, &constantbuffer1);
 }
 
-void Direct3DRectangleRenderer::beginBatch()
+void Direct3DRectangleBatcher::beginBatch()
 {
 	m_colorVertices.clear();
 	m_iNumRectangles = 0;
 }
 
-void Direct3DRectangleRenderer::endBatch()
+void Direct3DRectangleBatcher::endBatch()
 {
 	if (m_iNumRectangles > 0)
 	{
@@ -167,7 +167,7 @@ void Direct3DRectangleRenderer::endBatch()
 	}
 }
 
-void Direct3DRectangleRenderer::renderRectangle(Rectangle &rectangle, Color &color)
+void Direct3DRectangleBatcher::renderRectangle(Rectangle &rectangle, Color &color)
 {
     float x1 = rectangle.getLowerLeft().getX();
     float y1 = rectangle.getLowerLeft().getY();
@@ -177,7 +177,7 @@ void Direct3DRectangleRenderer::renderRectangle(Rectangle &rectangle, Color &col
     renderRectangle(x1, y1, x2, y2, color);
 }
 
-void Direct3DRectangleRenderer::renderRectangle(float x1, float y1, float x2, float y2, Color &color)
+void Direct3DRectangleBatcher::renderRectangle(float x1, float y1, float x2, float y2, Color &color)
 {
 	addVertexCoordinate(x1, y1, 0, color.red, color.green, color.blue, color.alpha, 0, 0);
 	addVertexCoordinate(x1, y2, 0, color.red, color.green, color.blue, color.alpha, 0, 0);
@@ -187,14 +187,14 @@ void Direct3DRectangleRenderer::renderRectangle(float x1, float y1, float x2, fl
 	m_iNumRectangles++;
 }
 
-void Direct3DRectangleRenderer::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
+void Direct3DRectangleBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
 {
 	COLOR_VERTEX cv = { x, y, z, r, g, b, a };
 	m_colorVertices.push_back(cv);
 }
 
 // Creates the SpriteBatch index buffer.
-void Direct3DRectangleRenderer::createIndexBuffer()
+void Direct3DRectangleBatcher::createIndexBuffer()
 {
 	D3D11_BUFFER_DESC indexBufferDesc = { 0 };
 
@@ -213,7 +213,7 @@ void Direct3DRectangleRenderer::createIndexBuffer()
 }
 
 // Helper for populating the SpriteBatch index buffer.
-std::vector<short> Direct3DRectangleRenderer::createIndexValues()
+std::vector<short> Direct3DRectangleBatcher::createIndexValues()
 {
 	std::vector<short> indices;
 
