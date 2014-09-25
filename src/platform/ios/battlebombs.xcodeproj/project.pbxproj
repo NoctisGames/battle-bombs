@@ -1309,10 +1309,7 @@
 				);
 				INFOPLIST_FILE = "battlebombs-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/GoogleMobileAdsSdkiOS-6.11.1",
-					"/Users/sgowen/Dropbox/Documents/TechneGames/GitHub/battle-bombs/src/3rdparty/GoogleMobileAdsSdkiOS-6.12.0",
-				);
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/GoogleMobileAdsSdkiOS-6.12.0\"/**";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-std=c++0x",
@@ -1350,10 +1347,7 @@
 				);
 				INFOPLIST_FILE = "battlebombs-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/GoogleMobileAdsSdkiOS-6.11.1",
-					"/Users/sgowen/Dropbox/Documents/TechneGames/GitHub/battle-bombs/src/3rdparty/GoogleMobileAdsSdkiOS-6.12.0",
-				);
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/GoogleMobileAdsSdkiOS-6.12.0\"/**";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-std=c++0x",
