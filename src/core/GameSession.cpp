@@ -403,7 +403,8 @@ void GameSession::handlePlayerEvent(int event)
             m_players.at(playerIndex).get()->moveInDirection(-1);
             break;
         case PLAYER_PLANT_BOMB:
-            layBombForPlayer(m_players.at(playerIndex).get(), eventMod);
+            // eventMod reflects the number shown on the power up bar, hence the + 1 here (fire power is 1 by default)
+            layBombForPlayer(m_players.at(playerIndex).get(), eventMod + 1);
             break;
         case PLAYER_PUSH_BOMB:
             pushBombForPlayer(m_players.at(playerIndex).get());

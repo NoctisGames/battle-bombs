@@ -386,16 +386,25 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
     switch (powerUpFlag)
     {
         case POWER_UP_TYPE_BOMB:
-            m_iMaxBombCount++;
+            if(m_iMaxBombCount < 10)
+            {
+                m_iMaxBombCount++;
+            }
             break;
         case POWER_UP_TYPE_FIRE:
-            m_firePower++;
+            if(m_firePower < 10)
+            {
+                m_firePower++;
+            }
             break;
         case POWER_UP_TYPE_FORCE_FIELD:
             setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_TURNING_ON);
             break;
         case POWER_UP_TYPE_SPEED:
-            m_iSpeed++;
+            if(m_iSpeed < 10)
+            {
+                m_iSpeed++;
+            }
             break;
         case POWER_UP_TYPE_PUSH:
             m_activePowerUp = POWER_UP_TYPE_PUSH;
