@@ -91,15 +91,6 @@ public:
 	virtual void cleanUp() = 0;
     
 protected:
-	std::unique_ptr<TextureRegion> m_worldBackgroundTextureRegion;
-	std::unique_ptr<TextureRegion> TR_MOUNTAINS_DOOR;
-	std::unique_ptr<TextureRegion> TR_BORDER_TOP;
-	std::unique_ptr<TextureRegion> TR_BORDER_LEFT;
-	std::unique_ptr<TextureRegion> TR_BORDER_RIGHT;
-	std::unique_ptr<TextureRegion> TR_BORDER_BOTTOM_LEFT;
-	std::unique_ptr<TextureRegion> TR_BORDER_BOTTOM_RIGHT;
-	std::unique_ptr<TextureRegion> TR_BORDER_BOTTOM;
-    
 	std::unique_ptr<Font> m_font;
     bool player_sprites_loaded[8];
     float m_fScrollY;
@@ -107,8 +98,6 @@ protected:
     virtual void renderGameObject(GameObject &go, TextureRegion tr) = 0;
     
     virtual void renderGameObjectWithRespectToPlayer(GameObject &go, TextureRegion tr) = 0;
-
-	TextureRegion& getMapBorderTextureRegion(MapBorder &mapBorder);
 };
 
 #endif /* defined(__battle_bombs__Renderer__) */
