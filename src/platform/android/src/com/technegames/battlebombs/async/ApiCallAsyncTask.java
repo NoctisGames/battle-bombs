@@ -13,10 +13,10 @@ import com.technegames.battlebombs.IOUtils;
 import com.technegames.battlebombs.InstanceManager;
 import com.technegames.battlebombs.Logger;
 import com.technegames.battlebombs.NetworkUtil;
+import com.technegames.battlebombs.R;
 import com.technegames.battlebombs.api.ServerStatusResponse;
 import com.technegames.battlebombs.callback.AsyncTaskCallback;
 import com.technegames.battlebombs.json.JsonDeserializer;
-import com.technegames.battlebombsbeta.R;
 
 public final class ApiCallAsyncTask extends AsyncTask<Object, Void, ServerStatusResponse>
 {

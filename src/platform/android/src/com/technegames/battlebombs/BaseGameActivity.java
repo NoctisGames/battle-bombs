@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.technegames.battlebombsbeta.R;
 
 public abstract class BaseGameActivity extends Activity
 {
