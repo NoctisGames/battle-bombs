@@ -20,11 +20,20 @@
 
 class Line;
 class Rectangle;
+<<<<<<< HEAD
+=======
+class SpriteBatcher;
+class Direct3DRectangleRenderer;
+>>>>>>> origin/wp_experimental
 
 class Direct3DRenderer : public Renderer
 {
 public:
+<<<<<<< HEAD
 	Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView, int deviceScreenWidth, int deviceScreenHeight);
+=======
+	Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *rendertarget);
+>>>>>>> origin/wp_experimental
 
 	virtual void loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
 	
@@ -63,6 +72,7 @@ public:
 	virtual void cleanUp();
 
 private:
+<<<<<<< HEAD
 	ID3D11Device1 *m_d3dDevice;
 	ID3D11DeviceContext1 *m_d3dContext;
 	ID3D11RenderTargetView *m_renderTargetView;
@@ -88,6 +98,10 @@ private:
 
 	int m_iDeviceScreenWidth;
 	int m_iDeviceScreenHeight;
+=======
+	std::unique_ptr<SpriteBatcher> m_spriteBatcher;
+	std::unique_ptr<Direct3DRectangleRenderer> m_rectangleRenderer;
+>>>>>>> origin/wp_experimental
 
 	virtual void renderGameObject(GameObject &go, TextureRegion tr);
 

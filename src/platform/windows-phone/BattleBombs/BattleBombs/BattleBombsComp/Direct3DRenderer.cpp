@@ -45,12 +45,20 @@
 #include "CountDownNumberGameObject.h"
 #include "DisplayBattleGameObject.h"
 #include "DisplayGameOverGameObject.h"
+<<<<<<< HEAD
 
+=======
+#include "BasicReaderWriter.h"
+#include "DDSTextureLoader.h"
+#include "SpriteBatcher.h"
+#include "Direct3DRectangleRenderer.h"
+>>>>>>> origin/wp_experimental
 #include <string>
 #include <sstream>
 
 using namespace DirectX;
 
+<<<<<<< HEAD
 Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView, int deviceScreenWidth, int deviceScreenHeight) : Renderer()
 {
 	m_d3dDevice = d3dDevice;
@@ -74,6 +82,44 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\bot_red.dds", NULL, &m_charRedShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\bot_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\bot_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
+=======
+ComPtr<ID3D11Device1> m_d3dDevice3; // the device interface
+ComPtr<ID3D11DeviceContext1> m_d3dContext3; // the device context interface
+ComPtr<ID3D11RenderTargetView> m_rendertarget3;    // the render target interface
+
+ComPtr<ID3D11ShaderResourceView> m_gameShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_interfaceShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_interface2ShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charBlackShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charBlueShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charGreenShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charOrangeShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charPinkShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charRedShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charWhiteShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charYellowShaderResourceView;
+
+Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *rendertarget) : Renderer()
+{
+	m_d3dDevice3 = ComPtr<ID3D11Device1>(d3dDevice);
+	m_d3dContext3 = ComPtr<ID3D11DeviceContext1>(d3dContext);
+	m_rendertarget3 = ComPtr<ID3D11RenderTargetView>(rendertarget);
+
+	m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(d3dDevice, d3dContext));
+	m_rectangleRenderer = std::unique_ptr<Direct3DRectangleRenderer>(new Direct3DRectangleRenderer(d3dDevice, d3dContext, true));
+
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\interface_2.dds", NULL, &m_interface2ShaderResourceView, NULL));
+
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_red.dds", NULL, &m_charRedShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
+>>>>>>> origin/wp_experimental
 
 	player_sprites_loaded[0] = true;
 	player_sprites_loaded[1] = false;
@@ -131,6 +177,7 @@ void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
 	switch (mapType)
 	{
 	case MAP_SPACE:
+<<<<<<< HEAD
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
 		break;
 	case MAP_GRASSLANDS:
@@ -142,47 +189,92 @@ void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
 	case MAP_BASE:
 	default:
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, L"Assets\\map_base.dds", NULL, &m_gameShaderResourceView, NULL));
+=======
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
+		break;
+	case MAP_GRASSLANDS:
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_grasslands.dds", NULL, &m_gameShaderResourceView, NULL));
+		break;
+	case MAP_MOUNTAINS:
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_mountains.dds", NULL, &m_gameShaderResourceView, NULL));
+		break;
+	case MAP_BASE:
+	default:
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_base.dds", NULL, &m_gameShaderResourceView, NULL));
+>>>>>>> origin/wp_experimental
 		break;
 	}
 
 	if ((players.at(0)->isBot() && player_sprites_loaded[0]) || (!players.at(0)->isBot() && !player_sprites_loaded[0]))
 	{
+<<<<<<< HEAD
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(0)->isBot() ? L"Assets\\bot_black.dds" : L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
+=======
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(0)->isBot() ? L"Assets\\bot_black.dds" : L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
+>>>>>>> origin/wp_experimental
 	}
 
 	if ((players.at(1)->isBot() && player_sprites_loaded[1]) || (!players.at(1)->isBot() && !player_sprites_loaded[1]))
 	{
+<<<<<<< HEAD
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(1)->isBot() ? L"Assets\\bot_blue.dds" : L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
+=======
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(1)->isBot() ? L"Assets\\bot_blue.dds" : L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
+>>>>>>> origin/wp_experimental
 	}
 
 	if ((players.at(2)->isBot() && player_sprites_loaded[2]) || (!players.at(2)->isBot() && !player_sprites_loaded[2]))
 	{
+<<<<<<< HEAD
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(2)->isBot() ? L"Assets\\bot_green.dds" : L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
+=======
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(2)->isBot() ? L"Assets\\bot_green.dds" : L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
+>>>>>>> origin/wp_experimental
 	}
 
 	if ((players.at(3)->isBot() && player_sprites_loaded[3]) || (!players.at(3)->isBot() && !player_sprites_loaded[3]))
 	{
+<<<<<<< HEAD
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(3)->isBot() ? L"Assets\\bot_orange.dds" : L"Assets\\char_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
+=======
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(3)->isBot() ? L"Assets\\bot_orange.dds" : L"Assets\\char_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
+>>>>>>> origin/wp_experimental
 	}
 
 	if ((players.at(4)->isBot() && player_sprites_loaded[4]) || (!players.at(4)->isBot() && !player_sprites_loaded[4]))
 	{
+<<<<<<< HEAD
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(4)->isBot() ? L"Assets\\bot_pink.dds" : L"Assets\\char_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
+=======
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(4)->isBot() ? L"Assets\\bot_pink.dds" : L"Assets\\char_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
+>>>>>>> origin/wp_experimental
 	}
 
 	if ((players.at(5)->isBot() && player_sprites_loaded[5]) || (!players.at(5)->isBot() && !player_sprites_loaded[5]))
 	{
+<<<<<<< HEAD
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(5)->isBot() ? L"Assets\\bot_red.dds" : L"Assets\\char_red.dds", NULL, &m_charRedShaderResourceView, NULL));
+=======
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(5)->isBot() ? L"Assets\\bot_red.dds" : L"Assets\\char_red.dds", NULL, &m_charRedShaderResourceView, NULL));
+>>>>>>> origin/wp_experimental
 	}
 
 	if ((players.at(6)->isBot() && player_sprites_loaded[6]) || (!players.at(6)->isBot() && !player_sprites_loaded[6]))
 	{
+<<<<<<< HEAD
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(6)->isBot() ? L"Assets\\bot_white.dds" : L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
+=======
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(6)->isBot() ? L"Assets\\bot_white.dds" : L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
+>>>>>>> origin/wp_experimental
 	}
 
 	if ((players.at(7)->isBot() && player_sprites_loaded[7]) || (!players.at(7)->isBot() && !player_sprites_loaded[7]))
 	{
+<<<<<<< HEAD
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice, players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
+=======
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
+>>>>>>> origin/wp_experimental
 	}
 
 	player_sprites_loaded[0] = !players.at(0)->isBot();
@@ -199,9 +291,16 @@ void Direct3DRenderer::clearScreenWithColor(float r, float g, float b, float a)
 {
 	float color[] = { r, g, b, a };
 
+<<<<<<< HEAD
 	m_d3dContext->ClearRenderTargetView(m_renderTargetView, color);
 	m_d3dContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 	m_d3dContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+=======
+	// set our new render target object as the active render target
+	m_d3dContext3->OMSetRenderTargets(1, m_rendertarget3.GetAddressOf(), nullptr);
+
+	m_d3dContext3->ClearRenderTargetView(m_rendertarget3.Get(), color);
+>>>>>>> origin/wp_experimental
 }
 
 void Direct3DRenderer::beginFrame()
@@ -211,16 +310,27 @@ void Direct3DRenderer::beginFrame()
 
 void Direct3DRenderer::renderWorldBackground()
 {
+<<<<<<< HEAD
 	m_currentShaderResourceView = m_gameShaderResourceView;
 
 	m_spriteBatch->Begin();
 	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(WORLD_BACKGROUND_X, WORLD_BACKGROUND_Y - m_fScrollY, WORLD_BACKGROUND_WIDTH, WORLD_BACKGROUND_HEIGHT, false), &Assets::getWorldBackgroundTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	m_spriteBatch->End();
+=======
+	m_spriteBatcher->beginBatch();
+	m_spriteBatcher->drawSprite(WORLD_BACKGROUND_X, WORLD_BACKGROUND_Y - m_fScrollY, WORLD_BACKGROUND_WIDTH, WORLD_BACKGROUND_HEIGHT, 0, Assets::getWorldBackgroundTextureRegion());
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
 }
 
 void Direct3DRenderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
 {
+<<<<<<< HEAD
 	if (insideBlocks.size() > 0)
+=======
+	m_spriteBatcher->beginBatch();
+	for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersFar.begin(); itr != mapBordersFar.end(); itr++)
+>>>>>>> origin/wp_experimental
 	{
 		m_spriteBatch->Begin();
 
@@ -231,6 +341,7 @@ void Direct3DRenderer::renderWorldForeground(std::vector<std::unique_ptr<MapBord
 				renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
 			}
 		}
+<<<<<<< HEAD
 
 		for (std::vector<std::unique_ptr<InsideBlock>>::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
 		{
@@ -255,9 +366,24 @@ void Direct3DRenderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> 
 {
 	m_spriteBatch->Begin();
 	for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+=======
+	}
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
+
+	m_spriteBatcher->beginBatch();
+	for (std::vector<std::unique_ptr<InsideBlock>>::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
+	{
+		renderGameObjectWithRespectToPlayer((**itr), Assets::getInsideBlockTextureRegion());
+	}
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
+
+	m_spriteBatcher->beginBatch();
+	for (std::vector<std::unique_ptr<BreakableBlock>>::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
+>>>>>>> origin/wp_experimental
 	{
 		renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
 	}
+<<<<<<< HEAD
 	m_spriteBatch->End();
 }
 
@@ -265,13 +391,23 @@ void Direct3DRenderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> 
 {
 	m_spriteBatch->Begin();
 	for (std::vector<std::unique_ptr<Explosion>>::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
+=======
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
+
+	m_spriteBatcher->beginBatch();
+	for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
+>>>>>>> origin/wp_experimental
 	{
 		for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
 		{
 			m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates((**itr2).getPosition().getX(), (**itr2).getPosition().getY() - m_fScrollY, (**itr2).getWidth(), (**itr2).getHeight(), true), &Assets::getFireTextureRegion((**itr2)).getSourceRECT(), Colors::White, DEGREES_TO_RADIANS_WP((**itr2).getAngle()), XMFLOAT2(16, 16), SpriteEffects_None, 0);
 		}
 	}
+<<<<<<< HEAD
 	m_spriteBatch->End();
+=======
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
 }
 
 void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
@@ -283,6 +419,7 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 			switch ((**itr).getPlayerIndex())
 			{
 			case 0:
+<<<<<<< HEAD
 				m_currentShaderResourceView = m_charBlackShaderResourceView;
 				break;
 			case 1:
@@ -305,6 +442,30 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 				break;
 			case 7:
 				m_currentShaderResourceView = m_charYellowShaderResourceView;
+=======
+				m_spriteBatcher->endBatchWithTexture(m_charBlackShaderResourceView.Get());
+				break;
+			case 1:
+				m_spriteBatcher->endBatchWithTexture(m_charBlueShaderResourceView.Get());
+				break;
+			case 2:
+				m_spriteBatcher->endBatchWithTexture(m_charGreenShaderResourceView.Get());
+				break;
+			case 3:
+				m_spriteBatcher->endBatchWithTexture(m_charOrangeShaderResourceView.Get());
+				break;
+			case 4:
+				m_spriteBatcher->endBatchWithTexture(m_charPinkShaderResourceView.Get());
+				break;
+			case 5:
+				m_spriteBatcher->endBatchWithTexture(m_charRedShaderResourceView.Get());
+				break;
+			case 6:
+				m_spriteBatcher->endBatchWithTexture(m_charWhiteShaderResourceView.Get());
+				break;
+			case 7:
+				m_spriteBatcher->endBatchWithTexture(m_charYellowShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
 				break;
 			default:
 				break;
@@ -354,6 +515,13 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
+
+	m_spriteBatcher->beginBatch();
+
+>>>>>>> origin/wp_experimental
 	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
 	{
 		if ((*itr)->isDisplayingName())
@@ -368,11 +536,42 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 			static float playerNameFontGlyphWidth = GRID_CELL_WIDTH * 2 / 7;
 			static float playerNameFontGlyphHeight = playerNameFontGlyphWidth * 0.68421052631579;
 
+<<<<<<< HEAD
 			m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, playerNameText, (*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, playerNameFontGlyphWidth, playerNameFontGlyphHeight, playerNameColor, true);
 		}
 	}
 
 	m_spriteBatch->End();
+=======
+			m_font->renderText(*m_spriteBatcher, playerNameText, (*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, playerNameFontGlyphWidth, playerNameFontGlyphHeight, playerNameColor, true);
+		}
+	}
+
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
+}
+
+void Direct3DRenderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
+{
+	m_spriteBatcher->beginBatch();
+	for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+	{
+		renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
+	}
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
+}
+
+void Direct3DRenderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions)
+{
+	m_spriteBatcher->beginBatch();
+	for (std::vector<std::unique_ptr<Explosion>>::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
+	{
+		for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
+		{
+			m_spriteBatcher->drawSprite((**itr2).getPosition().getX(), (**itr2).getPosition().getY() - m_fScrollY, (**itr2).getWidth(), (**itr2).getHeight(), (**itr2).getAngle(), Assets::getFireTextureRegion((**itr2)));
+		}
+	}
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
 }
 
 void Direct3DRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear)
@@ -387,7 +586,11 @@ void Direct3DRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorde
 			renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
 		}
 	}
+<<<<<<< HEAD
 	m_spriteBatch->End();
+=======
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
 }
 
 void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface)
@@ -407,9 +610,15 @@ void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface
 			}
 		}
 
+<<<<<<< HEAD
 		m_spriteBatch->End();
 
 		m_spriteBatch->Begin();
+=======
+		m_spriteBatcher->endBatchWithTexture(m_interface2ShaderResourceView.Get());
+
+		m_spriteBatcher->beginBatch();
+>>>>>>> origin/wp_experimental
 
 		static DirectX::XMVECTORF32 playerNameColor = { 1, 1, 1, 1 };
 
@@ -421,16 +630,28 @@ void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface
 				ss << (*itr)->getPlayerName();
 				std::string playerName = ss.str();
 
+<<<<<<< HEAD
 				m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, playerName, (*itr)->getFontX(), (*itr)->getFontY(), (*itr)->getFontGlyphWidth(), (*itr)->getFontGlyphHeight(), playerNameColor, true);
 			}
 		}
 
 		m_spriteBatch->End();
+=======
+				m_font->renderText(*m_spriteBatcher, playerName, (*itr)->getFontX(), (*itr)->getFontY(), (*itr)->getFontGlyphWidth(), (*itr)->getFontGlyphHeight(), playerNameColor, true);
+			}
+		}
+
+		m_spriteBatcher->endBatchWithTexture(m_interface2ShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
 	}
 
 	if (waitingForServerInterface.renderTimeToNextRound() || waitingForServerInterface.renderMessage())
 	{
+<<<<<<< HEAD
 		m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
+=======
+		m_spriteBatcher->beginBatch();
+>>>>>>> origin/wp_experimental
 
 		if (waitingForServerInterface.renderTimeToNextRound())
 		{
@@ -438,7 +659,11 @@ void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface
 
 			std::string timerText = std::to_string(waitingForServerInterface.getTimeToNextRound());
 
+<<<<<<< HEAD
 			m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 3, 2.0f, 1.36842105263158f, timerColor, true);
+=======
+			m_font->renderText(*m_spriteBatcher, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 3, 2.0f, 1.36842105263158f, timerColor, true);
+>>>>>>> origin/wp_experimental
 		}
 
 		if (waitingForServerInterface.renderMessage())
@@ -480,10 +705,17 @@ void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface
 
 			std::string waitingText = ss.str();
 
+<<<<<<< HEAD
 			m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, waitingText, SCREEN_WIDTH / 2, 0.5f, fontSize, fontSize, interfaceColor, true);
 		}
 
 		m_spriteBatch->End();
+=======
+			m_font->renderText(*m_spriteBatcher, waitingText, SCREEN_WIDTH / 2, 0.5f, fontSize, fontSize, interfaceColor, true);
+		}
+
+		m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
 	}
 }
 
@@ -498,13 +730,23 @@ void Direct3DRenderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSet
 		interfaceColor.f[3] = 1;
 	}
 
+<<<<<<< HEAD
 	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
+=======
+	m_spriteBatcher->beginBatch();
+>>>>>>> origin/wp_experimental
 
 	std::string waitingText = "Tap anywhere to play again!";
 
+<<<<<<< HEAD
 	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
 
 	m_spriteBatch->End();
+=======
+	m_font->renderText(*m_spriteBatcher, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
+
+	m_spriteBatcher->endBatchWithTexture(m_interface2ShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
 }
 
 void Direct3DRenderer::renderUIEffects(std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject)
@@ -524,7 +766,11 @@ void Direct3DRenderer::renderUIEffects(std::vector<std::unique_ptr<CountDownNumb
 		renderGameObject((**itr), Assets::getDisplayGameOverTextureRegion(**itr));
 	}
 
+<<<<<<< HEAD
 	m_spriteBatch->End();
+=======
+	m_spriteBatcher->endBatchWithTexture(m_interface2ShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
 }
 
 void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
@@ -556,15 +802,29 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 
 	renderGameObject(interfaceOverlay.getBombButton(), Assets::getBombButtonTextureRegion(interfaceOverlay.getBombButton(), interfaceOverlay.getButtonsStateTime()));
 
+<<<<<<< HEAD
 	std::string timeRemaining = std::to_string(interfaceOverlay.getNumMinutesLeft()) + ":" + std::to_string(interfaceOverlay.getNumSecondsLeftFirstColumn()) + std::to_string(interfaceOverlay.getNumSecondsLeftSecondColumn());
 	static DirectX::XMVECTORF32 interfaceColor = { 1, 1, 1, 1 };
+=======
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
+
+	std::stringstream ss;
+	ss << interfaceOverlay.getNumMinutesLeft() << ":" << interfaceOverlay.getNumSecondsLeftFirstColumn() << interfaceOverlay.getNumSecondsLeftSecondColumn();
+	std::string timeRemaining = ss.str();
+	static Color interfaceColor = Color(1, 1, 1, 1);
+>>>>>>> origin/wp_experimental
 
 	static const float timerX = 0.3554104477903f;
 	static const float timerY = 13.0589552253125f;
 	static const float timerWidth = 0.40298507462688f;
 	static const float timerHeight = 0.425373134375f;
 
+<<<<<<< HEAD
 	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
+=======
+	m_spriteBatcher->beginBatch();
+	m_font->renderText(*m_spriteBatcher, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
+>>>>>>> origin/wp_experimental
 
 	for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
 	{
@@ -573,12 +833,21 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 			std::string powerUpStack = std::to_string((*itr)->getLevel());
 			float x = (*itr)->getPosition().getX() + (*itr)->getWidth() / 2;
 			float y = (*itr)->getPosition().getY() - (*itr)->getHeight() / 2;
+<<<<<<< HEAD
 			m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, powerUpStack, x, y, 0.36f, 0.32f, interfaceColor);
 		}
 	}
 
 	m_spriteBatch->End();
+=======
+			m_font->renderText(*m_spriteBatcher, powerUpStack, x, y, 0.36f, 0.32f, interfaceColor);
+		}
+	}
 
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
+
+	m_rectangleRenderer->beginBatch();
 	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
 	{
 		for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
@@ -598,17 +867,29 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 			}
 		}
 	}
+	m_rectangleRenderer->endBatch();
 }
 
 void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverlay)
 {
+<<<<<<< HEAD
 	m_currentShaderResourceView = m_interfaceShaderResourceView;
+=======
+	m_spriteBatcher->beginBatch();
+	m_spriteBatcher->drawSprite(INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_X, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_Y, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_WIDTH, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_HEIGHT, 0, Assets::getSpectatorInterfaceOverlayTextureRegion());
+	renderGameObject(interfaceOverlay.getSpectatorControls(), Assets::getSpectatorControlsTextureRegion(interfaceOverlay.getSpectatorControls()));
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
 
 	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_alphaEnableBlendingState);
 	m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_X, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_Y, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_WIDTH, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_HEIGHT, false), &Assets::getSpectatorInterfaceOverlayTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 	renderGameObject(interfaceOverlay.getSpectatorControls(), Assets::getSpectatorControlsTextureRegion(interfaceOverlay.getSpectatorControls()));
 
+<<<<<<< HEAD
 	static DirectX::XMVECTORF32 interfaceColor = { 1, 1, 1, 1 };
+=======
+	m_spriteBatcher->beginBatch();
+>>>>>>> origin/wp_experimental
 
 	std::string timeRemaining = std::to_string(interfaceOverlay.getNumMinutesLeft()) + ":" + std::to_string(interfaceOverlay.getNumSecondsLeftFirstColumn()) + std::to_string(interfaceOverlay.getNumSecondsLeftSecondColumn());
 
@@ -617,17 +898,28 @@ void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
 	static const float timerWidth = 0.40298507462688f;
 	static const float timerHeight = 0.425373134375f;
 
+<<<<<<< HEAD
 	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
+=======
+	m_font->renderText(*m_spriteBatcher, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
+>>>>>>> origin/wp_experimental
 
 	static const float spectatingWhoX = 12.17910447761184f;
 	static const float spectatingWhoY = 0.51044776125f;
 	static const float spectatingWhoWidth = 0.52611940298496f;
 	static const float spectatingWhoHeight = 0.680597015f;
 
+<<<<<<< HEAD
 	m_font->renderText(*m_spriteBatch, m_currentShaderResourceView, interfaceOverlay.getSpectatingUsername(), spectatingWhoX, spectatingWhoY, spectatingWhoWidth, spectatingWhoHeight, interfaceColor, true);
 
 	m_spriteBatch->End();
+=======
+	m_font->renderText(*m_spriteBatcher, interfaceOverlay.getSpectatingUsername(), spectatingWhoX, spectatingWhoY, spectatingWhoWidth, spectatingWhoHeight, interfaceColor, true);
 
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
+
+	m_rectangleRenderer->beginBatch();
 	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
 	{
 		for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
@@ -647,6 +939,7 @@ void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
 			}
 		}
 	}
+	m_rectangleRenderer->endBatch();
 }
 
 void Direct3DRenderer::renderGameOverBlackCover(float alpha)
@@ -654,8 +947,14 @@ void Direct3DRenderer::renderGameOverBlackCover(float alpha)
 	static Color transitionCoverColor = Color(0, 0, 0, 0);
 	transitionCoverColor.alpha = alpha;
 
+<<<<<<< HEAD
 	static Rectangle gameOverBlackCoverRectangle = Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	renderRectangleFill(gameOverBlackCoverRectangle, transitionCoverColor);
+=======
+	m_rectangleRenderer->beginBatch();
+	m_rectangleRenderer->renderRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, transitionCoverColor);
+	m_rectangleRenderer->endBatch();
+>>>>>>> origin/wp_experimental
 }
 
 void Direct3DRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
@@ -676,7 +975,13 @@ void Direct3DRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID
 				m_spriteBatch->Draw(m_currentShaderResourceView, RECTUtils::getInstance()->getRECTForCoordinates(GAME_X + GRID_CELL_WIDTH * j + GRID_CELL_WIDTH / 2.0f, GAME_Y + GRID_CELL_HEIGHT * i + GRID_CELL_HEIGHT / 2.0f - m_fScrollY, GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false), &Assets::getNineTextureRegion().getSourceRECT(), Colors::White, 0, XMFLOAT2(0, 0), SpriteEffects_None, 0);
 			}
 		}
+<<<<<<< HEAD
 	}m_spriteBatch->End();
+=======
+	}
+
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
+>>>>>>> origin/wp_experimental
 }
 
 void Direct3DRenderer::endFrame()

@@ -91,7 +91,7 @@ public:
 	virtual void cleanUp() = 0;
     
 protected:
-    std::unique_ptr<Font> m_font;
+	std::unique_ptr<Font> m_font;
     bool player_sprites_loaded[8];
     float m_fScrollY;
     

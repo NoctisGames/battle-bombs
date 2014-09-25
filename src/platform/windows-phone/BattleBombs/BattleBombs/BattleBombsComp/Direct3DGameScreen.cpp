@@ -47,8 +47,25 @@
 #include "Global.h"
 #include "Direct3DAssets.h"
 #include "GameSound.h"
+<<<<<<< HEAD
 
 Direct3DGameScreen::Direct3DGameScreen(const char *username, int deviceScreenWidth, int deviceScreenHeight, int deviceScreenDpWidth, int deviceScreenDpHeight, bool isOffline) : GameScreen(username, isOffline)
+=======
+#include "SpriteBatcher.h"
+#include "Direct3DRectangleRenderer.h"
+
+ComPtr<ID3D11Device1> dev;                      // the device interface
+ComPtr<ID3D11DeviceContext1> devcon;            // the device context interface
+ComPtr<ID3D11Texture2D> m_renderTarget;         // the render target texture
+ComPtr<ID3D11RenderTargetView> rendertarget;    // the render target interface
+
+Direct3DGameScreen::Direct3DGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
+{
+	// No further setup
+}
+
+void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight, int deviceScreenDpWidth, int deviceScreenDpHeight)
+>>>>>>> origin/wp_experimental
 {
 	m_iDeviceScreenWidth = deviceScreenWidth;
 	m_iDeviceScreenHeight = deviceScreenHeight;

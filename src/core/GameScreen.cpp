@@ -232,7 +232,7 @@ void GameScreen::present()
             m_renderer->renderWorldBackground();
             
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            m_renderer->renderBombs(m_bombs);
+			m_renderer->renderBombs(m_bombs);
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
@@ -248,7 +248,7 @@ void GameScreen::present()
             m_renderer->renderWorldBackground();
             
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            m_renderer->renderBombs(m_bombs);
+			m_renderer->renderBombs(m_bombs);
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
