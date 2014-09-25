@@ -1,5 +1,5 @@
 //
-//  OpenGLESRectangleRenderer.cpp
+//  OpenGLESRectangleBatcher.cpp
 //  battlebombs
 //
 //  Created by Stephen Gowen on 7/15/14.
@@ -8,7 +8,7 @@
 
 #define numPointsOnRectangle 6
 
-#include "OpenGLESRectangleRenderer.h"
+#include "OpenGLESRectangleBatcher.h"
 #include "Vertices2D.h"
 #include "Rectangle.h"
 #include "Vector2D.h"
@@ -18,7 +18,7 @@ extern "C"
 #include "platform_gl.h"
 }
 
-OpenGLESRectangleRenderer::OpenGLESRectangleRenderer(int maxRectangles, bool useColor, bool isFill)
+OpenGLESRectangleBatcher::OpenGLESRectangleBatcher(int maxRectangles, bool useColor, bool isFill)
 {
     m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(maxRectangles, false, useColor));
     m_iNumRectangles = 0;
@@ -28,13 +28,13 @@ OpenGLESRectangleRenderer::OpenGLESRectangleRenderer(int maxRectangles, bool use
     generateIndices(maxRectangles);
 }
 
-void OpenGLESRectangleRenderer::beginBatch()
+void OpenGLESRectangleBatcher::beginBatch()
 {
     m_vertices->resetIndex();
     m_iNumRectangles = 0;
 }
 
-void OpenGLESRectangleRenderer::endBatch()
+void OpenGLESRectangleBatcher::endBatch()
 {
     if (m_iNumRectangles > 0)
     {
@@ -44,7 +44,7 @@ void OpenGLESRectangleRenderer::endBatch()
     }
 }
 
-void OpenGLESRectangleRenderer::renderRectangle(Rectangle &rectangle, Color &color)
+void OpenGLESRectangleBatcher::renderRectangle(Rectangle &rectangle, Color &color)
 {
     float x1 = rectangle.getLowerLeft().getX();
     float y1 = rectangle.getLowerLeft().getY();
@@ -54,7 +54,7 @@ void OpenGLESRectangleRenderer::renderRectangle(Rectangle &rectangle, Color &col
     renderRectangle(x1, y1, x2, y2, color);
 }
 
-void OpenGLESRectangleRenderer::renderRectangle(float leftX, float bottomY, float rightX, float topY, Color &color)
+void OpenGLESRectangleBatcher::renderRectangle(float leftX, float bottomY, float rightX, float topY, Color &color)
 {
     if (m_useColor)
     {
@@ -70,16 +70,8 @@ void OpenGLESRectangleRenderer::renderRectangle(float leftX, float bottomY, floa
         m_vertices->addVertexCoordinate(topY);
         addColorCoordinates(color);
         
-        m_vertices->addVertexCoordinate(rightX);
-        m_vertices->addVertexCoordinate(topY);
-        addColorCoordinates(color);
-        
         m_vertices->addVertexCoordinate(leftX);
         m_vertices->addVertexCoordinate(topY);
-        addColorCoordinates(color);
-        
-        m_vertices->addVertexCoordinate(leftX);
-        m_vertices->addVertexCoordinate(bottomY);
         addColorCoordinates(color);
     }
     else
@@ -93,20 +85,14 @@ void OpenGLESRectangleRenderer::renderRectangle(float leftX, float bottomY, floa
         m_vertices->addVertexCoordinate(rightX);
         m_vertices->addVertexCoordinate(topY);
         
-        m_vertices->addVertexCoordinate(rightX);
-        m_vertices->addVertexCoordinate(topY);
-        
         m_vertices->addVertexCoordinate(leftX);
         m_vertices->addVertexCoordinate(topY);
-        
-        m_vertices->addVertexCoordinate(leftX);
-        m_vertices->addVertexCoordinate(bottomY);
     }
     
     m_iNumRectangles++;
 }
 
-void OpenGLESRectangleRenderer::addColorCoordinates(Color &color)
+void OpenGLESRectangleBatcher::addColorCoordinates(Color &color)
 {
     m_vertices->addColorCoordinate(color.red);
     m_vertices->addColorCoordinate(color.green);
@@ -114,7 +100,7 @@ void OpenGLESRectangleRenderer::addColorCoordinates(Color &color)
     m_vertices->addColorCoordinate(color.alpha);
 }
 
-void OpenGLESRectangleRenderer::generateIndices(int maxRectangles)
+void OpenGLESRectangleBatcher::generateIndices(int maxRectangles)
 {
     int numIndices = maxRectangles * 6;
     m_indices = std::unique_ptr<GLshort>(new GLshort[numIndices]);

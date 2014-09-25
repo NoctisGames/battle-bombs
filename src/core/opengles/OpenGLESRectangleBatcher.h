@@ -1,13 +1,13 @@
 //
-//  OpenGLESRectangleRenderer.h
+//  OpenGLESRectangleBatcher.h
 //  battlebombs
 //
 //  Created by Stephen Gowen on 7/15/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __battlebombs__OpenGLESRectangleRenderer__
-#define __battlebombs__OpenGLESRectangleRenderer__
+#ifndef __battlebombs__OpenGLESRectangleBatcher__
+#define __battlebombs__OpenGLESRectangleBatcher__
 
 #include <memory>
 #include "Color.h"
@@ -20,10 +20,10 @@ extern "C"
 class Vertices2D;
 class Rectangle;
 
-class OpenGLESRectangleRenderer
+class OpenGLESRectangleBatcher
 {
 public:
-    OpenGLESRectangleRenderer(int maxRectangles, bool useColor, bool isFill);
+    OpenGLESRectangleBatcher(int maxRectangles, bool useColor, bool isFill);
     
     void beginBatch();
     
@@ -45,4 +45,4 @@ private:
     void generateIndices(int maxSprites);
 };
 
-#endif /* defined(__battlebombs__OpenGLESRectangleRenderer__) */
+#endif /* defined(__battlebombs__OpenGLESRectangleBatcher__) */

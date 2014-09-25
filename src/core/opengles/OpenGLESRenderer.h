@@ -17,7 +17,7 @@ extern "C"
 }
 
 class SpriteBatcher;
-class OpenGLESRectangleRenderer;
+class OpenGLESRectangleBatcher;
 
 class OpenGLESRenderer : public Renderer
 {
@@ -63,7 +63,7 @@ public:
 private:
     std::unique_ptr<SpriteBatcher> m_spriteBatcher;
     std::unique_ptr<SpriteBatcher> m_spriteBatcherWithColor;
-    std::unique_ptr<OpenGLESRectangleRenderer> m_rectangleRenderer;
+    std::unique_ptr<OpenGLESRectangleBatcher> m_rectangleBatcher;
     GLuint m_gameTexture;
     GLuint m_interfaceTexture;
     GLuint m_interfaceTexture2;
