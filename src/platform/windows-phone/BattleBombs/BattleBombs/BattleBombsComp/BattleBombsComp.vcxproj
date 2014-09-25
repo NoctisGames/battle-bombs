@@ -195,7 +195,6 @@
     <ClInclude Include="..\..\..\..\..\core\CountDownNumberType.h" />
     <ClInclude Include="..\..\..\..\..\core\direct3d\Direct3DRectangleRenderer.h" />
     <ClInclude Include="..\..\..\..\..\core\direct3d\SpriteBatcher.h" />
-    <ClInclude Include="..\..\..\..\..\core\direct3d\Vertices2D.h" />
     <ClInclude Include="..\..\..\..\..\core\DisplayBattleGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\DisplayGameOverGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\DisplayGameOverType.h" />
@@ -280,7 +279,6 @@
     <ClCompile Include="..\..\..\..\..\core\CountDownNumberGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\direct3d\Direct3DRectangleRenderer.cpp" />
     <ClCompile Include="..\..\..\..\..\core\direct3d\SpriteBatcher.cpp" />
-    <ClCompile Include="..\..\..\..\..\core\direct3d\Vertices2D.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DisplayBattleGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DisplayGameOverGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DPadControl.cpp" />

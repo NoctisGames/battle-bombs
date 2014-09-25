@@ -9,19 +9,35 @@
 #include "pch.h"
 #include "macros.h"
 #include "SpriteBatcher.h"
+#include "BasicReaderWriter.h"
+#include "DirectXHelper.h"
+#include "GameConstants.h"
 #include <stdlib.h>
-#include "Vertices2D.h"
 #include "TextureRegion.h"
 #include "Color.h"
 
-SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, int maxSprites, bool useColors)
+ComPtr<ID3D11Device1> m_d3dDevice; // the device interface
+ComPtr<ID3D11DeviceContext1> m_d3dContext; // the device context interface
+ComPtr<ID3D11BlendState> blendstate; // the blend state interface
+ComPtr<ID3D11SamplerState> samplerstate; // the sampler state interfaces
+ComPtr<ID3D11VertexShader> vertexshader; // the vertex shader interface
+ComPtr<ID3D11PixelShader> pixelshader; // the pixel shader interface
+ComPtr<ID3D11InputLayout> inputlayout; // the input layout interface
+ComPtr<ID3D11Buffer> constantbuffer; // the constant buffer interface
+ComPtr<ID3D11Buffer> vertexbuffer; // the vertex buffer interface
+ComPtr<ID3D11Buffer> indexbuffer; // the index buffer interface
+
+static const size_t MaxBatchSize = 4096;
+static const size_t VerticesPerSprite = 4;
+static const size_t IndicesPerSprite = 6;
+
+SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext)
 {
-	dev = d3dDevice;
-	devcon = d3dContext;
-	m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(d3dDevice, d3dContext, maxSprites * 4, true, useColors));
+	m_d3dDevice = ComPtr<ID3D11Device1>(d3dDevice);
+	m_d3dContext = ComPtr<ID3D11DeviceContext1>(d3dContext);
     m_iNumSprites = 0;
-    
-    generateIndices(maxSprites);
+
+	createIndexBuffer();
 
 	D3D11_BLEND_DESC bd;
 	bd.RenderTarget[0].BlendEnable = TRUE;
@@ -35,7 +51,7 @@ SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3d
 	bd.IndependentBlendEnable = FALSE;
 	bd.AlphaToCoverageEnable = FALSE;
 
-	dev->CreateBlendState(&bd, &blendstate);
+	m_d3dDevice->CreateBlendState(&bd, &blendstate);
 
 	D3D11_SAMPLER_DESC sd;
 	sd.Filter = D3D11_FILTER_ANISOTROPIC;
@@ -53,36 +69,109 @@ SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3d
 	sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;       // linear filtering
 	sd.MinLOD = 5.0f;                                  // mip level 5 will appear blurred
 
-	dev->CreateSamplerState(&sd, &samplerstate);    // create the linear blur sampler
+	m_d3dDevice->CreateSamplerState(&sd, &samplerstate);    // create the linear blur sampler
+
+	// Create a Basic Reader-Writer class to load data from disk.  This class is examined
+	// in the Resource Loading sample.
+	BasicReaderWriter^ reader = ref new BasicReaderWriter();
+	Platform::Array<byte>^ vertexShaderBytecode;
+	Platform::Array<byte>^ pixelShaderBytecode;
+
+	// Load the raw shader bytecode from disk and create shader objects with it.
+	vertexShaderBytecode = reader->ReadData("TextureVertexShader.cso");
+	pixelShaderBytecode = reader->ReadData("TexturePixelShader.cso");
+
+	// initialize input layout
+	D3D11_INPUT_ELEMENT_DESC ied[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+	};
+
+	// create and set the input layout
+	m_d3dDevice->CreateInputLayout(ied, ARRAYSIZE(ied), vertexShaderBytecode->Data, vertexShaderBytecode->Length, &inputlayout);
+
+	m_d3dDevice->CreateVertexShader(vertexShaderBytecode->Data, vertexShaderBytecode->Length, nullptr, &vertexshader);
+	m_d3dDevice->CreatePixelShader(pixelShaderBytecode->Data, pixelShaderBytecode->Length, nullptr, &pixelshader);
+
+	D3D11_BUFFER_DESC bd2 = { 0 };
+
+	bd2.Usage = D3D11_USAGE_DEFAULT;
+	bd2.ByteWidth = 64;
+	bd2.Usage = D3D11_USAGE_DYNAMIC;
+	bd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bd2.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	m_d3dDevice->CreateBuffer(&bd2, nullptr, &constantbuffer);
 }
 
 void SpriteBatcher::beginBatch()
 {
-    m_vertices->resetIndex();
+	m_textureVertices.clear();
     m_iNumSprites = 0;
 }
 
-void SpriteBatcher::endBatchWithTexture(ComPtr<ID3D11ShaderResourceView> texture)
+void SpriteBatcher::endBatchWithTexture(ID3D11ShaderResourceView *texture)
 {
     if(m_iNumSprites > 0)
     {
-		m_vertices->bind();
-
 		// set the blend state
-		devcon->OMSetBlendState(blendstate.Get(), 0, 0xffffffff);
-
-		devcon->IASetIndexBuffer(indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-
-		// set the primitive topology
-		devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		// tell the GPU which texture to use
-		devcon->PSSetShaderResources(0, 1, texture.GetAddressOf());
+		m_d3dContext->OMSetBlendState(blendstate.Get(), 0, 0xffffffff);
 
 		// set the appropriate sampler state
-		devcon->PSSetSamplers(0, 1, samplerstate.GetAddressOf());
+		m_d3dContext->PSSetSamplers(0, 1, samplerstate.GetAddressOf());
 
-		devcon->DrawIndexed(m_iNumSprites * 6, 0, 0);
+		// tell the GPU which texture to use
+		m_d3dContext->PSSetShaderResources(0, 1, &texture);
+
+		// set the primitive topology
+		m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		m_d3dContext->IASetInputLayout(inputlayout.Get());
+
+		// set the shader objects as the active shaders
+		m_d3dContext->VSSetShader(vertexshader.Get(), nullptr, 0);
+		m_d3dContext->PSSetShader(pixelshader.Get(), nullptr, 0);
+
+		// Set the vertex and index buffer
+		UINT stride = sizeof(TEXTURE_VERTEX);
+		UINT offset = 0;
+		m_d3dContext->IASetVertexBuffers(0, 1, vertexbuffer.GetAddressOf(), &stride, &offset);
+		m_d3dContext->IASetIndexBuffer(indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+
+		using namespace DirectX;
+
+		// calculate the view transformation
+		XMVECTOR vecCamPosition = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1, 0);
+		XMVECTOR vecCamLookAt = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0);
+		XMVECTOR vecCamUp = XMVectorSet(0, 1, 0, 0);
+		XMMATRIX matView = XMMatrixLookAtRH(vecCamPosition, vecCamLookAt, vecCamUp);
+
+		// calculate the projection transformation
+		XMMATRIX matProjection = XMMatrixOrthographicRH(SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
+
+		// calculate the final matrix
+		XMMATRIX matFinal = matView * matProjection;
+
+		// send the final matrix to video memory
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		DX::ThrowIfFailed(m_d3dContext->Map(constantbuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+		*(XMMATRIX*)mappedResource.pData = matFinal;
+		m_d3dContext->Unmap(constantbuffer.Get(), 0);
+
+		m_d3dContext->VSSetConstantBuffers(0, 1, constantbuffer.GetAddressOf());
+
+		// Lock the vertex buffer.
+		D3D11_MAP mapType = D3D11_MAP_WRITE_DISCARD;
+
+		D3D11_MAPPED_SUBRESOURCE mappedBuffer;
+
+		DX::ThrowIfFailed(m_d3dContext->Map(vertexbuffer.Get(), 0, mapType, 0, &mappedBuffer));
+
+		m_d3dContext->Unmap(vertexbuffer.Get(), 0);
+		
+		m_d3dContext->DrawIndexed(m_iNumSprites * 6, 0, 0);
     }
 }
 
@@ -121,10 +210,10 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, floa
         x4 += x;
         y4 += y;
 
-		m_vertices->addVertexCoordinate(x1, y1, 0, 1, 1, 1, 1, tr.u1, tr.v2);
-		m_vertices->addVertexCoordinate(x4, y4, 0, 1, 1, 1, 1, tr.u1, tr.v1);
-		m_vertices->addVertexCoordinate(x3, y3, 0, 1, 1, 1, 1, tr.u2, tr.v1);
-		m_vertices->addVertexCoordinate(x2, y2, 0, 1, 1, 1, 1, tr.u2, tr.v2);
+		addVertexCoordinate(x1, y1, 0, 1, 1, 1, 1, tr.u1, tr.v2);
+		addVertexCoordinate(x4, y4, 0, 1, 1, 1, 1, tr.u1, tr.v1);
+		addVertexCoordinate(x3, y3, 0, 1, 1, 1, 1, tr.u2, tr.v1);
+		addVertexCoordinate(x2, y2, 0, 1, 1, 1, 1, tr.u2, tr.v2);
     }
     else
     {
@@ -169,10 +258,10 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, floa
         x4 += x;
         y4 += y;
 
-		m_vertices->addVertexCoordinate(x1, y1, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v2);
-		m_vertices->addVertexCoordinate(x4, y4, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v1); 
-		m_vertices->addVertexCoordinate(x3, y3, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v1); 
-		m_vertices->addVertexCoordinate(x2, y2, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v2);
+		addVertexCoordinate(x1, y1, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v2);
+		addVertexCoordinate(x4, y4, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v1); 
+		addVertexCoordinate(x3, y3, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v1); 
+		addVertexCoordinate(x2, y2, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v2);
     }
     else
     {
@@ -193,10 +282,10 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, Text
 	float x2 = x + halfWidth;
 	float y2 = y + halfHeight;
 
-	m_vertices->addVertexCoordinate(x1, y1, 0, 1, 1, 1, 1, tr.u1, tr.v2);
-	m_vertices->addVertexCoordinate(x1, y2, 0, 1, 1, 1, 1, tr.u1, tr.v1); 
-	m_vertices->addVertexCoordinate(x2, y2, 0, 1, 1, 1, 1, tr.u2, tr.v1); 
-	m_vertices->addVertexCoordinate(x2, y1, 0, 1, 1, 1, 1, tr.u2, tr.v2);
+	addVertexCoordinate(x1, y1, 0, 1, 1, 1, 1, tr.u1, tr.v2);
+	addVertexCoordinate(x1, y2, 0, 1, 1, 1, 1, tr.u1, tr.v1); 
+	addVertexCoordinate(x2, y2, 0, 1, 1, 1, 1, tr.u2, tr.v1); 
+	addVertexCoordinate(x2, y1, 0, 1, 1, 1, 1, tr.u2, tr.v2);
 }
 
 void SpriteBatcher::drawSprite(float x, float y, float width, float height, Color &color, TextureRegion tr)
@@ -208,35 +297,66 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, Colo
 	float x2 = x + halfWidth;
 	float y2 = y + halfHeight;
 
-	m_vertices->addVertexCoordinate(x1, y1, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v2);
-	m_vertices->addVertexCoordinate(x1, y2, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v1);
-	m_vertices->addVertexCoordinate(x2, y2, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v1);
-	m_vertices->addVertexCoordinate(x2, y1, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v2);
+	addVertexCoordinate(x1, y1, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v2);
+	addVertexCoordinate(x1, y2, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v1);
+	addVertexCoordinate(x2, y2, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v1);
+	addVertexCoordinate(x2, y1, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v2);
 }
 
-void SpriteBatcher::generateIndices(int maxSprites)
+void SpriteBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
 {
-    int numIndices = maxSprites * 6;
-	m_indices = std::unique_ptr<short>(new short[numIndices]);
-    
+	TEXTURE_VERTEX tv = { x, y, z, r, g, b, a, u, v };
+	m_textureVertices.push_back(tv);
+}
+
+void SpriteBatcher::createVertexBuffer()
+{
+	D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
+
+	vertexBufferDesc.ByteWidth = sizeof(TEXTURE_VERTEX)* MaxBatchSize * VerticesPerSprite;
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	DX::ThrowIfFailed(m_d3dDevice->CreateBuffer(&vertexBufferDesc, nullptr, &vertexbuffer));
+}
+
+// Creates the SpriteBatch index buffer.
+void SpriteBatcher::createIndexBuffer()
+{
+	D3D11_BUFFER_DESC indexBufferDesc = { 0 };
+
+	indexBufferDesc.ByteWidth = sizeof(short)* MaxBatchSize * IndicesPerSprite;
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+
+	auto indexValues = createIndexValues();
+
+	D3D11_SUBRESOURCE_DATA indexDataDesc = { 0 };
+
+	indexDataDesc.pSysMem = &indexValues.front();
+
+	using namespace DirectX;
+	DX::ThrowIfFailed(m_d3dDevice->CreateBuffer(&indexBufferDesc, &indexDataDesc, &indexbuffer));
+}
+
+// Helper for populating the SpriteBatch index buffer.
+std::vector<short> SpriteBatcher::createIndexValues()
+{
+	std::vector<short> indices;
+
+	indices.reserve(MaxBatchSize * IndicesPerSprite);
+
 	short j = 0;
-    
-    for (int i = 0; i < numIndices; i += 6, j += 4)
-    {
-		m_indices.get()[i + 0] = j + 0;
-		m_indices.get()[i + 1] = j + 1;
-		m_indices.get()[i + 2] = j + 2;
-		m_indices.get()[i + 3] = j + 2;
-		m_indices.get()[i + 4] = j + 3;
-		m_indices.get()[i + 5] = j + 0;
-    }
+	for (int i = 0; i < MaxBatchSize * IndicesPerSprite; i += IndicesPerSprite, j += VerticesPerSprite)
+	{
+		indices.push_back(j);
+		indices.push_back(j + 1);
+		indices.push_back(j + 2);
+		indices.push_back(j + 2);
+		indices.push_back(j + 3);
+		indices.push_back(j + 0);
+	}
 
-	// create the index buffer
-	D3D11_BUFFER_DESC ibd = { 0 };
-	ibd.ByteWidth = sizeof(short) * numIndices;
-	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-
-	D3D11_SUBRESOURCE_DATA isrd = { m_indices.get(), 0, 0 };
-
-	dev->CreateBuffer(&ibd, &isrd, &indexbuffer);
+	return indices;
 }

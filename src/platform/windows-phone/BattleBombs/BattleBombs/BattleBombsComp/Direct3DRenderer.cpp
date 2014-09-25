@@ -47,34 +47,48 @@
 #include "DDSTextureLoader.h"
 #include "SpriteBatcher.h"
 #include "Direct3DRectangleRenderer.h"
-#include "Vertices2D.h"
 #include <string>
 #include <sstream>
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *rendertargetIn) : Renderer()
+ComPtr<ID3D11Device1> m_d3dDevice3; // the device interface
+ComPtr<ID3D11DeviceContext1> m_d3dContext3; // the device context interface
+ComPtr<ID3D11RenderTargetView> m_rendertarget3;    // the render target interface
+
+ComPtr<ID3D11ShaderResourceView> m_gameShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_interfaceShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_interface2ShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charBlackShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charBlueShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charGreenShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charOrangeShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charPinkShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charRedShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charWhiteShaderResourceView;
+ComPtr<ID3D11ShaderResourceView> m_charYellowShaderResourceView;
+
+Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *rendertarget) : Renderer()
 {
-	dev = d3dDevice;
-	devcon = d3dContext;
-	rendertarget = rendertargetIn;
+	m_d3dDevice3 = ComPtr<ID3D11Device1>(d3dDevice);
+	m_d3dContext3 = ComPtr<ID3D11DeviceContext1>(d3dContext);
+	m_rendertarget3 = ComPtr<ID3D11RenderTargetView>(rendertarget);
 
-	m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(dev, devcon, 4000, false));
-	m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(dev, devcon, 1000, true));
-	m_rectangleRenderer = std::unique_ptr<Direct3DRectangleRenderer>(new Direct3DRectangleRenderer(dev, devcon, true, true));
+	m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(d3dDevice, d3dContext));
+	m_rectangleRenderer = std::unique_ptr<Direct3DRectangleRenderer>(new Direct3DRectangleRenderer(d3dDevice, d3dContext, true));
 
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\interface_2.dds", NULL, &m_interface2ShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\interface_2.dds", NULL, &m_interface2ShaderResourceView, NULL));
 
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_red.dds", NULL, &m_charRedShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\bot_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_red.dds", NULL, &m_charRedShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
 
 	player_sprites_loaded[0] = true;
 	player_sprites_loaded[1] = false;
@@ -91,58 +105,58 @@ void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
 	switch (mapType)
 	{
 	case MAP_SPACE:
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL));
 		break;
 	case MAP_GRASSLANDS:
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\map_grasslands.dds", NULL, &m_gameShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_grasslands.dds", NULL, &m_gameShaderResourceView, NULL));
 		break;
 	case MAP_MOUNTAINS:
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\map_mountains.dds", NULL, &m_gameShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_mountains.dds", NULL, &m_gameShaderResourceView, NULL));
 		break;
 	case MAP_BASE:
 	default:
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, L"Assets\\map_base.dds", NULL, &m_gameShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_base.dds", NULL, &m_gameShaderResourceView, NULL));
 		break;
 	}
 
 	if ((players.at(0)->isBot() && player_sprites_loaded[0]) || (!players.at(0)->isBot() && !player_sprites_loaded[0]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(0)->isBot() ? L"Assets\\bot_black.dds" : L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(0)->isBot() ? L"Assets\\bot_black.dds" : L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL));
 	}
 
 	if ((players.at(1)->isBot() && player_sprites_loaded[1]) || (!players.at(1)->isBot() && !player_sprites_loaded[1]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(1)->isBot() ? L"Assets\\bot_blue.dds" : L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(1)->isBot() ? L"Assets\\bot_blue.dds" : L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL));
 	}
 
 	if ((players.at(2)->isBot() && player_sprites_loaded[2]) || (!players.at(2)->isBot() && !player_sprites_loaded[2]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(2)->isBot() ? L"Assets\\bot_green.dds" : L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(2)->isBot() ? L"Assets\\bot_green.dds" : L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL));
 	}
 
 	if ((players.at(3)->isBot() && player_sprites_loaded[3]) || (!players.at(3)->isBot() && !player_sprites_loaded[3]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(3)->isBot() ? L"Assets\\bot_orange.dds" : L"Assets\\char_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(3)->isBot() ? L"Assets\\bot_orange.dds" : L"Assets\\char_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL));
 	}
 
 	if ((players.at(4)->isBot() && player_sprites_loaded[4]) || (!players.at(4)->isBot() && !player_sprites_loaded[4]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(4)->isBot() ? L"Assets\\bot_pink.dds" : L"Assets\\char_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(4)->isBot() ? L"Assets\\bot_pink.dds" : L"Assets\\char_pink.dds", NULL, &m_charPinkShaderResourceView, NULL));
 	}
 
 	if ((players.at(5)->isBot() && player_sprites_loaded[5]) || (!players.at(5)->isBot() && !player_sprites_loaded[5]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(5)->isBot() ? L"Assets\\bot_red.dds" : L"Assets\\char_red.dds", NULL, &m_charRedShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(5)->isBot() ? L"Assets\\bot_red.dds" : L"Assets\\char_red.dds", NULL, &m_charRedShaderResourceView, NULL));
 	}
 
 	if ((players.at(6)->isBot() && player_sprites_loaded[6]) || (!players.at(6)->isBot() && !player_sprites_loaded[6]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(6)->isBot() ? L"Assets\\bot_white.dds" : L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(6)->isBot() ? L"Assets\\bot_white.dds" : L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL));
 	}
 
 	if ((players.at(7)->isBot() && player_sprites_loaded[7]) || (!players.at(7)->isBot() && !player_sprites_loaded[7]))
 	{
-		DX::ThrowIfFailed(CreateDDSTextureFromFile(dev, players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
 	}
 
 	player_sprites_loaded[0] = !players.at(0)->isBot();
@@ -160,10 +174,9 @@ void Direct3DRenderer::clearScreenWithColor(float r, float g, float b, float a)
 	float color[] = { r, g, b, a };
 
 	// set our new render target object as the active render target
-	devcon->OMSetRenderTargets(1, &rendertarget, nullptr);
+	m_d3dContext3->OMSetRenderTargets(1, m_rendertarget3.GetAddressOf(), nullptr);
 
-	// clear the back buffer to a deep blue
-	devcon->ClearRenderTargetView(rendertarget, color);
+	m_d3dContext3->ClearRenderTargetView(m_rendertarget3.Get(), color);
 }
 
 void Direct3DRenderer::beginFrame()
@@ -175,7 +188,7 @@ void Direct3DRenderer::renderWorldBackground()
 {
 	m_spriteBatcher->beginBatch();
 	m_spriteBatcher->drawSprite(WORLD_BACKGROUND_X, WORLD_BACKGROUND_Y - m_fScrollY, WORLD_BACKGROUND_WIDTH, WORLD_BACKGROUND_HEIGHT, 0, Assets::getWorldBackgroundTextureRegion());
-	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
 }
 
 void Direct3DRenderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
@@ -205,7 +218,7 @@ void Direct3DRenderer::renderWorldForeground(std::vector<std::unique_ptr<MapBord
 		renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((**itr)));
 	}
 
-	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
 }
 
 void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
@@ -220,28 +233,28 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 			switch ((**itr).getPlayerIndex())
 			{
 			case 0:
-				m_spriteBatcher->endBatchWithTexture(m_charBlackShaderResourceView);
+				m_spriteBatcher->endBatchWithTexture(m_charBlackShaderResourceView.Get());
 				break;
 			case 1:
-				m_spriteBatcher->endBatchWithTexture(m_charBlueShaderResourceView);
+				m_spriteBatcher->endBatchWithTexture(m_charBlueShaderResourceView.Get());
 				break;
 			case 2:
-				m_spriteBatcher->endBatchWithTexture(m_charGreenShaderResourceView);
+				m_spriteBatcher->endBatchWithTexture(m_charGreenShaderResourceView.Get());
 				break;
 			case 3:
-				m_spriteBatcher->endBatchWithTexture(m_charOrangeShaderResourceView);
+				m_spriteBatcher->endBatchWithTexture(m_charOrangeShaderResourceView.Get());
 				break;
 			case 4:
-				m_spriteBatcher->endBatchWithTexture(m_charPinkShaderResourceView);
+				m_spriteBatcher->endBatchWithTexture(m_charPinkShaderResourceView.Get());
 				break;
 			case 5:
-				m_spriteBatcher->endBatchWithTexture(m_charRedShaderResourceView);
+				m_spriteBatcher->endBatchWithTexture(m_charRedShaderResourceView.Get());
 				break;
 			case 6:
-				m_spriteBatcher->endBatchWithTexture(m_charWhiteShaderResourceView);
+				m_spriteBatcher->endBatchWithTexture(m_charWhiteShaderResourceView.Get());
 				break;
 			case 7:
-				m_spriteBatcher->endBatchWithTexture(m_charYellowShaderResourceView);
+				m_spriteBatcher->endBatchWithTexture(m_charYellowShaderResourceView.Get());
 				break;
 			default:
 				break;
@@ -285,9 +298,9 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 		}
 	}
 
-	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 
-	m_spriteBatcherWithColor->beginBatch();
+	m_spriteBatcher->beginBatch();
 
 	for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
 	{
@@ -303,11 +316,11 @@ void Direct3DRenderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGa
 			static float playerNameFontGlyphWidth = GRID_CELL_WIDTH * 2 / 7;
 			static float playerNameFontGlyphHeight = playerNameFontGlyphWidth * 0.68421052631579;
 
-			m_font->renderText(*m_spriteBatcherWithColor, playerNameText, (*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, playerNameFontGlyphWidth, playerNameFontGlyphHeight, playerNameColor, true);
+			m_font->renderText(*m_spriteBatcher, playerNameText, (*itr)->getPosition().getX(), (*itr)->getPosition().getY() + playerYModifier - m_fScrollY, playerNameFontGlyphWidth, playerNameFontGlyphHeight, playerNameColor, true);
 		}
 	}
 
-	m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 }
 
 void Direct3DRenderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
@@ -317,7 +330,7 @@ void Direct3DRenderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> 
 	{
 		renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
 	}
-	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
 }
 
 void Direct3DRenderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions)
@@ -330,7 +343,7 @@ void Direct3DRenderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> 
 			m_spriteBatcher->drawSprite((**itr2).getPosition().getX(), (**itr2).getPosition().getY() - m_fScrollY, (**itr2).getWidth(), (**itr2).getHeight(), (**itr2).getAngle(), Assets::getFireTextureRegion((**itr2)));
 		}
 	}
-	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
 }
 
 void Direct3DRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear)
@@ -343,7 +356,7 @@ void Direct3DRenderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorde
 			renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
 		}
 	}
-	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
 }
 
 void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface)
@@ -361,9 +374,9 @@ void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface
 			}
 		}
 
-		m_spriteBatcher->endBatchWithTexture(m_interface2ShaderResourceView);
+		m_spriteBatcher->endBatchWithTexture(m_interface2ShaderResourceView.Get());
 
-		m_spriteBatcherWithColor->beginBatch();
+		m_spriteBatcher->beginBatch();
 
 		static Color playerNameColor = Color(1, 1, 1, 1);
 
@@ -375,16 +388,16 @@ void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface
 				ss << (*itr)->getPlayerName();
 				std::string playerName = ss.str();
 
-				m_font->renderText(*m_spriteBatcherWithColor, playerName, (*itr)->getFontX(), (*itr)->getFontY(), (*itr)->getFontGlyphWidth(), (*itr)->getFontGlyphHeight(), playerNameColor, true);
+				m_font->renderText(*m_spriteBatcher, playerName, (*itr)->getFontX(), (*itr)->getFontY(), (*itr)->getFontGlyphWidth(), (*itr)->getFontGlyphHeight(), playerNameColor, true);
 			}
 		}
 
-		m_spriteBatcherWithColor->endBatchWithTexture(m_interface2ShaderResourceView);
+		m_spriteBatcher->endBatchWithTexture(m_interface2ShaderResourceView.Get());
 	}
 
 	if (waitingForServerInterface.renderTimeToNextRound() || waitingForServerInterface.renderMessage())
 	{
-		m_spriteBatcherWithColor->beginBatch();
+		m_spriteBatcher->beginBatch();
 
 		if (waitingForServerInterface.renderTimeToNextRound())
 		{
@@ -394,7 +407,7 @@ void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface
 			ss2 << waitingForServerInterface.getTimeToNextRound();
 			std::string timerText = ss2.str();
 
-			m_font->renderText(*m_spriteBatcherWithColor, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 3, 2.0f, 1.36842105263158f, timerColor, true);
+			m_font->renderText(*m_spriteBatcher, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 3, 2.0f, 1.36842105263158f, timerColor, true);
 		}
 
 		if (waitingForServerInterface.renderMessage())
@@ -436,10 +449,10 @@ void Direct3DRenderer::renderWaitingForServerInterface(WaitingForServerInterface
 
 			std::string waitingText = ss.str();
 
-			m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, 0.5f, fontSize, fontSize, interfaceColor, true);
+			m_font->renderText(*m_spriteBatcher, waitingText, SCREEN_WIDTH / 2, 0.5f, fontSize, fontSize, interfaceColor, true);
 		}
 
-		m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceShaderResourceView);
+		m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 	}
 }
 
@@ -452,15 +465,15 @@ void Direct3DRenderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSet
 		interfaceColor.alpha = 1;
 	}
 
-	m_spriteBatcherWithColor->beginBatch();
+	m_spriteBatcher->beginBatch();
 
 	std::stringstream ss;
 	ss << "Tap anywhere to play again!";
 	std::string waitingText = ss.str();
 
-	m_font->renderText(*m_spriteBatcherWithColor, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
+	m_font->renderText(*m_spriteBatcher, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
 
-	m_spriteBatcherWithColor->endBatchWithTexture(m_interface2ShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_interface2ShaderResourceView.Get());
 }
 
 void Direct3DRenderer::renderUIEffects(std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject)
@@ -479,7 +492,7 @@ void Direct3DRenderer::renderUIEffects(std::vector<std::unique_ptr<CountDownNumb
 		renderGameObject((**itr), Assets::getDisplayGameOverTextureRegion(**itr));
 	}
 
-	m_spriteBatcher->endBatchWithTexture(m_interface2ShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_interface2ShaderResourceView.Get());
 }
 
 void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
@@ -509,7 +522,7 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 
 	renderGameObject(interfaceOverlay.getBombButton(), Assets::getBombButtonTextureRegion(interfaceOverlay.getBombButton(), interfaceOverlay.getButtonsStateTime()));
 
-	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 
 	std::stringstream ss;
 	ss << interfaceOverlay.getNumMinutesLeft() << ":" << interfaceOverlay.getNumSecondsLeftFirstColumn() << interfaceOverlay.getNumSecondsLeftSecondColumn();
@@ -521,8 +534,8 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 	static const float timerWidth = 0.40298507462688f;
 	static const float timerHeight = 0.425373134375f;
 
-	m_spriteBatcherWithColor->beginBatch();
-	m_font->renderText(*m_spriteBatcherWithColor, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
+	m_spriteBatcher->beginBatch();
+	m_font->renderText(*m_spriteBatcher, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
 
 	for (std::vector<std::unique_ptr<PowerUpBarItem>>::iterator itr = interfaceOverlay.getPowerUpBarItems().begin(); itr != interfaceOverlay.getPowerUpBarItems().end(); itr++)
 	{
@@ -533,11 +546,11 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 			std::string powerUpStack = ss2.str();
 			float x = (*itr)->getPosition().getX() + (*itr)->getWidth() / 2;
 			float y = (*itr)->getPosition().getY() - (*itr)->getHeight() / 2;
-			m_font->renderText(*m_spriteBatcherWithColor, powerUpStack, x, y, 0.36f, 0.32f, interfaceColor);
+			m_font->renderText(*m_spriteBatcher, powerUpStack, x, y, 0.36f, 0.32f, interfaceColor);
 		}
 	}
 
-	m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 
 	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
 	{
@@ -564,11 +577,11 @@ void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
 	m_spriteBatcher->beginBatch();
 	m_spriteBatcher->drawSprite(INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_X, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_Y, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_WIDTH, INTERFACE_OVERLAY_SPECTATOR_BACKGROUND_HEIGHT, 0, Assets::getSpectatorInterfaceOverlayTextureRegion());
 	renderGameObject(interfaceOverlay.getSpectatorControls(), Assets::getSpectatorControlsTextureRegion(interfaceOverlay.getSpectatorControls()));
-	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 
 	static Color interfaceColor = Color(1, 1, 1, 1 );
 
-	m_spriteBatcherWithColor->beginBatch();
+	m_spriteBatcher->beginBatch();
 
 	std::stringstream ss;
 	ss << interfaceOverlay.getNumMinutesLeft() << ":" << interfaceOverlay.getNumSecondsLeftFirstColumn() << interfaceOverlay.getNumSecondsLeftSecondColumn();
@@ -579,16 +592,16 @@ void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
 	static const float timerWidth = 0.40298507462688f;
 	static const float timerHeight = 0.425373134375f;
 
-	m_font->renderText(*m_spriteBatcherWithColor, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
+	m_font->renderText(*m_spriteBatcher, timeRemaining, timerX, timerY, timerWidth, timerHeight, interfaceColor);
 
 	static const float spectatingWhoX = 12.17910447761184f;
 	static const float spectatingWhoY = 0.51044776125f;
 	static const float spectatingWhoWidth = 0.52611940298496f;
 	static const float spectatingWhoHeight = 0.680597015f;
 
-	m_font->renderText(*m_spriteBatcherWithColor, interfaceOverlay.getSpectatingUsername(), spectatingWhoX, spectatingWhoY, spectatingWhoWidth, spectatingWhoHeight, interfaceColor, true);
+	m_font->renderText(*m_spriteBatcher, interfaceOverlay.getSpectatingUsername(), spectatingWhoX, spectatingWhoY, spectatingWhoWidth, spectatingWhoHeight, interfaceColor, true);
 
-	m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 
 	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
 	{
@@ -636,7 +649,7 @@ void Direct3DRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID
 		}
 	}
 
-	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView);
+	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 }
 
 void Direct3DRenderer::endFrame()

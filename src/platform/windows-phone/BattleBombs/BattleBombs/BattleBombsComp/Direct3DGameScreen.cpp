@@ -48,8 +48,12 @@
 #include "Direct3DAssets.h"
 #include "GameSound.h"
 #include "SpriteBatcher.h"
-#include "Vertices2D.h"
 #include "Direct3DRectangleRenderer.h"
+
+ComPtr<ID3D11Device1> dev;                      // the device interface
+ComPtr<ID3D11DeviceContext1> devcon;            // the device context interface
+ComPtr<ID3D11Texture2D> m_renderTarget;         // the render target texture
+ComPtr<ID3D11RenderTargetView> rendertarget;    // the render target interface
 
 Direct3DGameScreen::Direct3DGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
 {

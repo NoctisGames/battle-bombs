@@ -17,12 +17,10 @@ class Rectangle;
 class SpriteBatcher;
 class Direct3DRectangleRenderer;
 
-using namespace Microsoft::WRL;
-
 class Direct3DRenderer : public Renderer
 {
 public:
-	Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *rendertargetIn);
+	Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, ID3D11RenderTargetView *rendertarget);
 
 	virtual void loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
 
@@ -61,24 +59,7 @@ public:
 	virtual void cleanUp();
 
 private:
-	ID3D11Device1 *dev;                      // the device interface
-	ID3D11DeviceContext1 *devcon;            // the device context interface
-	ID3D11RenderTargetView *rendertarget;    // the render target interface
-
-	ComPtr<ID3D11ShaderResourceView> m_gameShaderResourceView;
-	ComPtr<ID3D11ShaderResourceView> m_interfaceShaderResourceView;
-	ComPtr<ID3D11ShaderResourceView> m_interface2ShaderResourceView;
-	ComPtr<ID3D11ShaderResourceView> m_charBlackShaderResourceView;
-	ComPtr<ID3D11ShaderResourceView> m_charBlueShaderResourceView;
-	ComPtr<ID3D11ShaderResourceView> m_charGreenShaderResourceView;
-	ComPtr<ID3D11ShaderResourceView> m_charOrangeShaderResourceView;
-	ComPtr<ID3D11ShaderResourceView> m_charPinkShaderResourceView;
-	ComPtr<ID3D11ShaderResourceView> m_charRedShaderResourceView;
-	ComPtr<ID3D11ShaderResourceView> m_charWhiteShaderResourceView;
-	ComPtr<ID3D11ShaderResourceView> m_charYellowShaderResourceView;
-
 	std::unique_ptr<SpriteBatcher> m_spriteBatcher;
-	std::unique_ptr<SpriteBatcher> m_spriteBatcherWithColor;
 	std::unique_ptr<Direct3DRectangleRenderer> m_rectangleRenderer;
 
 	virtual void renderGameObject(GameObject &go, TextureRegion tr);

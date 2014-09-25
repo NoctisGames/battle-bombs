@@ -9,43 +9,49 @@
 #ifndef __battle_bombs__SpriteBatcher__
 #define __battle_bombs__SpriteBatcher__
 
+struct TEXTURE_VERTEX
+{
+	float X, Y, Z; // vertex position
+	float R, G, B, A; // vertex color
+	float U, V;    // texture coordinates
+};
+
 #include <d3d11_1.h>
 #include <memory>
+#include <vector>
 #include "Color.h"
 
 class TextureRegion;
-class Vertices2D;
 
 using namespace Microsoft::WRL;
 
 class SpriteBatcher
 {
 public:
-	SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, int maxSprites, bool useColors);
+	SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext);
     
     void beginBatch();
 
-	void endBatchWithTexture(ComPtr<ID3D11ShaderResourceView> texture);
+	void endBatchWithTexture(ID3D11ShaderResourceView *texture);
     
     void drawSprite(float x, float y, float width, float height, float angle, TextureRegion tr);
     
     void drawSprite(float x, float y, float width, float height, float angle, Color &color, TextureRegion tr);
     
 private:
-	ID3D11Device1 *dev;                      // the device interface
-	ID3D11DeviceContext1 *devcon;            // the device context interface
-	ComPtr<ID3D11BlendState> blendstate;            // the blend state interface
-	ComPtr<ID3D11SamplerState> samplerstate;        // the sampler state interfaces
-	ComPtr<ID3D11Buffer> indexbuffer;               // the index buffer interface
-	std::unique_ptr<Vertices2D> m_vertices;
-	std::unique_ptr<short> m_indices;
+	std::vector<TEXTURE_VERTEX> m_textureVertices;
 	int m_iNumSprites;
     
     void drawSprite(float x, float y, float width, float height, TextureRegion tr);
     
     void drawSprite(float x, float y, float width, float height, Color &color, TextureRegion tr);
     
-    void generateIndices(int maxSprites);
+	void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
+
+	void createVertexBuffer();
+	void createIndexBuffer();
+
+	std::vector<short> createIndexValues();
 };
 
 #endif /* defined(__battle_bombs__SpriteBatcher__) */
