@@ -74,7 +74,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>$(WindowsSDK_MetadataPath);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <CompileAsWinRT>true</CompileAsWinRT>
-      <AdditionalIncludeDirectories>..\..\..\..\..\core;..\..\..\..\..\core\direct3d;..\..\..\..\..\3rdparty;..\..\..\..\..\3rdparty\DirectXTK\Inc;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\..\core;..\..\..\..\..\core\direct3d;..\..\..\..\..\3rdparty;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -93,7 +93,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>$(WindowsSDK_MetadataPath);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <CompileAsWinRT>true</CompileAsWinRT>
-      <AdditionalIncludeDirectories>..\..\..\..\..\core;..\..\..\..\..\core\direct3d;..\..\..\..\..\3rdparty;..\..\..\..\..\3rdparty\DirectXTK\Inc;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\..\core;..\..\..\..\..\core\direct3d;..\..\..\..\..\3rdparty;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -112,7 +112,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>$(WindowsSDK_MetadataPath);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <CompileAsWinRT>true</CompileAsWinRT>
-      <AdditionalIncludeDirectories>..\..\..\..\..\core;..\..\..\..\..\core\direct3d;..\..\..\..\..\3rdparty;..\..\..\..\..\3rdparty\DirectXTK\Inc;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\..\core;..\..\..\..\..\core\direct3d;..\..\..\..\..\3rdparty;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,7 +131,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>$(WindowsSDK_MetadataPath);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <CompileAsWinRT>true</CompileAsWinRT>
-      <AdditionalIncludeDirectories>..\..\..\..\..\core;..\..\..\..\..\core\direct3d;..\..\..\..\..\3rdparty;..\..\..\..\..\3rdparty\DirectXTK\Inc;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\..\core;..\..\..\..\..\core\direct3d;..\..\..\..\..\3rdparty;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -218,7 +218,6 @@
     <ClInclude Include="BasicReaderWriter.h" />
     <ClInclude Include="BasicTimer.h" />
     <ClInclude Include="Direct3DAssets.h" />
-    <ClInclude Include="Direct3DBase.h" />
     <ClInclude Include="Direct3DContentProvider.h" />
     <ClInclude Include="Direct3DGameScreen.h" />
     <ClInclude Include="Direct3DInterop.h" />
@@ -280,7 +279,6 @@
     <ClCompile Include="..\..\..\..\..\core\WaitingForServerInterface.cpp" />
     <ClCompile Include="BasicReaderWriter.cpp" />
     <ClCompile Include="Direct3DAssets.cpp" />
-    <ClCompile Include="Direct3DBase.cpp" />
     <ClCompile Include="Direct3DContentProvider.cpp" />
     <ClCompile Include="Direct3DGameScreen.cpp" />
     <ClCompile Include="Direct3DInterop.cpp" />

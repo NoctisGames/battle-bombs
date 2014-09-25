@@ -36,58 +36,58 @@ class Assets
 {
 public:
 	static Assets * getInstance();
-    
-    static TextureRegion getWorldBackgroundTextureRegion();
-    
-    static TextureRegion getMapBorderTextureRegion(MapBorder &mapBorder);
-    
-    static TextureRegion getInsideBlockTextureRegion();
-    
-    static TextureRegion getNineTextureRegion();
-    
-    static TextureRegion getOneTextureRegion();
 
-	static TextureRegion getBreakableBlockTextureRegion(BreakableBlock &breakableBlock);
-    
-    static TextureRegion getWaitingForServerInterfaceTextureRegion();
-    
-    static TextureRegion getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatformAvatar &playerRowPlatformAvatar);
-    
-    static TextureRegion getInterfaceOverlayTextureRegion();
-    
-    static TextureRegion getSpectatorInterfaceOverlayTextureRegion();
-    
-    static TextureRegion getPlayerAvatarTextureRegion(PlayerAvatar &playerAvatar);
-    
-    static TextureRegion getDPadControlTextureRegion(DPadControl &dpadControl);
+	static TextureRegion& getWorldBackgroundTextureRegion();
 
-	static TextureRegion getPowerUpTextureRegion(PowerUp &powerUp);
+	static TextureRegion& getMapBorderTextureRegion(MapBorder &mapBorder);
     
-    static TextureRegion getPlayerTextureRegion(PlayerDynamicGameObject &player);
+    static TextureRegion& getInsideBlockTextureRegion();
     
-    static TextureRegion getPlayerNameBubbleTextureRegion();
+    static TextureRegion& getNineTextureRegion();
     
-    static TextureRegion getPlayerPointerTextureRegion();
+    static TextureRegion& getOneTextureRegion();
+
+	static TextureRegion& getBreakableBlockTextureRegion(BreakableBlock &breakableBlock);
     
-    static TextureRegion getBombTextureRegion(BombGameObject &bomb);
+    static TextureRegion& getWaitingForServerInterfaceTextureRegion();
     
-    static TextureRegion getFireTextureRegion(Fire &fire);
+    static TextureRegion& getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatformAvatar &playerRowPlatformAvatar);
     
-    static TextureRegion getForceFieldTextureRegion(int forceFieldState, float forceFieldStateTime);
+    static TextureRegion& getInterfaceOverlayTextureRegion();
     
-    static TextureRegion getPowerUpBarItemTextureRegion(PowerUpBarItem &powerUpBarItem, float powerUpBarItemsStateTime);
+    static TextureRegion& getSpectatorInterfaceOverlayTextureRegion();
     
-    static TextureRegion getActiveButtonTextureRegion(ActiveButton &activeButton, float buttonsStateTime);
+    static TextureRegion& getPlayerAvatarTextureRegion(PlayerAvatar &playerAvatar);
     
-    static TextureRegion getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime);
+    static TextureRegion& getDPadControlTextureRegion(DPadControl &dpadControl);
+
+	static TextureRegion& getPowerUpTextureRegion(PowerUp &powerUp);
     
-    static TextureRegion getSpectatorControlsTextureRegion(SpectatorControls &spectatorControls);
+    static TextureRegion& getPlayerTextureRegion(PlayerDynamicGameObject &player);
     
-    static TextureRegion getCountDownNumberTextureRegion(CountDownNumberGameObject &countDownNumberGameObject);
+    static TextureRegion& getPlayerNameBubbleTextureRegion();
     
-    static TextureRegion getDisplayBattleTextureRegion();
+    static TextureRegion& getPlayerPointerTextureRegion();
     
-    static TextureRegion getDisplayGameOverTextureRegion(DisplayGameOverGameObject &displayGameOverGameObject);
+    static TextureRegion& getBombTextureRegion(BombGameObject &bomb);
+    
+    static TextureRegion& getFireTextureRegion(Fire &fire);
+    
+    static TextureRegion& getForceFieldTextureRegion(int forceFieldState, float forceFieldStateTime);
+    
+    static TextureRegion& getPowerUpBarItemTextureRegion(PowerUpBarItem &powerUpBarItem, float powerUpBarItemsStateTime);
+    
+    static TextureRegion& getActiveButtonTextureRegion(ActiveButton &activeButton, float buttonsStateTime);
+    
+    static TextureRegion& getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime);
+    
+    static TextureRegion& getSpectatorControlsTextureRegion(SpectatorControls &spectatorControls);
+    
+    static TextureRegion& getCountDownNumberTextureRegion(CountDownNumberGameObject &countDownNumberGameObject);
+    
+    static TextureRegion& getDisplayBattleTextureRegion();
+    
+    static TextureRegion& getDisplayGameOverTextureRegion(DisplayGameOverGameObject &displayGameOverGameObject);
     
     void setMusicId(short musicId);
     

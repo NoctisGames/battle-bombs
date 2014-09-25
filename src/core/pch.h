@@ -17,11 +17,12 @@
 #ifdef TECHNE_GAMES_OPENGL_ES
 
 #elif defined TECHNE_GAMES_DIRECT_3D
+#include <wrl.h>
 #include <wrl/client.h>
 #include <d3d11_1.h>
 #include <DirectXMath.h>
+#include <memory>
 #include <agile.h>
-#include <wrl.h>
 #include <xaudio2.h>
 #include <mmreg.h>
 #pragma comment( lib, "xaudio2.lib")
