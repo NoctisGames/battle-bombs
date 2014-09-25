@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#define SERVER_STATUS_URL @"https://s3.amazonaws.com/battlebombs/bb_02.json"
+#define SERVER_STATUS_URL @"https://s3.amazonaws.com/battlebombs/bb_1.0.0.json"
 
 #import "TGApiManager.h"
 

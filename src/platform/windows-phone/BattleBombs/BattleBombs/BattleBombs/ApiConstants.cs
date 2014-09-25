@@ -8,6 +8,6 @@ namespace BattleBombs
 {
     public class ApiConstants
     {
-        public static String SERVER_STATUS_URL = "https://s3.amazonaws.com/battlebombs/bb_01.json";
+        public static String SERVER_STATUS_URL = "https://s3.amazonaws.com/battlebombs/bb_1.0.0.json";
     }
 }
