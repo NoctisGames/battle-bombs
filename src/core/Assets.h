@@ -37,10 +37,6 @@ class Assets
 public:
 	static Assets * getInstance();
     
-    static TextureRegion getWorldBackgroundTextureRegion();
-    
-    static TextureRegion getMapBorderTextureRegion(MapBorder &mapBorder);
-    
     static TextureRegion getInsideBlockTextureRegion();
     
     static TextureRegion getNineTextureRegion();

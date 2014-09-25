@@ -13,6 +13,7 @@
 #include "DirectXHelper.h"
 #include "GameConstants.h"
 #include <stdlib.h>
+#include <deque>
 #include "TextureRegion.h"
 #include "Color.h"
 
@@ -28,16 +29,17 @@ ComPtr<ID3D11Buffer> vertexbuffer; // the vertex buffer interface
 ComPtr<ID3D11Buffer> indexbuffer; // the index buffer interface
 
 static const size_t MaxBatchSize = 512;
+static const size_t MaxSpriteBatchSize = 32;
 static const size_t VerticesPerSprite = 4;
 static const size_t IndicesPerSprite = 6;
 
-std::vector<TEXTURE_VERTEX> m_textureVertices;
+std::deque<TEXTURE_VERTEX> m_textureVertices;
 
 SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext)
 {
 	m_d3dDevice = ComPtr<ID3D11Device1>(d3dDevice);
 	m_d3dContext = ComPtr<ID3D11DeviceContext1>(d3dContext);
-    m_iNumSprites = 0;
+	m_iNumSprites = 0;
 
 	createIndexBuffer();
 
@@ -109,13 +111,21 @@ SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3d
 void SpriteBatcher::beginBatch()
 {
 	m_textureVertices.clear();
-    m_iNumSprites = 0;
+	m_iNumSprites = 0;
 }
 
 void SpriteBatcher::endBatchWithTexture(ID3D11ShaderResourceView *texture)
 {
-    if(m_iNumSprites > 0)
-    {
+	std::vector<TEXTURE_VERTEX> tempTextureVertices;
+	while (m_iNumSprites > 0)
+	{
+		int len = m_textureVertices.size();
+		for (int i = 0; i < len && i < MaxSpriteBatchSize * VerticesPerSprite; i++)
+		{
+			tempTextureVertices.push_back(m_textureVertices.front());
+			m_textureVertices.pop_front();
+		}
+
 		// set the blend state
 		m_d3dContext->OMSetBlendState(blendstate.Get(), 0, 0xffffffff);
 
@@ -138,10 +148,10 @@ void SpriteBatcher::endBatchWithTexture(ID3D11ShaderResourceView *texture)
 		D3D11_BUFFER_DESC bd = { 0 };
 		D3D11_SUBRESOURCE_DATA srd = { 0 };
 
-		bd.ByteWidth = sizeof(TEXTURE_VERTEX)* m_textureVertices.size() * VerticesPerSprite;
+		bd.ByteWidth = sizeof(TEXTURE_VERTEX)* tempTextureVertices.size();
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bd.Usage = D3D11_USAGE_DEFAULT;
-		srd.pSysMem = &m_textureVertices.front();
+		srd.pSysMem = &tempTextureVertices.front();
 
 		DX::ThrowIfFailed(m_d3dDevice->CreateBuffer(&bd, &srd, &vertexbuffer));
 
@@ -165,124 +175,114 @@ void SpriteBatcher::endBatchWithTexture(ID3D11ShaderResourceView *texture)
 		// calculate the final matrix
 		XMMATRIX matFinal = matView * matProjection;
 
-		//// send the final matrix to video memory
-		//D3D11_MAPPED_SUBRESOURCE mappedResource;
-		//DX::ThrowIfFailed(m_d3dContext->Map(constantbuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
-		//*(XMMATRIX*)mappedResource.pData = matFinal;
-		//m_d3dContext->Unmap(constantbuffer.Get(), 0);
-
 		// send the final matrix to video memory
 		m_d3dContext->UpdateSubresource(constantbuffer.Get(), 0, 0, &matFinal, 0, 0);
 
 		m_d3dContext->VSSetConstantBuffers(0, 1, constantbuffer.GetAddressOf());
 
-		//// Lock the vertex buffer.
-		//D3D11_MAP mapType = D3D11_MAP_WRITE_DISCARD;
+		int indexCount = m_iNumSprites > MaxSpriteBatchSize ? MaxSpriteBatchSize : m_iNumSprites;
+		m_d3dContext->DrawIndexed(indexCount * IndicesPerSprite, 0, 0);
 
-		//D3D11_MAPPED_SUBRESOURCE mappedBuffer;
+		m_iNumSprites -= MaxSpriteBatchSize;
 
-		//DX::ThrowIfFailed(m_d3dContext->Map(vertexbuffer.Get(), 0, mapType, 0, &mappedBuffer));
-
-		//m_d3dContext->Unmap(vertexbuffer.Get(), 0);
-		
-		m_d3dContext->DrawIndexed(m_iNumSprites * 6, 0, 0);
-    }
+		tempTextureVertices.clear();
+	}
 }
 
 void SpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, TextureRegion tr)
 {
-    if(angle > 0)
-    {
-        float halfWidth = width / 2;
-        float halfHeight = height / 2;
-        
-        float rad = DEGREES_TO_RADIANS(angle);
-        float cos = cosf(rad);
-        float sin = sinf(rad);
-        
-        float x1 = -halfWidth * cos - (-halfHeight) * sin;
-        float y1 = -halfWidth * sin + (-halfHeight) * cos;
-        
-        float x2 = halfWidth * cos - (-halfHeight) * sin;
-        float y2 = halfWidth * sin + (-halfHeight) * cos;
-        
-        float x3 = halfWidth * cos - halfHeight * sin;
-        float y3 = halfWidth * sin + halfHeight * cos;
-        
-        float x4 = -halfWidth * cos - halfHeight * sin;
-        float y4 = -halfWidth * sin + halfHeight * cos;
-        
-        x1 += x;
-        y1 += y;
-        
-        x2 += x;
-        y2 += y;
-        
-        x3 += x;
-        y3 += y;
-        
-        x4 += x;
-        y4 += y;
+	if (angle > 0)
+	{
+		float halfWidth = width / 2;
+		float halfHeight = height / 2;
+
+		float rad = DEGREES_TO_RADIANS(angle);
+		float cos = cosf(rad);
+		float sin = sinf(rad);
+
+		float x1 = -halfWidth * cos - (-halfHeight) * sin;
+		float y1 = -halfWidth * sin + (-halfHeight) * cos;
+
+		float x2 = halfWidth * cos - (-halfHeight) * sin;
+		float y2 = halfWidth * sin + (-halfHeight) * cos;
+
+		float x3 = halfWidth * cos - halfHeight * sin;
+		float y3 = halfWidth * sin + halfHeight * cos;
+
+		float x4 = -halfWidth * cos - halfHeight * sin;
+		float y4 = -halfWidth * sin + halfHeight * cos;
+
+		x1 += x;
+		y1 += y;
+
+		x2 += x;
+		y2 += y;
+
+		x3 += x;
+		y3 += y;
+
+		x4 += x;
+		y4 += y;
 
 		addVertexCoordinate(x1, y1, 0, 1, 1, 1, 1, tr.u1, tr.v2);
 		addVertexCoordinate(x4, y4, 0, 1, 1, 1, 1, tr.u1, tr.v1);
 		addVertexCoordinate(x3, y3, 0, 1, 1, 1, 1, tr.u2, tr.v1);
 		addVertexCoordinate(x2, y2, 0, 1, 1, 1, 1, tr.u2, tr.v2);
-    }
-    else
-    {
-        drawSprite(x, y, width, height, tr);
-    }
-    
-    m_iNumSprites++;
+	}
+	else
+	{
+		drawSprite(x, y, width, height, tr);
+	}
+
+	m_iNumSprites++;
 }
 
 void SpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, Color &color, TextureRegion tr)
 {
-    if(angle > 0)
-    {
-        float halfWidth = width / 2;
-        float halfHeight = height / 2;
-        
-        float rad = DEGREES_TO_RADIANS(angle);
-        float cos = cosf(rad);
-        float sin = sinf(rad);
-        
-        float x1 = -halfWidth * cos - (-halfHeight) * sin;
-        float y1 = -halfWidth * sin + (-halfHeight) * cos;
-        
-        float x2 = halfWidth * cos - (-halfHeight) * sin;
-        float y2 = halfWidth * sin + (-halfHeight) * cos;
-        
-        float x3 = halfWidth * cos - halfHeight * sin;
-        float y3 = halfWidth * sin + halfHeight * cos;
-        
-        float x4 = -halfWidth * cos - halfHeight * sin;
-        float y4 = -halfWidth * sin + halfHeight * cos;
-        
-        x1 += x;
-        y1 += y;
-        
-        x2 += x;
-        y2 += y;
-        
-        x3 += x;
-        y3 += y;
-        
-        x4 += x;
-        y4 += y;
+	if (angle > 0)
+	{
+		float halfWidth = width / 2;
+		float halfHeight = height / 2;
+
+		float rad = DEGREES_TO_RADIANS(angle);
+		float cos = cosf(rad);
+		float sin = sinf(rad);
+
+		float x1 = -halfWidth * cos - (-halfHeight) * sin;
+		float y1 = -halfWidth * sin + (-halfHeight) * cos;
+
+		float x2 = halfWidth * cos - (-halfHeight) * sin;
+		float y2 = halfWidth * sin + (-halfHeight) * cos;
+
+		float x3 = halfWidth * cos - halfHeight * sin;
+		float y3 = halfWidth * sin + halfHeight * cos;
+
+		float x4 = -halfWidth * cos - halfHeight * sin;
+		float y4 = -halfWidth * sin + halfHeight * cos;
+
+		x1 += x;
+		y1 += y;
+
+		x2 += x;
+		y2 += y;
+
+		x3 += x;
+		y3 += y;
+
+		x4 += x;
+		y4 += y;
 
 		addVertexCoordinate(x1, y1, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v2);
-		addVertexCoordinate(x4, y4, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v1); 
-		addVertexCoordinate(x3, y3, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v1); 
+		addVertexCoordinate(x4, y4, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v1);
+		addVertexCoordinate(x3, y3, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v1);
 		addVertexCoordinate(x2, y2, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v2);
-    }
-    else
-    {
-        drawSprite(x, y, width, height, color, tr);
-    }
-    
-    m_iNumSprites++;
+	}
+	else
+	{
+		drawSprite(x, y, width, height, color, tr);
+	}
+
+	m_iNumSprites++;
 }
 
 #pragma <Private>
@@ -297,8 +297,8 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, Text
 	float y2 = y + halfHeight;
 
 	addVertexCoordinate(x1, y1, 0, 1, 1, 1, 1, tr.u1, tr.v2);
-	addVertexCoordinate(x1, y2, 0, 1, 1, 1, 1, tr.u1, tr.v1); 
-	addVertexCoordinate(x2, y2, 0, 1, 1, 1, 1, tr.u2, tr.v1); 
+	addVertexCoordinate(x1, y2, 0, 1, 1, 1, 1, tr.u1, tr.v1);
+	addVertexCoordinate(x2, y2, 0, 1, 1, 1, 1, tr.u2, tr.v1);
 	addVertexCoordinate(x2, y1, 0, 1, 1, 1, 1, tr.u2, tr.v2);
 }
 
@@ -323,24 +323,12 @@ void SpriteBatcher::addVertexCoordinate(float x, float y, float z, float r, floa
 	m_textureVertices.push_back(tv);
 }
 
-void SpriteBatcher::createVertexBuffer()
-{
-	D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
-
-	vertexBufferDesc.ByteWidth = sizeof(TEXTURE_VERTEX)* MaxBatchSize * VerticesPerSprite;
-	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-	DX::ThrowIfFailed(m_d3dDevice->CreateBuffer(&vertexBufferDesc, nullptr, &vertexbuffer));
-}
-
 // Creates the SpriteBatch index buffer.
 void SpriteBatcher::createIndexBuffer()
 {
 	D3D11_BUFFER_DESC indexBufferDesc = { 0 };
 
-	indexBufferDesc.ByteWidth = sizeof(short)* MaxBatchSize * IndicesPerSprite;
+	indexBufferDesc.ByteWidth = sizeof(short)* MaxBatchSize;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 
