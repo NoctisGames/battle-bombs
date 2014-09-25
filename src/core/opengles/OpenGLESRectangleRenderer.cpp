@@ -18,12 +18,30 @@ extern "C"
 #include "platform_gl.h"
 }
 
-OpenGLESRectangleRenderer::OpenGLESRectangleRenderer(bool useColor, bool isFill)
+OpenGLESRectangleRenderer::OpenGLESRectangleRenderer(int maxRectangles, bool useColor, bool isFill)
 {
-    int numVerticesForRectangle = numPointsOnRectangle * (useColor ? 6 : 2); // 2 vertices for coordinates, 4 vertices for colors
-    m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(numVerticesForRectangle, false, useColor));
+    m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(maxRectangles, false, useColor));
+    m_iNumRectangles = 0;
     m_useColor = useColor;
     m_isFill = isFill;
+    
+    generateIndices(maxRectangles);
+}
+
+void OpenGLESRectangleRenderer::beginBatch()
+{
+    m_vertices->resetIndex();
+    m_iNumRectangles = 0;
+}
+
+void OpenGLESRectangleRenderer::endBatch()
+{
+    if (m_iNumRectangles > 0)
+    {
+        m_vertices->bind();
+        m_vertices->drawPrimitiveType(m_isFill ? GL_TRIANGLES : GL_LINE_STRIP, 0, m_indices.get(), m_iNumRectangles * 6);
+        m_vertices->unbind();
+    }
 }
 
 void OpenGLESRectangleRenderer::renderRectangle(Rectangle &rectangle, Color &color)
@@ -38,8 +56,6 @@ void OpenGLESRectangleRenderer::renderRectangle(Rectangle &rectangle, Color &col
 
 void OpenGLESRectangleRenderer::renderRectangle(float leftX, float bottomY, float rightX, float topY, Color &color)
 {
-    m_vertices->resetIndex();
-    
     if (m_useColor)
     {
         m_vertices->addVertexCoordinate(leftX);
@@ -87,9 +103,7 @@ void OpenGLESRectangleRenderer::renderRectangle(float leftX, float bottomY, floa
         m_vertices->addVertexCoordinate(bottomY);
     }
     
-    m_vertices->bind();
-    m_vertices->drawPrimitiveType(m_isFill ? GL_TRIANGLES : GL_LINE_STRIP, 0, nullptr, numPointsOnRectangle);
-    m_vertices->unbind();
+    m_iNumRectangles++;
 }
 
 void OpenGLESRectangleRenderer::addColorCoordinates(Color &color)
@@ -98,4 +112,22 @@ void OpenGLESRectangleRenderer::addColorCoordinates(Color &color)
     m_vertices->addColorCoordinate(color.green);
     m_vertices->addColorCoordinate(color.blue);
     m_vertices->addColorCoordinate(color.alpha);
+}
+
+void OpenGLESRectangleRenderer::generateIndices(int maxRectangles)
+{
+    int numIndices = maxRectangles * 6;
+    m_indices = std::unique_ptr<GLshort>(new GLshort[numIndices]);
+    
+    GLshort j = 0;
+    
+    for (int i = 0; i < numIndices; i += 6, j += 4)
+    {
+        m_indices.get()[i + 0] = j + 0;
+        m_indices.get()[i + 1] = j + 1;
+        m_indices.get()[i + 2] = j + 2;
+        m_indices.get()[i + 3] = j + 2;
+        m_indices.get()[i + 4] = j + 3;
+        m_indices.get()[i + 5] = j + 0;
+    }
 }

@@ -12,13 +12,22 @@
 #include <memory>
 #include "Color.h"
 
+extern "C"
+{
+#include "platform_gl.h"
+}
+
 class Vertices2D;
 class Rectangle;
 
 class OpenGLESRectangleRenderer
 {
 public:
-    OpenGLESRectangleRenderer(bool useColor, bool isFill);
+    OpenGLESRectangleRenderer(int maxRectangles, bool useColor, bool isFill);
+    
+    void beginBatch();
+    
+    void endBatch();
     
     void renderRectangle(Rectangle &rectangle, Color &color);
     
@@ -26,10 +35,14 @@ public:
     
 private:
     std::unique_ptr<Vertices2D> m_vertices;
+    std::unique_ptr<GLshort> m_indices;
+    int m_iNumRectangles;
     bool m_useColor;
     bool m_isFill;
     
     void addColorCoordinates(Color &color);
+    
+    void generateIndices(int maxSprites);
 };
 
 #endif /* defined(__battlebombs__OpenGLESRectangleRenderer__) */

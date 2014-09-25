@@ -50,9 +50,9 @@ extern "C"
 
 OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
 {
-    m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(4000, false));
-    m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(1000, true));
-    m_rectangleRenderer = std::unique_ptr<OpenGLESRectangleRenderer>(new OpenGLESRectangleRenderer(true, true));
+    m_spriteBatcher = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(4096, false));
+    m_spriteBatcherWithColor = std::unique_ptr<SpriteBatcher>(new SpriteBatcher(1024, true));
+    m_rectangleRenderer = std::unique_ptr<OpenGLESRectangleRenderer>(new OpenGLESRectangleRenderer(1024, true, true));
     
     m_interfaceTexture = load_png_asset_into_texture("interface.png");
     m_interfaceTexture2 = load_png_asset_into_texture("interface_2.png");
@@ -543,6 +543,7 @@ void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     
     m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
     
+    m_rectangleRenderer->beginBatch();
     for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
     {
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
@@ -561,6 +562,7 @@ void OpenGLESRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
             }
         }
     }
+    m_rectangleRenderer->endBatch();
 }
 
 void OpenGLESRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverlay)
@@ -594,6 +596,7 @@ void OpenGLESRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
     
     m_spriteBatcherWithColor->endBatchWithTexture(m_interfaceTexture);
     
+    m_rectangleRenderer->beginBatch();
     for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
     {
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
@@ -612,6 +615,7 @@ void OpenGLESRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
             }
         }
     }
+    m_rectangleRenderer->endBatch();
 }
 
 void OpenGLESRenderer::renderGameOverBlackCover(float alpha)
@@ -619,7 +623,9 @@ void OpenGLESRenderer::renderGameOverBlackCover(float alpha)
     static Color transitionCoverColor = { 0, 0, 0, 0 };
     transitionCoverColor.alpha = alpha;
     
+    m_rectangleRenderer->beginBatch();
     m_rectangleRenderer->renderRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, transitionCoverColor);
+    m_rectangleRenderer->endBatch();
 }
 
 void OpenGLESRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
