@@ -585,7 +585,7 @@ void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
 	renderGameObject(interfaceOverlay.getSpectatorControls(), Assets::getSpectatorControlsTextureRegion(interfaceOverlay.getSpectatorControls()));
 	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 
-	static Color interfaceColor = Color(1, 1, 1, 1);
+	static Color interfaceColor = Color(1, 1, 1, 1 );
 
 	m_spriteBatcher->beginBatch();
 

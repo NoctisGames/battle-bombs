@@ -87,7 +87,7 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 		D3D_FEATURE_LEVEL_10_0,
 		D3D_FEATURE_LEVEL_9_3
 	};
-
+	
 	// Create the Direct3D 11 API device object and a corresponding context.
 	ComPtr<ID3D11Device> device;
 	ComPtr<ID3D11DeviceContext> context;
@@ -105,7 +105,7 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 		&context // Returns the device immediate context.
 		)
 		);
-
+	
 	// Get the Direct3D 11.1 API device and context interfaces.
 	DX::ThrowIfFailed(device.As(&dev));
 	DX::ThrowIfFailed(context.As(&devcon));
