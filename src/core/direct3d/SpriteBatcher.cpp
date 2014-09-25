@@ -27,9 +27,11 @@ ComPtr<ID3D11Buffer> constantbuffer; // the constant buffer interface
 ComPtr<ID3D11Buffer> vertexbuffer; // the vertex buffer interface
 ComPtr<ID3D11Buffer> indexbuffer; // the index buffer interface
 
-static const size_t MaxBatchSize = 4096;
+static const size_t MaxBatchSize = 512;
 static const size_t VerticesPerSprite = 4;
 static const size_t IndicesPerSprite = 6;
+
+std::vector<TEXTURE_VERTEX> m_textureVertices;
 
 SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext)
 {
@@ -99,9 +101,7 @@ SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3d
 
 	bd2.Usage = D3D11_USAGE_DEFAULT;
 	bd2.ByteWidth = 64;
-	bd2.Usage = D3D11_USAGE_DYNAMIC;
 	bd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	bd2.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 	m_d3dDevice->CreateBuffer(&bd2, nullptr, &constantbuffer);
 }
@@ -134,6 +134,17 @@ void SpriteBatcher::endBatchWithTexture(ID3D11ShaderResourceView *texture)
 		m_d3dContext->VSSetShader(vertexshader.Get(), nullptr, 0);
 		m_d3dContext->PSSetShader(pixelshader.Get(), nullptr, 0);
 
+		// create the vertex buffer
+		D3D11_BUFFER_DESC bd = { 0 };
+		D3D11_SUBRESOURCE_DATA srd = { 0 };
+
+		bd.ByteWidth = sizeof(TEXTURE_VERTEX)* m_textureVertices.size() * VerticesPerSprite;
+		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		srd.pSysMem = &m_textureVertices.front();
+
+		DX::ThrowIfFailed(m_d3dDevice->CreateBuffer(&bd, &srd, &vertexbuffer));
+
 		// Set the vertex and index buffer
 		UINT stride = sizeof(TEXTURE_VERTEX);
 		UINT offset = 0;
@@ -154,22 +165,25 @@ void SpriteBatcher::endBatchWithTexture(ID3D11ShaderResourceView *texture)
 		// calculate the final matrix
 		XMMATRIX matFinal = matView * matProjection;
 
+		//// send the final matrix to video memory
+		//D3D11_MAPPED_SUBRESOURCE mappedResource;
+		//DX::ThrowIfFailed(m_d3dContext->Map(constantbuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+		//*(XMMATRIX*)mappedResource.pData = matFinal;
+		//m_d3dContext->Unmap(constantbuffer.Get(), 0);
+
 		// send the final matrix to video memory
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		DX::ThrowIfFailed(m_d3dContext->Map(constantbuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
-		*(XMMATRIX*)mappedResource.pData = matFinal;
-		m_d3dContext->Unmap(constantbuffer.Get(), 0);
+		m_d3dContext->UpdateSubresource(constantbuffer.Get(), 0, 0, &matFinal, 0, 0);
 
 		m_d3dContext->VSSetConstantBuffers(0, 1, constantbuffer.GetAddressOf());
 
-		// Lock the vertex buffer.
-		D3D11_MAP mapType = D3D11_MAP_WRITE_DISCARD;
+		//// Lock the vertex buffer.
+		//D3D11_MAP mapType = D3D11_MAP_WRITE_DISCARD;
 
-		D3D11_MAPPED_SUBRESOURCE mappedBuffer;
+		//D3D11_MAPPED_SUBRESOURCE mappedBuffer;
 
-		DX::ThrowIfFailed(m_d3dContext->Map(vertexbuffer.Get(), 0, mapType, 0, &mappedBuffer));
+		//DX::ThrowIfFailed(m_d3dContext->Map(vertexbuffer.Get(), 0, mapType, 0, &mappedBuffer));
 
-		m_d3dContext->Unmap(vertexbuffer.Get(), 0);
+		//m_d3dContext->Unmap(vertexbuffer.Get(), 0);
 		
 		m_d3dContext->DrawIndexed(m_iNumSprites * 6, 0, 0);
     }

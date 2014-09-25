@@ -26,7 +26,7 @@ ComPtr<ID3D11Buffer> constantbuffer1; // the constant buffer interface
 ComPtr<ID3D11Buffer> vertexbuffer1; // the vertex buffer interface
 ComPtr<ID3D11Buffer> indexbuffer1; // the index buffer interface
 
-static const size_t MaxBatchSize = 512;
+static const size_t MaxBatchSize = 128;
 static const size_t VerticesPerRectangle = 4;
 static const size_t IndicesPerRectangle = 6;
 

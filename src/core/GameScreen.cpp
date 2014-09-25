@@ -231,15 +231,15 @@ void GameScreen::present()
             m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
-            /*m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
+			m_renderer->renderBombs(m_bombs);
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             
             m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
-            m_renderer->endFrame();*/
+            m_renderer->endFrame();
             break;
         case RUNNING:
             m_renderer->calcScrollYForPlayer(*m_player);
@@ -247,8 +247,8 @@ void GameScreen::present()
             m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
-            /*m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
+			m_renderer->renderBombs(m_bombs);
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
@@ -256,7 +256,7 @@ void GameScreen::present()
             
             m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
-            m_renderer->endFrame();*/
+            m_renderer->endFrame();
             break;
         case SPECTATING:
             m_renderer->calcScrollYForPlayer(*m_player);

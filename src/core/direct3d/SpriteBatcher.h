@@ -39,7 +39,6 @@ public:
     void drawSprite(float x, float y, float width, float height, float angle, Color &color, TextureRegion tr);
     
 private:
-	std::vector<TEXTURE_VERTEX> m_textureVertices;
 	int m_iNumSprites;
     
     void drawSprite(float x, float y, float width, float height, TextureRegion tr);

@@ -194,7 +194,6 @@ void Direct3DRenderer::renderWorldBackground()
 void Direct3DRenderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
 {
 	m_spriteBatcher->beginBatch();
-
 	for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersFar.begin(); itr != mapBordersFar.end(); itr++)
 	{
 		if (!(*itr)->isNearFront())
@@ -202,22 +201,27 @@ void Direct3DRenderer::renderWorldForeground(std::vector<std::unique_ptr<MapBord
 			renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
 		}
 	}
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
 
+	m_spriteBatcher->beginBatch();
 	for (std::vector<std::unique_ptr<InsideBlock>>::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
 	{
 		renderGameObjectWithRespectToPlayer((**itr), Assets::getInsideBlockTextureRegion());
 	}
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
 
+	m_spriteBatcher->beginBatch();
 	for (std::vector<std::unique_ptr<BreakableBlock>>::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
 	{
 		renderGameObjectWithRespectToPlayer((**itr), Assets::getBreakableBlockTextureRegion((**itr)));
 	}
+	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
 
+	m_spriteBatcher->beginBatch();
 	for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
 	{
 		renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((**itr)));
 	}
-
 	m_spriteBatcher->endBatchWithTexture(m_gameShaderResourceView.Get());
 }
 
