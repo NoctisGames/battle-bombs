@@ -71,6 +71,8 @@ static Logger *logger = nil;
     
     [view setMultipleTouchEnabled:YES];
     
+    init([self.username UTF8String], [self isOffline]);
+    
     [self setupGL];
     
     self.countDown3Sound = [[Sound alloc] initWithSoundNamed:@"countdown_3.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
@@ -104,8 +106,6 @@ static Logger *logger = nil;
     
     GADRequest *request = [GADRequest request];
     [self.bannerView loadRequest:request];
-    
-    init([self.username UTF8String], [self isOffline]);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
