@@ -13,7 +13,6 @@
 #include "GameConstants.h"
 #include "Font.h"
 #include "ResourceConstants.h"
-#include "MapBorder.h"
 
 Renderer::Renderer()
 {
