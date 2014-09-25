@@ -40,8 +40,10 @@
 		BB06563C18E214B000076912 /* GameSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB06563A18E214B000076912 /* GameSession.cpp */; };
 		BB06563F18E24DA700076912 /* BreakableBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB06563D18E24DA700076912 /* BreakableBlock.cpp */; };
 		BB065FAD19D4D62900B3BE12 /* GoogleMobileAdsSdkiOS-6.12.0_readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = BB065FAA19D4D62900B3BE12 /* GoogleMobileAdsSdkiOS-6.12.0_readme.txt */; };
-		BB065FAE19D4D62900B3BE12 /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB065FAB19D4D62900B3BE12 /* libGoogleAdMobAds.a */; };
 		BB065FAF19D4D62900B3BE12 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = BB065FAC19D4D62900B3BE12 /* README.txt */; };
+		BB065FB019D4D74700B3BE12 /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB065FAB19D4D62900B3BE12 /* libGoogleAdMobAds.a */; };
+		BB065FB319D4D7C400B3BE12 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB065FB119D4D7C400B3BE12 /* EventKit.framework */; };
+		BB065FB419D4D7C400B3BE12 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB065FB219D4D7C400B3BE12 /* EventKitUI.framework */; };
 		BB07506019C248520028515E /* battle.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB07505A19C248520028515E /* battle.caf */; };
 		BB07506119C248520028515E /* countdown_1.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB07505B19C248520028515E /* countdown_1.caf */; };
 		BB07506219C248520028515E /* countdown_2.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB07505C19C248520028515E /* countdown_2.caf */; };
@@ -246,6 +248,8 @@
 		BB065FAA19D4D62900B3BE12 /* GoogleMobileAdsSdkiOS-6.12.0_readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "GoogleMobileAdsSdkiOS-6.12.0_readme.txt"; sourceTree = "<group>"; };
 		BB065FAB19D4D62900B3BE12 /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		BB065FAC19D4D62900B3BE12 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		BB065FB119D4D7C400B3BE12 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		BB065FB219D4D7C400B3BE12 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		BB07505A19C248520028515E /* battle.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = battle.caf; sourceTree = "<group>"; };
 		BB07505B19C248520028515E /* countdown_1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = countdown_1.caf; sourceTree = "<group>"; };
 		BB07505C19C248520028515E /* countdown_2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = countdown_2.caf; sourceTree = "<group>"; };
@@ -483,8 +487,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB065FB319D4D7C400B3BE12 /* EventKit.framework in Frameworks */,
+				BB065FB419D4D7C400B3BE12 /* EventKitUI.framework in Frameworks */,
 				BB09703619C3A3180086B30F /* CoreFoundation.framework in Frameworks */,
-				BB065FAE19D4D62900B3BE12 /* libGoogleAdMobAds.a in Frameworks */,
+				BB065FB019D4D74700B3BE12 /* libGoogleAdMobAds.a in Frameworks */,
 				BB09703419C3A30B0086B30F /* AdSupport.framework in Frameworks */,
 				BB09703219C3A2FE0086B30F /* CoreTelephony.framework in Frameworks */,
 				BB09703019C3A2F90086B30F /* MessageUI.framework in Frameworks */,
@@ -691,6 +697,8 @@
 		0ADF1876178E2185005DA99E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BB065FB119D4D7C400B3BE12 /* EventKit.framework */,
+				BB065FB219D4D7C400B3BE12 /* EventKitUI.framework */,
 				BB09703519C3A3180086B30F /* CoreFoundation.framework */,
 				BB09703319C3A30B0086B30F /* AdSupport.framework */,
 				BB09703119C3A2FE0086B30F /* CoreTelephony.framework */,

@@ -237,7 +237,7 @@ void GameScreen::present()
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             
-            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
             m_renderer->endFrame();
             break;
@@ -254,7 +254,7 @@ void GameScreen::present()
             m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderInterface(*m_interfaceOverlay);
             
-            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
             m_renderer->endFrame();
             break;
@@ -271,7 +271,7 @@ void GameScreen::present()
             m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
             
-            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
             m_renderer->endFrame();
             break;
@@ -287,7 +287,7 @@ void GameScreen::present()
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             
-            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
             m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
             
