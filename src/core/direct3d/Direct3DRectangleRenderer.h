@@ -26,18 +26,21 @@ class Direct3DRectangleRenderer
 {
 public:
 	Direct3DRectangleRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, bool isFill);
+
+	void beginBatch();
+
+	void endBatch();
     
     void renderRectangle(Rectangle &rectangle, Color &color);
     
 	void renderRectangle(float x1, float y1, float x2, float y2, Color &color);
     
 private:
-	std::vector<COLOR_VERTEX> m_colorVertices;
     bool m_isFill;
+	int m_iNumRectangles;
 
 	void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
 
-	void createVertexBuffer();
 	void createIndexBuffer();
 
 	std::vector<short> createIndexValues();

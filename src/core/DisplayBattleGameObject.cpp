@@ -24,4 +24,8 @@ void DisplayBattleGameObject::update(float deltaTime)
     {
         m_position->add(SCREEN_WIDTH * deltaTime * 2, 0);
     }
+	else
+	{
+		m_position->set(SCREEN_WIDTH / 2, m_position->getY());
+	}
 }

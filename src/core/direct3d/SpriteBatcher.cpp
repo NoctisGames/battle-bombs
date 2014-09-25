@@ -28,8 +28,8 @@ ComPtr<ID3D11Buffer> constantbuffer; // the constant buffer interface
 ComPtr<ID3D11Buffer> vertexbuffer; // the vertex buffer interface
 ComPtr<ID3D11Buffer> indexbuffer; // the index buffer interface
 
-static const size_t MaxBatchSize = 512;
-static const size_t MaxSpriteBatchSize = 32;
+static const size_t MaxBatchSize = 2048;
+static const size_t MaxSpriteBatchSize = 128;
 static const size_t VerticesPerSprite = 4;
 static const size_t IndicesPerSprite = 6;
 
@@ -116,16 +116,8 @@ void SpriteBatcher::beginBatch()
 
 void SpriteBatcher::endBatchWithTexture(ID3D11ShaderResourceView *texture)
 {
-	std::vector<TEXTURE_VERTEX> tempTextureVertices;
-	while (m_iNumSprites > 0)
+	if (m_iNumSprites > 0)
 	{
-		int len = m_textureVertices.size();
-		for (int i = 0; i < len && i < MaxSpriteBatchSize * VerticesPerSprite; i++)
-		{
-			tempTextureVertices.push_back(m_textureVertices.front());
-			m_textureVertices.pop_front();
-		}
-
 		// set the blend state
 		m_d3dContext->OMSetBlendState(blendstate.Get(), 0, 0xffffffff);
 
@@ -144,21 +136,6 @@ void SpriteBatcher::endBatchWithTexture(ID3D11ShaderResourceView *texture)
 		m_d3dContext->VSSetShader(vertexshader.Get(), nullptr, 0);
 		m_d3dContext->PSSetShader(pixelshader.Get(), nullptr, 0);
 
-		// create the vertex buffer
-		D3D11_BUFFER_DESC bd = { 0 };
-		D3D11_SUBRESOURCE_DATA srd = { 0 };
-
-		bd.ByteWidth = sizeof(TEXTURE_VERTEX)* tempTextureVertices.size();
-		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bd.Usage = D3D11_USAGE_DEFAULT;
-		srd.pSysMem = &tempTextureVertices.front();
-
-		DX::ThrowIfFailed(m_d3dDevice->CreateBuffer(&bd, &srd, &vertexbuffer));
-
-		// Set the vertex and index buffer
-		UINT stride = sizeof(TEXTURE_VERTEX);
-		UINT offset = 0;
-		m_d3dContext->IASetVertexBuffers(0, 1, vertexbuffer.GetAddressOf(), &stride, &offset);
 		m_d3dContext->IASetIndexBuffer(indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
 
 		using namespace DirectX;
@@ -180,12 +157,39 @@ void SpriteBatcher::endBatchWithTexture(ID3D11ShaderResourceView *texture)
 
 		m_d3dContext->VSSetConstantBuffers(0, 1, constantbuffer.GetAddressOf());
 
-		int indexCount = m_iNumSprites > MaxSpriteBatchSize ? MaxSpriteBatchSize : m_iNumSprites;
-		m_d3dContext->DrawIndexed(indexCount * IndicesPerSprite, 0, 0);
+		std::vector<TEXTURE_VERTEX> tempTextureVertices;
+		while (m_iNumSprites > 0)
+		{
+			int len = m_textureVertices.size();
+			for (int i = 0; i < len && i < MaxSpriteBatchSize * VerticesPerSprite; i++)
+			{
+				tempTextureVertices.push_back(m_textureVertices.front());
+				m_textureVertices.pop_front();
+			}
 
-		m_iNumSprites -= MaxSpriteBatchSize;
+			// create the vertex buffer
+			D3D11_BUFFER_DESC bd = { 0 };
+			D3D11_SUBRESOURCE_DATA srd = { 0 };
 
-		tempTextureVertices.clear();
+			bd.ByteWidth = sizeof(TEXTURE_VERTEX)* tempTextureVertices.size();
+			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			bd.Usage = D3D11_USAGE_DEFAULT;
+			srd.pSysMem = &tempTextureVertices.front();
+
+			DX::ThrowIfFailed(m_d3dDevice->CreateBuffer(&bd, &srd, &vertexbuffer));
+
+			// Set the vertex and index buffer
+			UINT stride = sizeof(TEXTURE_VERTEX);
+			UINT offset = 0;
+			m_d3dContext->IASetVertexBuffers(0, 1, vertexbuffer.GetAddressOf(), &stride, &offset);
+
+			int indexCount = m_iNumSprites > MaxSpriteBatchSize ? MaxSpriteBatchSize : m_iNumSprites;
+			m_d3dContext->DrawIndexed(indexCount * IndicesPerSprite, 0, 0);
+
+			m_iNumSprites -= MaxSpriteBatchSize;
+
+			tempTextureVertices.clear();
+		}
 	}
 }
 

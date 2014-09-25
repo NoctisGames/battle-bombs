@@ -556,6 +556,7 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 
 	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 
+	m_rectangleRenderer->beginBatch();
 	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
 	{
 		for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
@@ -574,6 +575,7 @@ void Direct3DRenderer::renderInterface(InterfaceOverlay &interfaceOverlay)
 			}
 		}
 	}
+	m_rectangleRenderer->endBatch();
 }
 
 void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverlay)
@@ -607,6 +609,7 @@ void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
 
 	m_spriteBatcher->endBatchWithTexture(m_interfaceShaderResourceView.Get());
 
+	m_rectangleRenderer->beginBatch();
 	for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
 	{
 		for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
@@ -625,6 +628,7 @@ void Direct3DRenderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverl
 			}
 		}
 	}
+	m_rectangleRenderer->endBatch();
 }
 
 void Direct3DRenderer::renderGameOverBlackCover(float alpha)
@@ -632,7 +636,9 @@ void Direct3DRenderer::renderGameOverBlackCover(float alpha)
 	static Color transitionCoverColor = Color(0, 0, 0, 0);
 	transitionCoverColor.alpha = alpha;
 
+	m_rectangleRenderer->beginBatch();
 	m_rectangleRenderer->renderRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, transitionCoverColor);
+	m_rectangleRenderer->endBatch();
 }
 
 void Direct3DRenderer::renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
