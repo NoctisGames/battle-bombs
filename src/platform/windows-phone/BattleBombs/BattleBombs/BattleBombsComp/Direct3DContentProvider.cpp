@@ -41,6 +41,7 @@
 #include "Global.h"
 #include "Direct3DAssets.h"
 #include "GameSound.h"
+#include "PlayerRowAvatar.h"
 
 using namespace BattleBombsComp;
 

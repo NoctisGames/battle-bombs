@@ -199,6 +199,7 @@
     <ClInclude Include="..\..\..\..\..\core\PlayerDynamicGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerForceFieldState.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerRow.h" />
+    <ClInclude Include="..\..\..\..\..\core\PlayerRowAvatar.h" />
     <ClInclude Include="..\..\..\..\..\core\PlayerRowPlatformAvatar.h" />
     <ClInclude Include="..\..\..\..\..\core\PowerUp.h" />
     <ClInclude Include="..\..\..\..\..\core\PowerUpBarItem.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="..\..\..\..\..\core\PlayerAvatar.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PlayerDynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PlayerRow.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\PlayerRowAvatar.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PlayerRowPlatformAvatar.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PowerUp.cpp" />
     <ClCompile Include="..\..\..\..\..\core\PowerUpBarItem.cpp" />
