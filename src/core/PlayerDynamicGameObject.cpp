@@ -24,6 +24,7 @@
 #include "PlayerForceFieldState.h"
 
 #include <cstring>
+#include <iostream>
 
 PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
 {
@@ -396,13 +397,14 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
             if(m_firePower < 10)
             {
                 m_firePower++;
+                std::cout << "Fire Power is now " << m_firePower << std::endl;
             }
             break;
         case POWER_UP_TYPE_FORCE_FIELD:
             setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_TURNING_ON);
             break;
         case POWER_UP_TYPE_SPEED:
-            if(m_iSpeed < 10)
+            if(m_iSpeed < 12)
             {
                 m_iSpeed++;
             }
