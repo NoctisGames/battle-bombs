@@ -1,5 +1,5 @@
 //
-//  SpriteBatcher.cpp
+//  OpenGLESSpriteBatcher.cpp
 //  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
@@ -8,31 +8,32 @@
 
 #include "pch.h"
 #include "macros.h"
-#include "SpriteBatcher.h"
+#include "OpenGLESSpriteBatcher.h"
 #include <stdlib.h>
 #include "Vertices2D.h"
 #include "TextureRegion.h"
-#include "Color.h"
 
-SpriteBatcher::SpriteBatcher(int maxSprites, bool useColors)
+Color DEFAULT_COLOR = { 1, 1, 1, 1 };
+
+OpenGLESSpriteBatcher::OpenGLESSpriteBatcher(int maxSprites)
 {
-    m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(maxSprites, true, useColors));
+    m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(maxSprites, true));
     m_iNumSprites = 0;
     
     generateIndices(maxSprites);
 }
 
-void SpriteBatcher::beginBatch()
+void OpenGLESSpriteBatcher::beginBatch()
 {
     m_vertices->resetIndex();
     m_iNumSprites = 0;
 }
 
-void SpriteBatcher::endBatchWithTexture(GLuint &texture)
+void OpenGLESSpriteBatcher::endBatchWithTexture(TextureWrapper &textureWrapper)
 {
     if(m_iNumSprites > 0)
     {
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glBindTexture(GL_TEXTURE_2D, textureWrapper.texture);
         m_vertices->bind();
         m_vertices->drawPrimitiveType(GL_TRIANGLES, 0, m_indices.get(), m_iNumSprites * 6);
         m_vertices->unbind();
@@ -40,7 +41,7 @@ void SpriteBatcher::endBatchWithTexture(GLuint &texture)
     }
 }
 
-void SpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, TextureRegion tr)
+void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, TextureRegion tr)
 {
     if(angle > 0)
     {
@@ -77,21 +78,25 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, floa
         
         m_vertices->addVertexCoordinate(x1);
         m_vertices->addVertexCoordinate(y1);
+        addColorCoordinates(DEFAULT_COLOR);
         m_vertices->addTextureCoordinate(tr.u1);
         m_vertices->addTextureCoordinate(tr.v2);
         
         m_vertices->addVertexCoordinate(x2);
         m_vertices->addVertexCoordinate(y2);
+        addColorCoordinates(DEFAULT_COLOR);
         m_vertices->addTextureCoordinate(tr.u2);
         m_vertices->addTextureCoordinate(tr.v2);
         
         m_vertices->addVertexCoordinate(x3);
         m_vertices->addVertexCoordinate(y3);
+        addColorCoordinates(DEFAULT_COLOR);
         m_vertices->addTextureCoordinate(tr.u2);
         m_vertices->addTextureCoordinate(tr.v1);
         
         m_vertices->addVertexCoordinate(x4);
         m_vertices->addVertexCoordinate(y4);
+        addColorCoordinates(DEFAULT_COLOR);
         m_vertices->addTextureCoordinate(tr.u1);
         m_vertices->addTextureCoordinate(tr.v1);
     }
@@ -103,7 +108,7 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, floa
     m_iNumSprites++;
 }
 
-void SpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, Color &color, TextureRegion tr)
+void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, Color &color, TextureRegion tr)
 {
     if(angle > 0)
     {
@@ -172,7 +177,7 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, floa
 
 #pragma private methods
 
-void SpriteBatcher::drawSprite(float x, float y, float width, float height, TextureRegion tr)
+void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float height, TextureRegion tr)
 {
     GLfloat halfWidth = width / 2;
     GLfloat halfHeight = height / 2;
@@ -183,26 +188,30 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, Text
     
     m_vertices->addVertexCoordinate(x1);
     m_vertices->addVertexCoordinate(y1);
+    addColorCoordinates(DEFAULT_COLOR);
     m_vertices->addTextureCoordinate(tr.u1);
     m_vertices->addTextureCoordinate(tr.v2);
     
     m_vertices->addVertexCoordinate(x2);
     m_vertices->addVertexCoordinate(y1);
+    addColorCoordinates(DEFAULT_COLOR);
     m_vertices->addTextureCoordinate(tr.u2);
     m_vertices->addTextureCoordinate(tr.v2);
     
     m_vertices->addVertexCoordinate(x2);
     m_vertices->addVertexCoordinate(y2);
+    addColorCoordinates(DEFAULT_COLOR);
     m_vertices->addTextureCoordinate(tr.u2);
     m_vertices->addTextureCoordinate(tr.v1);
     
     m_vertices->addVertexCoordinate(x1);
     m_vertices->addVertexCoordinate(y2);
+    addColorCoordinates(DEFAULT_COLOR);
     m_vertices->addTextureCoordinate(tr.u1);
     m_vertices->addTextureCoordinate(tr.v1);
 }
 
-void SpriteBatcher::drawSprite(float x, float y, float width, float height, Color &color, TextureRegion tr)
+void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float height, Color &color, TextureRegion tr)
 {
     GLfloat halfWidth = width / 2;
     GLfloat halfHeight = height / 2;
@@ -236,7 +245,7 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, Colo
     m_vertices->addTextureCoordinate(tr.v1);
 }
 
-void SpriteBatcher::addColorCoordinates(Color &color)
+void OpenGLESSpriteBatcher::addColorCoordinates(Color &color)
 {
     m_vertices->addColorCoordinate(color.red);
     m_vertices->addColorCoordinate(color.green);
@@ -244,7 +253,7 @@ void SpriteBatcher::addColorCoordinates(Color &color)
     m_vertices->addColorCoordinate(color.alpha);
 }
 
-void SpriteBatcher::generateIndices(int maxSprites)
+void OpenGLESSpriteBatcher::generateIndices(int maxSprites)
 {
     int numIndices = maxSprites * 6;
     m_indices = std::unique_ptr<GLshort>(new GLshort[numIndices]);

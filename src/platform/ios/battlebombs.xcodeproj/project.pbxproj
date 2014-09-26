@@ -112,6 +112,8 @@
 		BB81B1B719BE163900548837 /* TGDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B619BE163900548837 /* TGDialog.m */; };
 		BB81B1BA19BE197E00548837 /* TGJsonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B919BE197E00548837 /* TGJsonUtils.m */; };
 		BB81B1BD19BE1A1800548837 /* TGDeviceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1BC19BE1A1800548837 /* TGDeviceUtil.m */; };
+		BB82057719D515C300F383A6 /* SpriteBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB82057519D515C300F383A6 /* SpriteBatcher.cpp */; };
+		BB82057A19D524C700F383A6 /* RectangleBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB82057819D524C600F383A6 /* RectangleBatcher.cpp */; };
 		BB82640B18C288F200A24A7C /* AppWarp_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		BB8FF7C619AE3FE4005D0701 /* interface_2.png in Resources */ = {isa = PBXBuildFile; fileRef = BB8FF7C519AE3FE4005D0701 /* interface_2.png */; };
 		BB9139C918BEFCC800E51FB5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9139C818BEFCC800E51FB5 /* MainViewController.m */; };
@@ -134,7 +136,7 @@
 		BB96EEEF18B99A7100F7C356 /* image.c in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEE118B99A7100F7C356 /* image.c */; };
 		BB96EEF018B99A7100F7C356 /* OpenGLESGameScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEE318B99A7100F7C356 /* OpenGLESGameScreen.cpp */; };
 		BB96EEF118B99A7100F7C356 /* OpenGLESRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEE518B99A7100F7C356 /* OpenGLESRenderer.cpp */; };
-		BB96EEF218B99A7100F7C356 /* SpriteBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEE718B99A7100F7C356 /* SpriteBatcher.cpp */; };
+		BB96EEF218B99A7100F7C356 /* OpenGLESSpriteBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEE718B99A7100F7C356 /* OpenGLESSpriteBatcher.cpp */; };
 		BB96EEF318B99A7100F7C356 /* texture.c in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEE918B99A7100F7C356 /* texture.c */; };
 		BB96EEF418B99A7100F7C356 /* Vertices2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEEB18B99A7100F7C356 /* Vertices2D.cpp */; };
 		BB9948E219366E2900A8E599 /* GameListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9948E019366E2900A8E599 /* GameListener.cpp */; };
@@ -367,6 +369,11 @@
 		BB81B1B919BE197E00548837 /* TGJsonUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGJsonUtils.m; sourceTree = "<group>"; };
 		BB81B1BB19BE1A1800548837 /* TGDeviceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGDeviceUtil.h; sourceTree = "<group>"; };
 		BB81B1BC19BE1A1800548837 /* TGDeviceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGDeviceUtil.m; sourceTree = "<group>"; };
+		BB82057419D4F29800F383A6 /* TextureWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureWrapper.h; sourceTree = "<group>"; };
+		BB82057519D515C300F383A6 /* SpriteBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteBatcher.cpp; sourceTree = "<group>"; };
+		BB82057619D515C300F383A6 /* SpriteBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBatcher.h; sourceTree = "<group>"; };
+		BB82057819D524C600F383A6 /* RectangleBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RectangleBatcher.cpp; sourceTree = "<group>"; };
+		BB82057919D524C700F383A6 /* RectangleBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RectangleBatcher.h; sourceTree = "<group>"; };
 		BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppWarp_iOS_SDK.framework; path = ../../3rdparty/AppWarp/AppWarp_iOS_SDK.framework; sourceTree = "<group>"; };
 		BB8FF7C519AE3FE4005D0701 /* interface_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = interface_2.png; sourceTree = "<group>"; };
 		BB90FA7818D50E4100733E9B /* GameEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameEvent.h; sourceTree = "<group>"; };
@@ -414,8 +421,8 @@
 		BB96EEE418B99A7100F7C356 /* OpenGLESGameScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLESGameScreen.h; sourceTree = "<group>"; };
 		BB96EEE518B99A7100F7C356 /* OpenGLESRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLESRenderer.cpp; sourceTree = "<group>"; };
 		BB96EEE618B99A7100F7C356 /* OpenGLESRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLESRenderer.h; sourceTree = "<group>"; };
-		BB96EEE718B99A7100F7C356 /* SpriteBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteBatcher.cpp; sourceTree = "<group>"; };
-		BB96EEE818B99A7100F7C356 /* SpriteBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBatcher.h; sourceTree = "<group>"; };
+		BB96EEE718B99A7100F7C356 /* OpenGLESSpriteBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLESSpriteBatcher.cpp; sourceTree = "<group>"; };
+		BB96EEE818B99A7100F7C356 /* OpenGLESSpriteBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLESSpriteBatcher.h; sourceTree = "<group>"; };
 		BB96EEE918B99A7100F7C356 /* texture.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = texture.c; sourceTree = "<group>"; };
 		BB96EEEA18B99A7100F7C356 /* texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture.h; sourceTree = "<group>"; };
 		BB96EEEB18B99A7100F7C356 /* Vertices2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vertices2D.cpp; sourceTree = "<group>"; };
@@ -619,15 +626,20 @@
 				BB0BC05D1971B7ED0092A968 /* PowerUpType.h */,
 				BB96EEC218B99A6900F7C356 /* Rectangle.cpp */,
 				BB96EEC318B99A6900F7C356 /* Rectangle.h */,
+				BB82057819D524C600F383A6 /* RectangleBatcher.cpp */,
+				BB82057919D524C700F383A6 /* RectangleBatcher.h */,
 				BB96EEC418B99A6900F7C356 /* Renderer.cpp */,
 				BB96EEC518B99A6900F7C356 /* Renderer.h */,
 				BB9948E31936736600A8E599 /* ResourceConstants.h */,
 				BBF5DE2319770CE500759BB1 /* SpectatorControls.cpp */,
 				BBF5DE2419770CE500759BB1 /* SpectatorControls.h */,
 				BBF5DE2619770DCD00759BB1 /* SpectatorControlState.h */,
+				BB82057519D515C300F383A6 /* SpriteBatcher.cpp */,
+				BB82057619D515C300F383A6 /* SpriteBatcher.h */,
 				BB0CC4BB1964FB6F00F770C4 /* stlastar.h */,
 				BB96EEC618B99A6900F7C356 /* TextureRegion.cpp */,
 				BB96EEC718B99A6900F7C356 /* TextureRegion.h */,
+				BB82057419D4F29800F383A6 /* TextureWrapper.h */,
 				BB96EEC818B99A6900F7C356 /* TouchEvent.cpp */,
 				BB96EEC918B99A6900F7C356 /* TouchEvent.h */,
 				BB96EECA18B99A6900F7C356 /* Triangle.cpp */,
@@ -920,8 +932,8 @@
 				BB42C0AB1975A82E00B592E5 /* OpenGLESRectangleBatcher.h */,
 				BB96EEE518B99A7100F7C356 /* OpenGLESRenderer.cpp */,
 				BB96EEE618B99A7100F7C356 /* OpenGLESRenderer.h */,
-				BB96EEE718B99A7100F7C356 /* SpriteBatcher.cpp */,
-				BB96EEE818B99A7100F7C356 /* SpriteBatcher.h */,
+				BB96EEE718B99A7100F7C356 /* OpenGLESSpriteBatcher.cpp */,
+				BB96EEE818B99A7100F7C356 /* OpenGLESSpriteBatcher.h */,
 				BB96EEE918B99A7100F7C356 /* texture.c */,
 				BB96EEEA18B99A7100F7C356 /* texture.h */,
 				BB96EEEB18B99A7100F7C356 /* Vertices2D.cpp */,
@@ -1115,10 +1127,11 @@
 				BB06563F18E24DA700076912 /* BreakableBlock.cpp in Sources */,
 				0A8FBF90179E07440039BA29 /* main.m in Sources */,
 				0A8FBF8B179E073A0039BA29 /* platform_file_utils.c in Sources */,
+				BB82057A19D524C700F383A6 /* RectangleBatcher.cpp in Sources */,
 				0A8FBF8C179E073A0039BA29 /* platform_log.c in Sources */,
 				BB96EECE18B99A6900F7C356 /* Assets.cpp in Sources */,
 				BBCDD32918BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m in Sources */,
-				BB96EEF218B99A7100F7C356 /* SpriteBatcher.cpp in Sources */,
+				BB96EEF218B99A7100F7C356 /* OpenGLESSpriteBatcher.cpp in Sources */,
 				BB96EEED18B99A7100F7C356 /* asset_utils.c in Sources */,
 				0A8FBF7C179E07320039BA29 /* png.c in Sources */,
 				BB81B1B419BE15E700548837 /* TGProgressDialog.m in Sources */,
@@ -1154,6 +1167,7 @@
 				0A8FBF83179E07320039BA29 /* pngrtran.c in Sources */,
 				BB96EED318B99A6900F7C356 /* GameScreen.cpp in Sources */,
 				BB81B1AA19BE147400548837 /* STHTTPRequest.m in Sources */,
+				BB82057719D515C300F383A6 /* SpriteBatcher.cpp in Sources */,
 				0A8FBF84179E07320039BA29 /* pngrutil.c in Sources */,
 				BB96EECF18B99A6900F7C356 /* DynamicGameObject.cpp in Sources */,
 				BB96EED718B99A6900F7C356 /* Renderer.cpp in Sources */,

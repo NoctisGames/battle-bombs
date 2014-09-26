@@ -6,24 +6,14 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#define numPointsOnRectangle 6
-
 #include "OpenGLESRectangleBatcher.h"
 #include "Vertices2D.h"
 #include "Rectangle.h"
 #include "Vector2D.h"
 
-extern "C"
+OpenGLESRectangleBatcher::OpenGLESRectangleBatcher(int maxRectangles, bool isFill) : RectangleBatcher(isFill)
 {
-#include "platform_gl.h"
-}
-
-OpenGLESRectangleBatcher::OpenGLESRectangleBatcher(int maxRectangles, bool useColor, bool isFill)
-{
-    m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(maxRectangles, false, useColor));
-    m_iNumRectangles = 0;
-    m_useColor = useColor;
-    m_isFill = isFill;
+    m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(maxRectangles, false));
     
     generateIndices(maxRectangles);
 }
@@ -44,50 +34,23 @@ void OpenGLESRectangleBatcher::endBatch()
     }
 }
 
-void OpenGLESRectangleBatcher::renderRectangle(Rectangle &rectangle, Color &color)
-{
-    float x1 = rectangle.getLowerLeft().getX();
-    float y1 = rectangle.getLowerLeft().getY();
-    float x2 = x1 + rectangle.getWidth();
-    float y2 = y1 + rectangle.getHeight();
-    
-    renderRectangle(x1, y1, x2, y2, color);
-}
-
 void OpenGLESRectangleBatcher::renderRectangle(float leftX, float bottomY, float rightX, float topY, Color &color)
 {
-    if (m_useColor)
-    {
-        m_vertices->addVertexCoordinate(leftX);
-        m_vertices->addVertexCoordinate(bottomY);
-        addColorCoordinates(color);
-        
-        m_vertices->addVertexCoordinate(rightX);
-        m_vertices->addVertexCoordinate(bottomY);
-        addColorCoordinates(color);
-        
-        m_vertices->addVertexCoordinate(rightX);
-        m_vertices->addVertexCoordinate(topY);
-        addColorCoordinates(color);
-        
-        m_vertices->addVertexCoordinate(leftX);
-        m_vertices->addVertexCoordinate(topY);
-        addColorCoordinates(color);
-    }
-    else
-    {
-        m_vertices->addVertexCoordinate(leftX);
-        m_vertices->addVertexCoordinate(bottomY);
-        
-        m_vertices->addVertexCoordinate(rightX);
-        m_vertices->addVertexCoordinate(bottomY);
-        
-        m_vertices->addVertexCoordinate(rightX);
-        m_vertices->addVertexCoordinate(topY);
-        
-        m_vertices->addVertexCoordinate(leftX);
-        m_vertices->addVertexCoordinate(topY);
-    }
+    m_vertices->addVertexCoordinate(leftX);
+    m_vertices->addVertexCoordinate(bottomY);
+    addColorCoordinates(color);
+    
+    m_vertices->addVertexCoordinate(rightX);
+    m_vertices->addVertexCoordinate(bottomY);
+    addColorCoordinates(color);
+    
+    m_vertices->addVertexCoordinate(rightX);
+    m_vertices->addVertexCoordinate(topY);
+    addColorCoordinates(color);
+    
+    m_vertices->addVertexCoordinate(leftX);
+    m_vertices->addVertexCoordinate(topY);
+    addColorCoordinates(color);
     
     m_iNumRectangles++;
 }

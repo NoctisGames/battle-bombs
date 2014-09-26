@@ -9,21 +9,20 @@
 #include "Vertices2D.h"
 #include <stdlib.h>
 
-Vertices2D::Vertices2D(int maxNumVertices, bool isUsingTextureCoordinates, bool isUsingColors)
+Vertices2D::Vertices2D(int maxNumVertices, bool isUsingTextureCoordinates)
 {
     m_vertices = std::unique_ptr<GLfloat>(new GLfloat[maxNumVertices * 2]);
-    m_textureCoords = std::unique_ptr<GLfloat>(new GLfloat[maxNumVertices * 2]);
+    m_colors = std::unique_ptr<GLfloat>(new GLfloat[maxNumVertices * 4]);
     
-    if(isUsingColors)
+    if(isUsingTextureCoordinates)
     {
-        m_colors = std::unique_ptr<GLfloat>(new GLfloat[maxNumVertices * 4]);
+        m_textureCoords = std::unique_ptr<GLfloat>(new GLfloat[maxNumVertices * 2]);
     }
     
     m_iVerticesIndex = 0;
     m_iTextureCoordsIndex = 0;
     m_iColorsIndex = 0;
     
-    m_hasColor = isUsingColors;
     m_hasTextureCoordinates = isUsingTextureCoordinates;
 }
 
@@ -54,11 +53,8 @@ void Vertices2D::bind()
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(2, GL_FLOAT, 0, m_vertices.get());
     
-    if (m_hasColor)
-    {
-        glEnableClientState(GL_COLOR_ARRAY);
-        glColorPointer(4, GL_FLOAT, 0, m_colors.get());
-    }
+    glEnableClientState(GL_COLOR_ARRAY);
+    glColorPointer(4, GL_FLOAT, 0, m_colors.get());
     
     if (m_hasTextureCoordinates)
     {
@@ -74,10 +70,7 @@ void Vertices2D::unbind()
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     }
     
-    if (m_hasColor)
-    {
-        glDisableClientState(GL_COLOR_ARRAY);
-    }
+    glDisableClientState(GL_COLOR_ARRAY);
 }
 
 void Vertices2D::drawPrimitiveType(GLenum mode, int offset, GLshort *indices, int numVertices)

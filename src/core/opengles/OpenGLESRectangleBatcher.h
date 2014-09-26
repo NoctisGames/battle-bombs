@@ -9,8 +9,8 @@
 #ifndef __battlebombs__OpenGLESRectangleBatcher__
 #define __battlebombs__OpenGLESRectangleBatcher__
 
+#include "RectangleBatcher.h"
 #include <memory>
-#include "Color.h"
 
 extern "C"
 {
@@ -18,27 +18,21 @@ extern "C"
 }
 
 class Vertices2D;
-class Rectangle;
 
-class OpenGLESRectangleBatcher
+class OpenGLESRectangleBatcher : public RectangleBatcher
 {
 public:
-    OpenGLESRectangleBatcher(int maxRectangles, bool useColor, bool isFill);
+    OpenGLESRectangleBatcher(int maxRectangles, bool isFill);
     
-    void beginBatch();
+    virtual void beginBatch();
     
-    void endBatch();
+    virtual void endBatch();
     
-    void renderRectangle(Rectangle &rectangle, Color &color);
-    
-    void renderRectangle(float leftX, float bottomY, float rightX, float topY, Color &color);
+    virtual void renderRectangle(float leftX, float bottomY, float rightX, float topY, Color &color);
     
 private:
     std::unique_ptr<Vertices2D> m_vertices;
     std::unique_ptr<GLshort> m_indices;
-    int m_iNumRectangles;
-    bool m_useColor;
-    bool m_isFill;
     
     void addColorCoordinates(Color &color);
     

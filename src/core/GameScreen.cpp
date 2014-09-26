@@ -23,6 +23,8 @@
 #include "MapSearchNode.h"
 #include "GameListener.h"
 #include "Renderer.h"
+#include "SpriteBatcher.h"
+#include "RectangleBatcher.h"
 #include "Fire.h"
 #include "Triangle.h"
 #include "MapBorder.h"
