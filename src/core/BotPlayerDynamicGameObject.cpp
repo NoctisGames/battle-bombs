@@ -150,30 +150,60 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 							m_gameListener->addLocalEventForPlayer(PLAYER_PLANT_BOMB, *this);
 						}
 					}
-
-					if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
-					{
-                        m_currentPathIndex++;
-					}
-					else if (!bombDropped)
-					{
-						if (m_gridX < m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
-						{
+                    
+                    bool hasMovedFarEnough = false;
+                    float currentPosX = m_position->getX();
+                    float currentPosY = m_position->getY();
+                    float targetPosX = GAME_X + GRID_CELL_WIDTH * m_currentPath.at(m_currentPathIndex).x + GRID_CELL_WIDTH / 2.0f;
+                    float targetPosY = GAME_Y + GRID_CELL_HEIGHT * m_currentPath.at(m_currentPathIndex).y + GRID_CELL_HEIGHT / 2.0f + GRID_CELL_HEIGHT / 4;
+                    
+                    switch (m_iDirection)
+                    {
+                        case DIRECTION_RIGHT:
+                            hasMovedFarEnough = currentPosX >= targetPosX;
                             moveInDirection(DIRECTION_RIGHT);
-						}
-						else if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY < m_currentPath.at(m_currentPathIndex).y)
-						{
+                            break;
+                        case DIRECTION_UP:
+                            hasMovedFarEnough = currentPosY >= targetPosY;
                             moveInDirection(DIRECTION_UP);
-						}
-						else if (m_gridX > m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
-						{
+                            break;
+                        case DIRECTION_LEFT:
+                            hasMovedFarEnough = currentPosX <= targetPosX;
                             moveInDirection(DIRECTION_LEFT);
-						}
-						else if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY > m_currentPath.at(m_currentPathIndex).y)
-						{
+                            break;
+                        case DIRECTION_DOWN:
+                        default:
+                            hasMovedFarEnough = currentPosY <= targetPosY;
                             moveInDirection(DIRECTION_DOWN);
-						}
-					}
+                            break;
+                    }
+                    
+                    if(hasMovedFarEnough)
+                    {
+                        if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
+                        {
+                            m_currentPathIndex++;
+                        }
+                        else if (!bombDropped)
+                        {
+                            if (m_gridX < m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
+                            {
+                                moveInDirection(DIRECTION_RIGHT);
+                            }
+                            else if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY < m_currentPath.at(m_currentPathIndex).y)
+                            {
+                                moveInDirection(DIRECTION_UP);
+                            }
+                            else if (m_gridX > m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
+                            {
+                                moveInDirection(DIRECTION_LEFT);
+                            }
+                            else if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY > m_currentPath.at(m_currentPathIndex).y)
+                            {
+                                moveInDirection(DIRECTION_DOWN);
+                            }
+                        }
+                    }
 				}
 			}
 		}

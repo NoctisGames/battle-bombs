@@ -27,6 +27,7 @@
 
 PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
 {
+    m_position->add(0, GRID_CELL_HEIGHT / 4);
     resetBounds(width * 5 / 32, height / 12);
 
 	m_username = std::unique_ptr<char>(new char[1]);
