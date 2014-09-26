@@ -47,6 +47,11 @@ private:
     void explore(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps);
     
     bool isProposedNodeUnexplored(int x, int y);
+    
+    // FOR DEBUGGING
+    int m_iStartingGridX;
+    int m_iStartingGridY;
+    int m_iNumFramesWithoutMoving;
 };
 
 #endif /* defined(__battlebombs__BotPlayerDynamicGameObject__) */
