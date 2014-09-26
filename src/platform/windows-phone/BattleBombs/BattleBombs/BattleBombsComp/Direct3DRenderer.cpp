@@ -164,6 +164,16 @@ void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL));
 	}
 
+	m_gameTexture->texture = m_gameShaderResourceView.Get();
+	m_charBlackTexture->texture = m_charBlackShaderResourceView.Get();
+	m_charBlueTexture->texture = m_charBlueShaderResourceView.Get();
+	m_charGreenTexture->texture = m_charGreenShaderResourceView.Get();
+	m_charOrangeTexture->texture = m_charOrangeShaderResourceView.Get();
+	m_charPinkTexture->texture = m_charPinkShaderResourceView.Get();
+	m_charRedTexture->texture = m_charRedShaderResourceView.Get();
+	m_charWhiteTexture->texture = m_charWhiteShaderResourceView.Get();
+	m_charYellowTexture->texture = m_charYellowShaderResourceView.Get();
+
 	updatePlayerSpritesLoadedArray(players);
 }
 
