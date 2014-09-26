@@ -34,7 +34,7 @@ static const size_t IndicesPerRectangle = 6;
 
 std::deque<COLOR_VERTEX> m_colorVertices;
 
-Direct3DRectangleBatcher::Direct3DRectangleBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, bool isFill)
+Direct3DRectangleBatcher::Direct3DRectangleBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, bool isFill) : RectangleBatcher(isFill)
 {
 	m_d3dDevice1 = ComPtr<ID3D11Device1>(d3dDevice);
 	m_d3dContext1 = ComPtr<ID3D11DeviceContext1>(d3dContext);

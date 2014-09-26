@@ -38,6 +38,8 @@
 #include "PlayerRowPlatformAvatar.h"
 #include "Direct3DRenderer.h"
 #include "Global.h"
+#include "SpriteBatcher.h"
+#include "RectangleBatcher.h"
 #include "Direct3DAssets.h"
 #include "GameSound.h"
 #include <string.h>

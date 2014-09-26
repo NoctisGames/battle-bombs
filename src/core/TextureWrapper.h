@@ -15,7 +15,7 @@ extern "C"
 #include "platform_gl.h"
 }
 #elif defined TECHNE_GAMES_DIRECT_3D
-// TODO
+#include <d3d11_1.h>
 #endif
 
 struct TextureWrapper
@@ -30,7 +30,7 @@ struct TextureWrapper
 #elif defined TECHNE_GAMES_DIRECT_3D
     ID3D11ShaderResourceView *texture;
     
-    TextureWrapper(ID3D11ShaderResourceView textureIn) : texture(textureIn)
+    TextureWrapper(ID3D11ShaderResourceView *textureIn) : texture(textureIn)
     {
         // Empty
     }

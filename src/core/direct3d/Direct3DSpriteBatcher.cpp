@@ -1,5 +1,5 @@
 //
-//  SpriteBatcher.cpp
+//  Direct3DSpriteBatcher.cpp
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/22/14.
@@ -8,14 +8,13 @@
 
 #include "pch.h"
 #include "macros.h"
-#include "SpriteBatcher.h"
+#include "Direct3DSpriteBatcher.h"
 #include "BasicReaderWriter.h"
 #include "DirectXHelper.h"
 #include "GameConstants.h"
 #include <stdlib.h>
 #include <deque>
 #include "TextureRegion.h"
-#include "Color.h"
 
 ComPtr<ID3D11Device1> m_d3dDevice; // the device interface
 ComPtr<ID3D11DeviceContext1> m_d3dContext; // the device context interface
@@ -35,7 +34,7 @@ static const size_t IndicesPerSprite = 6;
 
 std::deque<TEXTURE_VERTEX> m_textureVertices;
 
-SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext)
+Direct3DSpriteBatcher::Direct3DSpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext)
 {
 	m_d3dDevice = ComPtr<ID3D11Device1>(d3dDevice);
 	m_d3dContext = ComPtr<ID3D11DeviceContext1>(d3dContext);
@@ -108,13 +107,13 @@ SpriteBatcher::SpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3d
 	m_d3dDevice->CreateBuffer(&bd2, nullptr, &constantbuffer);
 }
 
-void SpriteBatcher::beginBatch()
+void Direct3DSpriteBatcher::beginBatch()
 {
 	m_textureVertices.clear();
 	m_iNumSprites = 0;
 }
 
-void SpriteBatcher::endBatchWithTexture(ID3D11ShaderResourceView *texture)
+void Direct3DSpriteBatcher::endBatchWithTexture(TextureWrapper &textureWrapper)
 {
 	if (m_iNumSprites > 0)
 	{
@@ -125,7 +124,7 @@ void SpriteBatcher::endBatchWithTexture(ID3D11ShaderResourceView *texture)
 		m_d3dContext->PSSetSamplers(0, 1, samplerstate.GetAddressOf());
 
 		// tell the GPU which texture to use
-		m_d3dContext->PSSetShaderResources(0, 1, &texture);
+		m_d3dContext->PSSetShaderResources(0, 1, &textureWrapper.texture);
 
 		// set the primitive topology
 		m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -193,7 +192,7 @@ void SpriteBatcher::endBatchWithTexture(ID3D11ShaderResourceView *texture)
 	}
 }
 
-void SpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, TextureRegion tr)
+void Direct3DSpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, TextureRegion tr)
 {
 	if (angle > 0)
 	{
@@ -241,7 +240,7 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, floa
 	m_iNumSprites++;
 }
 
-void SpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, Color &color, TextureRegion tr)
+void Direct3DSpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, Color &color, TextureRegion tr)
 {
 	if (angle > 0)
 	{
@@ -291,7 +290,7 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, floa
 
 #pragma <Private>
 
-void SpriteBatcher::drawSprite(float x, float y, float width, float height, TextureRegion tr)
+void Direct3DSpriteBatcher::drawSprite(float x, float y, float width, float height, TextureRegion tr)
 {
 	float halfWidth = width / 2;
 	float halfHeight = height / 2;
@@ -306,7 +305,7 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, Text
 	addVertexCoordinate(x2, y1, 0, 1, 1, 1, 1, tr.u2, tr.v2);
 }
 
-void SpriteBatcher::drawSprite(float x, float y, float width, float height, Color &color, TextureRegion tr)
+void Direct3DSpriteBatcher::drawSprite(float x, float y, float width, float height, Color &color, TextureRegion tr)
 {
 	float halfWidth = width / 2;
 	float halfHeight = height / 2;
@@ -321,14 +320,14 @@ void SpriteBatcher::drawSprite(float x, float y, float width, float height, Colo
 	addVertexCoordinate(x2, y1, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v2);
 }
 
-void SpriteBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
+void Direct3DSpriteBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
 {
 	TEXTURE_VERTEX tv = { x, y, z, r, g, b, a, u, v };
 	m_textureVertices.push_back(tv);
 }
 
 // Creates the SpriteBatch index buffer.
-void SpriteBatcher::createIndexBuffer()
+void Direct3DSpriteBatcher::createIndexBuffer()
 {
 	D3D11_BUFFER_DESC indexBufferDesc = { 0 };
 
@@ -347,7 +346,7 @@ void SpriteBatcher::createIndexBuffer()
 }
 
 // Helper for populating the SpriteBatch index buffer.
-std::vector<short> SpriteBatcher::createIndexValues()
+std::vector<short> Direct3DSpriteBatcher::createIndexValues()
 {
 	std::vector<short> indices;
 

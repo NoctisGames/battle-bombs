@@ -34,7 +34,6 @@
 #include "Font.h"
 #include "MiniMapGridType.h"
 #include "Rectangle.h"
-#include "Vertices2D.h"
 #include "PlayerForceFieldState.h"
 #include "SpectatorControls.h"
 #include "PlayerRow.h"
@@ -210,7 +209,7 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
         
         m_spriteBatcher->beginBatch();
         
-        static Color playerNameColor = { 1, 1, 1, 1 };
+        static Color playerNameColor = Color(1, 1, 1, 1);
         
         for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
         {
@@ -233,7 +232,7 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
         
         if(waitingForServerInterface.renderTimeToNextRound())
         {
-            static Color timerColor = { 1, 1, 1, 1 };
+			static Color timerColor = Color(1, 1, 1, 1);
             
             std::stringstream ss2;
             ss2 << waitingForServerInterface.getTimeToNextRound();
@@ -244,7 +243,7 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
         
         if(waitingForServerInterface.renderMessage())
         {
-            static Color interfaceColor = { 1, 1, 1, 1 };
+			static Color interfaceColor = Color(1, 1, 1, 1);
             interfaceColor.alpha -= 0.025f;
             if(interfaceColor.alpha < 0.2f)
             {
@@ -290,7 +289,7 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
 
 void Renderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
 {
-    static Color interfaceColor = { 1, 1, 1, 1 };
+	static Color interfaceColor = Color(1, 1, 1, 1);
     interfaceColor.alpha -= 0.025f;
     if(interfaceColor.alpha < 0.2f)
     {
@@ -354,7 +353,7 @@ void Renderer::renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObje
     {
         if((*itr)->isDisplayingName())
         {
-            static Color playerNameColor = { 1, 1, 1, 1 };
+			static Color playerNameColor = Color(1, 1, 1, 1);
             
             std::stringstream ss;
             ss << (*itr)->getUsername();
@@ -419,7 +418,7 @@ void Renderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     std::stringstream ss;
     ss << interfaceOverlay.getNumMinutesLeft() << ":" << interfaceOverlay.getNumSecondsLeftFirstColumn() << interfaceOverlay.getNumSecondsLeftSecondColumn();
     std::string timeRemaining = ss.str();
-    static Color interfaceColor = { 1, 1, 1, 1 };
+	static Color interfaceColor = Color(1, 1, 1, 1);
     
     static const float timerX = 0.3554104477903f;
     static const float timerY = 13.0589552253125f;
@@ -473,7 +472,7 @@ void Renderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverlay)
     renderGameObject(interfaceOverlay.getSpectatorControls(), Assets::getSpectatorControlsTextureRegion(interfaceOverlay.getSpectatorControls()));
     m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture);
     
-    static Color interfaceColor = { 1, 1, 1, 1 };
+	static Color interfaceColor = Color(1, 1, 1, 1);
     
     m_spriteBatcher->beginBatch();
     
@@ -521,7 +520,7 @@ void Renderer::renderSpectatorInterface(InterfaceOverlay &interfaceOverlay)
 
 void Renderer::renderGameOverBlackCover(float alpha)
 {
-    static Color transitionCoverColor = { 0, 0, 0, 0 };
+	static Color transitionCoverColor = Color(0, 0, 0, 0);
     transitionCoverColor.alpha = alpha;
     
     m_rectangleBatcher->beginBatch();

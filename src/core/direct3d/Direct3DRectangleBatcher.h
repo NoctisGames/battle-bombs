@@ -15,31 +15,26 @@ struct COLOR_VERTEX
 	float R, G, B, A; // vertex color
 };
 
+#include "RectangleBatcher.h"
 #include <d3d11_1.h>
 #include <memory>
 #include <vector>
-#include "Color.h"
 
-class Rectangle;
-
-class Direct3DRectangleBatcher
+class Direct3DRectangleBatcher : public RectangleBatcher
 {
 public:
 	Direct3DRectangleBatcher(ID3D11Device1 *d3dDevice, ID3D11DeviceContext1 *d3dContext, bool isFill);
 
-	void beginBatch();
+	virtual void beginBatch();
 
-	void endBatch();
+	virtual void endBatch();
     
     void renderRectangle(Rectangle &rectangle, Color &color);
     
-	void renderRectangle(float x1, float y1, float x2, float y2, Color &color);
+	virtual void renderRectangle(float x1, float y1, float x2, float y2, Color &color);
     
 private:
-    bool m_isFill;
-	int m_iNumRectangles;
-
-	void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
+    void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
 
 	void createIndexBuffer();
 

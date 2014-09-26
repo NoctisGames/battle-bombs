@@ -11,9 +11,6 @@
 
 #include "Renderer.h"
 
-class SpriteBatcher;
-class OpenGLESRectangleBatcher;
-
 class OpenGLESRenderer : public Renderer
 {
 public:
