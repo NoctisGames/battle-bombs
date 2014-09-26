@@ -37,6 +37,7 @@
 #include "PlayerForceFieldState.h"
 #include "SpectatorControls.h"
 #include "PlayerRow.h"
+#include "PlayerRowAvatar.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "CountDownNumberGameObject.h"
 #include "DisplayBattleGameObject.h"
@@ -199,6 +200,8 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
         
         for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
         {
+            renderGameObject((*itr)->getPlayerRowAvatar(), Assets::getPlayerRowAvatarTextureRegion((*itr)->getPlayerRowAvatar()));
+            
             if ((*itr)->isActive() && (*itr)->getPlayerPlatformAvatar().getPlayerPlatform() != PLATFORM_UNKNOWN)
             {
                 renderGameObject((*itr)->getPlayerPlatformAvatar(), Assets::getPlayerRowPlatformAvatarTextureRegion((*itr)->getPlayerPlatformAvatar()));
@@ -213,14 +216,11 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
         
         for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
         {
-            if((*itr)->isActive())
-            {
-                std::stringstream ss;
-                ss << (*itr)->getPlayerName();
-                std::string playerName = ss.str();
-                
-                m_font->renderText(*m_spriteBatcher, playerName, (*itr)->getFontX(), (*itr)->getFontY(), (*itr)->getFontGlyphWidth(), (*itr)->getFontGlyphHeight(), playerNameColor, true);
-            }
+            std::stringstream ss;
+            ss << ((*itr)->isActive() ? (*itr)->getPlayerName() : "Bot");
+            std::string playerName = ss.str();
+            
+            m_font->renderText(*m_spriteBatcher, playerName, (*itr)->getFontX(), (*itr)->getFontY(), (*itr)->getFontGlyphWidth(), (*itr)->getFontGlyphHeight(), playerNameColor);
         }
         
         m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture2);

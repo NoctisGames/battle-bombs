@@ -7,11 +7,12 @@
 //
 
 #include "WaitingForServerInterface.h"
+#include "PlayerRow.h"
+#include "PlayerRowAvatar.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
 #include "GameEvent.h"
-#include "PlayerRow.h"
 
 WaitingForServerInterface::WaitingForServerInterface(float x, float y, float width, float height, char *username) : GameObject(x, y, width, height, 0)
 {
@@ -24,14 +25,14 @@ WaitingForServerInterface::WaitingForServerInterface(float x, float y, float wid
     float playersListBottomY = y - height / 2 + playerRowMargin;
     float playerRowHeightEighth = height / 8;
     
-    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 7, playerRowWidth, playerRowHeight)));
-    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 6, playerRowWidth, playerRowHeight)));
-    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 5, playerRowWidth, playerRowHeight)));
-    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 4, playerRowWidth, playerRowHeight)));
-    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 3, playerRowWidth, playerRowHeight)));
-    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 2, playerRowWidth, playerRowHeight)));
-    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 1, playerRowWidth, playerRowHeight)));
-    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 0, playerRowWidth, playerRowHeight)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 7, playerRowWidth, playerRowHeight, 0)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 6, playerRowWidth, playerRowHeight, 1)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 5, playerRowWidth, playerRowHeight, 2)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 4, playerRowWidth, playerRowHeight, 3)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 3, playerRowWidth, playerRowHeight, 4)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 2, playerRowWidth, playerRowHeight, 5)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 1, playerRowWidth, playerRowHeight, 6)));
+    m_playerRows.push_back(std::unique_ptr<PlayerRow>(new PlayerRow(x, playersListBottomY + playerRowHeightHalf + playerRowHeightEighth * 0, playerRowWidth, playerRowHeight, 7)));
     
     m_fTimeToNextRound = 0;
     m_iPreGamePhase = DEFAULT;

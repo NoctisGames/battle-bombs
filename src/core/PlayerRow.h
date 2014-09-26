@@ -14,18 +14,21 @@
 
 #include <memory>
 
+class PlayerRowAvatar;
 class PlayerRowPlatformAvatar;
 
 class PlayerRow
 {
 public:
-	PlayerRow(float x, float y, float width, float height);
+	PlayerRow(float x, float y, float width, float height, int playerIndex);
     
     void handlePlayerNameAndPlatform(rapidjson::Document &d, const char *keyName, const char *keyPlatform, int playerIndex);
     
     void reset();
     
     char * getPlayerName();
+    
+    PlayerRowAvatar & getPlayerRowAvatar();
     
     PlayerRowPlatformAvatar & getPlayerPlatformAvatar();
     
@@ -41,6 +44,7 @@ public:
     
 private:
     std::unique_ptr<char> m_playerName;
+    std::unique_ptr<PlayerRowAvatar> m_playerRowAvatar;
     std::unique_ptr<PlayerRowPlatformAvatar> m_playerRowPlatformAvatar;
     float m_fFontX;
     float m_fFontY;

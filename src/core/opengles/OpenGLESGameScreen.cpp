@@ -42,6 +42,7 @@
 #include "DisplayGameOverGameObject.h"
 #include "OpenGLESRenderer.h"
 #include "PlayerRow.h"
+#include "PlayerRowAvatar.h"
 #include "OpenGLESRectangleBatcher.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "SpriteBatcher.h"

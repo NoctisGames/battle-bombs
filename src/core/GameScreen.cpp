@@ -43,6 +43,7 @@
 #include "DisplayBattleGameObject.h"
 #include "DisplayGameOverGameObject.h"
 #include "PlayerRow.h"
+#include "PlayerRowAvatar.h"
 #include "PlayerRowPlatformAvatar.h"
 
 GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()

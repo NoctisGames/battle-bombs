@@ -28,6 +28,7 @@ class PowerUpBarItem;
 class ActiveButton;
 class BombButton;
 class SpectatorControls;
+class PlayerRowAvatar;
 class PlayerRowPlatformAvatar;
 class CountDownNumberGameObject;
 class DisplayGameOverGameObject;
@@ -50,6 +51,8 @@ public:
 	static TextureRegion& getBreakableBlockTextureRegion(BreakableBlock &breakableBlock);
     
     static TextureRegion& getWaitingForServerInterfaceTextureRegion();
+    
+    static TextureRegion& getPlayerRowAvatarTextureRegion(PlayerRowAvatar &playerRowAvatar);
     
     static TextureRegion& getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatformAvatar &playerRowPlatformAvatar);
     

@@ -151,6 +151,7 @@
 		BBA0A403196F549C00737A74 /* bot_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = BBA0A3FC196F549C00737A74 /* bot_yellow.png */; };
 		BBA1CD531958B10A00AF2AD8 /* MapBorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */; };
 		BBA6492219B5FED100023E5A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBA6492119B5FED100023E5A /* Images.xcassets */; };
+		BBAA546119D5B06B004176FF /* PlayerRowAvatar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAA545F19D5B06B004176FF /* PlayerRowAvatar.cpp */; };
 		BBB24BA219638A9300EF78B2 /* interface.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB24BA119638A9300EF78B2 /* interface.png */; };
 		BBB24BA51963AFFA00EF78B2 /* InterfaceOverlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */; };
 		BBBEC914194B425200AAB520 /* char_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBEC913194B425200AAB520 /* char_blue.png */; };
@@ -445,6 +446,8 @@
 		BBA1CD521958B10A00AF2AD8 /* MapBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBorder.h; sourceTree = "<group>"; };
 		BBA1CD541958C8D700AF2AD8 /* MapBorderType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapBorderType.h; sourceTree = "<group>"; };
 		BBA6492119B5FED100023E5A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		BBAA545F19D5B06B004176FF /* PlayerRowAvatar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerRowAvatar.cpp; sourceTree = "<group>"; };
+		BBAA546019D5B06B004176FF /* PlayerRowAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerRowAvatar.h; sourceTree = "<group>"; };
 		BBB24BA119638A9300EF78B2 /* interface.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = interface.png; sourceTree = "<group>"; };
 		BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InterfaceOverlay.cpp; sourceTree = "<group>"; };
 		BBB24BA41963AFFA00EF78B2 /* InterfaceOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterfaceOverlay.h; sourceTree = "<group>"; };
@@ -616,6 +619,8 @@
 				BB724A9319A93FE80050859C /* PlayerForceFieldState.h */,
 				BB419D6A19BFFED5007834CB /* PlayerRow.cpp */,
 				BB419D6B19BFFED5007834CB /* PlayerRow.h */,
+				BBAA545F19D5B06B004176FF /* PlayerRowAvatar.cpp */,
+				BBAA546019D5B06B004176FF /* PlayerRowAvatar.h */,
 				BBC92AD619C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp */,
 				BBC92AD719C0B963004B44B2 /* PlayerRowPlatformAvatar.h */,
 				BB47C9BD18F326D4002ED03B /* PlayerState.h */,
@@ -1116,6 +1121,7 @@
 				BB96EEEE18B99A7100F7C356 /* game.cpp in Sources */,
 				0A8FBF8D179E07440039BA29 /* platform_asset_utils.m in Sources */,
 				BB9D93BE191FB4EC00AD9CCE /* PowerUp.cpp in Sources */,
+				BBAA546119D5B06B004176FF /* PlayerRowAvatar.cpp in Sources */,
 				BB7F5D1619BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp in Sources */,
 				BB96EEDB18B99A6900F7C356 /* Vector2D.cpp in Sources */,
 				BB96EED918B99A6900F7C356 /* TouchEvent.cpp in Sources */,
