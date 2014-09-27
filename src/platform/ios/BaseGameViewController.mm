@@ -101,7 +101,7 @@ static Logger *logger = nil;
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
     
-    self.bannerView.adUnitID = @"ca-app-pub-6190265373070512/1530557584";
+    self.bannerView.adUnitID = @"ca-app-pub-6190265373070512/7683862389";
     self.bannerView.rootViewController = self;
     
     GADRequest *request = [GADRequest request];

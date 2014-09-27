@@ -1,4 +1,4 @@
-﻿<phone:PhoneApplicationPage
+<phone:PhoneApplicationPage
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -18,7 +18,7 @@
     <Grid x:Name="LayoutRoot" Background="Black">
         <DrawingSurface x:Name="DrawingSurface" Loaded="DrawingSurface_Loaded" />
 
-        <GoogleAds:AdView AdUnitID="ca-app-pub-6190265373070512/5960757181"
+        <GoogleAds:AdView AdUnitID="ca-app-pub-6190265373070512/1637328780"
                           Format="Banner"
                           Width="320"
                           Height="50"
