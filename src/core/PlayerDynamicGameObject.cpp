@@ -27,6 +27,7 @@
 
 PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
 {
+    m_position->add(0, GRID_CELL_HEIGHT / 4);
     resetBounds(width * 5 / 32, height / 12);
 
 	m_username = std::unique_ptr<char>(new char[1]);
@@ -386,16 +387,25 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
     switch (powerUpFlag)
     {
         case POWER_UP_TYPE_BOMB:
-            m_iMaxBombCount++;
+            if(m_iMaxBombCount < 10)
+            {
+                m_iMaxBombCount++;
+            }
             break;
         case POWER_UP_TYPE_FIRE:
-            m_firePower++;
+            if(m_firePower < 10)
+            {
+                m_firePower++;
+            }
             break;
         case POWER_UP_TYPE_FORCE_FIELD:
             setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_TURNING_ON);
             break;
         case POWER_UP_TYPE_SPEED:
-            m_iSpeed++;
+            if(m_iSpeed < 12)
+            {
+                m_iSpeed++;
+            }
             break;
         case POWER_UP_TYPE_PUSH:
             m_activePowerUp = POWER_UP_TYPE_PUSH;

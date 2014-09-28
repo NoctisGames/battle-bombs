@@ -42,14 +42,15 @@
 #include "DisplayGameOverGameObject.h"
 #include "OpenGLESRenderer.h"
 #include "PlayerRow.h"
-#include "OpenGLESRectangleRenderer.h"
+#include "PlayerRowAvatar.h"
+#include "OpenGLESRectangleBatcher.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "SpriteBatcher.h"
 #include "Vertices2D.h"
 
 OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
 {
-    // Empty
+    // No further setup
 }
 
 void OpenGLESGameScreen::onSurfaceCreated(int width, int height)
@@ -57,22 +58,36 @@ void OpenGLESGameScreen::onSurfaceCreated(int width, int height)
 	m_iDeviceScreenWidth = width;
 	m_iDeviceScreenHeight = height;
     
-    m_renderer = std::unique_ptr<OpenGLESRenderer>(new OpenGLESRenderer(width, height));
+    glViewport(0, 0, width, height);
+	glScissor(0, 0, width, height);
+    
+	glLoadIdentity();
+    
+	glMatrixMode(GL_PROJECTION);
+	glOrthof(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, 1);
+	glMatrixMode(GL_MODELVIEW);
+    
+	glLoadIdentity();
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    m_renderer = std::unique_ptr<OpenGLESRenderer>(new OpenGLESRenderer(m_iDeviceScreenWidth, m_iDeviceScreenHeight));
 }
 
-void OpenGLESGameScreen::onSurfaceChanged(int width, int height)
+void OpenGLESGameScreen::onSurfaceChanged(int width, int height, int dpWidth, int dpHeight)
 {
 	m_iDeviceScreenWidth = width;
 	m_iDeviceScreenHeight = height;
-    
-    glViewport(0, 0, width, height);
-	glScissor(0, 0, width, height);
+    m_iDeviceScreenDpWidth = dpWidth;
+	m_iDeviceScreenDpHeight = dpHeight;
 }
 
-void OpenGLESGameScreen::setDpDimensions(int dpWidth, int dpHeight)
+void OpenGLESGameScreen::touchToWorld(TouchEvent &touchEvent)
 {
-	m_iDeviceScreenDpWidth = dpWidth;
-	m_iDeviceScreenDpHeight = dpHeight;
+#ifdef TECHNE_GAMES_OPENGL_ANDROID
+    m_touchPoint->set((touchEvent.getX() / (float) m_iDeviceScreenWidth) * SCREEN_WIDTH, (1 - touchEvent.getY() / (float) m_iDeviceScreenHeight) * SCREEN_HEIGHT);
+#elif defined TECHNE_GAMES_IOS
+    m_touchPoint->set((touchEvent.getY() / (float) m_iDeviceScreenDpHeight) * SCREEN_WIDTH, (touchEvent.getX() / (float) m_iDeviceScreenDpWidth) * SCREEN_HEIGHT);
+#endif
 }
 
 void OpenGLESGameScreen::platformResume()
@@ -88,13 +103,4 @@ void OpenGLESGameScreen::platformPause()
 bool OpenGLESGameScreen::handleOnBackPressed()
 {
     return false;
-}
-
-void OpenGLESGameScreen::touchToWorld(TouchEvent &touchEvent)
-{
-#ifdef TECHNE_GAMES_OPENGL_ANDROID
-    m_touchPoint->set((touchEvent.getX() / (float) m_iDeviceScreenWidth) * SCREEN_WIDTH, (1 - touchEvent.getY() / (float) m_iDeviceScreenHeight) * SCREEN_HEIGHT);
-#elif defined TECHNE_GAMES_IOS
-    m_touchPoint->set((touchEvent.getY() / (float) m_iDeviceScreenDpHeight) * SCREEN_WIDTH, (touchEvent.getX() / (float) m_iDeviceScreenDpWidth) * SCREEN_HEIGHT);
-#endif
 }

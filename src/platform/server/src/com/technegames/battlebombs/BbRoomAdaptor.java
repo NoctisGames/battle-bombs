@@ -76,6 +76,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
 
     private int _numSecondsLeftForRound;
     private float _stateTime;
+    private float _timeSinceLastPlayersAliveUpdate;
     private float _countdownTime;
     private boolean _isGameRunning;
     private float smoothedDeltaRealTime_ms = 17.5f; // initial value, Optionally you can save the new computed value (will change with each hardware) in Preferences to optimize the first drawing frames
@@ -87,6 +88,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     {
         _room = room;
         _stateTime = 0;
+        _timeSinceLastPlayersAliveUpdate = 0;
         _countdownTime = 0;
         _isGameRunning = false;
 
@@ -176,12 +178,35 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             else
             {
                 _stateTime += deltaTime;
+                _timeSinceLastPlayersAliveUpdate += deltaTime;
                 while (_stateTime >= 1)
                 {
                     _numSecondsLeftForRound--;
                     _stateTime -= 1;
                 }
+                
+                if (_timeSinceLastPlayersAliveUpdate > 5)
+                {
+                    try
+                    {
+                        JSONObject tobeSent = new JSONObject();
+                        tobeSent.put(EVENT_TYPE, CLIENT_UPDATE);
 
+                        for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
+                        {
+                            tobeSent.put("playerIndex" + playerIndex + "Alive", is_player_alive(_room.getId(), playerIndex));
+                        }
+
+                        updateRoomWithMessage(tobeSent.toString());
+                    }
+                    catch (JSONException e)
+                    {
+                        System.err.println(e.toString());
+                    }
+
+                    _timeSinceLastPlayersAliveUpdate = 0;
+                }
+                
                 short numAlive = 0;
                 short winningPlayerIndex = -1;
                 for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
@@ -498,6 +523,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     {
         _isGameRunning = false;
         _stateTime = 0;
+        _timeSinceLastPlayersAliveUpdate = 0;
         _countdownTime = 0;
     }
 

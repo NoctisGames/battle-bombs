@@ -26,6 +26,7 @@
 #include "PlayerAvatar.h"
 #include "SpectatorControls.h"
 #include "PlayerForceFieldState.h"
+#include "PlayerRowAvatar.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "CountDownNumberGameObject.h"
 #include "DisplayGameOverGameObject.h"
@@ -38,64 +39,64 @@ Assets * Assets::getInstance()
     return assets;
 }
 
-TextureRegion Assets::getWorldBackgroundTextureRegion()
+TextureRegion& Assets::getWorldBackgroundTextureRegion()
 {
-    static TextureRegion textureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-    return textureRegion;
+	static TextureRegion textureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+	return textureRegion;
 }
 
-TextureRegion Assets::getMapBorderTextureRegion(MapBorder &mapBorder)
+TextureRegion& Assets::getMapBorderTextureRegion(MapBorder &mapBorder)
 {
-    static TextureRegion TR_MOUNTAINS_DOOR = TextureRegion(MOUNTAINS_DOOR_TEXTURE_REGION_X, MOUNTAINS_DOOR_TEXTURE_REGION_Y, MOUNTAINS_DOOR_TEXTURE_REGION_WIDTH, MOUNTAINS_DOOR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-    static TextureRegion TR_BORDER_TOP = TextureRegion(BORDER_TOP_TEXTURE_REGION_X, BORDER_TOP_TEXTURE_REGION_Y, BORDER_TOP_TEXTURE_REGION_WIDTH, BORDER_TOP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-    static TextureRegion TR_BORDER_LEFT = TextureRegion(BORDER_LEFT_TEXTURE_REGION_X, BORDER_LEFT_TEXTURE_REGION_Y, BORDER_LEFT_TEXTURE_REGION_WIDTH, BORDER_LEFT_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-    static TextureRegion TR_BORDER_RIGHT = TextureRegion(BORDER_RIGHT_TEXTURE_REGION_X, BORDER_RIGHT_TEXTURE_REGION_Y, BORDER_RIGHT_TEXTURE_REGION_WIDTH, BORDER_RIGHT_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-    static TextureRegion TR_BORDER_BOTTOM_LEFT = TextureRegion(BORDER_BOTTOM_LEFT_TEXTURE_REGION_X, BORDER_BOTTOM_LEFT_TEXTURE_REGION_Y, BORDER_BOTTOM_LEFT_TEXTURE_REGION_WIDTH, BORDER_BOTTOM_LEFT_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-    static TextureRegion TR_BORDER_BOTTOM_RIGHT = TextureRegion(BORDER_BOTTOM_RIGHT_TEXTURE_REGION_X, BORDER_BOTTOM_RIGHT_TEXTURE_REGION_Y, BORDER_BOTTOM_RIGHT_TEXTURE_REGION_WIDTH, BORDER_BOTTOM_RIGHT_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-    static TextureRegion TR_BORDER_BOTTOM = TextureRegion(BORDER_BOTTOM_TEXTURE_REGION_X, BORDER_BOTTOM_TEXTURE_REGION_Y, BORDER_BOTTOM_TEXTURE_REGION_WIDTH, BORDER_BOTTOM_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-    
-    switch (mapBorder.getType())
-    {
-        case MOUNTAINS_DOOR:
-            return TR_MOUNTAINS_DOOR;
-        case BORDER_TOP:
-            return TR_BORDER_TOP;
-        case BORDER_LEFT:
-            return TR_BORDER_LEFT;
-        case BORDER_RIGHT:
-            return TR_BORDER_RIGHT;
-        case BORDER_BOTTOM_LEFT:
-            return TR_BORDER_BOTTOM_LEFT;
-        case BORDER_BOTTOM_RIGHT:
-            return TR_BORDER_BOTTOM_RIGHT;
-        case BORDER_BOTTOM:
-        default:
-            return TR_BORDER_BOTTOM;
-    }
+	static TextureRegion TR_MOUNTAINS_DOOR = TextureRegion(MOUNTAINS_DOOR_TEXTURE_REGION_X, MOUNTAINS_DOOR_TEXTURE_REGION_Y, MOUNTAINS_DOOR_TEXTURE_REGION_WIDTH, MOUNTAINS_DOOR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+	static TextureRegion TR_BORDER_TOP = TextureRegion(BORDER_TOP_TEXTURE_REGION_X, BORDER_TOP_TEXTURE_REGION_Y, BORDER_TOP_TEXTURE_REGION_WIDTH, BORDER_TOP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+	static TextureRegion TR_BORDER_LEFT = TextureRegion(BORDER_LEFT_TEXTURE_REGION_X, BORDER_LEFT_TEXTURE_REGION_Y, BORDER_LEFT_TEXTURE_REGION_WIDTH, BORDER_LEFT_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+	static TextureRegion TR_BORDER_RIGHT = TextureRegion(BORDER_RIGHT_TEXTURE_REGION_X, BORDER_RIGHT_TEXTURE_REGION_Y, BORDER_RIGHT_TEXTURE_REGION_WIDTH, BORDER_RIGHT_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+	static TextureRegion TR_BORDER_BOTTOM_LEFT = TextureRegion(BORDER_BOTTOM_LEFT_TEXTURE_REGION_X, BORDER_BOTTOM_LEFT_TEXTURE_REGION_Y, BORDER_BOTTOM_LEFT_TEXTURE_REGION_WIDTH, BORDER_BOTTOM_LEFT_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+	static TextureRegion TR_BORDER_BOTTOM_RIGHT = TextureRegion(BORDER_BOTTOM_RIGHT_TEXTURE_REGION_X, BORDER_BOTTOM_RIGHT_TEXTURE_REGION_Y, BORDER_BOTTOM_RIGHT_TEXTURE_REGION_WIDTH, BORDER_BOTTOM_RIGHT_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+	static TextureRegion TR_BORDER_BOTTOM = TextureRegion(BORDER_BOTTOM_TEXTURE_REGION_X, BORDER_BOTTOM_TEXTURE_REGION_Y, BORDER_BOTTOM_TEXTURE_REGION_WIDTH, BORDER_BOTTOM_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+
+	switch (mapBorder.getType())
+	{
+	case MOUNTAINS_DOOR:
+		return TR_MOUNTAINS_DOOR;
+	case BORDER_TOP:
+		return TR_BORDER_TOP;
+	case BORDER_LEFT:
+		return TR_BORDER_LEFT;
+	case BORDER_RIGHT:
+		return TR_BORDER_RIGHT;
+	case BORDER_BOTTOM_LEFT:
+		return TR_BORDER_BOTTOM_LEFT;
+	case BORDER_BOTTOM_RIGHT:
+		return TR_BORDER_BOTTOM_RIGHT;
+	case BORDER_BOTTOM:
+	default:
+		return TR_BORDER_BOTTOM;
+	}
 }
 
-TextureRegion Assets::getInsideBlockTextureRegion()
+TextureRegion& Assets::getInsideBlockTextureRegion()
 {
     static TextureRegion insideBlockTextureRegion = TextureRegion(INSIDE_BLOCK_TEXTURE_REGION_X, INSIDE_BLOCK_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
 
     return insideBlockTextureRegion;
 }
 
-TextureRegion Assets::getNineTextureRegion()
+TextureRegion& Assets::getNineTextureRegion()
 {
     static TextureRegion insideBlockTextureRegion = TextureRegion(POWER_UP_ICON_FRAME_5_TEXTURE_REGION_X, POWER_UP_ICON_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_ICON_TEXTURE_REGION_WIDTH, POWER_UP_ICON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     
     return insideBlockTextureRegion;
 }
 
-TextureRegion Assets::getOneTextureRegion()
+TextureRegion& Assets::getOneTextureRegion()
 {
     static TextureRegion insideBlockTextureRegion = TextureRegion(POWER_UP_ICON_FRAME_1_TEXTURE_REGION_X, POWER_UP_ICON_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_ICON_TEXTURE_REGION_WIDTH, POWER_UP_ICON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     
     return insideBlockTextureRegion;
 }
 
-TextureRegion Assets::getBreakableBlockTextureRegion(BreakableBlock &breakableBlock)
+TextureRegion& Assets::getBreakableBlockTextureRegion(BreakableBlock &breakableBlock)
 {
     if(breakableBlock.getBreakableBlockState() == NORMAL)
     {
@@ -146,13 +147,56 @@ TextureRegion Assets::getBreakableBlockTextureRegion(BreakableBlock &breakableBl
     }
 }
 
-TextureRegion Assets::getWaitingForServerInterfaceTextureRegion()
+TextureRegion& Assets::getWaitingForServerInterfaceTextureRegion()
 {
     static TextureRegion textureRegion = TextureRegion(WAITING_PLAYERS_LIST_BACKGROUND_TEXTURE_REGION_X, WAITING_PLAYERS_LIST_BACKGROUND_TEXTURE_REGION_Y, WAITING_PLAYERS_LIST_BACKGROUND_TEXTURE_REGION_WIDTH, WAITING_PLAYERS_LIST_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     return textureRegion;
 }
 
-TextureRegion Assets::getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatformAvatar &playerRowPlatformAvatar)
+TextureRegion& Assets::getPlayerRowAvatarTextureRegion(PlayerRowAvatar &playerRowAvatar)
+{
+    static TextureRegion playerRowAvatarBlackTextureRegion = TextureRegion(INTERFACE_2_PLAYER_AVATAR_BLACK_TEXTURE_REGION_X, INTERFACE_2_PLAYER_AVATAR_BLACK_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowAvatarBlueTextureRegion = TextureRegion(INTERFACE_2_PLAYER_AVATAR_BLUE_TEXTURE_REGION_X, INTERFACE_2_PLAYER_AVATAR_BLUE_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowAvatarGreenTextureRegion = TextureRegion(INTERFACE_2_PLAYER_AVATAR_GREEN_TEXTURE_REGION_X, INTERFACE_2_PLAYER_AVATAR_GREEN_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowAvatarOrangeTextureRegion = TextureRegion(INTERFACE_2_PLAYER_AVATAR_ORANGE_TEXTURE_REGION_X, INTERFACE_2_PLAYER_AVATAR_ORANGE_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowAvatarPinkTextureRegion = TextureRegion(INTERFACE_2_PLAYER_AVATAR_PINK_TEXTURE_REGION_X, INTERFACE_2_PLAYER_AVATAR_PINK_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowAvatarRedTextureRegion = TextureRegion(INTERFACE_2_PLAYER_AVATAR_RED_TEXTURE_REGION_X, INTERFACE_2_PLAYER_AVATAR_RED_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowAvatarWhiteTextureRegion = TextureRegion(INTERFACE_2_PLAYER_AVATAR_WHITE_TEXTURE_REGION_X, INTERFACE_2_PLAYER_AVATAR_WHITE_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowAvatarYellowTextureRegion = TextureRegion(INTERFACE_2_PLAYER_AVATAR_YELLOW_TEXTURE_REGION_X, INTERFACE_2_PLAYER_AVATAR_YELLOW_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    static TextureRegion playerRowBotAvatarBlackTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_BLACK_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_BLACK_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowBotAvatarBlueTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_BLUE_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_BLUE_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowBotAvatarGreenTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_GREEN_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_GREEN_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowBotAvatarOrangeTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_ORANGE_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_ORANGE_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowBotAvatarPinkTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_PINK_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_PINK_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowBotAvatarRedTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_RED_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_RED_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowBotAvatarWhiteTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_WHITE_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_WHITE_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion playerRowBotAvatarYellowTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_YELLOW_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_YELLOW_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    switch (playerRowAvatar.getPlayerIndex())
+    {
+        case 0:
+            return playerRowAvatar.isBot() ? playerRowBotAvatarBlackTextureRegion : playerRowAvatarBlackTextureRegion;
+        case 1:
+            return playerRowAvatar.isBot() ? playerRowBotAvatarBlueTextureRegion : playerRowAvatarBlueTextureRegion;
+        case 2:
+            return playerRowAvatar.isBot() ? playerRowBotAvatarGreenTextureRegion : playerRowAvatarGreenTextureRegion;
+        case 3:
+            return playerRowAvatar.isBot() ? playerRowBotAvatarOrangeTextureRegion : playerRowAvatarOrangeTextureRegion;
+        case 4:
+            return playerRowAvatar.isBot() ? playerRowBotAvatarPinkTextureRegion : playerRowAvatarPinkTextureRegion;
+        case 5:
+            return playerRowAvatar.isBot() ? playerRowBotAvatarRedTextureRegion : playerRowAvatarRedTextureRegion;
+        case 6:
+            return playerRowAvatar.isBot() ? playerRowBotAvatarWhiteTextureRegion : playerRowAvatarWhiteTextureRegion;
+        case 7:
+            return playerRowAvatar.isBot() ? playerRowBotAvatarYellowTextureRegion : playerRowAvatarYellowTextureRegion;
+        default:
+            break;
+    }
+}
+
+TextureRegion& Assets::getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatformAvatar &playerRowPlatformAvatar)
 {
     static TextureRegion platformAndroidTextureRegion = TextureRegion(INTERFACE_2_PLAYER_PLATFORM_AVATAR_ANDROID_TEXTURE_REGION_X, INTERFACE_2_PLAYER_PLATFORM_AVATAR_ANDROID_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_PLATFORM_AVATAR_ANDROID_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_PLATFORM_AVATAR_ANDROID_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     static TextureRegion platformIOSTextureRegion = TextureRegion(INTERFACE_2_PLAYER_PLATFORM_AVATAR_IOS_TEXTURE_REGION_X, INTERFACE_2_PLAYER_PLATFORM_AVATAR_IOS_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_PLATFORM_AVATAR_IOS_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_PLATFORM_AVATAR_IOS_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
@@ -172,19 +216,19 @@ TextureRegion Assets::getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatformA
     }
 }
 
-TextureRegion Assets::getInterfaceOverlayTextureRegion()
+TextureRegion& Assets::getInterfaceOverlayTextureRegion()
 {
     static TextureRegion textureRegion = TextureRegion(INTERFACE_OVERLAY_TEXTURE_REGION_X, INTERFACE_OVERLAY_TEXTURE_REGION_Y, INTERFACE_OVERLAY_TEXTURE_REGION_WIDTH, INTERFACE_OVERLAY_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     return textureRegion;
 }
 
-TextureRegion Assets::getSpectatorInterfaceOverlayTextureRegion()
+TextureRegion& Assets::getSpectatorInterfaceOverlayTextureRegion()
 {
     static TextureRegion textureRegion = TextureRegion(INTERFACE_OVERLAY_SPECTATOR_TEXTURE_REGION_X, INTERFACE_OVERLAY_SPECTATOR_TEXTURE_REGION_Y, INTERFACE_OVERLAY_SPECTATOR_TEXTURE_REGION_WIDTH, INTERFACE_OVERLAY_SPECTATOR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     return textureRegion;
 }
 
-TextureRegion Assets::getPlayerAvatarTextureRegion(PlayerAvatar &playerAvatar)
+TextureRegion& Assets::getPlayerAvatarTextureRegion(PlayerAvatar &playerAvatar)
 {
     static TextureRegion TR_INTERFACE_BOT_AVATAR_BLACK_ALIVE_TEXTURE_REGION = TextureRegion(INTERFACE_BOT_AVATAR_BLACK_ALIVE_TEXTURE_REGION_X, INTERFACE_BOT_AVATAR_BLACK_ALIVE_TEXTURE_REGION_Y, INTERFACE_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     static TextureRegion TR_INTERFACE_BOT_AVATAR_BLACK_DEAD_TEXTURE_REGION = TextureRegion(INTERFACE_BOT_AVATAR_BLACK_DEAD_TEXTURE_REGION_X, INTERFACE_BOT_AVATAR_BLACK_DEAD_TEXTURE_REGION_Y, INTERFACE_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
@@ -268,7 +312,7 @@ TextureRegion Assets::getPlayerAvatarTextureRegion(PlayerAvatar &playerAvatar)
     }
 }
 
-TextureRegion Assets::getDPadControlTextureRegion(DPadControl &dpadControl)
+TextureRegion& Assets::getDPadControlTextureRegion(DPadControl &dpadControl)
 {
     static TextureRegion TR_D_PAD_RIGHT_TEXTURE_REGION = TextureRegion(D_PAD_RIGHT_TEXTURE_REGION_X, D_PAD_RIGHT_TEXTURE_REGION_Y, D_PAD_RIGHT_TEXTURE_REGION_WIDTH, D_PAD_RIGHT_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     static TextureRegion TR_D_PAD_UP_TEXTURE_REGION = TextureRegion(D_PAD_UP_TEXTURE_REGION_X, D_PAD_UP_TEXTURE_REGION_Y, D_PAD_UP_TEXTURE_REGION_WIDTH, D_PAD_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
@@ -292,7 +336,7 @@ TextureRegion Assets::getDPadControlTextureRegion(DPadControl &dpadControl)
     }
 }
 
-TextureRegion Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
+TextureRegion& Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
 {
     if (player.getPlayerState() == Player_State::ALIVE)
     {
@@ -648,7 +692,7 @@ TextureRegion Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
     }
 }
 
-TextureRegion Assets::getBombTextureRegion(BombGameObject &bomb)
+TextureRegion& Assets::getBombTextureRegion(BombGameObject &bomb)
 {
     static std::vector<TextureRegion> bombTextureRegions;
     if (bombTextureRegions.size() == 0)
@@ -700,19 +744,19 @@ TextureRegion Assets::getBombTextureRegion(BombGameObject &bomb)
     }
 }
 
-TextureRegion Assets::getPlayerNameBubbleTextureRegion()
+TextureRegion& Assets::getPlayerNameBubbleTextureRegion()
 {
     static TextureRegion textureRegion = TextureRegion(PLAYER_NAME_BUBBLE_TEXTURE_REGION_X, PLAYER_NAME_BUBBLE_TEXTURE_REGION_Y, PLAYER_NAME_BUBBLE_TEXTURE_REGION_WIDTH, PLAYER_NAME_BUBBLE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     return textureRegion;
 }
 
-TextureRegion Assets::getPlayerPointerTextureRegion()
+TextureRegion& Assets::getPlayerPointerTextureRegion()
 {
     static TextureRegion textureRegion = TextureRegion(SPECTATING_WHO_ARROW_TEXTURE_REGION_X, SPECTATING_WHO_ARROW_TEXTURE_REGION_Y, SPECTATING_WHO_ARROW_TEXTURE_REGION_WIDTH, SPECTATING_WHO_ARROW_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     return textureRegion;
 }
 
-TextureRegion Assets::getSpectatorControlsTextureRegion(SpectatorControls &spectatorControls)
+TextureRegion& Assets::getSpectatorControlsTextureRegion(SpectatorControls &spectatorControls)
 {
     static TextureRegion TR_LEFT_ARROW_HIGHLIGHTED = TextureRegion(SPECTATOR_CONTROLS_LEFT_ARROW_HIGHLIGHTED_TEXTURE_REGION_X, SPECTATOR_CONTROLS_LEFT_ARROW_HIGHLIGHTED_TEXTURE_REGION_Y, SPECTATOR_CONTROLS_TEXTURE_REGION_WIDTH, SPECTATOR_CONTROLS_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     static TextureRegion TR_RIGHT_ARROW_HIGHLIGHTED = TextureRegion(SPECTATOR_CONTROLS_RIGHT_ARROW_HIGHLIGHTED_TEXTURE_REGION_X, SPECTATOR_CONTROLS_RIGHT_ARROW_HIGHLIGHTED_TEXTURE_REGION_Y, SPECTATOR_CONTROLS_TEXTURE_REGION_WIDTH, SPECTATOR_CONTROLS_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
@@ -730,7 +774,7 @@ TextureRegion Assets::getSpectatorControlsTextureRegion(SpectatorControls &spect
     }
 }
 
-TextureRegion Assets::getCountDownNumberTextureRegion(CountDownNumberGameObject &countDownNumberGameObject)
+TextureRegion& Assets::getCountDownNumberTextureRegion(CountDownNumberGameObject &countDownNumberGameObject)
 {
     static TextureRegion display3TextureRegion = TextureRegion(COUNTDOWN_3_TEXTURE_REGION_X, COUNTDOWN_3_TEXTURE_REGION_Y, COUNTDOWN_3_TEXTURE_REGION_WIDTH, COUNTDOWN_3_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     static TextureRegion display2TextureRegion = TextureRegion(COUNTDOWN_2_TEXTURE_REGION_X, COUNTDOWN_2_TEXTURE_REGION_Y, COUNTDOWN_2_TEXTURE_REGION_WIDTH, COUNTDOWN_2_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
@@ -748,13 +792,13 @@ TextureRegion Assets::getCountDownNumberTextureRegion(CountDownNumberGameObject 
     }
 }
 
-TextureRegion Assets::getDisplayBattleTextureRegion()
+TextureRegion& Assets::getDisplayBattleTextureRegion()
 {
     static TextureRegion textureRegion = TextureRegion(BATTLE_TEXTURE_REGION_X, BATTLE_TEXTURE_REGION_Y, BATTLE_TEXTURE_REGION_WIDTH, BATTLE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     return textureRegion;
 }
 
-TextureRegion Assets::getDisplayGameOverTextureRegion(DisplayGameOverGameObject &displayGameOverGameObject)
+TextureRegion& Assets::getDisplayGameOverTextureRegion(DisplayGameOverGameObject &displayGameOverGameObject)
 {
     static TextureRegion displayGameSetTextureRegion = TextureRegion(GAME_SET_TEXTURE_REGION_X, GAME_SET_TEXTURE_REGION_Y, GAME_SET_TEXTURE_REGION_WIDTH, GAME_SET_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     static TextureRegion displayDrawTextureRegion = TextureRegion(DRAW_TEXTURE_REGION_X, DRAW_TEXTURE_REGION_Y, DRAW_TEXTURE_REGION_WIDTH, DRAW_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
@@ -769,7 +813,7 @@ TextureRegion Assets::getDisplayGameOverTextureRegion(DisplayGameOverGameObject 
     }
 }
 
-TextureRegion Assets::getFireTextureRegion(Fire &fire)
+TextureRegion& Assets::getFireTextureRegion(Fire &fire)
 {
     static TextureRegion TR_CORE_PART_1 = TextureRegion(CORE_PART_1_TEXTURE_REGION_X, CORE_PART_1_TEXTURE_REGION_Y, FIRE_TEXTURE_REGION_WIDTH, FIRE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     static TextureRegion TR_CORE_PART_2 = TextureRegion(CORE_PART_2_TEXTURE_REGION_X, CORE_PART_2_TEXTURE_REGION_Y, FIRE_TEXTURE_REGION_WIDTH, FIRE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
@@ -859,7 +903,7 @@ TextureRegion Assets::getFireTextureRegion(Fire &fire)
     }
 }
 
-TextureRegion Assets::getForceFieldTextureRegion(int forceFieldState, float forceFieldStateTime)
+TextureRegion& Assets::getForceFieldTextureRegion(int forceFieldState, float forceFieldStateTime)
 {
     static std::vector<TextureRegion> forceFieldStateTurningOnTextureRegions;
     if (forceFieldStateTurningOnTextureRegions.size() == 0)
@@ -948,7 +992,7 @@ TextureRegion Assets::getForceFieldTextureRegion(int forceFieldState, float forc
     // Crash
 }
 
-TextureRegion Assets::getPowerUpBarItemTextureRegion(PowerUpBarItem &powerUpBarItem, float powerUpBarItemsStateTime)
+TextureRegion& Assets::getPowerUpBarItemTextureRegion(PowerUpBarItem &powerUpBarItem, float powerUpBarItemsStateTime)
 {
     static std::vector<TextureRegion> powerUpBombTextureRegions;
     if (powerUpBombTextureRegions.size() == 0)
@@ -1016,7 +1060,7 @@ TextureRegion Assets::getPowerUpBarItemTextureRegion(PowerUpBarItem &powerUpBarI
     }
 }
 
-TextureRegion Assets::getActiveButtonTextureRegion(ActiveButton &activeButton, float buttonsStateTime)
+TextureRegion& Assets::getActiveButtonTextureRegion(ActiveButton &activeButton, float buttonsStateTime)
 {
     if(activeButton.getPowerUpType() == POWER_UP_TYPE_PUSH)
     {
@@ -1060,7 +1104,7 @@ TextureRegion Assets::getActiveButtonTextureRegion(ActiveButton &activeButton, f
     // Crash
 }
 
-TextureRegion Assets::getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime)
+TextureRegion& Assets::getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime)
 {
     static TextureRegion TR_BUTTON_BOMB_ENABLED_TEXTURE_REGION = TextureRegion(BUTTON_BOMB_ENABLED_TEXTURE_REGION_X, BUTTON_BOMB_ENABLED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
     static TextureRegion TR_BUTTON_BOMB_HIGHLIGHTED_TEXTURE_REGION = TextureRegion(BUTTON_BOMB_HIGHLIGHTED_TEXTURE_REGION_X, BUTTON_BOMB_HIGHLIGHTED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
@@ -1099,7 +1143,7 @@ TextureRegion Assets::getBombButtonTextureRegion(BombButton &bombButton, float b
     }
 }
 
-TextureRegion Assets::getPowerUpTextureRegion(PowerUp &powerUp)
+TextureRegion& Assets::getPowerUpTextureRegion(PowerUp &powerUp)
 {
     static std::vector<TextureRegion> powerUpBombTextureRegions;
     if (powerUpBombTextureRegions.size() == 0)

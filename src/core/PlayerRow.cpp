@@ -7,24 +7,29 @@
 //
 
 #include "PlayerRow.h"
+#include "PlayerRowAvatar.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
 #include "GameEvent.h"
 
-PlayerRow::PlayerRow(float x, float y, float width, float height)
+PlayerRow::PlayerRow(float x, float y, float width, float height, int playerIndex)
 {
-    m_fFontX = x + height * 3 / 4;
-    m_fFontY = y;
-    m_fFontGlyphWidth = (width - height) / 12;
+    m_playerName = std::unique_ptr<char>(new char[1]);
+    m_playerRowAvatar = std::unique_ptr<PlayerRowAvatar>(new PlayerRowAvatar(x - width / 2 + height / 2, y, height, height, playerIndex));
+    m_playerRowPlatformAvatar = std::unique_ptr<PlayerRowPlatformAvatar>(new PlayerRowPlatformAvatar(m_playerRowAvatar->getPosition().getX() + height, y, height, height));
+    m_fFontGlyphWidth = (width - (height * 2)) / 12;
     m_fFontGlyphHeight = m_fFontGlyphWidth * 0.68421052631579;
-	m_playerName = std::unique_ptr<char>(new char[1]);
-    m_playerRowPlatformAvatar = std::unique_ptr<PlayerRowPlatformAvatar>(new PlayerRowPlatformAvatar(x - width / 2 + height / 2, y, height, height));
+    m_fFontX = m_playerRowPlatformAvatar->getPosition().getX() + height / 2 + m_fFontGlyphWidth;
+    m_fFontY = y;
     m_isActive = false;
 }
 
 void PlayerRow::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *keyName, const char *keyPlatform, int playerIndex)
 {
+    m_playerRowAvatar->setPlayerIndex(playerIndex);
+    m_playerRowAvatar->setIsBot(false);
+    
     if(d.HasMember(keyName) && d.HasMember(keyPlatform))
     {
         const char *username = d[keyName].GetString();
@@ -45,6 +50,9 @@ void PlayerRow::handlePlayerNameAndPlatform(rapidjson::Document &d, const char *
 
 void PlayerRow::reset()
 {
+    m_playerName.release();
+    
+    m_playerRowAvatar->setIsBot(true);
     m_playerRowPlatformAvatar->setPlayerPlatform(PLATFORM_UNKNOWN);
     
     m_isActive = false;
@@ -53,6 +61,11 @@ void PlayerRow::reset()
 char * PlayerRow::getPlayerName()
 {
     return m_playerName.get();
+}
+
+PlayerRowAvatar & PlayerRow::getPlayerRowAvatar()
+{
+    return *m_playerRowAvatar;
 }
 
 PlayerRowPlatformAvatar & PlayerRow::getPlayerPlatformAvatar()

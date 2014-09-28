@@ -21,7 +21,7 @@ void GameListener::addLocalEventForPlayer(int eventId, PlayerDynamicGameObject &
 {
     if(eventId == PLAYER_PLANT_BOMB)
     {
-        eventId += PLAYER_EVENT_MOD_BASE * player.getFirePower();
+        eventId += PLAYER_EVENT_MOD_BASE * (player.getFirePower() - 1);
     }
     
     eventId += PLAYER_EVENT_BASE * player.getPlayerIndex();

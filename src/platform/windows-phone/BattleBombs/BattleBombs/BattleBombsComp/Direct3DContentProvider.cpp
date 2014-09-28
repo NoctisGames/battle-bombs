@@ -36,10 +36,12 @@
 #include "PlayerRow.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "Direct3DRenderer.h"
-#include "RECTUtils.h"
+#include "SpriteBatcher.h"
+#include "RectangleBatcher.h"
 #include "Global.h"
 #include "Direct3DAssets.h"
 #include "GameSound.h"
+#include "PlayerRowAvatar.h"
 
 using namespace BattleBombsComp;
 

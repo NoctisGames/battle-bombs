@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{6c0db09e-49d9-4f26-83b2-1a4f0b616a0c}" Title="Battle Bombs" RuntimeType="Silverlight" Version="0.1.0.0" Genre="apps.normal" Author="Techne Games" Description="Lay Bombs!" Publisher="Techne Games" PublisherID="{96e4f81d-6371-4f34-82b6-c615d77a901b}">
+  <App xmlns="" ProductID="{6c0db09e-49d9-4f26-83b2-1a4f0b616a0c}" Title="Battle Bombs" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Techne Games" Description="Lay Bombs!" Publisher="Techne Games" PublisherID="{96e4f81d-6371-4f34-82b6-c615d77a901b}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />

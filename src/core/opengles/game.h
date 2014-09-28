@@ -9,11 +9,11 @@
 #ifndef GAME_H
 #define GAME_H
 
+void init(const char *username, bool isOffline);
+
 void on_surface_created(int pixelWidth, int pixelHeight);
 
 void on_surface_changed(int pixelWidth, int pixelHeight, int dpWidth, int dpHeight);
-
-void init(const char *username, bool isOffline);
 
 void on_resume();
 

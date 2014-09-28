@@ -512,11 +512,11 @@ public final class RendererWrapper implements Renderer
         bgm.play();
     }
 
+    private static native void init(String username, boolean isOffline);
+    
     private static native void on_surface_created(int pixelWidth, int pixelHeight);
 
     private static native void on_surface_changed(int pixelWidth, int pixelHeight, int dpWidth, int dpHeight);
-
-    private static native void init(String username, boolean isOffline);
 
     private static native void on_resume();
 

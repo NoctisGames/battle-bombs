@@ -19,7 +19,7 @@ extern "C"
 class Vertices2D
 {
 public:
-    Vertices2D(int maxNumVertices, bool isUsingTextureCoordinates, bool isUsingColors);
+    Vertices2D(int maxNumVertices, bool isUsingTextureCoordinates);
     
     void resetIndex();
     
@@ -37,12 +37,12 @@ public:
 
 private:
     std::unique_ptr<GLfloat> m_vertices;
-    std::unique_ptr<GLfloat> m_textureCoords;
     std::unique_ptr<GLfloat> m_colors;
+    std::unique_ptr<GLfloat> m_textureCoords;
     int m_iVerticesIndex;
-    int m_iTextureCoordsIndex;
     int m_iColorsIndex;
-    bool m_hasColor;
+    int m_iTextureCoordsIndex;
+    
     bool m_hasTextureCoordinates;
 };
 

@@ -23,6 +23,8 @@
 #include "MapSearchNode.h"
 #include "GameListener.h"
 #include "Renderer.h"
+#include "SpriteBatcher.h"
+#include "RectangleBatcher.h"
 #include "Fire.h"
 #include "Triangle.h"
 #include "MapBorder.h"
@@ -41,6 +43,7 @@
 #include "DisplayBattleGameObject.h"
 #include "DisplayGameOverGameObject.h"
 #include "PlayerRow.h"
+#include "PlayerRowAvatar.h"
 #include "PlayerRowPlatformAvatar.h"
 
 GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
@@ -232,12 +235,12 @@ void GameScreen::present()
             m_renderer->renderWorldBackground();
             
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            m_renderer->renderBombs(m_bombs);
+			m_renderer->renderBombs(m_bombs);
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             
-            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
             m_renderer->endFrame();
             break;
@@ -248,13 +251,13 @@ void GameScreen::present()
             m_renderer->renderWorldBackground();
             
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            m_renderer->renderBombs(m_bombs);
+			m_renderer->renderBombs(m_bombs);
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderInterface(*m_interfaceOverlay);
             
-            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
             m_renderer->endFrame();
             break;
@@ -271,7 +274,7 @@ void GameScreen::present()
             m_renderer->renderMapBordersNear(m_mapBorders);
             m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
             
-            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
             m_renderer->endFrame();
             break;
@@ -287,7 +290,7 @@ void GameScreen::present()
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             
-            m_renderer->renderUIEffects(m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
             m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
             
@@ -377,15 +380,18 @@ void GameScreen::updateRunning(float deltaTime)
         m_gameState = SPECTATING;
     }
     
-    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    if(m_isOffline)
     {
-        if ((*itr)->isBot())
+        for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
         {
-            (*itr)->handlePowerUps(m_powerUps);
-            
-            if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
+            if ((*itr)->isBot())
             {
-                m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+                (*itr)->handlePowerUps(m_powerUps);
+                
+                if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
+                {
+                    m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+                }
             }
         }
     }
@@ -447,18 +453,21 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 
 void GameScreen::updateSpectating(float deltaTime)
 {
-	for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-	{
-		if ((*itr)->isBot())
-		{
-			(*itr)->handlePowerUps(m_powerUps);
-
-			if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
-			{
-				m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
-			}
-		}
-	}
+    if(m_isOffline)
+    {
+        for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+        {
+            if ((*itr)->isBot())
+            {
+                (*itr)->handlePowerUps(m_powerUps);
+                
+                if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
+                {
+                    m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+                }
+            }
+        }
+    }
 
     std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
     
@@ -830,7 +839,7 @@ void GameScreen::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *
         m_players.at(playerIndex)->setUsername(username);
     }
     
-    if(isBeginGame || playerIndex != m_sPlayerIndex)
+    if(isBeginGame || m_gameState == SPECTATING || playerIndex != m_sPlayerIndex)
     {
         handlePlayerDataUpdate(d, keyIsBot, keyX, keyY, keyDirection, keyAlive, playerIndex, isBeginGame);
     }

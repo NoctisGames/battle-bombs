@@ -7,66 +7,67 @@
 
 #include "pch.h"
 #include "XAudio2SoundPlayer.h"
+#include "DirectXHelper.h"
 
 namespace
 {
-    //
-    // Handler for XAudio source voice callbacks to maintain playing state
-    //
-    class SoundCallbackHander : public IXAudio2VoiceCallback
-    {
-        public:
-            SoundCallbackHander(bool* isPlayingHolder) :
-                m_isPlayingHolder(isPlayingHolder)
-            {
-            }
+	//
+	// Handler for XAudio source voice callbacks to maintain playing state
+	//
+	class SoundCallbackHander : public IXAudio2VoiceCallback
+	{
+	public:
+		SoundCallbackHander(bool* isPlayingHolder) :
+			m_isPlayingHolder(isPlayingHolder)
+		{
+		}
 
-            ~SoundCallbackHander()
-            {
-                m_isPlayingHolder = nullptr;
-            }
+		~SoundCallbackHander()
+		{
+			m_isPlayingHolder = nullptr;
+		}
 
-            //
-            // Voice callbacks from IXAudio2VoiceCallback
-            //
-            STDMETHOD_(void, OnVoiceProcessingPassStart) (THIS_ UINT32 bytesRequired);
-            STDMETHOD_(void, OnVoiceProcessingPassEnd) (THIS);
-            STDMETHOD_(void, OnStreamEnd) (THIS);
-            STDMETHOD_(void, OnBufferStart) (THIS_ void* bufferContext);
-            STDMETHOD_(void, OnBufferEnd) (THIS_ void* bufferContext);
-            STDMETHOD_(void, OnLoopEnd) (THIS_ void* bufferContext);
-            STDMETHOD_(void, OnVoiceError) (THIS_ void* bufferContext, HRESULT error);
+		//
+		// Voice callbacks from IXAudio2VoiceCallback
+		//
+		STDMETHOD_(void, OnVoiceProcessingPassStart) (THIS_ UINT32 bytesRequired);
+		STDMETHOD_(void, OnVoiceProcessingPassEnd) (THIS);
+		STDMETHOD_(void, OnStreamEnd) (THIS);
+		STDMETHOD_(void, OnBufferStart) (THIS_ void* bufferContext);
+		STDMETHOD_(void, OnBufferEnd) (THIS_ void* bufferContext);
+		STDMETHOD_(void, OnLoopEnd) (THIS_ void* bufferContext);
+		STDMETHOD_(void, OnVoiceError) (THIS_ void* bufferContext, HRESULT error);
 
-        private:
-            bool* m_isPlayingHolder;
-    };
+	private:
+		bool* m_isPlayingHolder;
+	};
 
-    //
-    // Callback handlers, only implement the buffer events for maintaining play state
-    //
-    void SoundCallbackHander::OnVoiceProcessingPassStart(UINT32 /*bytesRequired*/)
-    {
-    }
-    void SoundCallbackHander::OnVoiceProcessingPassEnd()
-    {
-    }
-    void SoundCallbackHander::OnStreamEnd()
-    {
-    }
-    void SoundCallbackHander::OnBufferStart(void* /*bufferContext*/)
-    {
-        *m_isPlayingHolder = true;
-    }
-    void SoundCallbackHander::OnBufferEnd(void* /*bufferContext*/)
-    {
-        *m_isPlayingHolder = false;
-    }
-    void SoundCallbackHander::OnLoopEnd(void* /*bufferContext*/)
-    {
-    }
-    void SoundCallbackHander::OnVoiceError(void* /*bufferContext*/, HRESULT /*error*/)
-    {
-    }
+	//
+	// Callback handlers, only implement the buffer events for maintaining play state
+	//
+	void SoundCallbackHander::OnVoiceProcessingPassStart(UINT32 /*bytesRequired*/)
+	{
+	}
+	void SoundCallbackHander::OnVoiceProcessingPassEnd()
+	{
+	}
+	void SoundCallbackHander::OnStreamEnd()
+	{
+	}
+	void SoundCallbackHander::OnBufferStart(void* /*bufferContext*/)
+	{
+		*m_isPlayingHolder = true;
+	}
+	void SoundCallbackHander::OnBufferEnd(void* /*bufferContext*/)
+	{
+		*m_isPlayingHolder = false;
+	}
+	void SoundCallbackHander::OnLoopEnd(void* /*bufferContext*/)
+	{
+	}
+	void SoundCallbackHander::OnVoiceError(void* /*bufferContext*/, HRESULT /*error*/)
+	{
+	}
 }
 
 //
@@ -74,27 +75,27 @@ namespace
 //
 struct XAudio2SoundPlayer::ImplData
 {
-    ImplData::ImplData(Platform::Array<byte>^ data) :
-        sourceVoice(nullptr),
-        playData(data),
-        isPlaying(false),
-        callbackHander(&isPlaying)
-    {
-    }
+	ImplData::ImplData(Platform::Array<byte>^ data) :
+	sourceVoice(nullptr),
+	playData(data),
+	isPlaying(false),
+	callbackHander(&isPlaying)
+	{
+	}
 
-    ~ImplData()
-    {
-        if (sourceVoice)
-        {
-            sourceVoice->DestroyVoice();
-            sourceVoice = nullptr;
-        }
-    }
+	~ImplData()
+	{
+		if (sourceVoice)
+		{
+			sourceVoice->DestroyVoice();
+			sourceVoice = nullptr;
+		}
+	}
 
-    IXAudio2SourceVoice*    sourceVoice;
-    Platform::Array<byte>^  playData;
-    bool                    isPlaying;
-    SoundCallbackHander     callbackHander;
+	IXAudio2SourceVoice*    sourceVoice;
+	Platform::Array<byte>^  playData;
+	bool                    isPlaying;
+	SoundCallbackHander     callbackHander;
 };
 
 
@@ -105,22 +106,22 @@ struct XAudio2SoundPlayer::ImplData
 //          Mastering Voice
 //--------------------------------------------------------------------------------------
 XAudio2SoundPlayer::XAudio2SoundPlayer(uint32 sampleRate) :
-    m_soundList()
+m_soundList()
 {
-    // Create the XAudio2 Engine
-    UINT32 flags = 0;
-    DX::ThrowIfFailed(
-        XAudio2Create(&m_audioEngine, flags)
-        );
+	// Create the XAudio2 Engine
+	UINT32 flags = 0;
+	DX::ThrowIfFailed(
+		XAudio2Create(&m_audioEngine, flags)
+		);
 
-    // Create the mastering voice
-    DX::ThrowIfFailed(
-        m_audioEngine->CreateMasteringVoice(
-            &m_masteringVoice,
-            XAUDIO2_DEFAULT_CHANNELS,
-            sampleRate
-            )
-        );
+	// Create the mastering voice
+	DX::ThrowIfFailed(
+		m_audioEngine->CreateMasteringVoice(
+		&m_masteringVoice,
+		XAUDIO2_DEFAULT_CHANNELS,
+		sampleRate
+		)
+		);
 }
 
 //--------------------------------------------------------------------------------------
@@ -131,17 +132,17 @@ XAudio2SoundPlayer::XAudio2SoundPlayer(uint32 sampleRate) :
 //--------------------------------------------------------------------------------------
 XAudio2SoundPlayer::~XAudio2SoundPlayer()
 {
-    if (m_masteringVoice != nullptr)
-    {
-        m_masteringVoice->DestroyVoice();
-        m_masteringVoice = nullptr;
-    }
+	if (m_masteringVoice != nullptr)
+	{
+		m_masteringVoice->DestroyVoice();
+		m_masteringVoice = nullptr;
+	}
 
-    if (m_audioEngine != nullptr)
-    {
-        m_audioEngine->Release();
-        m_audioEngine = nullptr;
-    }
+	if (m_audioEngine != nullptr)
+	{
+		m_audioEngine->Release();
+		m_audioEngine = nullptr;
+	}
 }
 
 //--------------------------------------------------------------------------------------
@@ -149,35 +150,35 @@ XAudio2SoundPlayer::~XAudio2SoundPlayer()
 // Desc: Create data, create voice, store data
 //--------------------------------------------------------------------------------------
 size_t XAudio2SoundPlayer::AddSound(
-    _In_ WAVEFORMATEX*  format,
-    _In_ Platform::Array<byte>^   data
-    )
+	_In_ WAVEFORMATEX*  format,
+	_In_ Platform::Array<byte>^   data
+	)
 {
-    //
-    // Allocate the implementation data
-    //
-    std::shared_ptr<ImplData> implData(new ImplData(data));
+	//
+	// Allocate the implementation data
+	//
+	std::shared_ptr<ImplData> implData(new ImplData(data));
 
-    //
-    // Create the source voice
-    //
-    DX::ThrowIfFailed(
-        m_audioEngine->CreateSourceVoice(
-            &implData->sourceVoice,
-            format,
-            0,
-            XAUDIO2_DEFAULT_FREQ_RATIO,
-            reinterpret_cast<IXAudio2VoiceCallback*>(&implData->callbackHander),
-            nullptr,
-            nullptr
-            )
-        );
+	//
+	// Create the source voice
+	//
+	DX::ThrowIfFailed(
+		m_audioEngine->CreateSourceVoice(
+		&implData->sourceVoice,
+		format,
+		0,
+		XAUDIO2_DEFAULT_FREQ_RATIO,
+		reinterpret_cast<IXAudio2VoiceCallback*>(&implData->callbackHander),
+		nullptr,
+		nullptr
+		)
+		);
 
-    //
-    // Add to the list and return its index
-    //
-    m_soundList.push_back(implData);
-    return (m_soundList.size() - 1);
+	//
+	// Add to the list and return its index
+	//
+	m_soundList.push_back(implData);
+	return (m_soundList.size() - 1);
 }
 
 //--------------------------------------------------------------------------------------
@@ -186,34 +187,34 @@ size_t XAudio2SoundPlayer::AddSound(
 //--------------------------------------------------------------------------------------
 bool XAudio2SoundPlayer::PlaySound(size_t index)
 {
-    //
-    // Setup buffer
-    //
-    XAUDIO2_BUFFER playBuffer = { 0 };
-    std::shared_ptr<ImplData> soundData = m_soundList[index];
-    playBuffer.AudioBytes = soundData->playData->Length;
-    playBuffer.pAudioData = soundData->playData->Data;
-    playBuffer.Flags = XAUDIO2_END_OF_STREAM;
+	//
+	// Setup buffer
+	//
+	XAUDIO2_BUFFER playBuffer = { 0 };
+	std::shared_ptr<ImplData> soundData = m_soundList[index];
+	playBuffer.AudioBytes = soundData->playData->Length;
+	playBuffer.pAudioData = soundData->playData->Data;
+	playBuffer.Flags = XAUDIO2_END_OF_STREAM;
 
-    //
-    // In case it is playing, stop it and flush the buffers.
-    //
-    HRESULT hr = soundData->sourceVoice->Stop();
-    if (SUCCEEDED(hr))
-    {
-        hr = soundData->sourceVoice->FlushSourceBuffers();
-    }
+	//
+	// In case it is playing, stop it and flush the buffers.
+	//
+	HRESULT hr = soundData->sourceVoice->Stop();
+	if (SUCCEEDED(hr))
+	{
+		hr = soundData->sourceVoice->FlushSourceBuffers();
+	}
 
-    //
-    // Submit the sound buffer and (re)start (ignore any 'stop' failures)
-    //
-    hr = soundData->sourceVoice->SubmitSourceBuffer(&playBuffer);
-    if (SUCCEEDED(hr))
-    {
-        hr = soundData->sourceVoice->Start(0, XAUDIO2_COMMIT_NOW);
-    }
+	//
+	// Submit the sound buffer and (re)start (ignore any 'stop' failures)
+	//
+	hr = soundData->sourceVoice->SubmitSourceBuffer(&playBuffer);
+	if (SUCCEEDED(hr))
+	{
+		hr = soundData->sourceVoice->Start(0, XAUDIO2_COMMIT_NOW);
+	}
 
-    return SUCCEEDED(hr);
+	return SUCCEEDED(hr);
 }
 
 //--------------------------------------------------------------------------------------
@@ -222,15 +223,15 @@ bool XAudio2SoundPlayer::PlaySound(size_t index)
 //--------------------------------------------------------------------------------------
 bool XAudio2SoundPlayer::StopSound(size_t index)
 {
-    std::shared_ptr<ImplData> soundData = m_soundList[index];
+	std::shared_ptr<ImplData> soundData = m_soundList[index];
 
-    HRESULT hr = soundData->sourceVoice->Stop();
-    if (SUCCEEDED(hr))
-    {
-        hr = soundData->sourceVoice->FlushSourceBuffers();
-    }
+	HRESULT hr = soundData->sourceVoice->Stop();
+	if (SUCCEEDED(hr))
+	{
+		hr = soundData->sourceVoice->FlushSourceBuffers();
+	}
 
-    return SUCCEEDED(hr);
+	return SUCCEEDED(hr);
 }
 
 
@@ -240,7 +241,7 @@ bool XAudio2SoundPlayer::StopSound(size_t index)
 //--------------------------------------------------------------------------------------
 bool XAudio2SoundPlayer::IsSoundPlaying(size_t index) const
 {
-    return m_soundList[index]->isPlaying;
+	return m_soundList[index]->isPlaying;
 }
 
 //--------------------------------------------------------------------------------------
@@ -249,7 +250,7 @@ bool XAudio2SoundPlayer::IsSoundPlaying(size_t index) const
 //--------------------------------------------------------------------------------------
 size_t XAudio2SoundPlayer::GetSoundCount() const
 {
-    return m_soundList.size();
+	return m_soundList.size();
 }
 
 //--------------------------------------------------------------------------------------
@@ -258,7 +259,7 @@ size_t XAudio2SoundPlayer::GetSoundCount() const
 //--------------------------------------------------------------------------------------
 void XAudio2SoundPlayer::Suspend()
 {
-    m_audioEngine->StopEngine();
+	m_audioEngine->StopEngine();
 }
 
 //--------------------------------------------------------------------------------------
@@ -267,7 +268,7 @@ void XAudio2SoundPlayer::Suspend()
 //--------------------------------------------------------------------------------------
 void XAudio2SoundPlayer::Resume()
 {
-    DX::ThrowIfFailed(
-        m_audioEngine->StartEngine()
-        );
+	DX::ThrowIfFailed(
+		m_audioEngine->StartEngine()
+		);
 }
