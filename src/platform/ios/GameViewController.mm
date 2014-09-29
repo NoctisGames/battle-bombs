@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#define APPWARP_APP_KEY         @"475c20d0-07d6-46ad-a"
+#define APPWARP_APP_KEY         @"e4207af0-de78-496d-8"
 #define APPWARP_SECRET_KEY      @"139f6094-4e04-4041-9"
-#define APPWARP_HOST_ADDRESS    @"23.99.132.2"
-#define APPWARP_AUTH_DATA       @"T3chn3G4m35_1.0.0"
+#define APPWARP_HOST_ADDRESS    @"191.234.54.124"
+#define APPWARP_AUTH_DATA       @"T3chn3G4m35_1.1.0"
 
 #import "GameViewController.h"
 
