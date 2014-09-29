@@ -9,40 +9,40 @@
 /* Begin PBXBuildFile section */
 		BB13D99319D9D3EF003CF853 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB13D99219D9D3EF003CF853 /* GLKit.framework */; };
 		BB13D99519D9D3EF003CF853 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB13D99419D9D3EF003CF853 /* OpenGL.framework */; };
-		BB13D99A19D9D3EF003CF853 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BB13D99919D9D3EF003CF853 /* main.m */; };
-		BB13D99D19D9D3EF003CF853 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB13D99B19D9D3EF003CF853 /* MainMenu.xib */; };
-		BB13D9A319D9D3EF003CF853 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BB13D9A219D9D3EF003CF853 /* Shader.fsh */; };
-		BB13D9A519D9D3EF003CF853 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BB13D9A419D9D3EF003CF853 /* Shader.vsh */; };
-		BB13D9A819D9D3EF003CF853 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB13D9A719D9D3EF003CF853 /* ViewController.m */; };
-		BB13D9AB19D9D3EF003CF853 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB13D9AA19D9D3EF003CF853 /* AppDelegate.m */; };
-		BB13D9B019D9D3EF003CF853 /* PTGLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = BB13D9AF19D9D3EF003CF853 /* PTGLProgram.m */; };
-		BB13D9B319D9D3EF003CF853 /* PTGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB13D9B219D9D3EF003CF853 /* PTGLView.m */; };
-		BB13D9B619D9D3EF003CF853 /* PTGLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB13D9B519D9D3EF003CF853 /* PTGLViewController.m */; };
-		BB13D9B819D9D3EF003CF853 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB13D9B719D9D3EF003CF853 /* Images.xcassets */; };
+		BB13D9E519D9DA14003CF853 /* PTGLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = BB13D9E019D9DA14003CF853 /* PTGLProgram.m */; };
+		BB13D9E619D9DA14003CF853 /* PTGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB13D9E219D9DA14003CF853 /* PTGLView.m */; };
+		BB13D9E719D9DA14003CF853 /* PTGLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB13D9E419D9DA14003CF853 /* PTGLViewController.m */; };
+		BB13D9EA19D9DA1F003CF853 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BB13D9E819D9DA1F003CF853 /* Shader.fsh */; };
+		BB13D9EB19D9DA1F003CF853 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BB13D9E919D9DA1F003CF853 /* Shader.vsh */; };
+		BB13D9F119D9DA36003CF853 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB13D9ED19D9DA36003CF853 /* AppDelegate.m */; };
+		BB13D9F219D9DA36003CF853 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB13D9F019D9DA36003CF853 /* ViewController.m */; };
+		BB13D9F519D9DA45003CF853 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB13D9F319D9DA45003CF853 /* MainMenu.xib */; };
+		BB13D9F719D9DA59003CF853 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BB13D9F619D9DA59003CF853 /* main.m */; };
+		BB13D9F919D9DA74003CF853 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB13D9F819D9DA74003CF853 /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BB13D98F19D9D3EF003CF853 /* battlebombs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = battlebombs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB13D99219D9D3EF003CF853 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		BB13D99419D9D3EF003CF853 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		BB13D99819D9D3EF003CF853 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BB13D99919D9D3EF003CF853 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BB13D99C19D9D3EF003CF853 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		BB13D9A219D9D3EF003CF853 /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
-		BB13D9A419D9D3EF003CF853 /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
-		BB13D9A619D9D3EF003CF853 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		BB13D9A719D9D3EF003CF853 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		BB13D9A919D9D3EF003CF853 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		BB13D9AA19D9D3EF003CF853 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		BB13D9AC19D9D3EF003CF853 /* ModelData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelData.h; sourceTree = "<group>"; };
-		BB13D9AE19D9D3EF003CF853 /* PTGLProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PTGLProgram.h; path = PTGLKit/PTGLProgram.h; sourceTree = "<group>"; };
-		BB13D9AF19D9D3EF003CF853 /* PTGLProgram.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PTGLProgram.m; path = PTGLKit/PTGLProgram.m; sourceTree = "<group>"; };
-		BB13D9B119D9D3EF003CF853 /* PTGLView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PTGLView.h; path = PTGLKit/PTGLView.h; sourceTree = "<group>"; };
-		BB13D9B219D9D3EF003CF853 /* PTGLView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PTGLView.m; path = PTGLKit/PTGLView.m; sourceTree = "<group>"; };
-		BB13D9B419D9D3EF003CF853 /* PTGLViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PTGLViewController.h; path = PTGLKit/PTGLViewController.h; sourceTree = "<group>"; };
-		BB13D9B519D9D3EF003CF853 /* PTGLViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PTGLViewController.m; path = PTGLKit/PTGLViewController.m; sourceTree = "<group>"; };
-		BB13D9B719D9D3EF003CF853 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		BB13D9CD19D9D64E003CF853 /* battlebombs.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = battlebombs.entitlements; sourceTree = "<group>"; };
+		BB13D9DF19D9DA14003CF853 /* PTGLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTGLProgram.h; path = PTGLKit/PTGLProgram.h; sourceTree = SOURCE_ROOT; };
+		BB13D9E019D9DA14003CF853 /* PTGLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTGLProgram.m; path = PTGLKit/PTGLProgram.m; sourceTree = SOURCE_ROOT; };
+		BB13D9E119D9DA14003CF853 /* PTGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTGLView.h; path = PTGLKit/PTGLView.h; sourceTree = SOURCE_ROOT; };
+		BB13D9E219D9DA14003CF853 /* PTGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTGLView.m; path = PTGLKit/PTGLView.m; sourceTree = SOURCE_ROOT; };
+		BB13D9E319D9DA14003CF853 /* PTGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTGLViewController.h; path = PTGLKit/PTGLViewController.h; sourceTree = SOURCE_ROOT; };
+		BB13D9E419D9DA14003CF853 /* PTGLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTGLViewController.m; path = PTGLKit/PTGLViewController.m; sourceTree = SOURCE_ROOT; };
+		BB13D9E819D9DA1F003CF853 /* Shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = SOURCE_ROOT; };
+		BB13D9E919D9DA1F003CF853 /* Shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = SOURCE_ROOT; };
+		BB13D9EC19D9DA36003CF853 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = SOURCE_ROOT; };
+		BB13D9ED19D9DA36003CF853 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = SOURCE_ROOT; };
+		BB13D9EE19D9DA36003CF853 /* ModelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelData.h; sourceTree = SOURCE_ROOT; };
+		BB13D9EF19D9DA36003CF853 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = SOURCE_ROOT; };
+		BB13D9F019D9DA36003CF853 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = SOURCE_ROOT; };
+		BB13D9F419D9DA45003CF853 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
+		BB13D9F619D9DA59003CF853 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = SOURCE_ROOT; };
+		BB13D9F819D9DA74003CF853 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = SOURCE_ROOT; };
+		BB13D9FA19D9DA81003CF853 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
+		BB13D9FC19D9DA85003CF853 /* battlebombs.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = battlebombs.entitlements; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,13 +87,11 @@
 		BB13D99619D9D3EF003CF853 /* battlebombs */ = {
 			isa = PBXGroup;
 			children = (
-				BB13D99B19D9D3EF003CF853 /* MainMenu.xib */,
-				BB13D9A619D9D3EF003CF853 /* ViewController.h */,
-				BB13D9A719D9D3EF003CF853 /* ViewController.m */,
-				BB13D9A919D9D3EF003CF853 /* AppDelegate.h */,
-				BB13D9AA19D9D3EF003CF853 /* AppDelegate.m */,
-				BB13D9AC19D9D3EF003CF853 /* ModelData.h */,
-				BB13D9B719D9D3EF003CF853 /* Images.xcassets */,
+				BB13D9EC19D9DA36003CF853 /* AppDelegate.h */,
+				BB13D9ED19D9DA36003CF853 /* AppDelegate.m */,
+				BB13D9EE19D9DA36003CF853 /* ModelData.h */,
+				BB13D9EF19D9DA36003CF853 /* ViewController.h */,
+				BB13D9F019D9DA36003CF853 /* ViewController.m */,
 				BB13D9A119D9D3EF003CF853 /* Shaders */,
 				BB13D9AD19D9D3EF003CF853 /* PTGLKit */,
 				BB13D99719D9D3EF003CF853 /* Supporting Files */,
@@ -104,9 +102,11 @@
 		BB13D99719D9D3EF003CF853 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				BB13D9CD19D9D64E003CF853 /* battlebombs.entitlements */,
-				BB13D99819D9D3EF003CF853 /* Info.plist */,
-				BB13D99919D9D3EF003CF853 /* main.m */,
+				BB13D9FC19D9DA85003CF853 /* battlebombs.entitlements */,
+				BB13D9FA19D9DA81003CF853 /* Info.plist */,
+				BB13D9F819D9DA74003CF853 /* Images.xcassets */,
+				BB13D9F619D9DA59003CF853 /* main.m */,
+				BB13D9F319D9DA45003CF853 /* MainMenu.xib */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -114,23 +114,23 @@
 		BB13D9A119D9D3EF003CF853 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				BB13D9A219D9D3EF003CF853 /* Shader.fsh */,
-				BB13D9A419D9D3EF003CF853 /* Shader.vsh */,
+				BB13D9E819D9DA1F003CF853 /* Shader.fsh */,
+				BB13D9E919D9DA1F003CF853 /* Shader.vsh */,
 			);
-			name = Shaders;
+			path = Shaders;
 			sourceTree = "<group>";
 		};
 		BB13D9AD19D9D3EF003CF853 /* PTGLKit */ = {
 			isa = PBXGroup;
 			children = (
-				BB13D9AE19D9D3EF003CF853 /* PTGLProgram.h */,
-				BB13D9AF19D9D3EF003CF853 /* PTGLProgram.m */,
-				BB13D9B119D9D3EF003CF853 /* PTGLView.h */,
-				BB13D9B219D9D3EF003CF853 /* PTGLView.m */,
-				BB13D9B419D9D3EF003CF853 /* PTGLViewController.h */,
-				BB13D9B519D9D3EF003CF853 /* PTGLViewController.m */,
+				BB13D9DF19D9DA14003CF853 /* PTGLProgram.h */,
+				BB13D9E019D9DA14003CF853 /* PTGLProgram.m */,
+				BB13D9E119D9DA14003CF853 /* PTGLView.h */,
+				BB13D9E219D9DA14003CF853 /* PTGLView.m */,
+				BB13D9E319D9DA14003CF853 /* PTGLViewController.h */,
+				BB13D9E419D9DA14003CF853 /* PTGLViewController.m */,
 			);
-			name = PTGLKit;
+			path = PTGLKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,10 +195,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB13D9A319D9D3EF003CF853 /* Shader.fsh in Resources */,
-				BB13D9B819D9D3EF003CF853 /* Images.xcassets in Resources */,
-				BB13D99D19D9D3EF003CF853 /* MainMenu.xib in Resources */,
-				BB13D9A519D9D3EF003CF853 /* Shader.vsh in Resources */,
+				BB13D9EB19D9DA1F003CF853 /* Shader.vsh in Resources */,
+				BB13D9F919D9DA74003CF853 /* Images.xcassets in Resources */,
+				BB13D9EA19D9DA1F003CF853 /* Shader.fsh in Resources */,
+				BB13D9F519D9DA45003CF853 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,22 +209,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB13D9B619D9D3EF003CF853 /* PTGLViewController.m in Sources */,
-				BB13D9B019D9D3EF003CF853 /* PTGLProgram.m in Sources */,
-				BB13D9AB19D9D3EF003CF853 /* AppDelegate.m in Sources */,
-				BB13D9B319D9D3EF003CF853 /* PTGLView.m in Sources */,
-				BB13D99A19D9D3EF003CF853 /* main.m in Sources */,
-				BB13D9A819D9D3EF003CF853 /* ViewController.m in Sources */,
+				BB13D9F219D9DA36003CF853 /* ViewController.m in Sources */,
+				BB13D9E719D9DA14003CF853 /* PTGLViewController.m in Sources */,
+				BB13D9E519D9DA14003CF853 /* PTGLProgram.m in Sources */,
+				BB13D9E619D9DA14003CF853 /* PTGLView.m in Sources */,
+				BB13D9F719D9DA59003CF853 /* main.m in Sources */,
+				BB13D9F119D9DA36003CF853 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		BB13D99B19D9D3EF003CF853 /* MainMenu.xib */ = {
+		BB13D9F319D9DA45003CF853 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BB13D99C19D9D3EF003CF853 /* Base */,
+				BB13D9F419D9DA45003CF853 /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -312,9 +312,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = battlebombs/battlebombs.entitlements;
+				CODE_SIGN_ENTITLEMENTS = battlebombs.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = battlebombs/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -324,9 +324,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = battlebombs/battlebombs.entitlements;
+				CODE_SIGN_ENTITLEMENTS = battlebombs.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = battlebombs/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -351,6 +351,7 @@
 				BB13D9C919D9D3EF003CF853 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

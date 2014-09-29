@@ -19,7 +19,8 @@
 
 @implementation AppDelegate
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
     // Insert code here to initialize your application
     
     //To create a full screen window, uncomment the following code and delete the window in MainMenu.xib
@@ -43,6 +44,11 @@
     [self.fullScreenWindow makeKeyAndOrderFront:nil];
     
     [self.viewController awakeFromNib];*/
+}
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)application
+{
+    return YES;
 }
 
 @end
