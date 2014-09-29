@@ -8,7 +8,6 @@
 
 #include "platform_asset_utils.h"
 #include "macros.h"
-#include "platform_log.h"
 #include <android/asset_manager_jni.h>
 #include <assert.h>
 
