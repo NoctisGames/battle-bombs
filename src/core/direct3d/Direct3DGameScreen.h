@@ -1,20 +1,44 @@
 //
-//  Direct3DAssets.h
+//  Direct3DGameScreen.h
 //  battlebombs
 //
-//  Created by Stephen Gowen on 2/1/14.
+//  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
 #pragma once
 
+#include "GameScreen.h"
+#include "MediaEnginePlayer.h"
 #include <memory>
 
 class GameSound;
 
-class Direct3DAssets
+class Direct3DGameScreen : public GameScreen
 {
 public:
+	Direct3DGameScreen(const char *username, bool isOffline = false);
+
+	void load(float deviceScreenWidth, float deviceScreenHeight, int deviceScreenDpWidth, int deviceScreenDpHeight);
+
+	void handleSound();
+
+	void handleMusic();
+
+	void unload();
+
+	ID3D11Texture2D* getTexture();
+
+	virtual void touchToWorld(TouchEvent &touchEvent);
+
+	virtual void platformResume();
+
+	virtual void platformPause();
+
+	virtual bool handleOnBackPressed();
+
+private:
+	std::unique_ptr<MediaEnginePlayer> m_mediaPlayer;
 	std::unique_ptr<GameSound> m_countDown3Sound;
 	std::unique_ptr<GameSound> m_countDown2Sound;
 	std::unique_ptr<GameSound> m_countDown1Sound;
@@ -31,7 +55,9 @@ public:
 	std::unique_ptr<GameSound> m_gameSetSound;
 	std::unique_ptr<GameSound> m_drawSound;
 
-	static Direct3DAssets * getInstance();
+	D3D_FEATURE_LEVEL m_featureLevel;
 
-	Direct3DAssets();
+	float m_fGameScreenToDeviceScreenWidthRatio;
+	float m_fGameScreenToDeviceScreenHeightRatio;
+	float m_fDipToPixelRatio;
 };

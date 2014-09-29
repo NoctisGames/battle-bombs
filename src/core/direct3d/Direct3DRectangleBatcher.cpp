@@ -9,7 +9,6 @@
 #include "pch.h"
 #include "Direct3DRectangleBatcher.h"
 #include "BasicReaderWriter.h"
-#include "DirectXHelper.h"
 #include "GameConstants.h"
 #include "Rectangle.h"
 #include "Vector2D.h"
@@ -150,7 +149,7 @@ void Direct3DRectangleBatcher::endBatch()
 			bd.Usage = D3D11_USAGE_DEFAULT;
 			srd.pSysMem = &tempColorVertices.front();
 
-			DX::ThrowIfFailed(m_d3dDevice1->CreateBuffer(&bd, &srd, &vertexbuffer1));
+			m_d3dDevice1->CreateBuffer(&bd, &srd, &vertexbuffer1);
 
 			// Set the vertex and index buffer
 			UINT stride = sizeof(COLOR_VERTEX);
@@ -208,8 +207,7 @@ void Direct3DRectangleBatcher::createIndexBuffer()
 
 	indexDataDesc.pSysMem = &indexValues.front();
 
-	using namespace DirectX;
-	DX::ThrowIfFailed(m_d3dDevice1->CreateBuffer(&indexBufferDesc, &indexDataDesc, &indexbuffer1));
+	m_d3dDevice1->CreateBuffer(&indexBufferDesc, &indexDataDesc, &indexbuffer1);
 }
 
 // Helper for populating the SpriteBatch index buffer.

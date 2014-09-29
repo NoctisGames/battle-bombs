@@ -159,8 +159,15 @@
     <ClInclude Include="..\..\..\..\..\core\Color.h" />
     <ClInclude Include="..\..\..\..\..\core\CountDownNumberGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\CountDownNumberType.h" />
+    <ClInclude Include="..\..\..\..\..\core\direct3d\BasicReaderWriter.h" />
+    <ClInclude Include="..\..\..\..\..\core\direct3d\dds.h" />
+    <ClInclude Include="..\..\..\..\..\core\direct3d\DDSTextureLoader.h" />
+    <ClInclude Include="..\..\..\..\..\core\direct3d\Direct3DGameScreen.h" />
     <ClInclude Include="..\..\..\..\..\core\direct3d\Direct3DRectangleBatcher.h" />
+    <ClInclude Include="..\..\..\..\..\core\direct3d\Direct3DRenderer.h" />
     <ClInclude Include="..\..\..\..\..\core\direct3d\Direct3DSpriteBatcher.h" />
+    <ClInclude Include="..\..\..\..\..\core\direct3d\DirectXHelpers.h" />
+    <ClInclude Include="..\..\..\..\..\core\direct3d\PlatformHelpers.h" />
     <ClInclude Include="..\..\..\..\..\core\DisplayBattleGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\DisplayGameOverGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\DisplayGameOverType.h" />
@@ -219,24 +226,16 @@
     <ClInclude Include="..\..\..\..\..\core\Vector2D.h" />
     <ClInclude Include="..\..\..\..\..\core\WaitingForLocalSettingsInterface.h" />
     <ClInclude Include="..\..\..\..\..\core\WaitingForServerInterface.h" />
-    <ClInclude Include="BasicReaderWriter.h" />
     <ClInclude Include="BasicTimer.h" />
-    <ClInclude Include="dds.h" />
-    <ClInclude Include="DDSTextureLoader.h" />
-    <ClInclude Include="Direct3DAssets.h" />
     <ClInclude Include="Direct3DContentProvider.h" />
-    <ClInclude Include="Direct3DGameScreen.h" />
     <ClInclude Include="Direct3DInterop.h" />
-    <ClInclude Include="Direct3DRenderer.h" />
     <ClInclude Include="DirectXHelper.h" />
-    <ClInclude Include="DirectXHelpers.h" />
     <ClInclude Include="GameSound.h" />
     <ClInclude Include="Global.h" />
-    <ClInclude Include="Helpers\MediaEnginePlayer.h" />
-    <ClInclude Include="Helpers\RandomAccessReader.h" />
-    <ClInclude Include="Helpers\SoundFileReader.h" />
-    <ClInclude Include="Helpers\XAudio2SoundPlayer.h" />
-    <ClInclude Include="PlatformHelpers.h" />
+    <ClInclude Include="MediaEnginePlayer.h" />
+    <ClInclude Include="RandomAccessReader.h" />
+    <ClInclude Include="SoundFileReader.h" />
+    <ClInclude Include="XAudio2SoundPlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\core\ActiveButton.cpp" />
@@ -246,7 +245,11 @@
     <ClCompile Include="..\..\..\..\..\core\BotPlayerDynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BreakableBlock.cpp" />
     <ClCompile Include="..\..\..\..\..\core\CountDownNumberGameObject.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\direct3d\BasicReaderWriter.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\direct3d\DDSTextureLoader.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\direct3d\Direct3DGameScreen.cpp" />
     <ClCompile Include="..\..\..\..\..\core\direct3d\Direct3DRectangleBatcher.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\direct3d\Direct3DRenderer.cpp" />
     <ClCompile Include="..\..\..\..\..\core\direct3d\Direct3DSpriteBatcher.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DisplayBattleGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DisplayGameOverGameObject.cpp" />
@@ -287,45 +290,28 @@
     <ClCompile Include="..\..\..\..\..\core\Vector2D.cpp" />
     <ClCompile Include="..\..\..\..\..\core\WaitingForLocalSettingsInterface.cpp" />
     <ClCompile Include="..\..\..\..\..\core\WaitingForServerInterface.cpp" />
-    <ClCompile Include="BasicReaderWriter.cpp" />
-    <ClCompile Include="DDSTextureLoader.cpp" />
-    <ClCompile Include="Direct3DAssets.cpp" />
     <ClCompile Include="Direct3DContentProvider.cpp" />
-    <ClCompile Include="Direct3DGameScreen.cpp" />
     <ClCompile Include="Direct3DInterop.cpp" />
-    <ClCompile Include="Direct3DRenderer.cpp" />
     <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="Global.cpp" />
-    <ClCompile Include="Helpers\MediaEnginePlayer.cpp" />
-    <ClCompile Include="Helpers\RandomAccessReader.cpp" />
-    <ClCompile Include="Helpers\SoundFileReader.cpp" />
-    <ClCompile Include="Helpers\XAudio2SoundPlayer.cpp" />
+    <ClCompile Include="MediaEnginePlayer.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="RandomAccessReader.cpp" />
+    <ClCompile Include="SoundFileReader.cpp" />
+    <ClCompile Include="XAudio2SoundPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="ColorPixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Pixel</ShaderType>
+    <FxCompile Include="..\..\..\..\..\core\direct3d\ColorPixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="ColorVertexShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Vertex</ShaderType>
+    <FxCompile Include="..\..\..\..\..\core\direct3d\ColorVertexShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="TexturePixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Pixel</ShaderType>
+    <FxCompile Include="..\..\..\..\..\core\direct3d\TexturePixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="TextureVertexShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Vertex</ShaderType>
+    <FxCompile Include="..\..\..\..\..\core\direct3d\TextureVertexShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -10,7 +10,6 @@
 #include "macros.h"
 #include "Direct3DSpriteBatcher.h"
 #include "BasicReaderWriter.h"
-#include "DirectXHelper.h"
 #include "GameConstants.h"
 #include <stdlib.h>
 #include <deque>
@@ -175,7 +174,7 @@ void Direct3DSpriteBatcher::endBatchWithTexture(TextureWrapper &textureWrapper)
 			bd.Usage = D3D11_USAGE_DEFAULT;
 			srd.pSysMem = &tempTextureVertices.front();
 
-			DX::ThrowIfFailed(m_d3dDevice->CreateBuffer(&bd, &srd, &vertexbuffer));
+			m_d3dDevice->CreateBuffer(&bd, &srd, &vertexbuffer);
 
 			// Set the vertex and index buffer
 			UINT stride = sizeof(TEXTURE_VERTEX);
@@ -341,8 +340,7 @@ void Direct3DSpriteBatcher::createIndexBuffer()
 
 	indexDataDesc.pSysMem = &indexValues.front();
 
-	using namespace DirectX;
-	DX::ThrowIfFailed(m_d3dDevice->CreateBuffer(&indexBufferDesc, &indexDataDesc, &indexbuffer));
+	m_d3dDevice->CreateBuffer(&indexBufferDesc, &indexDataDesc, &indexbuffer);
 }
 
 // Helper for populating the SpriteBatch index buffer.

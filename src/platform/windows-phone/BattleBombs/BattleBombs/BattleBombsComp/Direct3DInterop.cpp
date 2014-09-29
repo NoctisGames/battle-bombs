@@ -40,7 +40,6 @@
 #include "Global.h"
 #include "SpriteBatcher.h"
 #include "RectangleBatcher.h"
-#include "Direct3DAssets.h"
 #include "GameSound.h"
 #include "PlayerRowAvatar.h"
 #include <string.h>

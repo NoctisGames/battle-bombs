@@ -44,7 +44,6 @@
 #include "PlayerRowPlatformAvatar.h"
 #include "Direct3DRenderer.h"
 #include "Global.h"
-#include "Direct3DAssets.h"
 #include "GameSound.h"
 #include "SpriteBatcher.h"
 #include "Direct3DRectangleBatcher.h"
@@ -91,8 +90,7 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	// Create the Direct3D 11 API device object and a corresponding context.
 	ComPtr<ID3D11Device> device;
 	ComPtr<ID3D11DeviceContext> context;
-	DX::ThrowIfFailed(
-		D3D11CreateDevice(
+	D3D11CreateDevice(
 		nullptr, // Specify nullptr to use the default adapter.
 		D3D_DRIVER_TYPE_HARDWARE,
 		nullptr,
@@ -103,12 +101,11 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 		&device, // Returns the Direct3D device created.
 		&m_featureLevel, // Returns feature level of device created.
 		&context // Returns the device immediate context.
-		)
 		);
 	
 	// Get the Direct3D 11.1 API device and context interfaces.
-	DX::ThrowIfFailed(device.As(&dev));
-	DX::ThrowIfFailed(context.As(&devcon));
+	device.As(&dev);
+	context.As(&devcon);
 
 	// Create a descriptor for the render target buffer.
 	CD3D11_TEXTURE2D_DESC renderTargetDesc(
@@ -122,9 +119,8 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	renderTargetDesc.MiscFlags = D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX | D3D11_RESOURCE_MISC_SHARED_NTHANDLE;
 
 	// Allocate a 2-D surface as the render target buffer.
-	DX::ThrowIfFailed(dev->CreateTexture2D(&renderTargetDesc, nullptr, &m_renderTarget));
-
-	DX::ThrowIfFailed(dev->CreateRenderTargetView(m_renderTarget.Get(), nullptr, &rendertarget));
+	dev->CreateTexture2D(&renderTargetDesc, nullptr, &m_renderTarget);
+	dev->CreateRenderTargetView(m_renderTarget.Get(), nullptr, &rendertarget);
 
 	// set the viewport
 	D3D11_VIEWPORT viewport = { 0 };
@@ -140,6 +136,22 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	// Load Background Music
 	m_mediaPlayer = std::unique_ptr<MediaEnginePlayer>(new MediaEnginePlayer);
 	m_mediaPlayer->Initialize(dev.Get(), DXGI_FORMAT_B8G8R8A8_UNORM);
+
+	m_countDown3Sound = std::unique_ptr<GameSound>(new GameSound("assets\\countdown_3.wav"));
+	m_countDown2Sound = std::unique_ptr<GameSound>(new GameSound("assets\\countdown_2.wav"));
+	m_countDown1Sound = std::unique_ptr<GameSound>(new GameSound("assets\\countdown_1.wav"));
+	m_battleSound = std::unique_ptr<GameSound>(new GameSound("assets\\battle.wav"));
+	m_plantBombSound = std::unique_ptr<GameSound>(new GameSound("assets\\plant_bomb.wav"));
+	m_explosionSound = std::unique_ptr<GameSound>(new GameSound("assets\\explosion.wav"));
+	m_powerUpBombSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_bomb.wav"));
+	m_powerUpFireSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_fire.wav"));
+	m_powerUpSpeedSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_speed.wav"));
+	m_powerUpForceFieldSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_force_field.wav"));
+	m_powerUpPushSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_push.wav"));
+	m_forceFieldDownSound = std::unique_ptr<GameSound>(new GameSound("assets\\force_field_down.wav"));
+	m_deathSound = std::unique_ptr<GameSound>(new GameSound("assets\\death.wav"));
+	m_gameSetSound = std::unique_ptr<GameSound>(new GameSound("assets\\game_set.wav"));
+	m_drawSound = std::unique_ptr<GameSound>(new GameSound("assets\\draw.wav"));
 }
 
 void Direct3DGameScreen::handleSound()
@@ -152,49 +164,49 @@ void Direct3DGameScreen::handleSound()
 		switch (soundId)
 		{
 		case SOUND_COUNT_DOWN_3:
-			Direct3DAssets::getInstance()->m_countDown3Sound->play();
+			m_countDown3Sound->play();
 			break;
 		case SOUND_COUNT_DOWN_2:
-			Direct3DAssets::getInstance()->m_countDown2Sound->play();
+			m_countDown2Sound->play();
 			break;
 		case SOUND_COUNT_DOWN_1:
-			Direct3DAssets::getInstance()->m_countDown1Sound->play();
+			m_countDown1Sound->play();
 			break;
 		case SOUND_BATTLE:
-			Direct3DAssets::getInstance()->m_battleSound->play();
+			m_battleSound->play();
 			break;
 		case SOUND_PLANT_BOMB:
-			Direct3DAssets::getInstance()->m_plantBombSound->play();
+			m_plantBombSound->play();
 			break;
 		case SOUND_EXPLOSION:
-			Direct3DAssets::getInstance()->m_explosionSound->play();
+			m_explosionSound->play();
 			break;
 		case SOUND_PU_BOMB:
-			Direct3DAssets::getInstance()->m_powerUpBombSound->play();
+			m_powerUpBombSound->play();
 			break;
 		case SOUND_PU_FIRE:
-			Direct3DAssets::getInstance()->m_powerUpFireSound->play();
+			m_powerUpFireSound->play();
 			break;
 		case SOUND_PU_SPEED:
-			Direct3DAssets::getInstance()->m_powerUpSpeedSound->play();
+			m_powerUpSpeedSound->play();
 			break;
 		case SOUND_PU_FORCE_FIELD:
-			Direct3DAssets::getInstance()->m_powerUpForceFieldSound->play();
+			m_powerUpForceFieldSound->play();
 			break;
 		case SOUND_PU_PUSH:
-			Direct3DAssets::getInstance()->m_powerUpPushSound->play();
+			m_powerUpPushSound->play();
 			break;
 		case SOUND_FORCE_FIELD_DOWN:
-			Direct3DAssets::getInstance()->m_forceFieldDownSound->play();
+			m_forceFieldDownSound->play();
 			break;
 		case SOUND_DEATH:
-			Direct3DAssets::getInstance()->m_deathSound->play();
+			m_deathSound->play();
 			break;
 		case SOUND_GAME_SET:
-			Direct3DAssets::getInstance()->m_gameSetSound->play();
+			m_gameSetSound->play();
 			break;
 		case SOUND_DRAW:
-			Direct3DAssets::getInstance()->m_drawSound->play();
+			m_drawSound->play();
 			break;
 		default:
 			continue;
