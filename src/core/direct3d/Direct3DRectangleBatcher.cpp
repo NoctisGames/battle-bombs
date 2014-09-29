@@ -26,6 +26,8 @@ ComPtr<ID3D11Buffer> constantbuffer1; // the constant buffer interface
 ComPtr<ID3D11Buffer> vertexbuffer1; // the vertex buffer interface
 ComPtr<ID3D11Buffer> indexbuffer1; // the index buffer interface
 
+DirectX::XMMATRIX matFinal1;
+
 static const size_t MaxBatchSize = 256;
 static const size_t MaxRectangleBatchSize = 128;
 static const size_t VerticesPerRectangle = 4;
@@ -85,6 +87,20 @@ Direct3DRectangleBatcher::Direct3DRectangleBatcher(ID3D11Device1 *d3dDevice, ID3
 	bd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
 	m_d3dDevice1->CreateBuffer(&bd2, nullptr, &constantbuffer1);
+
+	using namespace DirectX;
+
+	// calculate the view transformation
+	XMVECTOR vecCamPosition = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1, 0);
+	XMVECTOR vecCamLookAt = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0);
+	XMVECTOR vecCamUp = XMVectorSet(0, 1, 0, 0);
+	XMMATRIX matView = XMMatrixLookAtRH(vecCamPosition, vecCamLookAt, vecCamUp);
+
+	// calculate the projection transformation
+	XMMATRIX matProjection = XMMatrixOrthographicRH(SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
+
+	// calculate the final matrix
+	matFinal1 = matView * matProjection;
 }
 
 void Direct3DRectangleBatcher::beginBatch()
@@ -111,22 +127,8 @@ void Direct3DRectangleBatcher::endBatch()
 
 		m_d3dContext1->IASetIndexBuffer(indexbuffer1.Get(), DXGI_FORMAT_R16_UINT, 0);
 
-		using namespace DirectX;
-
-		// calculate the view transformation
-		XMVECTOR vecCamPosition = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1, 0);
-		XMVECTOR vecCamLookAt = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0);
-		XMVECTOR vecCamUp = XMVectorSet(0, 1, 0, 0);
-		XMMATRIX matView = XMMatrixLookAtRH(vecCamPosition, vecCamLookAt, vecCamUp);
-
-		// calculate the projection transformation
-		XMMATRIX matProjection = XMMatrixOrthographicRH(SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
-
-		// calculate the final matrix
-		XMMATRIX matFinal = matView * matProjection;
-
 		// send the final matrix to video memory
-		m_d3dContext1->UpdateSubresource(constantbuffer1.Get(), 0, 0, &matFinal, 0, 0);
+		m_d3dContext1->UpdateSubresource(constantbuffer1.Get(), 0, 0, &matFinal1, 0, 0);
 
 		m_d3dContext1->VSSetConstantBuffers(0, 1, constantbuffer1.GetAddressOf());
 

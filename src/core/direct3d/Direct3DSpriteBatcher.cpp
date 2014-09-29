@@ -26,6 +26,8 @@ ComPtr<ID3D11Buffer> constantbuffer; // the constant buffer interface
 ComPtr<ID3D11Buffer> vertexbuffer; // the vertex buffer interface
 ComPtr<ID3D11Buffer> indexbuffer; // the index buffer interface
 
+DirectX::XMMATRIX matFinal;
+
 static const size_t MaxBatchSize = 2048;
 static const size_t MaxSpriteBatchSize = 128;
 static const size_t VerticesPerSprite = 4;
@@ -104,6 +106,20 @@ Direct3DSpriteBatcher::Direct3DSpriteBatcher(ID3D11Device1 *d3dDevice, ID3D11Dev
 	bd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
 	m_d3dDevice->CreateBuffer(&bd2, nullptr, &constantbuffer);
+
+	using namespace DirectX;
+
+	// calculate the view transformation
+	XMVECTOR vecCamPosition = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1, 0);
+	XMVECTOR vecCamLookAt = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0);
+	XMVECTOR vecCamUp = XMVectorSet(0, 1, 0, 0);
+	XMMATRIX matView = XMMatrixLookAtRH(vecCamPosition, vecCamLookAt, vecCamUp);
+
+	// calculate the projection transformation
+	XMMATRIX matProjection = XMMatrixOrthographicRH(SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
+
+	// calculate the final matrix
+	matFinal = matView * matProjection;
 }
 
 void Direct3DSpriteBatcher::beginBatch()
@@ -135,20 +151,6 @@ void Direct3DSpriteBatcher::endBatchWithTexture(TextureWrapper &textureWrapper)
 		m_d3dContext->PSSetShader(pixelshader.Get(), nullptr, 0);
 
 		m_d3dContext->IASetIndexBuffer(indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-
-		using namespace DirectX;
-
-		// calculate the view transformation
-		XMVECTOR vecCamPosition = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1, 0);
-		XMVECTOR vecCamLookAt = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0);
-		XMVECTOR vecCamUp = XMVectorSet(0, 1, 0, 0);
-		XMMATRIX matView = XMMatrixLookAtRH(vecCamPosition, vecCamLookAt, vecCamUp);
-
-		// calculate the projection transformation
-		XMMATRIX matProjection = XMMatrixOrthographicRH(SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
-
-		// calculate the final matrix
-		XMMATRIX matFinal = matView * matProjection;
 
 		// send the final matrix to video memory
 		m_d3dContext->UpdateSubresource(constantbuffer.Get(), 0, 0, &matFinal, 0, 0);
