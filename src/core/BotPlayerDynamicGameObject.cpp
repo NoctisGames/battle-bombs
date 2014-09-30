@@ -401,12 +401,10 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 	{
 		if (PathFinder::getInstance().getGridCellCost(m_gridX, gridBottomY) == 1 && isProposedNodeUnexplored(m_gridX, gridBottomY))
 		{
-			shortestDistanceToPlayerTarget = distance;
 			bestDirection = DIRECTION_DOWN;
 		}
 		else if (PathFinder::isLocationOccupiedByBreakableBlock(breakableBlocks, m_gridX, gridBottomY))
 		{
-			shortestDistanceToPlayerTarget = distance;
 			bestDirection = -1;
 		}
 	}

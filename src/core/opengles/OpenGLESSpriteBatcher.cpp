@@ -32,14 +32,14 @@ OpenGLESSpriteBatcher::OpenGLESSpriteBatcher()
     
     generateIndices();
     
-    vec3 eye = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1 };
-    vec3 center = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0 };
+    vec3 eye = { 0, 0, 1 };
+    vec3 center = { 0, 0, 0 };
     vec3 up = { 0, 1, 0 };
+    
+    mat4x4_ortho(m_projectionMatrix, 0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, 1);
     mat4x4_look_at(m_viewMatrix, eye, center, up);
     
-    mat4x4_ortho(m_projectionMatrix, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
-    
-    mat4x4_mul(m_viewProjectionMatrix, m_viewMatrix, m_projectionMatrix);
+    mat4x4_mul(m_viewProjectionMatrix, m_projectionMatrix, m_viewMatrix);
 }
 
 void OpenGLESSpriteBatcher::beginBatch()
@@ -75,6 +75,8 @@ void OpenGLESSpriteBatcher::endBatchWithTexture(TextureWrapper &textureWrapper)
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         
         glBindTexture(GL_TEXTURE_2D, 0);
+        
+        glDeleteBuffers(1, &m_buffer);
     }
 }
 
