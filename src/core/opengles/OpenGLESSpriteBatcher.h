@@ -12,14 +12,9 @@
 extern "C"
 {
 #include "platform_gl.h"
+#include "program.h"
+#include "linmath.h"
 }
-
-struct TEXTURE_VERTEX
-{
-    GLfloat X, Y, Z; // vertex position
-    GLfloat R, G, B, A; // vertex color
-    GLfloat U, V;    // texture coordinates
-};
 
 #include "SpriteBatcher.h"
 #include <memory>
@@ -44,8 +39,12 @@ protected:
     virtual void drawSprite(float x, float y, float width, float height, Color &color, TextureRegion tr);
 
 private:
-    std::vector<TEXTURE_VERTEX> m_textureVertices;
+    std::vector<GLfloat> m_textureVertices;
     std::vector<GLshort> m_indices;
+    TextureProgram m_textureProgram;
+    mat4x4 m_viewMatrix;
+    mat4x4 m_projectionMatrix;
+    mat4x4 m_viewProjectionMatrix;
     
     void addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a, GLfloat u, GLfloat v);
     

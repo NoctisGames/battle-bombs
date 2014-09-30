@@ -12,13 +12,9 @@
 extern "C"
 {
 #include "platform_gl.h"
+#include "program.h"
+#include "linmath.h"
 }
-
-struct COLOR_VERTEX
-{
-    GLfloat X, Y, Z; // vertex position
-    GLfloat R, G, B, A; // vertex color
-};
 
 #include "RectangleBatcher.h"
 #include <memory>
@@ -36,10 +32,14 @@ public:
     virtual void renderRectangle(float x1, float y1, float x2, float y2, Color &color);
     
 private:
-    std::vector<COLOR_VERTEX> m_colorVertices;
+    std::vector<GLfloat> m_colorVertices;
     std::vector<GLshort> m_indices;
+    ColorProgram m_colorProgram;
+    mat4x4 m_viewMatrix;
+    mat4x4 m_projectionMatrix;
+    mat4x4 m_viewProjectionMatrix;
     
-    void addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a, GLfloat u, GLfloat v);
+    void addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a);
     
     void generateIndices();
 };

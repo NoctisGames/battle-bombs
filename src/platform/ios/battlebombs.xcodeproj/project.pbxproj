@@ -1302,13 +1302,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stephen Gowen (8S5X8SQ245)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty\"/**";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "battlebombs-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1318,7 +1318,6 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../core\"/**",
-					"\"$(SRCROOT)/../common\"",
 					"\"$(SRCROOT)/../../3rdparty\"/**",
 				);
 				INFOPLIST_FILE = "battlebombs-Info.plist";
@@ -1328,7 +1327,7 @@
 				OTHER_LDFLAGS = (
 					"-std=c++0x",
 					"-lstdc++",
-					"-ObjC\n",
+					"-ObjC",
 				);
 				PRODUCT_NAME = "Battle Bombs";
 				PROVISIONING_PROFILE = "60979554-3fa1-45c0-bdfd-204e069c1205";
@@ -1343,13 +1342,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Stephen Gowen (83V22B9TY9)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty\"/**";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "battlebombs-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1358,7 +1357,6 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../core\"/**",
-					"\"$(SRCROOT)/../common\"",
 					"\"$(SRCROOT)/../../3rdparty\"/**",
 				);
 				INFOPLIST_FILE = "battlebombs-Info.plist";
@@ -1368,7 +1366,7 @@
 				OTHER_LDFLAGS = (
 					"-std=c++0x",
 					"-lstdc++",
-					"-ObjC\n",
+					"-ObjC",
 				);
 				PRODUCT_NAME = "Battle Bombs";
 				PROVISIONING_PROFILE = "c1d81dfa-f5b1-4b38-8a47-2113271e5cb9";

@@ -11,38 +11,37 @@
 #include "OpenGLESSpriteBatcher.h"
 #include "GameConstants.h"
 #include "TextureRegion.h"
+#include "Rectangle.h"
+#include "Vector2D.h"
+
+extern "C"
+{
 #include "asset_utils.h"
 #include "buffer.h"
-#include "image.h"
-#include "linmath.h"
 #include "platform_gl.h"
-#include "platform_asset_utils.h"
 #include "program.h"
-#include "shader.h"
+}
 
-static TextureProgram textureProgram;
-
-static mat4x4 viewProjectionMatrix;
-
-static const size_t MAX_BATCH_SIZE = 2048;
-static const size_t VERTICES_PER_SPRITE = 4;
-static const size_t INDICES_PER_SPRITE = 6;
+static const int MAX_BATCH_SIZE = 2048;
+static const int VERTICES_PER_SPRITE = 4;
+static const int INDICES_PER_SPRITE = 6;
 
 OpenGLESSpriteBatcher::OpenGLESSpriteBatcher()
 {
     m_iNumSprites = 0;
     
-    textureProgram = get_texture_program(build_program_from_assets("shaders/texture_shader.vsh", "shaders/texture_shader.fsh"));
+    m_textureProgram = get_texture_program(build_program_from_assets("texture_shader.vsh", "texture_shader.fsh"));
     
     generateIndices();
     
-    mat4x4 viewMatrix;
-    mat4x4_look_at(viewMatrix, (vec3){SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1}, (vec3){SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0}, (vec3){0, 1, 0});
+    vec3 eye = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1 };
+    vec3 center = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0 };
+    vec3 up = { 0, 1, 0 };
+    mat4x4_look_at(m_viewMatrix, eye, center, up);
     
-    mat4x4 projectionMatrix;
-    mat4x4_ortho(projectionMatrix, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
+    mat4x4_ortho(m_projectionMatrix, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
     
-    mat4x4_mul(viewProjectionMatrix, viewMatrix, projectionMatrix);
+    mat4x4_mul(m_viewProjectionMatrix, m_viewMatrix, m_projectionMatrix);
 }
 
 void OpenGLESSpriteBatcher::beginBatch()
@@ -55,23 +54,23 @@ void OpenGLESSpriteBatcher::endBatchWithTexture(TextureWrapper &textureWrapper)
 {
     if(m_iNumSprites > 0)
     {
-        GLuint buffer = create_vbo(sizeof(TEXTURE_VERTEX) * m_iNumSprites, &m_textureVertices[0], GL_STATIC_DRAW);
+        GLuint buffer = create_vbo(sizeof(GLfloat) * m_textureVertices.size(), &m_textureVertices[0], GL_DYNAMIC_DRAW);
         
-        glUseProgram(textureProgram.program);
+        glUseProgram(m_textureProgram.program);
         
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureWrapper.texture);
-        glUniformMatrix4fv(textureProgram.u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)viewProjectionMatrix);
-        glUniform1i(textureProgram.u_texture_unit_location, 0);
+        glUniformMatrix4fv(m_textureProgram.u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)m_viewProjectionMatrix);
+        glUniform1i(m_textureProgram.u_texture_unit_location, 0);
         
         glBindBuffer(GL_ARRAY_BUFFER, buffer);
-        glVertexAttribPointer(textureProgram.a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(TEXTURE_VERTEX), BUFFER_OFFSET(0));
-        glVertexAttribPointer(textureProgram.a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(TEXTURE_VERTEX), BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
-        glVertexAttribPointer(textureProgram.a_texture_coordinates_location, 2, GL_FLOAT, GL_FALSE, sizeof(TEXTURE_VERTEX), BUFFER_OFFSET(7 * sizeof(GL_FLOAT)));
+        glVertexAttribPointer(m_textureProgram.a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(0));
+        glVertexAttribPointer(m_textureProgram.a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
+        glVertexAttribPointer(m_textureProgram.a_texture_coordinates_location, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(7 * sizeof(GL_FLOAT)));
         
-        glEnableVertexAttribArray(textureProgram.a_position_location);
-        glEnableVertexAttribArray(textureProgram.a_color_location);
-        glEnableVertexAttribArray(textureProgram.a_texture_coordinates_location);
+        glEnableVertexAttribArray(m_textureProgram.a_position_location);
+        glEnableVertexAttribArray(m_textureProgram.a_color_location);
+        glEnableVertexAttribArray(m_textureProgram.a_texture_coordinates_location);
         
         glDrawElements(GL_TRIANGLES, m_iNumSprites * INDICES_PER_SPRITE, GL_UNSIGNED_SHORT, &m_indices[0]);
         
@@ -211,8 +210,15 @@ void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float heig
 
 void OpenGLESSpriteBatcher::addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a, GLfloat u, GLfloat v)
 {
-    TEXTURE_VERTEX tv = { x, y, z, r, g, b, a, u, v };
-    m_textureVertices.push_back(tv);
+    m_textureVertices.push_back(x);
+    m_textureVertices.push_back(y);
+    m_textureVertices.push_back(z);
+    m_textureVertices.push_back(r);
+    m_textureVertices.push_back(g);
+    m_textureVertices.push_back(b);
+    m_textureVertices.push_back(a);
+    m_textureVertices.push_back(u);
+    m_textureVertices.push_back(v);
 }
 
 void OpenGLESSpriteBatcher::generateIndices()
