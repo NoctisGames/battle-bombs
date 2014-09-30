@@ -18,8 +18,6 @@ extern "C"
 {
 #include "asset_utils.h"
 #include "buffer.h"
-#include "platform_gl.h"
-#include "program.h"
 }
 
 static const int MAX_BATCH_SIZE = 2048;
@@ -54,7 +52,7 @@ void OpenGLESSpriteBatcher::endBatchWithTexture(TextureWrapper &textureWrapper)
 {
     if(m_iNumSprites > 0)
     {
-        GLuint buffer = create_vbo(sizeof(GLfloat) * m_textureVertices.size(), &m_textureVertices[0], GL_DYNAMIC_DRAW);
+        m_buffer = create_vbo(sizeof(GLfloat) * m_textureVertices.size(), &m_textureVertices[0], GL_STATIC_DRAW);
         
         glUseProgram(m_textureProgram.program);
         
@@ -63,7 +61,7 @@ void OpenGLESSpriteBatcher::endBatchWithTexture(TextureWrapper &textureWrapper)
         glUniformMatrix4fv(m_textureProgram.u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)m_viewProjectionMatrix);
         glUniform1i(m_textureProgram.u_texture_unit_location, 0);
         
-        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
         glVertexAttribPointer(m_textureProgram.a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(0));
         glVertexAttribPointer(m_textureProgram.a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
         glVertexAttribPointer(m_textureProgram.a_texture_coordinates_location, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(7 * sizeof(GL_FLOAT)));

@@ -17,8 +17,6 @@ extern "C"
 {
 #include "asset_utils.h"
 #include "buffer.h"
-#include "platform_gl.h"
-#include "program.h"
 }
 
 static const int MAX_BATCH_SIZE = 256;
@@ -53,13 +51,13 @@ void OpenGLESRectangleBatcher::endBatch()
 {
     if (m_iNumRectangles > 0)
     {
-        GLuint buffer = create_vbo(sizeof(GLfloat) * m_colorVertices.size(), &m_colorVertices[0], GL_DYNAMIC_DRAW);
+        m_buffer = create_vbo(sizeof(GLfloat) * m_colorVertices.size(), &m_colorVertices[0], GL_STATIC_DRAW);
         
         glUseProgram(m_colorProgram.program);
         
         glUniformMatrix4fv(m_colorProgram.u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)m_viewProjectionMatrix);
         
-        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
         glVertexAttribPointer(m_colorProgram.a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(0));
         glVertexAttribPointer(m_colorProgram.a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
         
@@ -82,7 +80,7 @@ void OpenGLESRectangleBatcher::renderRectangle(float x1, float y1, float x2, flo
     m_iNumRectangles++;
 }
 
-void OpenGLESRectangleBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
+void OpenGLESRectangleBatcher::addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 {
     m_colorVertices.push_back(x);
     m_colorVertices.push_back(y);
