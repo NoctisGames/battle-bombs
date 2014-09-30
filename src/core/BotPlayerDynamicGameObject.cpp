@@ -159,35 +159,19 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
                     {
                         case DIRECTION_RIGHT:
                             hasMovedFarEnough = currentPosX >= targetPosX;
-                            if(hasMovedFarEnough)
-                            {
-                                m_position->set(targetPosX, currentPosY);
-                            }
                             moveInDirection(DIRECTION_RIGHT);
                             break;
                         case DIRECTION_UP:
                             hasMovedFarEnough = currentPosY >= targetPosY;
-                            if(hasMovedFarEnough)
-                            {
-                                m_position->set(currentPosX, targetPosY);
-                            }
                             moveInDirection(DIRECTION_UP);
                             break;
                         case DIRECTION_LEFT:
                             hasMovedFarEnough = currentPosX <= targetPosX;
-                            if(hasMovedFarEnough)
-                            {
-                                m_position->set(targetPosX, currentPosY);
-                            }
                             moveInDirection(DIRECTION_LEFT);
                             break;
                         case DIRECTION_DOWN:
                         default:
                             hasMovedFarEnough = currentPosY <= targetPosY;
-                            if(hasMovedFarEnough)
-                            {
-                                m_position->set(currentPosX, targetPosY);
-                            }
                             moveInDirection(DIRECTION_DOWN);
                             break;
                     }
@@ -202,18 +186,22 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
                         {
                             if (m_gridX < m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
                             {
+                                m_position->set(currentPosX, targetPosY);
                                 moveInDirection(DIRECTION_RIGHT);
                             }
                             else if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY < m_currentPath.at(m_currentPathIndex).y)
                             {
+                                m_position->set(targetPosX, currentPosY);
                                 moveInDirection(DIRECTION_UP);
                             }
                             else if (m_gridX > m_currentPath.at(m_currentPathIndex).x && m_gridY == m_currentPath.at(m_currentPathIndex).y)
                             {
+                                m_position->set(currentPosX, targetPosY);
                                 moveInDirection(DIRECTION_LEFT);
                             }
                             else if (m_gridX == m_currentPath.at(m_currentPathIndex).x && m_gridY > m_currentPath.at(m_currentPathIndex).y)
                             {
+                                m_position->set(targetPosX, currentPosY);
                                 moveInDirection(DIRECTION_DOWN);
                             }
                         }
