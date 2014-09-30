@@ -60,8 +60,8 @@
                 alertTextField.placeholder = NSLocalizedString(@"enter_username_hint", nil);
                 
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                NSString *username = [userDefaults objectForKey:@"USERNAME"];
-                [alertTextField setText:username];
+                _username = [userDefaults objectForKey:@"USERNAME"];
+                [alertTextField setText:_username];
                 
                 [alert show];
             }
@@ -104,8 +104,8 @@
     alertTextField.placeholder = NSLocalizedString(@"enter_username_hint", nil);
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *username = [userDefaults objectForKey:@"USERNAME"];
-    [alertTextField setText:username];
+    _username = [userDefaults objectForKey:@"USERNAME"];
+    [alertTextField setText:_username];
     
     [alert show];
 }
