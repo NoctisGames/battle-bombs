@@ -38,9 +38,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final String BREAKABLE_BLOCK_POWER_UP_FLAGS = "breakableBlockPowerUpFlags";
     private static final int TIME_BETWEEN_ROUNDS = 20;
     private static final int PLATFORM_UNKNOWN = 0;
-    private static final int PLATFORM_ANDROID = 1;
-    private static final int PLATFORM_IOS = 2;
-    private static final int PLATFORM_WINDOWS_PHONE = 3;
     private static final int NUM_MAPS = 3;
     private static final short PRE_GAME_SERVER_UPDATE = 1335;
     private static final short BEGIN_SPECTATE = 1336;
@@ -50,9 +47,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final int PLAYER_DEATH = 9;
     private static final int PLAYER_EVENT_BASE = 100000000;
     private static final int PLAYER_EVENT_DIRECTION_BASE = 10000000;
-    private static final int PLAYER_EVENT_GRID_X_BASE = 100000;
-    private static final int PLAYER_EVENT_GRID_Y_BASE = 1000;
-    private static final int PLAYER_EVENT_MOD_BASE = 100;
 
     // smooth constant elements to play with
     private static final float movAveragePeriod = 40; // #frames involved in average calc (suggested values 5-100)
@@ -76,7 +70,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
 
     private int _numSecondsLeftForRound;
     private float _stateTime;
-    private float _timeSinceLastPlayersAliveUpdate;
     private float _countdownTime;
     private boolean _isGameRunning;
     private float smoothedDeltaRealTime_ms = 17.5f; // initial value, Optionally you can save the new computed value (will change with each hardware) in Preferences to optimize the first drawing frames
@@ -88,7 +81,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     {
         _room = room;
         _stateTime = 0;
-        _timeSinceLastPlayersAliveUpdate = 0;
         _countdownTime = 0;
         _isGameRunning = false;
 
@@ -178,35 +170,12 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             else
             {
                 _stateTime += deltaTime;
-                _timeSinceLastPlayersAliveUpdate += deltaTime;
                 while (_stateTime >= 1)
                 {
                     _numSecondsLeftForRound--;
                     _stateTime -= 1;
                 }
-                
-                if (_timeSinceLastPlayersAliveUpdate > 5)
-                {
-                    try
-                    {
-                        JSONObject tobeSent = new JSONObject();
-                        tobeSent.put(EVENT_TYPE, CLIENT_UPDATE);
 
-                        for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
-                        {
-                            tobeSent.put("playerIndex" + playerIndex + "Alive", is_player_alive(_room.getId(), playerIndex));
-                        }
-
-                        updateRoomWithMessage(tobeSent.toString());
-                    }
-                    catch (JSONException e)
-                    {
-                        System.err.println(e.toString());
-                    }
-
-                    _timeSinceLastPlayersAliveUpdate = 0;
-                }
-                
                 short numAlive = 0;
                 short winningPlayerIndex = -1;
                 for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
@@ -523,7 +492,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     {
         _isGameRunning = false;
         _stateTime = 0;
-        _timeSinceLastPlayersAliveUpdate = 0;
         _countdownTime = 0;
     }
 
