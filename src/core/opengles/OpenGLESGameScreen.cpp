@@ -46,7 +46,6 @@
 #include "OpenGLESRectangleBatcher.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "SpriteBatcher.h"
-#include "Vertices2D.h"
 
 OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
 {
@@ -60,15 +59,6 @@ void OpenGLESGameScreen::onSurfaceCreated(int width, int height)
     
     glViewport(0, 0, width, height);
 	glScissor(0, 0, width, height);
-    
-	glLoadIdentity();
-    
-	glMatrixMode(GL_PROJECTION);
-	glOrthof(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-    
-	glLoadIdentity();
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
     m_renderer = std::unique_ptr<OpenGLESRenderer>(new OpenGLESRenderer(m_iDeviceScreenWidth, m_iDeviceScreenHeight));
 }

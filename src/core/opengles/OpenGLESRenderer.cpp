@@ -32,7 +32,6 @@
 #include "OpenGLESRectangleBatcher.h"
 #include "MiniMapGridType.h"
 #include "Rectangle.h"
-#include "Vertices2D.h"
 #include "PlayerForceFieldState.h"
 #include "SpectatorControls.h"
 #include "PlayerRow.h"
@@ -50,8 +49,8 @@ extern "C"
 
 OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
 {
-    m_spriteBatcher = std::unique_ptr<OpenGLESSpriteBatcher>(new OpenGLESSpriteBatcher(4096));
-    m_rectangleBatcher = std::unique_ptr<OpenGLESRectangleBatcher>(new OpenGLESRectangleBatcher(1024, true));
+    m_spriteBatcher = std::unique_ptr<OpenGLESSpriteBatcher>(new OpenGLESSpriteBatcher());
+    m_rectangleBatcher = std::unique_ptr<OpenGLESRectangleBatcher>(new OpenGLESRectangleBatcher(true));
     
     m_gameTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("map_space.png")));
     m_interfaceTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("interface.png")));

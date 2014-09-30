@@ -57,7 +57,7 @@ static Logger *logger = nil;
 {
     [super viewDidLoad];
     
-    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     if (!self.context)
     {
         [logger error:@"Failed to create ES context"];
@@ -68,12 +68,9 @@ static Logger *logger = nil;
     view.context = self.context;
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     view.userInteractionEnabled = YES;
-    
     [view setMultipleTouchEnabled:YES];
     
-    init([self.username UTF8String], [self isOffline]);
-    
-    [self setupGL];
+    self.preferredFramesPerSecond = 60;
     
     self.countDown3Sound = [[Sound alloc] initWithSoundNamed:@"countdown_3.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.countDown2Sound = [[Sound alloc] initWithSoundNamed:@"countdown_2.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
@@ -90,6 +87,28 @@ static Logger *logger = nil;
     self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.gameSetSound = [[Sound alloc] initWithSoundNamed:@"game_set.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.drawSound = [[Sound alloc] initWithSoundNamed:@"draw.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
+    
+    [EAGLContext setCurrentContext:self.context];
+    
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    CGSize screenSize = CGSizeMake(screenBounds.size.width * screenScale, screenBounds.size.height * screenScale);
+    
+    CGSize newSize = CGSizeMake(screenSize.width, screenSize.height);
+    newSize.width = roundf(newSize.width);
+    newSize.height = roundf(newSize.height);
+    
+    if([Logger isDebugEnabled])
+    {
+        [logger debug:[NSString stringWithFormat:@"dimension %f x %f", newSize.width, newSize.height]];
+    }
+    
+    init([self.username UTF8String], [self isOffline]);
+    
+    on_surface_created(newSize.width, newSize.height);
+    
+    on_surface_changed(newSize.width, newSize.height, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
+    on_resume();
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onPause)
@@ -291,33 +310,6 @@ static Logger *logger = nil;
 - (bool)isOffline
 {
     return false;
-}
-
-#pragma mark <Private>
-
-- (void)setupGL
-{
-    [EAGLContext setCurrentContext:self.context];
-    
-    self.preferredFramesPerSecond = 60;
-    
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-    CGSize screenSize = CGSizeMake(screenBounds.size.width * screenScale, screenBounds.size.height * screenScale);
-    
-    CGSize newSize = CGSizeMake(screenSize.width, screenSize.height);
-    newSize.width = roundf(newSize.width);
-	newSize.height = roundf(newSize.height);
-    
-    if([Logger isDebugEnabled])
-    {
-        [logger debug:[NSString stringWithFormat:@"dimension %f x %f", newSize.width, newSize.height]];
-    }
-    
-    on_surface_created(newSize.width, newSize.height);
-    
-    on_surface_changed(newSize.width, newSize.height, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
-    on_resume();
 }
 
 @end

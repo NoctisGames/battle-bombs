@@ -6,4 +6,4 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#include <GLES/gl.h>
+#include <GLES2/gl2.h>

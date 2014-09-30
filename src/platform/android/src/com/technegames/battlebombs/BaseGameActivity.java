@@ -45,7 +45,7 @@ public abstract class BaseGameActivity extends Activity
 
         _rendererWrapper = new RendererWrapper(this, size.x, size.y, _username, isOffline());
         _glSurfaceView = new GLSurfaceView(this);
-        _glSurfaceView.setEGLContextClientVersion(1);
+        _glSurfaceView.setEGLContextClientVersion(2);
         _glSurfaceView.setRenderer(_rendererWrapper);
 
         LinearLayout gameContainer = (LinearLayout) findViewById(R.id.game);

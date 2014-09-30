@@ -9,23 +9,45 @@
 #include "pch.h"
 #include "macros.h"
 #include "OpenGLESSpriteBatcher.h"
-#include <stdlib.h>
-#include "Vertices2D.h"
+#include "GameConstants.h"
 #include "TextureRegion.h"
+#include "asset_utils.h"
+#include "buffer.h"
+#include "image.h"
+#include "linmath.h"
+#include "platform_gl.h"
+#include "platform_asset_utils.h"
+#include "program.h"
+#include "shader.h"
 
-Color DEFAULT_COLOR = { 1, 1, 1, 1 };
+static TextureProgram textureProgram;
 
-OpenGLESSpriteBatcher::OpenGLESSpriteBatcher(int maxSprites)
+static mat4x4 viewProjectionMatrix;
+
+static const size_t MAX_BATCH_SIZE = 2048;
+static const size_t VERTICES_PER_SPRITE = 4;
+static const size_t INDICES_PER_SPRITE = 6;
+
+OpenGLESSpriteBatcher::OpenGLESSpriteBatcher()
 {
-    m_vertices = std::unique_ptr<Vertices2D>(new Vertices2D(maxSprites, true));
     m_iNumSprites = 0;
     
-    generateIndices(maxSprites);
+    textureProgram = get_texture_program(build_program_from_assets("shaders/texture_shader.vsh", "shaders/texture_shader.fsh"));
+    
+    generateIndices();
+    
+    mat4x4 viewMatrix;
+    mat4x4_look_at(viewMatrix, (vec3){SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1}, (vec3){SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0}, (vec3){0, 1, 0});
+    
+    mat4x4 projectionMatrix;
+    mat4x4_ortho(projectionMatrix, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
+    
+    mat4x4_mul(viewProjectionMatrix, viewMatrix, projectionMatrix);
 }
 
 void OpenGLESSpriteBatcher::beginBatch()
 {
-    m_vertices->resetIndex();
+    m_textureVertices.clear();
     m_iNumSprites = 0;
 }
 
@@ -33,10 +55,28 @@ void OpenGLESSpriteBatcher::endBatchWithTexture(TextureWrapper &textureWrapper)
 {
     if(m_iNumSprites > 0)
     {
+        GLuint buffer = create_vbo(sizeof(TEXTURE_VERTEX) * m_iNumSprites, &m_textureVertices[0], GL_STATIC_DRAW);
+        
+        glUseProgram(textureProgram.program);
+        
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureWrapper.texture);
-        m_vertices->bind();
-        m_vertices->drawPrimitiveType(GL_TRIANGLES, 0, m_indices.get(), m_iNumSprites * 6);
-        m_vertices->unbind();
+        glUniformMatrix4fv(textureProgram.u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)viewProjectionMatrix);
+        glUniform1i(textureProgram.u_texture_unit_location, 0);
+        
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glVertexAttribPointer(textureProgram.a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(TEXTURE_VERTEX), BUFFER_OFFSET(0));
+        glVertexAttribPointer(textureProgram.a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(TEXTURE_VERTEX), BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
+        glVertexAttribPointer(textureProgram.a_texture_coordinates_location, 2, GL_FLOAT, GL_FALSE, sizeof(TEXTURE_VERTEX), BUFFER_OFFSET(7 * sizeof(GL_FLOAT)));
+        
+        glEnableVertexAttribArray(textureProgram.a_position_location);
+        glEnableVertexAttribArray(textureProgram.a_color_location);
+        glEnableVertexAttribArray(textureProgram.a_texture_coordinates_location);
+        
+        glDrawElements(GL_TRIANGLES, m_iNumSprites * INDICES_PER_SPRITE, GL_UNSIGNED_SHORT, &m_indices[0]);
+        
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 }
@@ -76,29 +116,10 @@ void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float heig
         x4 += x;
         y4 += y;
         
-        m_vertices->addVertexCoordinate(x1);
-        m_vertices->addVertexCoordinate(y1);
-        addColorCoordinates(DEFAULT_COLOR);
-        m_vertices->addTextureCoordinate(tr.u1);
-        m_vertices->addTextureCoordinate(tr.v2);
-        
-        m_vertices->addVertexCoordinate(x2);
-        m_vertices->addVertexCoordinate(y2);
-        addColorCoordinates(DEFAULT_COLOR);
-        m_vertices->addTextureCoordinate(tr.u2);
-        m_vertices->addTextureCoordinate(tr.v2);
-        
-        m_vertices->addVertexCoordinate(x3);
-        m_vertices->addVertexCoordinate(y3);
-        addColorCoordinates(DEFAULT_COLOR);
-        m_vertices->addTextureCoordinate(tr.u2);
-        m_vertices->addTextureCoordinate(tr.v1);
-        
-        m_vertices->addVertexCoordinate(x4);
-        m_vertices->addVertexCoordinate(y4);
-        addColorCoordinates(DEFAULT_COLOR);
-        m_vertices->addTextureCoordinate(tr.u1);
-        m_vertices->addTextureCoordinate(tr.v1);
+        addVertexCoordinate(x1, y1, 0, 1, 1, 1, 1, tr.u1, tr.v2);
+        addVertexCoordinate(x4, y4, 0, 1, 1, 1, 1, tr.u1, tr.v1);
+        addVertexCoordinate(x3, y3, 0, 1, 1, 1, 1, tr.u2, tr.v1);
+        addVertexCoordinate(x2, y2, 0, 1, 1, 1, 1, tr.u2, tr.v2);
     }
     else
     {
@@ -143,29 +164,10 @@ void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float heig
         x4 += x;
         y4 += y;
         
-        m_vertices->addVertexCoordinate(x1);
-        m_vertices->addVertexCoordinate(y1);
-        addColorCoordinates(color);
-        m_vertices->addTextureCoordinate(tr.u1);
-        m_vertices->addTextureCoordinate(tr.v2);
-        
-        m_vertices->addVertexCoordinate(x2);
-        m_vertices->addVertexCoordinate(y2);
-        addColorCoordinates(color);
-        m_vertices->addTextureCoordinate(tr.u2);
-        m_vertices->addTextureCoordinate(tr.v2);
-        
-        m_vertices->addVertexCoordinate(x3);
-        m_vertices->addVertexCoordinate(y3);
-        addColorCoordinates(color);
-        m_vertices->addTextureCoordinate(tr.u2);
-        m_vertices->addTextureCoordinate(tr.v1);
-        
-        m_vertices->addVertexCoordinate(x4);
-        m_vertices->addVertexCoordinate(y4);
-        addColorCoordinates(color);
-        m_vertices->addTextureCoordinate(tr.u1);
-        m_vertices->addTextureCoordinate(tr.v1);
+        addVertexCoordinate(x1, y1, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v2);
+        addVertexCoordinate(x4, y4, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v1);
+        addVertexCoordinate(x3, y3, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v1);
+        addVertexCoordinate(x2, y2, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v2);
     }
     else
     {
@@ -186,29 +188,10 @@ void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float heig
     GLfloat x2 = x + halfWidth;
     GLfloat y2 = y + halfHeight;
     
-    m_vertices->addVertexCoordinate(x1);
-    m_vertices->addVertexCoordinate(y1);
-    addColorCoordinates(DEFAULT_COLOR);
-    m_vertices->addTextureCoordinate(tr.u1);
-    m_vertices->addTextureCoordinate(tr.v2);
-    
-    m_vertices->addVertexCoordinate(x2);
-    m_vertices->addVertexCoordinate(y1);
-    addColorCoordinates(DEFAULT_COLOR);
-    m_vertices->addTextureCoordinate(tr.u2);
-    m_vertices->addTextureCoordinate(tr.v2);
-    
-    m_vertices->addVertexCoordinate(x2);
-    m_vertices->addVertexCoordinate(y2);
-    addColorCoordinates(DEFAULT_COLOR);
-    m_vertices->addTextureCoordinate(tr.u2);
-    m_vertices->addTextureCoordinate(tr.v1);
-    
-    m_vertices->addVertexCoordinate(x1);
-    m_vertices->addVertexCoordinate(y2);
-    addColorCoordinates(DEFAULT_COLOR);
-    m_vertices->addTextureCoordinate(tr.u1);
-    m_vertices->addTextureCoordinate(tr.v1);
+    addVertexCoordinate(x1, y1, 0, 1, 1, 1, 1, tr.u1, tr.v2);
+    addVertexCoordinate(x1, y2, 0, 1, 1, 1, 1, tr.u1, tr.v1);
+    addVertexCoordinate(x2, y2, 0, 1, 1, 1, 1, tr.u2, tr.v1);
+    addVertexCoordinate(x2, y1, 0, 1, 1, 1, 1, tr.u2, tr.v2);
 }
 
 void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float height, Color &color, TextureRegion tr)
@@ -220,53 +203,30 @@ void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float heig
     GLfloat x2 = x + halfWidth;
     GLfloat y2 = y + halfHeight;
     
-    m_vertices->addVertexCoordinate(x1);
-    m_vertices->addVertexCoordinate(y1);
-    addColorCoordinates(color);
-    m_vertices->addTextureCoordinate(tr.u1);
-    m_vertices->addTextureCoordinate(tr.v2);
-    
-    m_vertices->addVertexCoordinate(x2);
-    m_vertices->addVertexCoordinate(y1);
-    addColorCoordinates(color);
-    m_vertices->addTextureCoordinate(tr.u2);
-    m_vertices->addTextureCoordinate(tr.v2);
-    
-    m_vertices->addVertexCoordinate(x2);
-    m_vertices->addVertexCoordinate(y2);
-    addColorCoordinates(color);
-    m_vertices->addTextureCoordinate(tr.u2);
-    m_vertices->addTextureCoordinate(tr.v1);
-    
-    m_vertices->addVertexCoordinate(x1);
-    m_vertices->addVertexCoordinate(y2);
-    addColorCoordinates(color);
-    m_vertices->addTextureCoordinate(tr.u1);
-    m_vertices->addTextureCoordinate(tr.v1);
+    addVertexCoordinate(x1, y1, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v2);
+    addVertexCoordinate(x1, y2, 0, color.red, color.green, color.blue, color.alpha, tr.u1, tr.v1);
+    addVertexCoordinate(x2, y2, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v1);
+    addVertexCoordinate(x2, y1, 0, color.red, color.green, color.blue, color.alpha, tr.u2, tr.v2);
 }
 
-void OpenGLESSpriteBatcher::addColorCoordinates(Color &color)
+void OpenGLESSpriteBatcher::addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a, GLfloat u, GLfloat v)
 {
-    m_vertices->addColorCoordinate(color.red);
-    m_vertices->addColorCoordinate(color.green);
-    m_vertices->addColorCoordinate(color.blue);
-    m_vertices->addColorCoordinate(color.alpha);
+    TEXTURE_VERTEX tv = { x, y, z, r, g, b, a, u, v };
+    m_textureVertices.push_back(tv);
 }
 
-void OpenGLESSpriteBatcher::generateIndices(int maxSprites)
+void OpenGLESSpriteBatcher::generateIndices()
 {
-    int numIndices = maxSprites * 6;
-    m_indices = std::unique_ptr<GLshort>(new GLshort[numIndices]);
+    m_indices.reserve(MAX_BATCH_SIZE * INDICES_PER_SPRITE);
     
     GLshort j = 0;
-    
-    for (int i = 0; i < numIndices; i += 6, j += 4)
+    for (int i = 0; i < MAX_BATCH_SIZE * INDICES_PER_SPRITE; i += INDICES_PER_SPRITE, j += VERTICES_PER_SPRITE)
     {
-        m_indices.get()[i + 0] = j + 0;
-        m_indices.get()[i + 1] = j + 1;
-        m_indices.get()[i + 2] = j + 2;
-        m_indices.get()[i + 3] = j + 2;
-        m_indices.get()[i + 4] = j + 3;
-        m_indices.get()[i + 5] = j + 0;
+        m_indices.push_back(j);
+        m_indices.push_back(j + 1);
+        m_indices.push_back(j + 2);
+        m_indices.push_back(j + 2);
+        m_indices.push_back(j + 3);
+        m_indices.push_back(j + 0);
     }
 }

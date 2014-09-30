@@ -9,34 +9,39 @@
 #ifndef __battlebombs__OpenGLESRectangleBatcher__
 #define __battlebombs__OpenGLESRectangleBatcher__
 
-#include "RectangleBatcher.h"
-#include <memory>
-
 extern "C"
 {
 #include "platform_gl.h"
 }
 
-class Vertices2D;
+struct COLOR_VERTEX
+{
+    GLfloat X, Y, Z; // vertex position
+    GLfloat R, G, B, A; // vertex color
+};
+
+#include "RectangleBatcher.h"
+#include <memory>
+#include <vector>
 
 class OpenGLESRectangleBatcher : public RectangleBatcher
 {
 public:
-    OpenGLESRectangleBatcher(int maxRectangles, bool isFill);
+    OpenGLESRectangleBatcher(bool isFill);
     
     virtual void beginBatch();
     
     virtual void endBatch();
     
-    virtual void renderRectangle(float leftX, float bottomY, float rightX, float topY, Color &color);
+    virtual void renderRectangle(float x1, float y1, float x2, float y2, Color &color);
     
 private:
-    std::unique_ptr<Vertices2D> m_vertices;
-    std::unique_ptr<GLshort> m_indices;
+    std::vector<COLOR_VERTEX> m_colorVertices;
+    std::vector<GLshort> m_indices;
     
-    void addColorCoordinates(Color &color);
+    void addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a, GLfloat u, GLfloat v);
     
-    void generateIndices(int maxSprites);
+    void generateIndices();
 };
 
 #endif /* defined(__battlebombs__OpenGLESRectangleBatcher__) */
