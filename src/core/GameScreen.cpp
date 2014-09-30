@@ -255,9 +255,10 @@ void GameScreen::present()
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
-            m_renderer->renderInterface(*m_interfaceOverlay);
             
             m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            
+            m_renderer->renderInterface(*m_interfaceOverlay);
             
             m_renderer->endFrame();
             break;
@@ -272,9 +273,10 @@ void GameScreen::present()
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
-            m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
             
             m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            
+            m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
             
             m_renderer->endFrame();
             break;
