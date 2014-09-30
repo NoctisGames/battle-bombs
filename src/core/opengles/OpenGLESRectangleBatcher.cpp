@@ -93,6 +93,17 @@ void OpenGLESRectangleBatcher::addVertexCoordinate(GLfloat x, GLfloat y, GLfloat
     m_colorVertices.push_back(a);
 }
 
+ColorProgram OpenGLESRectangleBatcher::get_color_program(GLuint program)
+{
+    return (ColorProgram)
+    {
+        program,
+        glGetUniformLocation(program, "u_MvpMatrix"),
+        glGetAttribLocation(program, "a_Position"),
+        glGetAttribLocation(program, "a_Color")
+    };
+}
+
 void OpenGLESRectangleBatcher::generateIndices()
 {
     m_indices.reserve(MAX_BATCH_SIZE * INDICES_PER_RECTANGLE);

@@ -221,6 +221,19 @@ void OpenGLESSpriteBatcher::addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z,
     m_textureVertices.push_back(v);
 }
 
+TextureProgram OpenGLESSpriteBatcher::get_texture_program(GLuint program)
+{
+    return (TextureProgram)
+    {
+        program,
+        glGetUniformLocation(program, "u_MvpMatrix"),
+        glGetAttribLocation(program, "a_Position"),
+        glGetAttribLocation(program, "a_Color"),
+        glGetAttribLocation(program, "a_TextureCoordinates"),
+        glGetUniformLocation(program, "u_TextureUnit")
+    };
+}
+
 void OpenGLESSpriteBatcher::generateIndices()
 {
     m_indices.reserve(MAX_BATCH_SIZE * INDICES_PER_SPRITE);

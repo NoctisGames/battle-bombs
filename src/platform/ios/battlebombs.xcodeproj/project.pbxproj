@@ -105,7 +105,6 @@
 		BB7B1C2319DA2FF8009F05C6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB451A3618C30E810093E559 /* libz.dylib */; };
 		BB7B1C2D19DA309A009F05C6 /* asset_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C2419DA309A009F05C6 /* asset_utils.c */; };
 		BB7B1C2E19DA309A009F05C6 /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C2619DA309A009F05C6 /* buffer.c */; };
-		BB7B1C2F19DA309A009F05C6 /* program.c in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C2919DA309A009F05C6 /* program.c */; };
 		BB7B1C3019DA309A009F05C6 /* shader.c in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C2B19DA309A009F05C6 /* shader.c */; };
 		BB7F5D1619BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7F5D1419BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp */; };
 		BB81B1AA19BE147400548837 /* STHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1A919BE147400548837 /* STHTTPRequest.m */; };
@@ -352,8 +351,6 @@
 		BB7B1C2619DA309A009F05C6 /* buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = buffer.c; sourceTree = "<group>"; };
 		BB7B1C2719DA309A009F05C6 /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
 		BB7B1C2819DA309A009F05C6 /* linmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linmath.h; sourceTree = "<group>"; };
-		BB7B1C2919DA309A009F05C6 /* program.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = program.c; sourceTree = "<group>"; };
-		BB7B1C2A19DA309A009F05C6 /* program.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = program.h; sourceTree = "<group>"; };
 		BB7B1C2B19DA309A009F05C6 /* shader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = shader.c; sourceTree = "<group>"; };
 		BB7B1C2C19DA309A009F05C6 /* shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader.h; sourceTree = "<group>"; };
 		BB7F5D1419BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaitingForLocalSettingsInterface.cpp; sourceTree = "<group>"; };
@@ -904,8 +901,6 @@
 				BB13D9CF19D9D73F003CF853 /* platform_asset_utils.h */,
 				BB13D9CE19D9D73F003CF853 /* platform_file_utils.c */,
 				BB13D9D019D9D73F003CF853 /* platform_file_utils.h */,
-				BB7B1C2919DA309A009F05C6 /* program.c */,
-				BB7B1C2A19DA309A009F05C6 /* program.h */,
 				BB7B1C2B19DA309A009F05C6 /* shader.c */,
 				BB7B1C2C19DA309A009F05C6 /* shader.h */,
 				BB96EEE918B99A7100F7C356 /* texture.c */,
@@ -1157,7 +1152,6 @@
 				BBD0A2C3197420C900804A7C /* PlayerAvatar.cpp in Sources */,
 				BB96EED818B99A6900F7C356 /* TextureRegion.cpp in Sources */,
 				BB81B1B319BE15E700548837 /* TGApiManager.m in Sources */,
-				BB7B1C2F19DA309A009F05C6 /* program.c in Sources */,
 				BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */,
 				BB0CC4B91964FAD100F770C4 /* MapSearchNode.cpp in Sources */,
 				BB81B1BA19BE197E00548837 /* TGJsonUtils.m in Sources */,

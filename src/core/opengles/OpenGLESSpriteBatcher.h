@@ -12,9 +12,19 @@
 extern "C"
 {
 #include "platform_gl.h"
-#include "program.h"
 #include "linmath.h"
 }
+
+typedef struct
+{
+    GLuint program;
+    
+    GLint u_mvp_matrix_location;
+    GLint a_position_location;
+    GLint a_color_location;
+    GLint a_texture_coordinates_location;
+    GLint u_texture_unit_location;
+} TextureProgram;
 
 #include "SpriteBatcher.h"
 #include <memory>
@@ -48,6 +58,8 @@ private:
     GLuint m_buffer;
     
     void addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a, GLfloat u, GLfloat v);
+    
+    TextureProgram get_texture_program(GLuint program);
     
     void generateIndices();
 };
