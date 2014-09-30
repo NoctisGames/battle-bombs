@@ -153,6 +153,10 @@
 		BBA1CD531958B10A00AF2AD8 /* MapBorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */; };
 		BBA6492219B5FED100023E5A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBA6492119B5FED100023E5A /* Images.xcassets */; };
 		BBAA546119D5B06B004176FF /* PlayerRowAvatar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAA545F19D5B06B004176FF /* PlayerRowAvatar.cpp */; };
+		BBAE201419DA62A100B705FE /* color_shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BBAE201019DA62A100B705FE /* color_shader.fsh */; };
+		BBAE201519DA62A100B705FE /* color_shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BBAE201119DA62A100B705FE /* color_shader.vsh */; };
+		BBAE201619DA62A100B705FE /* texture_shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BBAE201219DA62A100B705FE /* texture_shader.fsh */; };
+		BBAE201719DA62A100B705FE /* texture_shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BBAE201319DA62A100B705FE /* texture_shader.vsh */; };
 		BBB24BA219638A9300EF78B2 /* interface.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB24BA119638A9300EF78B2 /* interface.png */; };
 		BBB24BA51963AFFA00EF78B2 /* InterfaceOverlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */; };
 		BBBEC914194B425200AAB520 /* char_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBEC913194B425200AAB520 /* char_blue.png */; };
@@ -164,10 +168,6 @@
 		BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32418BFC8E1003A4EED /* Logger.m */; };
 		BBCDD32918BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32818BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m */; };
 		BBD0A2C3197420C900804A7C /* PlayerAvatar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD0A2C1197420C900804A7C /* PlayerAvatar.cpp */; };
-		BBD8F90019DA1A7D00BEA916 /* color_shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BBD8F8FC19DA1A7D00BEA916 /* color_shader.fsh */; };
-		BBD8F90119DA1A7D00BEA916 /* color_shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BBD8F8FD19DA1A7D00BEA916 /* color_shader.vsh */; };
-		BBD8F90219DA1A7D00BEA916 /* texture_shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BBD8F8FE19DA1A7D00BEA916 /* texture_shader.fsh */; };
-		BBD8F90319DA1A7D00BEA916 /* texture_shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BBD8F8FF19DA1A7D00BEA916 /* texture_shader.vsh */; };
 		BBDE14B3195A2D7400A91FD7 /* char_black.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14AC195A2D7400A91FD7 /* char_black.png */; };
 		BBDE14B4195A2D7400A91FD7 /* char_green.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14AD195A2D7400A91FD7 /* char_green.png */; };
 		BBDE14B5195A2D7400A91FD7 /* char_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14AE195A2D7400A91FD7 /* char_orange.png */; };
@@ -445,6 +445,10 @@
 		BBA6492119B5FED100023E5A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BBAA545F19D5B06B004176FF /* PlayerRowAvatar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerRowAvatar.cpp; sourceTree = "<group>"; };
 		BBAA546019D5B06B004176FF /* PlayerRowAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerRowAvatar.h; sourceTree = "<group>"; };
+		BBAE201019DA62A100B705FE /* color_shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color_shader.fsh; path = ../../../core/opengles/color_shader.fsh; sourceTree = "<group>"; };
+		BBAE201119DA62A100B705FE /* color_shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color_shader.vsh; path = ../../../core/opengles/color_shader.vsh; sourceTree = "<group>"; };
+		BBAE201219DA62A100B705FE /* texture_shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = texture_shader.fsh; path = ../../../core/opengles/texture_shader.fsh; sourceTree = "<group>"; };
+		BBAE201319DA62A100B705FE /* texture_shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = texture_shader.vsh; path = ../../../core/opengles/texture_shader.vsh; sourceTree = "<group>"; };
 		BBB24BA119638A9300EF78B2 /* interface.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = interface.png; sourceTree = "<group>"; };
 		BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InterfaceOverlay.cpp; sourceTree = "<group>"; };
 		BBB24BA41963AFFA00EF78B2 /* InterfaceOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterfaceOverlay.h; sourceTree = "<group>"; };
@@ -467,10 +471,6 @@
 		BBCDD32818BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
 		BBD0A2C1197420C900804A7C /* PlayerAvatar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerAvatar.cpp; sourceTree = "<group>"; };
 		BBD0A2C2197420C900804A7C /* PlayerAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerAvatar.h; sourceTree = "<group>"; };
-		BBD8F8FC19DA1A7D00BEA916 /* color_shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = color_shader.fsh; sourceTree = "<group>"; };
-		BBD8F8FD19DA1A7D00BEA916 /* color_shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = color_shader.vsh; sourceTree = "<group>"; };
-		BBD8F8FE19DA1A7D00BEA916 /* texture_shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = texture_shader.fsh; sourceTree = "<group>"; };
-		BBD8F8FF19DA1A7D00BEA916 /* texture_shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = texture_shader.vsh; sourceTree = "<group>"; };
 		BBDE14AC195A2D7400A91FD7 /* char_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_black.png; sourceTree = "<group>"; };
 		BBDE14AD195A2D7400A91FD7 /* char_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_green.png; sourceTree = "<group>"; };
 		BBDE14AE195A2D7400A91FD7 /* char_orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_orange.png; sourceTree = "<group>"; };
@@ -917,6 +917,10 @@
 		BBD079F518AA879D00E010AF /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				BBAE201019DA62A100B705FE /* color_shader.fsh */,
+				BBAE201119DA62A100B705FE /* color_shader.vsh */,
+				BBAE201219DA62A100B705FE /* texture_shader.fsh */,
+				BBAE201319DA62A100B705FE /* texture_shader.vsh */,
 				BB4F30F3197C1DC300270703 /* bg-568h@2x~iphone.png */,
 				BB4F30F4197C1DC300270703 /* bg@2x~ipad.png */,
 				BB4F30F5197C1DC300270703 /* bg@2x~iphone.png */,
@@ -950,21 +954,9 @@
 				BB4F30FE197C1DCD00270703 /* quick_match_highlighted.png */,
 				BB4F30FF197C1DCD00270703 /* quick_match_normal.png */,
 				BB4F3100197C1DCD00270703 /* quick_match_pressed.png */,
-				BBD8F8FB19DA1A7D00BEA916 /* shaders */,
 				BB07506619C248950028515E /* sounds */,
 			);
 			path = assets;
-			sourceTree = "<group>";
-		};
-		BBD8F8FB19DA1A7D00BEA916 /* shaders */ = {
-			isa = PBXGroup;
-			children = (
-				BBD8F8FC19DA1A7D00BEA916 /* color_shader.fsh */,
-				BBD8F8FD19DA1A7D00BEA916 /* color_shader.vsh */,
-				BBD8F8FE19DA1A7D00BEA916 /* texture_shader.fsh */,
-				BBD8F8FF19DA1A7D00BEA916 /* texture_shader.vsh */,
-			);
-			path = shaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1031,7 +1023,7 @@
 				BB5C577319B9F27B00AD76E7 /* pu_fire.caf in Resources */,
 				BB5C577619B9F27B00AD76E7 /* pu_speed.caf in Resources */,
 				BB81B1AE19BE15B500548837 /* Progress_Dialog_Landscape.xib in Resources */,
-				BBD8F90119DA1A7D00BEA916 /* color_shader.vsh in Resources */,
+				BBAE201519DA62A100B705FE /* color_shader.vsh in Resources */,
 				0ADF1886178E2185005DA99E /* InfoPlist.strings in Resources */,
 				BBDE14B8195A2D7400A91FD7 /* char_white.png in Resources */,
 				BB4F3106197C1DCD00270703 /* quick_match_pressed.png in Resources */,
@@ -1060,7 +1052,7 @@
 				BB065FAF19D4D62900B3BE12 /* README.txt in Resources */,
 				BBA6492219B5FED100023E5A /* Images.xcassets in Resources */,
 				BB065FAD19D4D62900B3BE12 /* GoogleMobileAdsSdkiOS-6.12.0_readme.txt in Resources */,
-				BBD8F90019DA1A7D00BEA916 /* color_shader.fsh in Resources */,
+				BBAE201419DA62A100B705FE /* color_shader.fsh in Resources */,
 				BB39D6E5196ED81400BC895B /* bot_blue.png in Resources */,
 				BB4F3101197C1DCD00270703 /* offline_match_highlighted.png in Resources */,
 				BB4F3102197C1DCD00270703 /* offline_match_normal.png in Resources */,
@@ -1077,14 +1069,14 @@
 				BBA0A403196F549C00737A74 /* bot_yellow.png in Resources */,
 				0ADF1895178E2185005DA99E /* MainStoryboard_iPhone.storyboard in Resources */,
 				BB07506119C248520028515E /* countdown_1.caf in Resources */,
-				BBD8F90219DA1A7D00BEA916 /* texture_shader.fsh in Resources */,
+				BBAE201619DA62A100B705FE /* texture_shader.fsh in Resources */,
 				BB4F30F8197C1DC300270703 /* bg@2x~ipad.png in Resources */,
 				BBA0A400196F549C00737A74 /* bot_pink.png in Resources */,
 				0ADF1898178E2185005DA99E /* MainStoryboard_iPad.storyboard in Resources */,
 				BB4F3103197C1DCD00270703 /* offline_match_pressed.png in Resources */,
 				BB71029F196E079500C7BA2F /* map_grasslands.png in Resources */,
 				BBDE14B4195A2D7400A91FD7 /* char_green.png in Resources */,
-				BBD8F90319DA1A7D00BEA916 /* texture_shader.vsh in Resources */,
+				BBAE201719DA62A100B705FE /* texture_shader.vsh in Resources */,
 				BB39D6EB196F01CC00BC895B /* map_mountains.aifc in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
