@@ -194,6 +194,8 @@ TextureRegion& Assets::getPlayerRowAvatarTextureRegion(PlayerRowAvatar &playerRo
         default:
             break;
     }
+    
+    // Crash
 }
 
 TextureRegion& Assets::getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatformAvatar &playerRowPlatformAvatar)
@@ -214,6 +216,8 @@ TextureRegion& Assets::getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatform
         default:
             break;
     }
+    
+    // Crash
 }
 
 TextureRegion& Assets::getInterfaceOverlayTextureRegion()
