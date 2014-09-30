@@ -54,7 +54,7 @@ static int _beginGameMessagesIndex = 0;
     
     [_beginGameMessages addObject:[NSString stringWithFormat:@"{\"breakableBlockPowerUpFlags\": \"2,3,1,0,0,0,0,1,5,2,4,0,0,0,0,3,0,0,0,2,0,3,0,0,0,4,1,0,4,0,0,1,0,3,0,0,0,2,0,0,0,3,0,4,2,0,0,3,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,5,2,0,0,0,1,5,0,1,2,0,0,0,4,0,0,0,0,0,3,4,1,0,5,0,0,0,5,3,5,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,0,3\", \"breakableBlockXValues\": \"8,5,6,7,8,9,10,3,7,9,11,1,2,3,5,6,7,8,9,10,11,13,14,0,2,4,6,12,14,0,1,2,4,5,6,7,9,10,11,12,13,14,4,6,8,10,12,2,3,4,5,7,8,12,2,4,8,10,12,2,4,6,8,10,12,2,3,4,5,6,7,8,9,10,12,2,4,0,3,4,6,8,9,13,14,2,4,6,10,12,14,2,3,4,5,7,8,9,11,12,13,2,4,6,7,8,9,10,12,4,9,10,11,12\", \"breakableBlockYValues\": \"0,1,1,1,1,1,1,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,7,7,7,7,7,7,7,8,8,8,8,8,9,9,9,9,9,9,10,10,10,10,10,10,10,10,10,10,11,11,12,12,12,12,12,12,12,12,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,16,16,16,16,16\", \"eventType\": 1337, \"mapType\": 2, \"numBreakableBlocks\": 114, \"numClientBots\": 7, \"numPlayers\": 1, \"numSecondsLeftForRound\": 180, \"playerIndex0\": \"%@\", \"playerIndex0Alive\": true, \"playerIndex0Direction\": 0, \"playerIndex0IsBot\": false, \"playerIndex0X\": 2.1492538452148438, \"playerIndex0Y\": 16.477611541748047, \"playerIndex1\": \"Ruby Bot\", \"playerIndex1Alive\": true, \"playerIndex1Direction\": 2, \"playerIndex1IsBot\": true, \"playerIndex1X\": 6.447761058807373, \"playerIndex1Y\": 2.1492538452148438, \"playerIndex2\": \"Stephen Bot\", \"playerIndex2Alive\": true, \"playerIndex2Direction\": 0, \"playerIndex2IsBot\": true, \"playerIndex2X\": 2.1492538452148438, \"playerIndex2Y\": 12.179104804992676, \"playerIndex3\": \"Joe Bot\", \"playerIndex3Alive\": true, \"playerIndex3Direction\": 2, \"playerIndex3IsBot\": true, \"playerIndex3X\": 17.91044807434082, \"playerIndex3Y\": 2.1492538452148438, \"playerIndex4\": \"Wesley Bot\", \"playerIndex4Alive\": true, \"playerIndex4Direction\": 1, \"playerIndex4IsBot\": true, \"playerIndex4X\": 22.208955764770508, \"playerIndex4Y\": 12.179104804992676, \"playerIndex5\": \"Eric Bot\", \"playerIndex5Alive\": true, \"playerIndex5Direction\": 3, \"playerIndex5IsBot\": true, \"playerIndex5X\": 22.208955764770508, \"playerIndex5Y\": 16.477611541748047, \"playerIndex6\": \"Jay Bot\", \"playerIndex6Alive\": true, \"playerIndex6Direction\": 1, \"playerIndex6IsBot\": true, \"playerIndex6X\": 2.1492538452148438, \"playerIndex6Y\": 25.074626922607422, \"playerIndex7\": \"Kenny Bot\", \"playerIndex7Alive\": true, \"playerIndex7Direction\": 3, \"playerIndex7IsBot\": true, \"playerIndex7X\": 22.208955764770508, \"playerIndex7Y\": 25.074626922607422}", self.username]];
     
-    [self handleGameState:1];
+    [self performSelector:@selector(handleGameStateOne) withObject:nil afterDelay:2];
 }
 
 #pragma mark <Protected>
@@ -173,6 +173,11 @@ static int _beginGameMessagesIndex = 0;
         
         on_chat_received([gameOverMessage UTF8String]);
     }
+}
+
+- (void)handleGameStateOne
+{
+    [self handleGameState:1];
 }
 
 @end

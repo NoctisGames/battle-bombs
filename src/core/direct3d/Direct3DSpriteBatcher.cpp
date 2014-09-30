@@ -195,7 +195,7 @@ void Direct3DSpriteBatcher::endBatchWithTexture(TextureWrapper &textureWrapper)
 
 void Direct3DSpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, TextureRegion tr)
 {
-	if (angle > 0)
+	if (angle != 0)
 	{
 		float halfWidth = width / 2;
 		float halfHeight = height / 2;
@@ -243,7 +243,7 @@ void Direct3DSpriteBatcher::drawSprite(float x, float y, float width, float heig
 
 void Direct3DSpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, Color &color, TextureRegion tr)
 {
-	if (angle > 0)
+	if (angle != 0)
 	{
 		float halfWidth = width / 2;
 		float halfHeight = height / 2;

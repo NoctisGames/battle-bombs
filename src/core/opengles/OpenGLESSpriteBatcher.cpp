@@ -82,7 +82,7 @@ void OpenGLESSpriteBatcher::endBatchWithTexture(TextureWrapper &textureWrapper)
 
 void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, TextureRegion tr)
 {
-    if(angle > 0)
+    if(angle != 0)
     {
         float halfWidth = width / 2;
         float halfHeight = height / 2;
@@ -130,7 +130,7 @@ void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float heig
 
 void OpenGLESSpriteBatcher::drawSprite(float x, float y, float width, float height, float angle, Color &color, TextureRegion tr)
 {
-    if(angle > 0)
+    if(angle != 0)
     {
         float halfWidth = width / 2;
         float halfHeight = height / 2;
