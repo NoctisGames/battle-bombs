@@ -765,15 +765,15 @@
 		0ADF1882178E2185005DA99E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				0ADF1896178E2185005DA99E /* MainStoryboard_iPad.storyboard */,
-				0ADF1893178E2185005DA99E /* MainStoryboard_iPhone.storyboard */,
-				BB81B1AC19BE15B500548837 /* Progress_Dialog_Landscape.xib */,
-				BBA6492119B5FED100023E5A /* Images.xcassets */,
 				BBD079F518AA879D00E010AF /* assets */,
 				0ADF1883178E2185005DA99E /* battlebombs-Info.plist */,
+				BBA6492119B5FED100023E5A /* Images.xcassets */,
 				0ADF1884178E2185005DA99E /* InfoPlist.strings */,
 				BB74E80518C2541F007C223E /* Localizable.strings */,
 				0ADF1887178E2185005DA99E /* main.m */,
+				0ADF1896178E2185005DA99E /* MainStoryboard_iPad.storyboard */,
+				0ADF1893178E2185005DA99E /* MainStoryboard_iPhone.storyboard */,
+				BB81B1AC19BE15B500548837 /* Progress_Dialog_Landscape.xib */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -917,7 +917,6 @@
 		BBD079F518AA879D00E010AF /* assets */ = {
 			isa = PBXGroup;
 			children = (
-				BBD8F8FB19DA1A7D00BEA916 /* shaders */,
 				BB4F30F3197C1DC300270703 /* bg-568h@2x~iphone.png */,
 				BB4F30F4197C1DC300270703 /* bg@2x~ipad.png */,
 				BB4F30F5197C1DC300270703 /* bg@2x~iphone.png */,
@@ -938,8 +937,8 @@
 				BBDE14B0195A2D7400A91FD7 /* char_red.png */,
 				BBDE14B1195A2D7400A91FD7 /* char_white.png */,
 				BBDE14B2195A2D7400A91FD7 /* char_yellow.png */,
-				BBB24BA119638A9300EF78B2 /* interface.png */,
 				BB8FF7C519AE3FE4005D0701 /* interface_2.png */,
+				BBB24BA119638A9300EF78B2 /* interface.png */,
 				BB71029A196E079500C7BA2F /* map_base.png */,
 				BB71029B196E079500C7BA2F /* map_grasslands.png */,
 				BB71029C196E079500C7BA2F /* map_mountains.png */,
@@ -951,6 +950,7 @@
 				BB4F30FE197C1DCD00270703 /* quick_match_highlighted.png */,
 				BB4F30FF197C1DCD00270703 /* quick_match_normal.png */,
 				BB4F3100197C1DCD00270703 /* quick_match_pressed.png */,
+				BBD8F8FB19DA1A7D00BEA916 /* shaders */,
 				BB07506619C248950028515E /* sounds */,
 			);
 			path = assets;
