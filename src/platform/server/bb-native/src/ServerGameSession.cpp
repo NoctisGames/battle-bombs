@@ -113,8 +113,8 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
                 continue;
             }
 
-            // 70% chance there will be a breakable block at all
-            if ((rand() % 100 + 1) < 71)
+            // 66% chance there will be a breakable block at all
+            if ((rand() % 100 + 1) < 67)
             {
                 int flag = POWER_UP_TYPE_NONE;
 
@@ -211,6 +211,11 @@ void ServerGameSession::update(float deltaTime)
             if (m_fCountDownTimeLeft < 0)
             {
                 m_gameState = RUNNING;
+
+                for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+                {
+                    (*itr)->reset();
+                }
             }
             break;
         case RUNNING:
