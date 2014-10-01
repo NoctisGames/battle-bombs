@@ -58,17 +58,31 @@ bool PathFinder::isLocationOccupiedByOtherPlayer(std::vector<std::unique_ptr<Pla
     return false;
 }
 
-bool PathFinder::isLocationOccupiedByBombOrExplosionPath(std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, int gridX, int gridY)
+bool PathFinder::isLocationOccupiedByBombOrExplosionPath(std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, int gridX, int gridY, bool isCurrentlyTakingCover)
 {
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
     {
         if(gridX == (*itr)->getGridX() && gridY >= (*itr)->getGridY() - (*itr)->getPower() && gridY <= (*itr)->getGridY() + (*itr)->getPower())
         {
-            return true;
+            if(isCurrentlyTakingCover)
+            {
+                return (*itr)->getStateTime() > 1.8f;
+            }
+            else
+            {
+                return true;
+            }
         }
         else if(gridY == (*itr)->getGridY() && gridX >= (*itr)->getGridX() - (*itr)->getPower() && gridX <= (*itr)->getGridX() + (*itr)->getPower())
         {
-            return true;
+            if(isCurrentlyTakingCover)
+            {
+                return (*itr)->getStateTime() > 1.8f;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
     
@@ -140,7 +154,7 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             // tX is Traversal X
             for (int tX = gridLeftX; tX <= gridRightX; tX++)
             {
-                if(PathFinder::getInstance().getGridCellCost(tX, gridTopY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, tX, gridTopY))
+                if(PathFinder::getInstance().getGridCellCost(tX, gridTopY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, tX, gridTopY, false))
                 {
                     if(!hasBombEscapeNodeBeenUsedAlready(badBombEscapeNodes, tX, gridTopY))
                     {
@@ -163,7 +177,7 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             // tX is Traversal X
             for (int tX = gridLeftX; tX <= gridRightX; tX++)
             {
-                if(PathFinder::getInstance().getGridCellCost(tX, gridBottomY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, tX, gridBottomY))
+                if(PathFinder::getInstance().getGridCellCost(tX, gridBottomY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, tX, gridBottomY, false))
                 {
                     if(!hasBombEscapeNodeBeenUsedAlready(badBombEscapeNodes, tX, gridBottomY))
                     {
@@ -186,7 +200,7 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             // tY is Traversal Y
             for (int tY = gridBottomY; tY <= gridTopY; tY++)
             {
-                if(PathFinder::getInstance().getGridCellCost(gridLeftX, tY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, gridLeftX, tY))
+                if(PathFinder::getInstance().getGridCellCost(gridLeftX, tY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, gridLeftX, tY, false))
                 {
                     if(!hasBombEscapeNodeBeenUsedAlready(badBombEscapeNodes, gridLeftX, tY))
                     {
@@ -209,7 +223,7 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             // tY is Traversal Y
             for (int tY = gridBottomY; tY <= gridTopY; tY++)
             {
-                if(PathFinder::getInstance().getGridCellCost(gridRightX, tY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, gridRightX, tY))
+                if(PathFinder::getInstance().getGridCellCost(gridRightX, tY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, gridRightX, tY, false))
                 {
                     if(!hasBombEscapeNodeBeenUsedAlready(badBombEscapeNodes, gridRightX, tY))
                     {

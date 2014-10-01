@@ -44,7 +44,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 
     if (m_playerState == ALIVE && m_playerActionState != WINNING)
 	{
-        if (PathFinder::getInstance().isLocationOccupiedByBombOrExplosionPath(bombs, explosions, m_gridX, m_gridY))
+        if (PathFinder::getInstance().isLocationOccupiedByBombOrExplosionPath(bombs, explosions, m_gridX, m_gridY, m_fWaitTime > 0))
         {
             Node currentNode = Node(m_gridX, m_gridY);
             if (PathFinder::calculateClosestSafeNodeFromStartingNode(bombs, explosions, players, this, m_badBombEscapeNodes, currentNode))
@@ -71,6 +71,8 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 		}
 		else
 		{
+            m_fWaitTime = 0;
+            
             if (m_currentPathType == 2 && isProposedNodeUnexplored(m_gridX, m_gridY))
 			{
                 m_exploredPath.push_back(Node(m_gridX, m_gridY));
@@ -124,7 +126,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 					m_currentPathIndex = 0;
 					m_currentPathType = 0;
 				}
-				else if (m_currentPathType != 1 && m_currentPathIndex < (m_currentPath.size() - 1) && PathFinder::getInstance().isLocationOccupiedByBombOrExplosionPath(bombs, explosions, m_currentPath.at(m_currentPathIndex).x, m_currentPath.at(m_currentPathIndex).y))
+				else if (m_currentPathType != 1 && m_currentPathIndex < (m_currentPath.size() - 1) && PathFinder::getInstance().isLocationOccupiedByBombOrExplosionPath(bombs, explosions, m_currentPath.at(m_currentPathIndex).x, m_currentPath.at(m_currentPathIndex).y, m_fWaitTime > 0))
 				{
                     m_fActionTime = 0;
 					m_fWaitTime = 1;
