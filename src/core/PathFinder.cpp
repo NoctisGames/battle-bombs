@@ -422,7 +422,8 @@ void PathFinder::resetGameGrid()
     {
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
-            game_grid[j][i] = 1;
+            _gameGrid[j][i] = 1;
+            _gameGridOverlay[j][i] = 1;
         }
     }
 }
@@ -433,54 +434,64 @@ void PathFinder::initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &
     {
         int gridX = (*itr)->getGridX();
         int gridY = (*itr)->getGridY();
-        game_grid[gridX][gridY] = 9;
+        _gameGrid[gridX][gridY] = 9;
     }
     
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
     {
         int gridX = (*itr)->getGridX();
         int gridY = (*itr)->getGridY();
-        game_grid[gridX][gridY] = 9;
+        _gameGrid[gridX][gridY] = 9;
     }
     
     // For Map Borders
     
-    game_grid[0][0] = 9;
-    game_grid[1][0] = 9;
-    game_grid[2][0] = 9;
-    game_grid[0][1] = 9;
-    game_grid[1][1] = 9;
-    game_grid[2][1] = 9;
-    game_grid[0][2] = 9;
-    game_grid[1][2] = 9;
-    game_grid[2][2] = 9;
+    _gameGrid[0][0] = 9;
+    _gameGrid[1][0] = 9;
+    _gameGrid[2][0] = 9;
+    _gameGrid[0][1] = 9;
+    _gameGrid[1][1] = 9;
+    _gameGrid[2][1] = 9;
+    _gameGrid[0][2] = 9;
+    _gameGrid[1][2] = 9;
+    _gameGrid[2][2] = 9;
     
-    game_grid[NUM_GRID_CELLS_PER_ROW - 3][0] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 2][0] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 1][0] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 3][1] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 2][1] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 1][1] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 3][2] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 2][2] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 1][2] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 3][0] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 2][0] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 1][0] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 3][1] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 2][1] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 1][1] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 3][2] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 2][2] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 1][2] = 9;
     
     if(mapType == MAP_MOUNTAINS)
     {
-        game_grid[6][GRID_CELL_NUM_ROWS - 1] = 9;
-        game_grid[7][GRID_CELL_NUM_ROWS - 1] = 9;
-        game_grid[8][GRID_CELL_NUM_ROWS - 1] = 9;
+        _gameGrid[6][GRID_CELL_NUM_ROWS - 1] = 9;
+        _gameGrid[7][GRID_CELL_NUM_ROWS - 1] = 9;
+        _gameGrid[8][GRID_CELL_NUM_ROWS - 1] = 9;
     }
 }
 
 void PathFinder::freeGameGridCell(int gridX, int gridY)
 {
-    game_grid[gridX][gridY] = 1;
+    _gameGrid[gridX][gridY] = 1;
 }
 
 void PathFinder::occupyGameGridCell(int gridX, int gridY)
 {
-    game_grid[gridX][gridY] = 9;
+    _gameGrid[gridX][gridY] = 9;
+}
+
+void PathFinder::freeGameGridOverlayCell(int gridX, int gridY)
+{
+    _gameGridOverlay[gridX][gridY] = 1;
+}
+
+void PathFinder::occupyGameGridOverlayCell(int gridX, int gridY)
+{
+    _gameGridOverlay[gridX][gridY] = 9;
 }
 
 int PathFinder::getGridCellCost(int x, int y)
@@ -490,7 +501,12 @@ int PathFinder::getGridCellCost(int x, int y)
 		return 9;
 	}
     
-	return game_grid[x][y];
+    if(_gameGridOverlay[x][y] > _gameGrid[x][y])
+    {
+        return _gameGridOverlay[x][y];
+    }
+    
+	return _gameGrid[x][y];
 }
 
 bool PathFinder::hasBombEscapeNodeBeenUsedAlready(std::vector<Node> &badBombEscapeNodes, int gridX, int gridY)
