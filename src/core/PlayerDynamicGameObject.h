@@ -108,6 +108,8 @@ public:
     void setIsDisplayingPointer(bool isDisplayingPointer);
     
     bool isDisplayingPointer();
+    
+    void reset();
 
 protected:
     BombGameObject *m_lastBombDropped;

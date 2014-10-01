@@ -532,6 +532,22 @@ bool PlayerDynamicGameObject::isDisplayingPointer()
     return m_isDisplayingPointer;
 }
 
+void PlayerDynamicGameObject::reset()
+{
+    m_lastBombDropped = nullptr;
+    m_fStateTime = 0;
+    m_iSpeed = 3;
+    m_firePower = 1;
+    m_activePowerUp = POWER_UP_TYPE_NONE;
+    
+    m_iMaxBombCount = 1;
+    m_iCurrentBombCount = 0;
+    setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_OFF);
+    
+    m_playerState = ALIVE;
+    m_playerActionState = IDLE;
+}
+
 // Private
 
 bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
