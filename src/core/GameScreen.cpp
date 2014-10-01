@@ -191,10 +191,7 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
             
             break;
         case RUNNING:
-            if(m_player->getPlayerState() == ALIVE && m_player->getPlayerActionState() != WINNING)
-            {
-                updateInputRunning(touchEvents);
-            }
+            updateInputRunning(touchEvents);
             updateRunning(deltaTime);
             break;
         case SPECTATING:

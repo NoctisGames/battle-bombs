@@ -91,36 +91,33 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
 
     if (m_playerState == ALIVE)
     {
-        if(m_playerActionState != WINNING)
+        if(m_playerActionState == PLACING_BOMB || m_playerActionState == PUSHING_BOMB)
         {
-            if(m_playerActionState == PLACING_BOMB || m_playerActionState == PUSHING_BOMB)
+            if(m_fStateTime > 0.15f)
             {
-                if(m_fStateTime > 0.15f)
-                {
-                    m_playerActionState = IDLE;
-                    m_fStateTime = 0;
-                }
+                m_playerActionState = IDLE;
+                m_fStateTime = 0;
             }
-            
-            float deltaX = m_velocity->getX() * deltaTime;
-            float deltaY = m_velocity->getY() * deltaTime;
-            
-            m_position->add(deltaX, deltaY);
-            updateBounds();
-            
-            if(m_lastBombDropped != nullptr && !OverlapTester::doRectanglesOverlap(*m_bounds, m_lastBombDropped->getBounds()))
-            {
-                m_lastBombDropped = nullptr;
-            }
-            
-            if (isCollision(mapBorders, insideBlocks, breakableBlocks, players, bombs))
-            {
-                m_position->sub(deltaX, deltaY);
-                updateBounds();
-            }
-            
-            updateGrid();
         }
+        
+        float deltaX = m_velocity->getX() * deltaTime;
+        float deltaY = m_velocity->getY() * deltaTime;
+        
+        m_position->add(deltaX, deltaY);
+        updateBounds();
+        
+        if(m_lastBombDropped != nullptr && !OverlapTester::doRectanglesOverlap(*m_bounds, m_lastBombDropped->getBounds()))
+        {
+            m_lastBombDropped = nullptr;
+        }
+        
+        if (isCollision(mapBorders, insideBlocks, breakableBlocks, players, bombs))
+        {
+            m_position->sub(deltaX, deltaY);
+            updateBounds();
+        }
+        
+        updateGrid();
     }
     else if (m_playerState == DYING)
     {
@@ -226,7 +223,7 @@ void PlayerDynamicGameObject::onBombExploded()
 
 bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
-    if (m_playerState == ALIVE && m_playerActionState != WINNING)
+    if (m_playerState == ALIVE)
     {
         bool isHitByExplosion = false;
         
@@ -340,7 +337,7 @@ void PlayerDynamicGameObject::onWin()
 
 bool PlayerDynamicGameObject::isAbleToDropAdditionalBomb(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
-    if(m_playerState == ALIVE && m_playerActionState != WINNING && m_iCurrentBombCount < m_iMaxBombCount)
+    if(m_playerState == ALIVE && m_iCurrentBombCount < m_iMaxBombCount)
     {
         for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
         {
