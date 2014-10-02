@@ -166,8 +166,13 @@ void PlayerDynamicGameObject::setDirection(int direction)
 
 void PlayerDynamicGameObject::moveInDirection(int direction)
 {
-    if (direction >= 0)
+    if (direction >= DIRECTION_RIGHT)
     {
+        if(m_playerActionState == RAISING_SHIELD || m_playerActionState == SHIELD_RAISED)
+        {
+            m_gameListener->addLocalEventForPlayer(PLAYER_LOWER_SHIELD, *this);
+        }
+        
         m_iDirection = direction;
 
         switch (m_iDirection)
