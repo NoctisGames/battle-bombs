@@ -53,10 +53,11 @@ public final class RendererWrapper implements Renderer
     private static final short SOUND_PU_SPEED = 9;
     private static final short SOUND_PU_FORCE_FIELD = 10;
     private static final short SOUND_PU_PUSH = 11;
-    private static final short SOUND_FORCE_FIELD_DOWN = 12;
-    private static final short SOUND_DEATH = 13;
-    private static final short SOUND_GAME_SET = 14;
-    private static final short SOUND_DRAW = 15;
+    private static final short SOUND_PU_SHIELD = 12;
+    private static final short SOUND_FORCE_FIELD_DOWN = 13;
+    private static final short SOUND_DEATH = 14;
+    private static final short SOUND_GAME_SET = 15;
+    private static final short SOUND_DRAW = 16;
 
     // #frames involved in average calc (suggested values 5-100)
     private static final float movAveragePeriod = 40;
@@ -379,6 +380,9 @@ public final class RendererWrapper implements Renderer
         _playersAlive[5] = true;
         _playersAlive[6] = true;
         _playersAlive[7] = true;
+        
+        _timeSinceOneOrLessPlayersRemaining = 0;
+        _isGameOver = false;
 
         clear_state();
 
@@ -480,6 +484,9 @@ public final class RendererWrapper implements Renderer
                     powerUpForceFieldSound.play(1);
                     break;
                 case SOUND_PU_PUSH:
+                    powerUpPushSound.play(1);
+                    break;
+                case SOUND_PU_SHIELD:
                     powerUpPushSound.play(1);
                     break;
                 case SOUND_FORCE_FIELD_DOWN:
