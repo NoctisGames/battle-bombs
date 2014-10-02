@@ -44,7 +44,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final short BEGIN_GAME = 1337;
     private static final short CLIENT_UPDATE = 1338;
     private static final short GAME_OVER = 1339;
-    private static final int PLAYER_DEATH = 9;
+    private static final int PLAYER_DEATH = 11;
     private static final int PLAYER_EVENT_BASE = 100000000;
     private static final int PLAYER_EVENT_DIRECTION_BASE = 10000000;
 
