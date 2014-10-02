@@ -70,6 +70,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
 
     private int _numSecondsLeftForRound;
     private float _stateTime;
+    private float _oneOrLessPlayersAliveTimer;
     private float _countdownTime;
     private boolean _isGameRunning;
     private float smoothedDeltaRealTime_ms = 17.5f; // initial value, Optionally you can save the new computed value (will change with each hardware) in Preferences to optimize the first drawing frames
@@ -81,6 +82,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     {
         _room = room;
         _stateTime = 0;
+        _oneOrLessPlayersAliveTimer = 0;
         _countdownTime = 0;
         _isGameRunning = false;
 
@@ -106,6 +108,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 {
                     _stateTime = 0;
                     _countdownTime = 0;
+                    _oneOrLessPlayersAliveTimer = 0;
 
                     _playerSpotsOccupied[i] = true;
                     _activePlayerNames[i] = user.getName();
@@ -244,24 +247,28 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 }
                 else
                 {
-                    endGame();
-
-                    boolean hasWinner = numAlive == 1;
-
-                    try
+                    _oneOrLessPlayersAliveTimer += deltaTime;
+                    if (_oneOrLessPlayersAliveTimer > 0.5f)
                     {
-                        JSONObject tobeSent = new JSONObject();
-                        tobeSent.put(EVENT_TYPE, GAME_OVER);
-                        tobeSent.put(HAS_WINNER, hasWinner);
-                        tobeSent.put(WINNING_PLAYER_INDEX, winningPlayerIndex);
+                        endGame();
 
-                        updateRoomWithMessage(tobeSent.toString());
+                        boolean hasWinner = numAlive == 1;
 
-                        System.out.println(GAME_OVER_LOG);
-                    }
-                    catch (JSONException e)
-                    {
-                        System.err.println(e.toString());
+                        try
+                        {
+                            JSONObject tobeSent = new JSONObject();
+                            tobeSent.put(EVENT_TYPE, GAME_OVER);
+                            tobeSent.put(HAS_WINNER, hasWinner);
+                            tobeSent.put(WINNING_PLAYER_INDEX, winningPlayerIndex);
+
+                            updateRoomWithMessage(tobeSent.toString());
+
+                            System.out.println(GAME_OVER_LOG);
+                        }
+                        catch (JSONException e)
+                        {
+                            System.err.println(e.toString());
+                        }
                     }
                 }
             }
@@ -363,6 +370,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
 
                     _isGameRunning = true;
                     _stateTime = 0;
+                    _oneOrLessPlayersAliveTimer = 0;
                     _countdownTime = 0;
 
                     System.out.println(GAME_BEGIN_LOG);
@@ -372,6 +380,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         else
         {
             _stateTime = 0;
+            _oneOrLessPlayersAliveTimer = 0;
             _countdownTime = 0;
         }
 
@@ -492,6 +501,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     {
         _isGameRunning = false;
         _stateTime = 0;
+        _oneOrLessPlayersAliveTimer = 0;
         _countdownTime = 0;
     }
 
