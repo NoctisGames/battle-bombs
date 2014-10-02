@@ -154,7 +154,7 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
             m_powerUpBarItems.at(2).get()->setLevel(player.getSpeed() - 3);
         }
         
-        if(player.getPlayerActionState() == PUSHING_BOMB)
+        if(player.getPlayerActionState() == PUSHING_BOMB || player.getPlayerActionState() == RAISING_SHIELD || player.getPlayerActionState() == SHIELD_RAISED)
         {
             m_activeButton->setIsPressed(true);
         }
@@ -174,6 +174,10 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
                         break;
                     }
                 }
+            }
+            else if(m_activeButton->getPowerUpType() == POWER_UP_TYPE_SHIELD)
+            {
+                m_activeButton->setButtonState(ENABLED);
             }
         }
         
@@ -235,19 +239,22 @@ void InterfaceOverlay::handleTouchDownInputRunning(Vector2D &touchPoint, PlayerD
 	}
 	else if (OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
 	{
-		// TODO, handle more actions like Shield, Throw, etc.
 		switch (player.getActivePowerUp())
 		{
-		case POWER_UP_TYPE_PUSH:
-			for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
-			{
-				if (player.isBombInFrontOfPlayer(**itr))
-				{
-					m_gameListener->addLocalEventForPlayer(PLAYER_PUSH_BOMB, player);
-				}
-			}
-		default:
-			break;
+            case POWER_UP_TYPE_PUSH:
+                for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+                {
+                    if (player.isBombInFrontOfPlayer(**itr))
+                    {
+                        m_gameListener->addLocalEventForPlayer(PLAYER_PUSH_BOMB, player);
+                    }
+                }
+                break;
+            case POWER_UP_TYPE_SHIELD:
+                m_gameListener->addLocalEventForPlayer(PLAYER_RAISE_SHIELD, player);
+                break;
+            default:
+                break;
 		}
 	}
 	else
@@ -276,8 +283,23 @@ void InterfaceOverlay::handleTouchDraggedInputRunning(Vector2D &touchPoint, Play
 
 void InterfaceOverlay::handleTouchUpInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player)
 {
-	if (!OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()) && !OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
-	{
+    if (OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()))
+    {
+        // Do Nothing
+    }
+    else if (OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
+    {
+        switch (player.getActivePowerUp())
+        {
+            case POWER_UP_TYPE_SHIELD:
+                m_gameListener->addLocalEventForPlayer(PLAYER_LOWER_SHIELD, player);
+                break;
+            default:
+                break;
+        }
+    }
+	else
+    {
 		m_dPad->stop();
 		m_gameListener->addLocalEventForPlayer(PLAYER_MOVE_STOP, player);
 	}

@@ -16,5 +16,6 @@
 #define POWER_UP_TYPE_SPEED 3
 #define POWER_UP_TYPE_FORCE_FIELD 4
 #define POWER_UP_TYPE_PUSH 5
+#define POWER_UP_TYPE_SHIELD 6
 
 #endif

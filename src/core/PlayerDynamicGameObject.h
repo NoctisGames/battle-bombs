@@ -58,6 +58,10 @@ public:
     void onBombDropped(BombGameObject *bomb);
     
     void onBombPushed(BombGameObject *bomb);
+    
+    void raiseShield();
+    
+    void lowerShield();
 
     void onBombExploded();
 

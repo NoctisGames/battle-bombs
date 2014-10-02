@@ -405,6 +405,12 @@ void GameSession::handlePlayerEvent(int event)
         case PLAYER_PUSH_BOMB:
             pushBombForPlayer(m_players.at(playerIndex).get());
             break;
+        case PLAYER_RAISE_SHIELD:
+            m_players.at(playerIndex).get()->raiseShield();
+            break;
+        case PLAYER_LOWER_SHIELD:
+            m_players.at(playerIndex).get()->lowerShield();
+            break;
         case PLAYER_FORCE_FIELD_HIT:
             m_players.at(playerIndex).get()->onForceFieldHit();
             break;
@@ -425,6 +431,9 @@ void GameSession::handlePlayerEvent(int event)
             break;
         case PLAYER_PU_PUSH:
             m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_PUSH);
+            break;
+        case PLAYER_PU_SHIELD:
+            m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_SHIELD);
             break;
         default:
             break;

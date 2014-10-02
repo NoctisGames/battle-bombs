@@ -406,7 +406,7 @@ void Renderer::renderInterface(InterfaceOverlay &interfaceOverlay)
         }
     }
     
-    if(interfaceOverlay.getActiveButton().getPowerUpType() == POWER_UP_TYPE_PUSH)
+    if(interfaceOverlay.getActiveButton().getPowerUpType() == POWER_UP_TYPE_PUSH || interfaceOverlay.getActiveButton().getPowerUpType() == POWER_UP_TYPE_SHIELD)
     {
         renderGameObject(interfaceOverlay.getActiveButton(), Assets::getActiveButtonTextureRegion(interfaceOverlay.getActiveButton(), interfaceOverlay.getButtonsStateTime()));
     }

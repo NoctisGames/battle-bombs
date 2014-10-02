@@ -37,6 +37,7 @@
 @property (strong, nonatomic) Sound *powerUpSpeedSound;
 @property (strong, nonatomic) Sound *powerUpForceFieldSound;
 @property (strong, nonatomic) Sound *powerUpPushSound;
+@property (strong, nonatomic) Sound *powerUpShieldSound;
 @property (strong, nonatomic) Sound *forceFieldDownSound;
 @property (strong, nonatomic) Sound *deathSound;
 @property (strong, nonatomic) Sound *gameSetSound;
@@ -83,6 +84,7 @@ static Logger *logger = nil;
     self.powerUpSpeedSound = [[Sound alloc] initWithSoundNamed:@"pu_speed.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.powerUpForceFieldSound = [[Sound alloc] initWithSoundNamed:@"pu_force_field.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.powerUpPushSound = [[Sound alloc] initWithSoundNamed:@"pu_push.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpShieldSound = [[Sound alloc] initWithSoundNamed:@"pu_push.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.forceFieldDownSound = [[Sound alloc] initWithSoundNamed:@"force_field_down.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.gameSetSound = [[Sound alloc] initWithSoundNamed:@"game_set.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
@@ -233,6 +235,9 @@ static Logger *logger = nil;
                 [self.powerUpForceFieldSound play];
                 break;
             case SOUND_PU_PUSH:
+                [self.powerUpPushSound play];
+                break;
+            case SOUND_PU_SHIELD:
                 [self.powerUpPushSound play];
                 break;
             case SOUND_FORCE_FIELD_DOWN:

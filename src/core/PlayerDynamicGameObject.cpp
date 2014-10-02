@@ -99,6 +99,14 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
                 m_fStateTime = 0;
             }
         }
+        else if(m_playerActionState == RAISING_SHIELD)
+        {
+            if(m_fStateTime > 0.30f)
+            {
+                m_playerActionState = SHIELD_RAISED;
+                m_fStateTime = 0;
+            }
+        }
         
         float deltaX = m_velocity->getX() * deltaTime;
         float deltaY = m_velocity->getY() * deltaTime;
@@ -209,6 +217,18 @@ void PlayerDynamicGameObject::onBombPushed(BombGameObject *bomb)
     m_fStateTime = 0;
 }
 
+void PlayerDynamicGameObject::raiseShield()
+{
+    m_playerActionState = RAISING_SHIELD;
+    m_fStateTime = 0;
+}
+
+void PlayerDynamicGameObject::lowerShield()
+{
+    m_playerActionState = IDLE;
+    m_fStateTime = 0;
+}
+
 void PlayerDynamicGameObject::onBombExploded()
 {
     m_iCurrentBombCount--;
@@ -283,6 +303,9 @@ void PlayerDynamicGameObject::handlePowerUps(std::vector<std::unique_ptr<PowerUp
                     break;
                 case POWER_UP_TYPE_PUSH:
                     m_gameListener->addLocalEventForPlayer(PLAYER_PU_PUSH, *this);
+                    break;
+                case POWER_UP_TYPE_SHIELD:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_SHIELD, *this);
                     break;
             }
             
@@ -407,6 +430,9 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
         case POWER_UP_TYPE_PUSH:
             m_activePowerUp = POWER_UP_TYPE_PUSH;
             break;
+        case POWER_UP_TYPE_SHIELD:
+            m_activePowerUp = POWER_UP_TYPE_SHIELD;
+            break;
     }
     
     if(m_isClientPlayer)
@@ -430,6 +456,9 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
                 break;
             case POWER_UP_TYPE_PUSH:
                 m_gameListener->playSound(SOUND_PU_PUSH);
+                break;
+            case POWER_UP_TYPE_SHIELD:
+                m_gameListener->playSound(SOUND_PU_SHIELD);
                 break;
         }
     }
