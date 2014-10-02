@@ -46,7 +46,6 @@ private:
     mat4x4 m_viewMatrix;
     mat4x4 m_projectionMatrix;
     mat4x4 m_viewProjectionMatrix;
-    GLuint m_buffer;
     
     void addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a);
     

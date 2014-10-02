@@ -16,7 +16,6 @@
 extern "C"
 {
 #include "asset_utils.h"
-#include "buffer.h"
 }
 
 static const int MAX_BATCH_SIZE = 256;
@@ -51,13 +50,15 @@ void OpenGLESRectangleBatcher::endBatch()
 {
     if (m_iNumRectangles > 0)
     {
-        m_buffer = create_vbo(sizeof(GLfloat) * m_colorVertices.size(), &m_colorVertices[0], GL_STATIC_DRAW);
-        
         glUseProgram(m_colorProgram.program);
         
         glUniformMatrix4fv(m_colorProgram.u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)m_viewProjectionMatrix);
         
-        glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
+        GLuint vbo_object;
+        glGenBuffers(1, &vbo_object);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo_object);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * m_colorVertices.size(), &m_colorVertices[0], GL_STATIC_DRAW);
+        
         glVertexAttribPointer(m_colorProgram.a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(0));
         glVertexAttribPointer(m_colorProgram.a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
         
@@ -68,7 +69,7 @@ void OpenGLESRectangleBatcher::endBatch()
         
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         
-        glDeleteBuffers(1, &m_buffer);
+        glDeleteBuffers(1, &vbo_object);
     }
 }
 

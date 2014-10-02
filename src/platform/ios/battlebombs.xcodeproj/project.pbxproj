@@ -105,7 +105,6 @@
 		BB74E80718C2541F007C223E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BB74E80518C2541F007C223E /* Localizable.strings */; };
 		BB7B1C2319DA2FF8009F05C6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB451A3618C30E810093E559 /* libz.dylib */; };
 		BB7B1C2D19DA309A009F05C6 /* asset_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C2419DA309A009F05C6 /* asset_utils.c */; };
-		BB7B1C2E19DA309A009F05C6 /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C2619DA309A009F05C6 /* buffer.c */; };
 		BB7B1C3019DA309A009F05C6 /* shader.c in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C2B19DA309A009F05C6 /* shader.c */; };
 		BB7F5D1619BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7F5D1419BA912B0041BEB3 /* WaitingForLocalSettingsInterface.cpp */; };
 		BB81B1AA19BE147400548837 /* STHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1A919BE147400548837 /* STHTTPRequest.m */; };
@@ -350,8 +349,6 @@
 		BB74E80618C2541F007C223E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BB7B1C2419DA309A009F05C6 /* asset_utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = asset_utils.c; sourceTree = "<group>"; };
 		BB7B1C2519DA309A009F05C6 /* asset_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asset_utils.h; sourceTree = "<group>"; };
-		BB7B1C2619DA309A009F05C6 /* buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = buffer.c; sourceTree = "<group>"; };
-		BB7B1C2719DA309A009F05C6 /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
 		BB7B1C2819DA309A009F05C6 /* linmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linmath.h; sourceTree = "<group>"; };
 		BB7B1C2B19DA309A009F05C6 /* shader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = shader.c; sourceTree = "<group>"; };
 		BB7B1C2C19DA309A009F05C6 /* shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader.h; sourceTree = "<group>"; };
@@ -885,8 +882,6 @@
 			children = (
 				BB7B1C2419DA309A009F05C6 /* asset_utils.c */,
 				BB7B1C2519DA309A009F05C6 /* asset_utils.h */,
-				BB7B1C2619DA309A009F05C6 /* buffer.c */,
-				BB7B1C2719DA309A009F05C6 /* buffer.h */,
 				BB96EEDF18B99A7100F7C356 /* game.cpp */,
 				BB96EEE018B99A7100F7C356 /* game.h */,
 				BB96EEE118B99A7100F7C356 /* image.c */,
@@ -1130,7 +1125,6 @@
 				BB9948E219366E2900A8E599 /* GameListener.cpp in Sources */,
 				BB96EEF018B99A7100F7C356 /* OpenGLESGameScreen.cpp in Sources */,
 				0A8FBF81179E07320039BA29 /* pngread.c in Sources */,
-				BB7B1C2E19DA309A009F05C6 /* buffer.c in Sources */,
 				BBB24BA51963AFFA00EF78B2 /* InterfaceOverlay.cpp in Sources */,
 				BB34DC89192523C000E9AA8C /* DynamicGridGameObject.cpp in Sources */,
 				BB96EED518B99A6900F7C356 /* OverlapTester.cpp in Sources */,
