@@ -91,12 +91,13 @@ public abstract class BaseGameActivity extends Activity
             }
         });
 
-        _adView = (AdView) findViewById(R.id.adView);
-        _adView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-
-        _adView.loadAd(adRequest);
+        // _adView = (AdView) findViewById(R.id.adView);
+        // _adView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        //
+        // AdRequest adRequest = new
+        // AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        //
+        // _adView.loadAd(adRequest);
     }
 
     @Override
