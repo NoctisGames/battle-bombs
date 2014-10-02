@@ -1,6 +1,7 @@
 package com.technegames.battlebombs;
 
 import java.util.Locale;
+import java.util.Random;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -100,7 +101,6 @@ public final class RendererWrapper implements Renderer
     private boolean isInitialized;
 
     // For Offline Mode
-    private static int _beginGameMessagesIndex = 0;
     private static final String[] _beginGameMessages = new String[12];
     private boolean[] _playersAlive = { true, true, true, true, true, true, true, true };
     private float _timeSinceOneOrLessPlayersRemaining;
@@ -380,20 +380,19 @@ public final class RendererWrapper implements Renderer
         _playersAlive[5] = true;
         _playersAlive[6] = true;
         _playersAlive[7] = true;
-        
+
         _timeSinceOneOrLessPlayersRemaining = 0;
         _isGameOver = false;
 
         clear_state();
 
-        String beginGameMessage = _beginGameMessages[_beginGameMessagesIndex++];
+        final Random rand = new Random();
+
+        int beginGameMessagesIndex = rand.nextInt(12);
+
+        String beginGameMessage = _beginGameMessages[beginGameMessagesIndex];
 
         on_chat_received(beginGameMessage);
-
-        if (_beginGameMessagesIndex >= _beginGameMessages.length)
-        {
-            _beginGameMessagesIndex = 0;
-        }
     }
 
     private void handleDeathForPlayerIndex(int playerIndex)

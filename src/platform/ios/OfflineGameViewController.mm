@@ -12,8 +12,6 @@
 #include "game.h"
 #include "GameEvent.h"
 
-static int _beginGameMessagesIndex = 0;
-
 @interface OfflineGameViewController ()
 {
     bool _playersAlive[8];
@@ -74,14 +72,13 @@ static int _beginGameMessagesIndex = 0;
         
         clear_state();
         
-        NSString *beginGameMessage = [_beginGameMessages objectAtIndex:_beginGameMessagesIndex++];
+        srand((int)time(NULL));
+        
+        int beginGameMessagesIndex = rand() % 12;
+        
+        NSString *beginGameMessage = [_beginGameMessages objectAtIndex:beginGameMessagesIndex];
         
         on_chat_received([beginGameMessage UTF8String]);
-        
-        if(_beginGameMessagesIndex >= [_beginGameMessages count])
-        {
-            _beginGameMessagesIndex = 0;
-        }
     }
 }
 
