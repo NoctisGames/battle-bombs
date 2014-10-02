@@ -763,6 +763,14 @@ void GameScreen::gameOver(rapidjson::Document &d)
 {
     static const char *hasWinnerKey = "hasWinner";
     
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        (*itr)->setIsDisplayingName(false);
+        (*itr)->setIsDisplayingPointer(false);
+    }
+    
+    m_displayGameOvers.clear();
+    
     if(d.HasMember(hasWinnerKey))
     {
         bool hasWinner = d[hasWinnerKey].GetBool();
