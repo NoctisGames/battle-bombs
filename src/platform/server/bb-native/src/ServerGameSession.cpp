@@ -122,17 +122,21 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
                 // This will be used to determine which type of powerups will appear
                 int flagRange = (rand() % 100 + 1);
 
-                if (flagRange <= 25)
+                if (flagRange <= 35)
                 {
                     flag = rand() % POWER_UP_TYPE_SPEED + 1;
                 }
-                else if (flagRange > 25 && flagRange <= 30)
+                else if (flagRange > 35 && flagRange <= 40)
                 {
                     flag = POWER_UP_TYPE_FORCE_FIELD;
                 }
-                else if (flagRange > 30 && flagRange <= 35)
+                else if (flagRange > 40 && flagRange <= 45)
                 {
                     flag = POWER_UP_TYPE_PUSH;
+                }
+                else if (flagRange > 45 && flagRange <= 50)
+                {
+                    flag = POWER_UP_TYPE_SHIELD;
                 }
 
                 // If these two blocks don't get caught, the flag remains 0 and no powerup will be created
