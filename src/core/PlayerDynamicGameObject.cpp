@@ -134,6 +134,13 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
             m_playerState = DEAD;
         }
     }
+    else if(m_playerState == FREEZING)
+    {
+        if (m_fStateTime > 0.6f)
+        {
+            m_playerState = FROZEN;
+        }
+    }
 }
 
 float PlayerDynamicGameObject::getStateTime()

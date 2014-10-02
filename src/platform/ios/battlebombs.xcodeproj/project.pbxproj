@@ -71,6 +71,7 @@
 		BB39D6EB196F01CC00BC895B /* map_mountains.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB39D6E9196F01CC00BC895B /* map_mountains.aifc */; };
 		BB419D6C19BFFED5007834CB /* PlayerRow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB419D6A19BFFED5007834CB /* PlayerRow.cpp */; };
 		BB42C0AC1975A82E00B592E5 /* OpenGLESRectangleBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB42C0AA1975A82E00B592E5 /* OpenGLESRectangleBatcher.cpp */; };
+		BB4B6DAA19DDBF8900539A44 /* game.png in Resources */ = {isa = PBXBuildFile; fileRef = BB4B6DA919DDBF8900539A44 /* game.png */; };
 		BB4F30F7197C1DC300270703 /* bg-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BB4F30F3197C1DC300270703 /* bg-568h@2x~iphone.png */; };
 		BB4F30F8197C1DC300270703 /* bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = BB4F30F4197C1DC300270703 /* bg@2x~ipad.png */; };
 		BB4F30F9197C1DC300270703 /* bg@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BB4F30F5197C1DC300270703 /* bg@2x~iphone.png */; };
@@ -307,6 +308,7 @@
 		BB430E24189313C600E4EAE1 /* pngstruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pngstruct.h; path = ../../3rdparty/libpng/pngstruct.h; sourceTree = "<group>"; };
 		BB451A3618C30E810093E559 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BB47C9BD18F326D4002ED03B /* PlayerState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerState.h; sourceTree = "<group>"; };
+		BB4B6DA919DDBF8900539A44 /* game.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = game.png; sourceTree = "<group>"; };
 		BB4F30F3197C1DC300270703 /* bg-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-568h@2x~iphone.png"; sourceTree = "<group>"; };
 		BB4F30F4197C1DC300270703 /* bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@2x~ipad.png"; sourceTree = "<group>"; };
 		BB4F30F5197C1DC300270703 /* bg@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@2x~iphone.png"; sourceTree = "<group>"; };
@@ -912,10 +914,6 @@
 		BBD079F518AA879D00E010AF /* assets */ = {
 			isa = PBXGroup;
 			children = (
-				BBAE201019DA62A100B705FE /* color_shader.fsh */,
-				BBAE201119DA62A100B705FE /* color_shader.vsh */,
-				BBAE201219DA62A100B705FE /* texture_shader.fsh */,
-				BBAE201319DA62A100B705FE /* texture_shader.vsh */,
 				BB4F30F3197C1DC300270703 /* bg-568h@2x~iphone.png */,
 				BB4F30F4197C1DC300270703 /* bg@2x~ipad.png */,
 				BB4F30F5197C1DC300270703 /* bg@2x~iphone.png */,
@@ -936,6 +934,9 @@
 				BBDE14B0195A2D7400A91FD7 /* char_red.png */,
 				BBDE14B1195A2D7400A91FD7 /* char_white.png */,
 				BBDE14B2195A2D7400A91FD7 /* char_yellow.png */,
+				BBAE201019DA62A100B705FE /* color_shader.fsh */,
+				BBAE201119DA62A100B705FE /* color_shader.vsh */,
+				BB4B6DA919DDBF8900539A44 /* game.png */,
 				BB8FF7C519AE3FE4005D0701 /* interface_2.png */,
 				BBB24BA119638A9300EF78B2 /* interface.png */,
 				BB71029A196E079500C7BA2F /* map_base.png */,
@@ -950,6 +951,8 @@
 				BB4F30FF197C1DCD00270703 /* quick_match_normal.png */,
 				BB4F3100197C1DCD00270703 /* quick_match_pressed.png */,
 				BB07506619C248950028515E /* sounds */,
+				BBAE201219DA62A100B705FE /* texture_shader.fsh */,
+				BBAE201319DA62A100B705FE /* texture_shader.vsh */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -1031,6 +1034,7 @@
 				BBB24BA219638A9300EF78B2 /* interface.png in Resources */,
 				BBA0A401196F549C00737A74 /* bot_red.png in Resources */,
 				BBA0A3FE196F549C00737A74 /* bot_green.png in Resources */,
+				BB4B6DAA19DDBF8900539A44 /* game.png in Resources */,
 				BBDE14B6195A2D7400A91FD7 /* char_pink.png in Resources */,
 				BB39D6E7196EFABD00BC895B /* map_space.aifc in Resources */,
 				BB07506519C248520028515E /* game_set.caf in Resources */,

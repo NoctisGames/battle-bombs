@@ -639,7 +639,7 @@ void GameScreen::processServerMessages()
                 {
                     beginSpectate(d);
                 }
-                else if(eventType == GAME_OVER && (m_gameState == RUNNING || m_gameState == SPECTATING))
+                else if(eventType == GAME_OVER)
                 {
                     gameOver(d);
                 }

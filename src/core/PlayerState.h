@@ -13,7 +13,9 @@ typedef enum
 {
     ALIVE,
     DYING,
-    DEAD
+    DEAD,
+    FREEZING,
+    FROZEN
 } Player_State;
 
 #endif /* PLAYER_STATE_H */

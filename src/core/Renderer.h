@@ -98,6 +98,7 @@ protected:
     std::unique_ptr<RectangleBatcher> m_rectangleBatcher;
 	std::unique_ptr<Font> m_font;
     std::unique_ptr<TextureWrapper> m_gameTexture;
+    std::unique_ptr<TextureWrapper> m_mapTexture;
     std::unique_ptr<TextureWrapper> m_interfaceTexture;
     std::unique_ptr<TextureWrapper> m_interfaceTexture2;
     std::unique_ptr<TextureWrapper> m_charBlackTexture;

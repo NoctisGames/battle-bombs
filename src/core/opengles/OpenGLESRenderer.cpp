@@ -52,7 +52,8 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     m_spriteBatcher = std::unique_ptr<OpenGLESSpriteBatcher>(new OpenGLESSpriteBatcher());
     m_rectangleBatcher = std::unique_ptr<OpenGLESRectangleBatcher>(new OpenGLESRectangleBatcher(true));
     
-    m_gameTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("map_space.png")));
+    m_mapTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("map_space.png")));
+    m_gameTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("game.png")));
     m_interfaceTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("interface.png")));
     m_interfaceTexture2 = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("interface_2.png")));
     
@@ -68,22 +69,22 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
 
 void OpenGLESRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
-    glDeleteTextures(1, &m_gameTexture->texture);
+    glDeleteTextures(1, &m_mapTexture->texture);
     
     switch (mapType)
     {
         case MAP_SPACE:
-            m_gameTexture->texture = load_png_asset_into_texture("map_space.png");
+            m_mapTexture->texture = load_png_asset_into_texture("map_space.png");
             break;
         case MAP_GRASSLANDS:
-            m_gameTexture->texture = load_png_asset_into_texture("map_grasslands.png");
+            m_mapTexture->texture = load_png_asset_into_texture("map_grasslands.png");
             break;
         case MAP_MOUNTAINS:
-            m_gameTexture->texture = load_png_asset_into_texture("map_mountains.png");
+            m_mapTexture->texture = load_png_asset_into_texture("map_mountains.png");
             break;
         case MAP_BASE:
         default:
-            m_gameTexture->texture = load_png_asset_into_texture("map_base.png");
+            m_mapTexture->texture = load_png_asset_into_texture("map_base.png");
             break;
     }
     
@@ -182,6 +183,7 @@ void OpenGLESRenderer::endFrame()
 
 void OpenGLESRenderer::cleanUp()
 {
+    glDeleteTextures(1, &m_mapTexture->texture);
     glDeleteTextures(1, &m_gameTexture->texture);
     glDeleteTextures(1, &m_interfaceTexture->texture);
     glDeleteTextures(1, &m_interfaceTexture2->texture);
