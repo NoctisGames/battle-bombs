@@ -102,6 +102,8 @@ public final class RendererWrapper implements Renderer
     private static int _beginGameMessagesIndex = 0;
     private static final String[] _beginGameMessages = new String[12];
     private boolean[] _playersAlive = { true, true, true, true, true, true, true, true };
+    private float _timeSinceOneOrLessPlayersRemaining;
+    private boolean _isGameOver;
 
     public RendererWrapper(Activity activity, int deviceScreenWidth, int deviceScreenHeight, String username, boolean isOffline)
     {
@@ -182,6 +184,16 @@ public final class RendererWrapper implements Renderer
             case 0:
                 update(smoothedDeltaRealTime_ms / 1000);
                 pushEvents();
+                if (isOffline && _isGameOver)
+                {
+                    _timeSinceOneOrLessPlayersRemaining += (smoothedDeltaRealTime_ms / 1000);
+                    if (_timeSinceOneOrLessPlayersRemaining > 0.5f)
+                    {
+                        _isGameOver = false;
+                        _timeSinceOneOrLessPlayersRemaining = 0;
+                        handleGameOver();
+                    }
+                }
                 break;
             case 1:
                 if (isOffline)
@@ -385,6 +397,23 @@ public final class RendererWrapper implements Renderer
         _playersAlive[playerIndex] = false;
 
         int numAlive = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            if (_playersAlive[i])
+            {
+                numAlive++;
+            }
+        }
+
+        if (numAlive <= 1)
+        {
+            _isGameOver = true;
+        }
+    }
+
+    private void handleGameOver()
+    {
+        int numAlive = 0;
         int winningPlayerIndex = -1;
         for (int i = 0; i < 8; i++)
         {
@@ -513,7 +542,7 @@ public final class RendererWrapper implements Renderer
     }
 
     private static native void init(String username, boolean isOffline);
-    
+
     private static native void on_surface_created(int pixelWidth, int pixelHeight);
 
     private static native void on_surface_changed(int pixelWidth, int pixelHeight, int dpWidth, int dpHeight);

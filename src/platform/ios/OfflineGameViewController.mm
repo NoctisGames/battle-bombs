@@ -147,12 +147,10 @@ static int _beginGameMessagesIndex = 0;
     _playersAlive[playerIndex] = false;
     
     int numAlive = 0;
-    int winningPlayerIndex = -1;
     for (int i = 0; i < 8; i++)
     {
         if(_playersAlive[i])
         {
-            winningPlayerIndex = i;
             numAlive++;
         }
     }
