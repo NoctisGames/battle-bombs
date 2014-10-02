@@ -159,6 +159,25 @@ static int _beginGameMessagesIndex = 0;
     
     if(numAlive <= 1)
     {
+        [self performSelector:@selector(handleGameOver) withObject:nil afterDelay:0.5];
+    }
+}
+
+- (void)handleGameOver
+{
+    int numAlive = 0;
+    int winningPlayerIndex = -1;
+    for (int i = 0; i < 8; i++)
+    {
+        if(_playersAlive[i])
+        {
+            winningPlayerIndex = i;
+            numAlive++;
+        }
+    }
+    
+    if(numAlive <= 1)
+    {
         bool hasWinner = numAlive == 1;
         
         NSString *gameOverMessage;

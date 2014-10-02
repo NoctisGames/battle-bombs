@@ -639,7 +639,7 @@ void GameScreen::processServerMessages()
                 {
                     beginSpectate(d);
                 }
-                else if(eventType == GAME_OVER)
+                else if(eventType == GAME_OVER && (m_gameState == RUNNING || m_gameState == SPECTATING))
                 {
                     gameOver(d);
                 }
@@ -762,14 +762,6 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
 void GameScreen::gameOver(rapidjson::Document &d)
 {
     static const char *hasWinnerKey = "hasWinner";
-    
-    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-    {
-        (*itr)->setIsDisplayingName(false);
-        (*itr)->setIsDisplayingPointer(false);
-    }
-    
-    m_displayGameOvers.clear();
     
     if(d.HasMember(hasWinnerKey))
     {
