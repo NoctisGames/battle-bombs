@@ -583,6 +583,30 @@ TextureRegion& Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
                     return playerPushingBombDownTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
             }
         }
+        else if(player.getPlayerActionState() == RAISING_SHIELD)
+        {
+            // TODO
+        }
+        else if(player.getPlayerActionState() == SHIELD_RAISED)
+        {
+            static TextureRegion playerRightShieldRaisedTextureRegion = TextureRegion(PLAYER_RAISE_SHIELD_RIGHT_FRAME_3_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_RIGHT_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+            static TextureRegion playerUpShieldRaisedTextureRegion = TextureRegion(PLAYER_RAISE_SHIELD_UP_FRAME_3_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_UP_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+            static TextureRegion playerLeftShieldRaisedTextureRegion = TextureRegion(PLAYER_RAISE_SHIELD_LEFT_FRAME_3_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_LEFT_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+            static TextureRegion playerDownShieldRaisedTextureRegion = TextureRegion(PLAYER_RAISE_SHIELD_DOWN_FRAME_3_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_DOWN_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+            
+            switch (player.getDirection())
+            {
+                case DIRECTION_RIGHT:
+                    return playerRightShieldRaisedTextureRegion;
+                case DIRECTION_UP:
+                    return playerUpShieldRaisedTextureRegion;
+                case DIRECTION_LEFT:
+                    return playerLeftShieldRaisedTextureRegion;
+                case DIRECTION_DOWN:
+                default:
+                    return playerDownShieldRaisedTextureRegion;
+            }
+        }
         else
         {
             static std::vector<TextureRegion> playerWinningTextureRegions;

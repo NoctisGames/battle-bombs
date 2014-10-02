@@ -14,7 +14,9 @@ typedef enum
     IDLE,
     WINNING,
     PLACING_BOMB,
-    PUSHING_BOMB
+    PUSHING_BOMB,
+    RAISING_SHIELD,
+    SHIELD_RAISED
 } Player_Action_State;
 
 #endif /* PLAYER_ACTION_STATE_H */
