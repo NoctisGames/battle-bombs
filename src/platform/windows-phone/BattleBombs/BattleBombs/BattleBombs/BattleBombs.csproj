@@ -221,6 +221,9 @@
     <Content Include="Assets\force_field_down.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\game.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\game_set.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

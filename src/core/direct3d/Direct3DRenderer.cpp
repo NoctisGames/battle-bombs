@@ -56,6 +56,7 @@ ComPtr<ID3D11Device1> m_d3dDevice3; // the device interface
 ComPtr<ID3D11DeviceContext1> m_d3dContext3; // the device context interface
 ComPtr<ID3D11RenderTargetView> m_rendertarget3;    // the render target interface
 
+ComPtr<ID3D11ShaderResourceView> m_mapShaderResourceView;
 ComPtr<ID3D11ShaderResourceView> m_gameShaderResourceView;
 ComPtr<ID3D11ShaderResourceView> m_interfaceShaderResourceView;
 ComPtr<ID3D11ShaderResourceView> m_interface2ShaderResourceView;
@@ -77,7 +78,8 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 	m_spriteBatcher = std::unique_ptr<Direct3DSpriteBatcher>(new Direct3DSpriteBatcher(d3dDevice, d3dContext));
 	m_rectangleBatcher = std::unique_ptr<Direct3DRectangleBatcher>(new Direct3DRectangleBatcher(d3dDevice, d3dContext, true));
 
-	CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL);
+	CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_space.dds", NULL, &m_mapShaderResourceView, NULL);
+	CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\game.dds", NULL, &m_gameShaderResourceView, NULL);
 	CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL);
 	CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\interface_2.dds", NULL, &m_interface2ShaderResourceView, NULL);
 
@@ -90,6 +92,7 @@ Direct3DRenderer::Direct3DRenderer(ID3D11Device1 *d3dDevice, ID3D11DeviceContext
 	CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_white.dds", NULL, &m_charWhiteShaderResourceView, NULL);
 	CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\bot_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL);
 	
+	m_mapTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_mapShaderResourceView.Get()));
 	m_gameTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_gameShaderResourceView.Get()));
 	m_interfaceTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_interfaceShaderResourceView.Get()));
 	m_interfaceTexture2 = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_interface2ShaderResourceView.Get()));
@@ -109,17 +112,17 @@ void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
 	switch (mapType)
 	{
 	case MAP_SPACE:
-		CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_space.dds", NULL, &m_gameShaderResourceView, NULL);
+		CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_space.dds", NULL, &m_mapShaderResourceView, NULL);
 		break;
 	case MAP_GRASSLANDS:
-		CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_grasslands.dds", NULL, &m_gameShaderResourceView, NULL);
+		CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_grasslands.dds", NULL, &m_mapShaderResourceView, NULL);
 		break;
 	case MAP_MOUNTAINS:
-		CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_mountains.dds", NULL, &m_gameShaderResourceView, NULL);
+		CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_mountains.dds", NULL, &m_mapShaderResourceView, NULL);
 		break;
 	case MAP_BASE:
 	default:
-		CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_base.dds", NULL, &m_gameShaderResourceView, NULL);
+		CreateDDSTextureFromFile(m_d3dDevice3.Get(), L"Assets\\map_base.dds", NULL, &m_mapShaderResourceView, NULL);
 		break;
 	}
 
@@ -163,7 +166,7 @@ void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
 		CreateDDSTextureFromFile(m_d3dDevice3.Get(), players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL);
 	}
 
-	m_gameTexture->texture = m_gameShaderResourceView.Get();
+	m_mapTexture->texture = m_mapShaderResourceView.Get();
 	m_charBlackTexture->texture = m_charBlackShaderResourceView.Get();
 	m_charBlueTexture->texture = m_charBlueShaderResourceView.Get();
 	m_charGreenTexture->texture = m_charGreenShaderResourceView.Get();

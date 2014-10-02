@@ -196,6 +196,9 @@ void Direct3DGameScreen::handleSound()
 		case SOUND_PU_PUSH:
 			m_powerUpPushSound->play();
 			break;
+		case SOUND_PU_SHIELD:
+			m_powerUpPushSound->play();
+			break;
 		case SOUND_FORCE_FIELD_DOWN:
 			m_forceFieldDownSound->play();
 			break;

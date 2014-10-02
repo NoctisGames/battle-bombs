@@ -193,6 +193,17 @@ namespace BattleBombsComp
 			m_gameScreen->update(m_timer->Delta, m_touchEvents);
 
 			pushEvents();
+
+			if (m_isOffline && _isGameOver)
+			{
+				_timeSinceOneOrLessPlayersRemaining += m_timer->Delta;
+				if (_timeSinceOneOrLessPlayersRemaining > 0.5f)
+				{
+					_isGameOver = false;
+					_timeSinceOneOrLessPlayersRemaining = 0;
+					handleGameOver();
+				}
+			}
 		}
 		else if (gameState == 1)
 		{
@@ -329,6 +340,9 @@ namespace BattleBombsComp
 		m_playersAlive[5] = true;
 		m_playersAlive[6] = true;
 		m_playersAlive[7] = true;
+
+		_timeSinceOneOrLessPlayersRemaining = 0;
+		_isGameOver = false;
 
 		m_gameScreen->clearState();
 
@@ -474,6 +488,23 @@ namespace BattleBombsComp
 	{
 		m_playersAlive[playerIndex] = false;
 
+		int numAlive = 0;
+		for (int i = 0; i < 8; i++)
+		{
+			if (m_playersAlive[i])
+			{
+				numAlive++;
+			}
+		}
+
+		if (numAlive <= 1)
+		{
+			_isGameOver = true;
+		}
+	}
+
+	void Direct3DInterop::handleGameOver()
+	{
 		int numAlive = 0;
 		int winningPlayerIndex = -1;
 		for (int i = 0; i < 8; i++)

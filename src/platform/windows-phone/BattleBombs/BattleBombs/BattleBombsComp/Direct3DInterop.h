@@ -59,6 +59,8 @@ namespace BattleBombsComp
 		char *m_username;
 		const char *m_gameOverMessage;
 		bool m_playersAlive[8];
+		float _timeSinceOneOrLessPlayersRemaining;
+		bool _isGameOver;
 		std::vector<TouchEvent> m_touchEvents;
 		std::vector<TouchEvent> m_touchEventsPool;
 		std::vector<TouchEvent> m_touchEventsBuffer;
@@ -68,6 +70,8 @@ namespace BattleBombsComp
 		void handleGameStateOne();
 
 		void handleDeathForPlayerIndex(int playerIndex);
+
+		void handleGameOver();
 
 		void addTouchEventForType(Touch_Type touchType, float x, float y);
 
