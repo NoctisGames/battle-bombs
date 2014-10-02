@@ -174,7 +174,7 @@ void GameSession::updateCommon(float deltaTime)
 
     for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = m_explosions.begin(); itr != m_explosions.end();)
     {
-        (**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks);
+        (**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks, m_players);
 
         if ((**itr).isComplete())
         {

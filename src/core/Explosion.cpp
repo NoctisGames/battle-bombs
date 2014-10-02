@@ -13,9 +13,10 @@
 #include "Rectangle.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
+#include "PlayerDynamicGameObject.h"
 #include "Fire.h"
 
-Explosion::Explosion(short power, int gridX, int gridY, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, float width, float height) : GridGameObject(gridX, gridY, width, height, 0)
+Explosion::Explosion(short power, int gridX, int gridY, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, float width, float height) : GridGameObject(gridX, gridY, width, height, 0)
 {
     m_fStateTime = 0;
     m_fTravelTime = 0;
@@ -25,7 +26,7 @@ Explosion::Explosion(short power, int gridX, int gridY, std::vector<std::unique_
     m_sFrames = 1;
     m_isComplete = false;
     
-    m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(Fire_Type::CORE_PART_1, gridX, gridY, 0)));
+    m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(Fire_Type::CORE_PART_1, gridX, gridY, DIRECTION_RIGHT)));
     
     m_travelingRight = true;
     m_travelingUp = true;
@@ -41,17 +42,17 @@ Explosion::Explosion(short power, int gridX, int gridY, std::vector<std::unique_
     m_iLeftGridX = gridX - 1;
     m_iDownGridY = gridY - 1;
     
-    runBlockLogic(insideBlocks, breakableBlocks);
+    runBlockLogic(insideBlocks, breakableBlocks, players);
     
-    m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingRight ? HEAD_PART_1 : EDGE_FROM_CORE_PART_1, m_iRightGridX, gridY, 0)));
-    m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingUp ? HEAD_PART_1 : EDGE_FROM_CORE_PART_1, gridX, m_iUpGridY, 90)));
-    m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingLeft ? HEAD_PART_1 : EDGE_FROM_CORE_PART_1, m_iLeftGridX, gridY, 180)));
-    m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingDown ? HEAD_PART_1 : EDGE_FROM_CORE_PART_1, gridX, m_iDownGridY, 270)));
+    m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingRight ? HEAD_PART_1 : EDGE_FROM_CORE_PART_1, m_iRightGridX, gridY, DIRECTION_RIGHT)));
+    m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingUp ? HEAD_PART_1 : EDGE_FROM_CORE_PART_1, gridX, m_iUpGridY, DIRECTION_UP)));
+    m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingLeft ? HEAD_PART_1 : EDGE_FROM_CORE_PART_1, m_iLeftGridX, gridY, DIRECTION_LEFT)));
+    m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingDown ? HEAD_PART_1 : EDGE_FROM_CORE_PART_1, gridX, m_iDownGridY, DIRECTION_DOWN)));
     
     runPostBlockLogic();
 }
 
-void Explosion::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
+void Explosion::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
     m_fStateTime += deltaTime;
     m_fTravelTime += deltaTime;
@@ -88,29 +89,29 @@ void Explosion::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock 
             bool canExpandLeft = m_travelingLeft;
             bool canExpandDown = m_travelingDown;
             
-            runBlockLogic(insideBlocks, breakableBlocks);
+            runBlockLogic(insideBlocks, breakableBlocks, players);
             
             Fire_Type travelingFireType = m_sFrames == 4 ? Fire_Type::HEAD_PART_4_POW_2 : Fire_Type::HEAD_PART_5_POW_2;
             Fire_Type blockingFireType = m_sFrames == 4 ? Fire_Type::EDGE_FROM_FAT_NECK : Fire_Type::EDGE_FROM_THIN_NECK;
             
             if(canExpandRight)
             {
-                m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingRight ? travelingFireType : blockingFireType, m_iRightGridX, m_gridY, 0)));
+                m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingRight ? travelingFireType : blockingFireType, m_iRightGridX, m_gridY, DIRECTION_RIGHT)));
             }
             
             if(canExpandUp)
             {
-                m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingUp ? travelingFireType : blockingFireType, m_gridX, m_iUpGridY, 90)));
+                m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingUp ? travelingFireType : blockingFireType, m_gridX, m_iUpGridY, DIRECTION_UP)));
             }
             
             if(canExpandLeft)
             {
-                m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingLeft ? travelingFireType : blockingFireType, m_iLeftGridX, m_gridY, 180)));
+                m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingLeft ? travelingFireType : blockingFireType, m_iLeftGridX, m_gridY, DIRECTION_LEFT)));
             }
             
             if(canExpandDown)
             {
-                m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingDown ? travelingFireType : blockingFireType, m_gridX, m_iDownGridY, 270)));
+                m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingDown ? travelingFireType : blockingFireType, m_gridX, m_iDownGridY, DIRECTION_DOWN)));
             }
             
             runPostBlockLogic();
@@ -124,7 +125,7 @@ void Explosion::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock 
         if(m_sPowerRemaining == 0 && m_sPower >= 3 && m_sFrames >= 4 + m_sPower)
         {
             m_fireParts.clear();
-            m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(Fire_Type::CORE_END, m_gridX, m_gridY, 0)));
+            m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(Fire_Type::CORE_END, m_gridX, m_gridY, DIRECTION_RIGHT)));
         }
     }
     
@@ -156,7 +157,7 @@ bool Explosion::isComplete()
 
 // Private
 
-void Explosion::runBlockLogic(std::vector<std::unique_ptr<InsideBlock> > &insideBlocks, std::vector<std::unique_ptr<BreakableBlock> > &breakableBlocks)
+void Explosion::runBlockLogic(std::vector<std::unique_ptr<InsideBlock> > &insideBlocks, std::vector<std::unique_ptr<BreakableBlock> > &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
     {
@@ -199,6 +200,29 @@ void Explosion::runBlockLogic(std::vector<std::unique_ptr<InsideBlock> > &inside
         else if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_iDownGridY)
         {
             m_travelingDown = false;
+        }
+    }
+    
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = players.begin(); itr != players.end(); itr++)
+    {
+        if((*itr)->getPlayerActionState() == SHIELD_RAISED)
+        {
+            if((*itr)->getGridX() == m_iRightGridX && (*itr)->getGridY() == m_gridY && (*itr)->getDirection() == DIRECTION_LEFT)
+            {
+                m_travelingRight = false;
+            }
+            else if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_iUpGridY && (*itr)->getDirection() == DIRECTION_DOWN)
+            {
+                m_travelingUp = false;
+            }
+            else if((*itr)->getGridX() == m_iLeftGridX && (*itr)->getGridY() == m_gridY && (*itr)->getDirection() == DIRECTION_RIGHT)
+            {
+                m_travelingLeft = false;
+            }
+            else if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_iDownGridY && (*itr)->getDirection() == DIRECTION_UP)
+            {
+                m_travelingDown = false;
+            }
         }
     }
     
