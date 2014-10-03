@@ -116,8 +116,6 @@ void GameScreen::onPause()
 {
     Assets::getInstance()->setMusicId(MUSIC_STOP);
     
-    m_renderer->cleanUp();
-    
     platformPause();
 }
 

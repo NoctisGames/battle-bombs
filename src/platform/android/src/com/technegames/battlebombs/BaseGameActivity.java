@@ -9,7 +9,14 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.LinearLayout;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 public abstract class BaseGameActivity extends Activity
 {
@@ -18,6 +25,7 @@ public abstract class BaseGameActivity extends Activity
 
     protected RendererWrapper _rendererWrapper;
     private GLSurfaceView _glSurfaceView;
+    protected AdView _adView;
     protected String _username;
 
     protected abstract boolean isOffline();
@@ -27,7 +35,10 @@ public abstract class BaseGameActivity extends Activity
     {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_game);
+        // Do the stuff that initialize() would do for you
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
         _username = getIntent().getStringExtra(EXTRA_USERNAME);
 
@@ -40,11 +51,10 @@ public abstract class BaseGameActivity extends Activity
 
         _rendererWrapper = new RendererWrapper(this, size.x, size.y, _username, isOffline());
         _glSurfaceView = new GLSurfaceView(this);
+        RelativeLayout.LayoutParams glSurfaceViewLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        _glSurfaceView.setLayoutParams(glSurfaceViewLayoutParams);
         _glSurfaceView.setEGLContextClientVersion(2);
         _glSurfaceView.setRenderer(_rendererWrapper);
-
-        LinearLayout gameContainer = (LinearLayout) findViewById(R.id.game);
-        gameContainer.addView(_glSurfaceView);
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -83,6 +93,26 @@ public abstract class BaseGameActivity extends Activity
                 }
             }
         });
+
+        _adView = new AdView(this);
+        _adView.setAdSize(AdSize.BANNER);
+        _adView.setAdUnitId(getString(R.string.banner_ad_unit_id));
+        RelativeLayout.LayoutParams adLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        adLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        adLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        _adView.setLayoutParams(adLayoutParams);
+
+        RelativeLayout gameContainer = new RelativeLayout(this);
+        RelativeLayout.LayoutParams gameContainerLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        gameContainer.setLayoutParams(gameContainerLayoutParams);
+
+        gameContainer.addView(_glSurfaceView);
+        gameContainer.addView(_adView);
+
+        setContentView(gameContainer);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        _adView.loadAd(adRequest);
     }
 
     @Override
@@ -92,6 +122,11 @@ public abstract class BaseGameActivity extends Activity
 
         _glSurfaceView.onResume();
         _rendererWrapper.onResume();
+
+        if (_adView != null)
+        {
+            _adView.resume();
+        }
     }
 
     @Override
@@ -100,12 +135,28 @@ public abstract class BaseGameActivity extends Activity
         _rendererWrapper.onPause();
         _glSurfaceView.onPause();
 
+        if (_adView != null)
+        {
+            _adView.pause();
+        }
+
         if (!isFinishing())
         {
             finish();
         }
 
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        if (_adView != null)
+        {
+            _adView.destroy();
+        }
+
+        super.onDestroy();
     }
 
     @Override
