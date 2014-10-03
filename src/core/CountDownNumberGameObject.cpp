@@ -29,17 +29,6 @@ void CountDownNumberGameObject::update(float deltaTime)
 {
     m_fStateTime += deltaTime;
     
-    if(m_fStateTime < 0.5f)
-    {
-        m_fWidth -= m_fOriginalWidthToTargetWidthDifference * deltaTime * 2;
-        m_fHeight -= m_fOriginalHeightToTargetHeightDifference * deltaTime * 2;
-    }
-    else
-    {
-        m_fWidth = targetWidth;
-        m_fHeight = targetHeight;
-    }
-    
     if(m_fStateTime > 1)
     {
         m_remove = true;
@@ -55,6 +44,16 @@ void CountDownNumberGameObject::update(float deltaTime)
     else if(m_fStateTime > 0.6f)
     {
         m_fAngle -= deltaTime * 180;
+    }
+    else if(m_fStateTime > 0.4f)
+    {
+        m_fWidth = targetWidth;
+        m_fHeight = targetHeight;
+    }
+    else
+    {
+        m_fWidth -= m_fOriginalWidthToTargetWidthDifference * deltaTime * 2.5f;
+        m_fHeight -= m_fOriginalHeightToTargetHeightDifference * deltaTime * 2.5f;
     }
 }
 

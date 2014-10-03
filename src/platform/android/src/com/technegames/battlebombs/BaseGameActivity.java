@@ -9,11 +9,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
-
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 public abstract class BaseGameActivity extends Activity
 {
@@ -22,7 +18,6 @@ public abstract class BaseGameActivity extends Activity
 
     protected RendererWrapper _rendererWrapper;
     private GLSurfaceView _glSurfaceView;
-    private AdView _adView;
     protected String _username;
 
     protected abstract boolean isOffline();
@@ -51,8 +46,6 @@ public abstract class BaseGameActivity extends Activity
         LinearLayout gameContainer = (LinearLayout) findViewById(R.id.game);
         gameContainer.addView(_glSurfaceView);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         _glSurfaceView.setOnTouchListener(new OnTouchListener()
@@ -90,14 +83,6 @@ public abstract class BaseGameActivity extends Activity
                 }
             }
         });
-
-        // _adView = (AdView) findViewById(R.id.adView);
-        // _adView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        //
-        // AdRequest adRequest = new
-        // AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        //
-        // _adView.loadAd(adRequest);
     }
 
     @Override
@@ -107,37 +92,20 @@ public abstract class BaseGameActivity extends Activity
 
         _glSurfaceView.onResume();
         _rendererWrapper.onResume();
-
-        if (_adView != null)
-        {
-            _adView.resume();
-        }
     }
 
     @Override
     protected void onPause()
     {
-        if (_adView != null)
-        {
-            _adView.pause();
-        }
-
         _rendererWrapper.onPause();
         _glSurfaceView.onPause();
 
-        finish();
+        if (!isFinishing())
+        {
+            finish();
+        }
 
         super.onPause();
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        if (_adView != null)
-        {
-            _adView.destroy();
-        }
-        super.onDestroy();
     }
 
     @Override
