@@ -180,19 +180,3 @@ void OpenGLESRenderer::endFrame()
     
     glDisable(GL_TEXTURE_2D);
 }
-
-void OpenGLESRenderer::cleanUp()
-{
-    glDeleteTextures(1, &m_mapTexture->texture);
-    glDeleteTextures(1, &m_gameTexture->texture);
-    glDeleteTextures(1, &m_interfaceTexture->texture);
-    glDeleteTextures(1, &m_interfaceTexture2->texture);
-    glDeleteTextures(1, &m_charBlackTexture->texture);
-    glDeleteTextures(1, &m_charBlueTexture->texture);
-    glDeleteTextures(1, &m_charGreenTexture->texture);
-    glDeleteTextures(1, &m_charOrangeTexture->texture);
-    glDeleteTextures(1, &m_charPinkTexture->texture);
-    glDeleteTextures(1, &m_charRedTexture->texture);
-    glDeleteTextures(1, &m_charWhiteTexture->texture);
-    glDeleteTextures(1, &m_charYellowTexture->texture);
-}

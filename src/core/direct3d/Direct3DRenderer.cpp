@@ -198,8 +198,3 @@ void Direct3DRenderer::endFrame()
 {
 	// Not Needed Yet
 }
-
-void Direct3DRenderer::cleanUp()
-{
-	// Empty
-}

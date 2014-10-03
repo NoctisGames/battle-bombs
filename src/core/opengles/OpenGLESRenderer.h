@@ -29,8 +29,6 @@ public:
     virtual void renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
     
     virtual void endFrame();
-    
-    virtual void cleanUp();
 };
 
 #endif /* defined(__battle_bombs__OpenGLESRenderer__) */
