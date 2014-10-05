@@ -227,7 +227,7 @@ void GameSession::updateCommon(float deltaTime)
             case MAP_MOUNTAINS:
                 for (std::vector < std::unique_ptr < IceBall >> ::iterator itr = m_iceBalls.begin(); itr != m_iceBalls.end(); )
                 {
-                    (*itr)->update(deltaTime, m_insideBlocks, m_breakableBlocks);
+                    (*itr)->update(deltaTime, m_breakableBlocks);
                     
                     if ((*itr)->isTargetReached())
                     {

@@ -23,7 +23,7 @@ class IceBall : public DynamicGridGameObject
 public:
     IceBall(int gridX, int gridY, int index, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
     
-    void update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+    void update(float deltaTime, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
     
     float getStateTime();
     

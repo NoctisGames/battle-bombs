@@ -23,7 +23,7 @@ class FallingObjectShadow : public GridGameObject
 public:
     FallingObjectShadow(int gridX, int gridY, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
     
-    void update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+    void update(float deltaTime, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
     
     float getStateTime();
     

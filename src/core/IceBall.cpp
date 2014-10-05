@@ -35,7 +35,7 @@ IceBall::IceBall(int gridX, int gridY, int index, std::vector<std::unique_ptr<In
     m_isTargetReached = false;
 }
 
-void IceBall::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
+void IceBall::update(float deltaTime, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
 {
     if(m_isDescending)
     {
@@ -51,7 +51,7 @@ void IceBall::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >>
     }
     else if(m_isVisible)
     {
-        m_fallingObjectShadow->update(deltaTime, insideBlocks, breakableBlocks);
+        m_fallingObjectShadow->update(deltaTime, breakableBlocks);
         
         if(m_fallingObjectShadow->getFallingObjectShadowState() == CLOSEST)
         {

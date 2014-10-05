@@ -23,7 +23,7 @@ FallingObjectShadow::FallingObjectShadow(int gridX, int gridY, std::vector<std::
     m_isTargetBreakableBlock = isTargetBreakableBlock(breakableBlocks);
 }
 
-void FallingObjectShadow::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
+void FallingObjectShadow::update(float deltaTime, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks)
 {
     m_fStateTime += deltaTime;
     
@@ -46,7 +46,7 @@ void FallingObjectShadow::update(float deltaTime, std::vector<std::unique_ptr<In
     
     if(m_isTargetBreakableBlock)
     {
-        m_isTargetBreakableBlock = m_targetBreakableBlock->getBreakableBlockState() == BB_NORMAL;
+        m_isTargetBreakableBlock = isTargetBreakableBlock(breakableBlocks);
     }
     
     if(m_isTargetInsideBlock || m_isTargetBreakableBlock)
@@ -109,7 +109,7 @@ bool FallingObjectShadow::isTargetBreakableBlock(std::vector<std::unique_ptr<Bre
 {
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
     {
-        if(m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY())
+        if((*itr)->getBreakableBlockState() == BB_NORMAL && m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY())
         {
             m_targetBreakableBlock = (*itr).get();
             return true;
