@@ -148,30 +148,9 @@ void OpenGLESRenderer::clearScreenWithColor(float r, float g, float b, float a)
 void OpenGLESRenderer::beginFrame()
 {
     glEnable(GL_TEXTURE_2D);
-}
-
-void OpenGLESRenderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
-{
+    
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    Renderer::renderWorldForeground(mapBordersFar, insideBlocks, breakableBlocks, powerUps);
-}
-
-void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface)
-{
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    Renderer::renderWaitingForServerInterface(waitingForServerInterface);
-}
-
-void OpenGLESRenderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
-{
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    Renderer::renderWaitingForLocalSettingsInterface(waitingForLocalSettingsInterface);
 }
 
 void OpenGLESRenderer::endFrame()
