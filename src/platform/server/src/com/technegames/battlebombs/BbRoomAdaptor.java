@@ -236,7 +236,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                             }
                         }
 
-                        if (!_isSuddenDeathMode && _numSecondsLeftForRound <= 174)
+                        if (!_isSuddenDeathMode && _numSecondsLeftForRound <= 60)
                         {
                             try
                             {
@@ -394,8 +394,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 {
                     mapType = 0;
                 }
-
-                mapType = 2;
 
                 init(_room.getId(), _inGameUserSessionDataMap.size(), mapType);
 
