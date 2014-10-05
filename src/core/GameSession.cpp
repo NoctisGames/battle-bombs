@@ -404,7 +404,11 @@ void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *key
     if(d.HasMember(keyAlive))
     {
         bool isPlayerAlive = d[keyAlive].GetBool();
-        m_players.at(playerIndex).get()->setPlayerState(isPlayerAlive ? ALIVE : DEAD);
+        Player_State playerState = m_players.at(playerIndex).get()->getPlayerState();
+        if(playerState == ALIVE && !isPlayerAlive)
+        {
+            m_players.at(playerIndex).get()->setPlayerState(DEAD);
+        }
     }
     
     if(d.HasMember(keyIsBot))
