@@ -543,6 +543,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         String iceBallXValues = "";
         String iceBallYValues = "";
 
+        int numIceBalls = 0;
         int inset = 0;
 
         for (; inset < 8; inset++)
@@ -551,24 +552,28 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             {
                 iceBallXValues += "" + i + ",";
                 iceBallYValues += "" + (GRID_CELL_NUM_ROWS - 1 - inset) + ",";
+                numIceBalls++;
             }
 
             for (int i = (GRID_CELL_NUM_ROWS - 2 - inset); i >= inset; i--)
             {
                 iceBallXValues += "" + (NUM_GRID_CELLS_PER_ROW - 1 - inset) + ",";
                 iceBallYValues += "" + i + ",";
+                numIceBalls++;
             }
 
             for (int i = (NUM_GRID_CELLS_PER_ROW - 2 - inset); i >= inset; i--)
             {
                 iceBallXValues += "" + i + ",";
                 iceBallYValues += "" + inset + ",";
+                numIceBalls++;
             }
 
             for (int i = (1 + inset); i < (GRID_CELL_NUM_ROWS - 1 - inset); i++)
             {
                 iceBallXValues += "" + inset + ",";
                 iceBallYValues += "" + i + ",";
+                numIceBalls++;
             }
         }
 
@@ -577,6 +582,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
 
         tobeSent.put("iceBallXValues", iceBallXValues);
         tobeSent.put("iceBallYValues", iceBallYValues);
+        tobeSent.put("numIceBalls", numIceBalls);
     }
 
     private void updateRoomWithMessage(final String message)
