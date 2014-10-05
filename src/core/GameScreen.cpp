@@ -252,6 +252,22 @@ void GameScreen::present()
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             
+            if(m_isSuddenDeath)
+            {
+                switch (m_iMapType)
+                {
+                    case MAP_SPACE:
+                        break;
+                    case MAP_GRASSLANDS:
+                        break;
+                    case MAP_MOUNTAINS:
+                        m_renderer->renderSuddenDeathMountains(m_iceBalls, m_icePatches);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
             m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             
             m_renderer->renderInterface(*m_interfaceOverlay);
@@ -269,6 +285,22 @@ void GameScreen::present()
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
+            
+            if(m_isSuddenDeath)
+            {
+                switch (m_iMapType)
+                {
+                    case MAP_SPACE:
+                        break;
+                    case MAP_GRASSLANDS:
+                        break;
+                    case MAP_MOUNTAINS:
+                        m_renderer->renderSuddenDeathMountains(m_iceBalls, m_icePatches);
+                        break;
+                    default:
+                        break;
+                }
+            }
             
             m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
             

@@ -42,6 +42,9 @@
 #include "CountDownNumberGameObject.h"
 #include "DisplayBattleGameObject.h"
 #include "DisplayGameOverGameObject.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
 #include <sstream>
 
 Renderer::Renderer()
@@ -74,6 +77,122 @@ void Renderer::calcScrollYForPlayer(PlayerDynamicGameObject &player)
 	{
 		m_fScrollY = 0;
 	}
+}
+
+void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface)
+{
+    if(waitingForServerInterface.renderPlayersList())
+    {
+        m_spriteBatcher->beginBatch();
+        renderGameObject(waitingForServerInterface, Assets::getWaitingForServerInterfaceTextureRegion());
+        
+        for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
+        {
+            renderGameObject((*itr)->getPlayerRowAvatar(), Assets::getPlayerRowAvatarTextureRegion((*itr)->getPlayerRowAvatar()));
+            
+            if ((*itr)->isActive() && (*itr)->getPlayerPlatformAvatar().getPlayerPlatform() != PLATFORM_UNKNOWN)
+            {
+                renderGameObject((*itr)->getPlayerPlatformAvatar(), Assets::getPlayerRowPlatformAvatarTextureRegion((*itr)->getPlayerPlatformAvatar()));
+            }
+        }
+        
+        m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture2);
+        
+        m_spriteBatcher->beginBatch();
+        
+        static Color playerNameColor = Color(1, 1, 1, 1);
+        
+        for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
+        {
+            std::stringstream ss;
+            ss << ((*itr)->isActive() ? (*itr)->getPlayerName() : "Bot");
+            std::string playerName = ss.str();
+            
+            m_font->renderText(*m_spriteBatcher, playerName, (*itr)->getFontX(), (*itr)->getFontY(), (*itr)->getFontGlyphWidth(), (*itr)->getFontGlyphHeight(), playerNameColor);
+        }
+        
+        m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture2);
+    }
+    
+    if(waitingForServerInterface.renderTimeToNextRound() || waitingForServerInterface.renderMessage())
+    {
+        m_spriteBatcher->beginBatch();
+        
+        if(waitingForServerInterface.renderTimeToNextRound())
+        {
+            static Color timerColor = Color(1, 1, 1, 1);
+            
+            std::stringstream ss2;
+            ss2 << waitingForServerInterface.getTimeToNextRound();
+            std::string timerText = ss2.str();
+            
+            m_font->renderText(*m_spriteBatcher, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 3, 2.0f, 1.36842105263158f, timerColor, true);
+        }
+        
+        if(waitingForServerInterface.renderMessage())
+        {
+            static Color interfaceColor = Color(1, 1, 1, 1);
+            interfaceColor.alpha -= 0.025f;
+            if(interfaceColor.alpha < 0.2f)
+            {
+                interfaceColor.alpha = 1;
+            }
+            
+            float fontSize = 0.5f;
+            
+            std::stringstream ss;
+            switch (waitingForServerInterface.getPreGamePhase())
+            {
+                case CONNECTING:
+                    ss << "Connecting as " << waitingForServerInterface.getUsername();
+                    break;
+                case CONNECTION_ERROR:
+                    ss << "There was an error connecting to Battle Bombs...";
+                    fontSize = 0.42f;
+                    break;
+                case BATTLE_BOMBS_BETA_CLOSED:
+                    ss << "Get the non-Beta Battle Bombs on the app store!";
+                    fontSize = 0.42f;
+                    break;
+                case FINDING_ROOM_TO_JOIN:
+                    ss << "Finding a room to join";
+                    break;
+                case ROOM_JOINED_WAITING_FOR_SERVER:
+                    ss << "Waiting for next round";
+                    break;
+                case DEFAULT:
+                default:
+                    ss << "...";
+                    break;
+            }
+            
+            std::string waitingText = ss.str();
+            
+            m_font->renderText(*m_spriteBatcher, waitingText, SCREEN_WIDTH / 2, 0.5f, fontSize, fontSize, interfaceColor, true);
+        }
+        
+        m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture);
+    }
+}
+
+void Renderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
+{
+    static Color interfaceColor = Color(1, 1, 1, 1);
+    interfaceColor.alpha -= 0.025f;
+    if(interfaceColor.alpha < 0.2f)
+    {
+        interfaceColor.alpha = 1;
+    }
+    
+    m_spriteBatcher->beginBatch();
+    
+    std::stringstream ss;
+    ss << "Tap anywhere to play again!";
+    std::string waitingText = ss.str();
+    
+    m_font->renderText(*m_spriteBatcher, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
+    
+    m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture);
 }
 
 void Renderer::renderWorldBackground()
@@ -192,120 +311,20 @@ void Renderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &map
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
 }
 
-void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface)
+void Renderer::renderSuddenDeathMountains(std::vector<std::unique_ptr<IceBall>> &iceBalls, std::vector<std::unique_ptr<IcePatch>> &icePatches)
 {
-    if(waitingForServerInterface.renderPlayersList())
-    {
-        m_spriteBatcher->beginBatch();
-        renderGameObject(waitingForServerInterface, Assets::getWaitingForServerInterfaceTextureRegion());
-        
-        for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
-        {
-            renderGameObject((*itr)->getPlayerRowAvatar(), Assets::getPlayerRowAvatarTextureRegion((*itr)->getPlayerRowAvatar()));
-            
-            if ((*itr)->isActive() && (*itr)->getPlayerPlatformAvatar().getPlayerPlatform() != PLATFORM_UNKNOWN)
-            {
-                renderGameObject((*itr)->getPlayerPlatformAvatar(), Assets::getPlayerRowPlatformAvatarTextureRegion((*itr)->getPlayerPlatformAvatar()));
-            }
-        }
-        
-        m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture2);
-        
-        m_spriteBatcher->beginBatch();
-        
-        static Color playerNameColor = Color(1, 1, 1, 1);
-        
-        for (std::vector<std::unique_ptr<PlayerRow>>::iterator itr = waitingForServerInterface.getPlayerRows().begin(); itr != waitingForServerInterface.getPlayerRows().end(); itr++)
-        {
-            std::stringstream ss;
-            ss << ((*itr)->isActive() ? (*itr)->getPlayerName() : "Bot");
-            std::string playerName = ss.str();
-            
-            m_font->renderText(*m_spriteBatcher, playerName, (*itr)->getFontX(), (*itr)->getFontY(), (*itr)->getFontGlyphWidth(), (*itr)->getFontGlyphHeight(), playerNameColor);
-        }
-        
-        m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture2);
-    }
-    
-    if(waitingForServerInterface.renderTimeToNextRound() || waitingForServerInterface.renderMessage())
-    {
-        m_spriteBatcher->beginBatch();
-        
-        if(waitingForServerInterface.renderTimeToNextRound())
-        {
-			static Color timerColor = Color(1, 1, 1, 1);
-            
-            std::stringstream ss2;
-            ss2 << waitingForServerInterface.getTimeToNextRound();
-            std::string timerText = ss2.str();
-            
-            m_font->renderText(*m_spriteBatcher, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 3, 2.0f, 1.36842105263158f, timerColor, true);
-        }
-        
-        if(waitingForServerInterface.renderMessage())
-        {
-			static Color interfaceColor = Color(1, 1, 1, 1);
-            interfaceColor.alpha -= 0.025f;
-            if(interfaceColor.alpha < 0.2f)
-            {
-                interfaceColor.alpha = 1;
-            }
-            
-            float fontSize = 0.5f;
-            
-            std::stringstream ss;
-            switch (waitingForServerInterface.getPreGamePhase())
-            {
-                case CONNECTING:
-                    ss << "Connecting as " << waitingForServerInterface.getUsername();
-                    break;
-                case CONNECTION_ERROR:
-                    ss << "There was an error connecting to Battle Bombs...";
-                    fontSize = 0.42f;
-                    break;
-                case BATTLE_BOMBS_BETA_CLOSED:
-                    ss << "Get the non-Beta Battle Bombs on the app store!";
-                    fontSize = 0.42f;
-                    break;
-                case FINDING_ROOM_TO_JOIN:
-                    ss << "Finding a room to join";
-                    break;
-                case ROOM_JOINED_WAITING_FOR_SERVER:
-                    ss << "Waiting for next round";
-                    break;
-                case DEFAULT:
-                default:
-                    ss << "...";
-                    break;
-            }
-            
-            std::string waitingText = ss.str();
-            
-            m_font->renderText(*m_spriteBatcher, waitingText, SCREEN_WIDTH / 2, 0.5f, fontSize, fontSize, interfaceColor, true);
-        }
-        
-        m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture);
-    }
-}
-
-void Renderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
-{
-	static Color interfaceColor = Color(1, 1, 1, 1);
-    interfaceColor.alpha -= 0.025f;
-    if(interfaceColor.alpha < 0.2f)
-    {
-        interfaceColor.alpha = 1;
-    }
-    
     m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<IcePatch>>::iterator itr = icePatches.begin(); itr != icePatches.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getIcePatchTextureRegion((**itr)));
+    }
     
-    std::stringstream ss;
-    ss << "Tap anywhere to play again!";
-    std::string waitingText = ss.str();
-    
-    m_font->renderText(*m_spriteBatcher, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
-    
-    m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture);
+    for (std::vector<std::unique_ptr<IceBall>>::iterator itr = iceBalls.begin(); itr != iceBalls.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getFallingObjectShadowTextureRegion((*itr)->getShadow()));
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getIceBallTextureRegion((**itr)));
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
 }
 
 void Renderer::renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject)

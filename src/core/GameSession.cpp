@@ -246,6 +246,8 @@ void GameSession::updateCommon(float deltaTime)
                             m_icePatches.push_back(std::unique_ptr<IcePatch>(new IcePatch((*itr)->getGridX(), (*itr)->getGridY())));
                         }
                         
+                        PathFinder::getInstance().occupyGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
+                        
                         itr = m_iceBalls.erase(itr);
                     }
                     else
@@ -359,7 +361,7 @@ void GameSession::suddenDeath(rapidjson::Document &d)
         case MAP_MOUNTAINS:
             if(d.HasMember(numIceBallsKey))
             {
-                m_breakableBlocks.clear();
+                m_iceBalls.clear();
                 
                 static const char *iceBallXValuesKey = "iceBallXValues";
                 static const char *iceBallYValuesKey = "iceBallYValues";
