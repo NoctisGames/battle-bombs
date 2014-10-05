@@ -161,25 +161,28 @@ void Explosion::runBlockLogic(std::vector<std::unique_ptr<InsideBlock> > &inside
 {
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
     {
-        if(m_travelingRight && (*itr)->getGridX() == m_iRightGridX && (*itr)->getGridY() == m_gridY)
+        if((*itr)->getBreakableBlockState() == Breakable_Block_State::BB_NORMAL)
         {
-            (*itr)->onDestroy();
-            m_destroyedBlockRight = true;
-        }
-        else if(m_travelingUp && (*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_iUpGridY)
-        {
-            (*itr)->onDestroy();
-            m_destroyedBlockUp = true;
-        }
-        else if(m_travelingLeft && (*itr)->getGridX() == m_iLeftGridX && (*itr)->getGridY() == m_gridY)
-        {
-            (*itr)->onDestroy();
-            m_destroyedBlockLeft = true;
-        }
-        else if(m_travelingDown && (*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_iDownGridY)
-        {
-            (*itr)->onDestroy();
-            m_destroyedBlockDown = true;
+            if(m_travelingRight && (*itr)->getGridX() == m_iRightGridX && (*itr)->getGridY() == m_gridY)
+            {
+                (*itr)->onDestroy();
+                m_destroyedBlockRight = true;
+            }
+            else if(m_travelingUp && (*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_iUpGridY)
+            {
+                (*itr)->onDestroy();
+                m_destroyedBlockUp = true;
+            }
+            else if(m_travelingLeft && (*itr)->getGridX() == m_iLeftGridX && (*itr)->getGridY() == m_gridY)
+            {
+                (*itr)->onDestroy();
+                m_destroyedBlockLeft = true;
+            }
+            else if(m_travelingDown && (*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_iDownGridY)
+            {
+                (*itr)->onDestroy();
+                m_destroyedBlockDown = true;
+            }
         }
     }
     

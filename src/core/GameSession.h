@@ -70,6 +70,8 @@ protected:
     void updateCommon(float deltaTime);
 
     void clientUpdate(rapidjson::Document &d, bool isBeginGame);
+    
+    virtual void suddenDeath(rapidjson::Document &d);
 
     void handlePlayerDataUpdate(rapidjson::Document &d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame);
 

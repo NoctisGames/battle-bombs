@@ -24,10 +24,6 @@ public:
 
     bool hasPowerUp();
 
-    float getX();
-
-    float getY();
-
     Breakable_Block_State getBreakableBlockState();
     
     float getStateTime();

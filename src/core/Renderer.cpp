@@ -96,7 +96,7 @@ void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &ma
     
     for (std::vector<std::unique_ptr<InsideBlock>>::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
     {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getInsideBlockTextureRegion());
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getInsideBlockTextureRegion((**itr)));
     }
     
     for (std::vector<std::unique_ptr<BreakableBlock>>::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)

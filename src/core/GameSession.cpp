@@ -145,6 +145,11 @@ void GameSession::updateCommon(float deltaTime)
             itr++;
         }
     }
+    
+    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = m_insideBlocks.begin(); itr != m_insideBlocks.end(); itr++)
+    {
+        (**itr).update(deltaTime);
+    }
 
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end();)
     {
@@ -272,6 +277,18 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
     clientUpdateForPlayerIndex(d, playerIndex7Key, playerIndex7IsBotKey, playerIndex7XKey, playerIndex7YKey, playerIndex7DirectionKey, playerIndex7AliveKey, 7, isBeginGame);
     
     handleClientEventsArrayInDocument(d);
+}
+
+void GameSession::suddenDeath(rapidjson::Document &d)
+{
+    static const char *someKey = "some";
+    
+    if(d.HasMember(someKey))
+    {
+        // Set a flag so that updateCommon will know to
+        // start hurling ice balls down towards the
+        // playing field
+    }
 }
 
 void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame)

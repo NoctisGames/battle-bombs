@@ -29,7 +29,8 @@ public final class RendererWrapper implements Renderer
 
     // Definitions from src/core/GameEvent.h
     private static final short CLIENT_UPDATE = 1338;
-    private static final short GAME_OVER = 1339;
+    private static final short SUDDEN_DEATH = 1339;
+    private static final short GAME_OVER = 1340;
     private static final int PLAYER_EVENT_BASE = 100000000;
     private static final int PLAYER_EVENT_DIRECTION_BASE = 10000000;
     private static final int PLAYER_EVENT_GRID_X_BASE = 100000;

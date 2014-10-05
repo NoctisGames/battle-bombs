@@ -125,6 +125,8 @@ private:
     
     bool beginCommon(rapidjson::Document &d, bool isBeginGame);
     
+    virtual void suddenDeath(rapidjson::Document &d);
+    
     void gameOver(rapidjson::Document &d);
     
     void handleBreakableBlocksArrayInDocument(rapidjson::Document &d);

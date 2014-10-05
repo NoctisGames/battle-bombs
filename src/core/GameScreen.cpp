@@ -230,8 +230,6 @@ void GameScreen::present()
             m_renderer->renderWorldBackground();
             
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-			m_renderer->renderBombs(m_bombs);
-            m_renderer->renderExplosions(m_explosions);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             
@@ -245,9 +243,9 @@ void GameScreen::present()
             m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
-            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-			m_renderer->renderBombs(m_bombs);
             m_renderer->renderExplosions(m_explosions);
+            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             
@@ -263,9 +261,9 @@ void GameScreen::present()
             m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
-            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            m_renderer->renderBombs(m_bombs);
             m_renderer->renderExplosions(m_explosions);
+            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             
@@ -281,9 +279,9 @@ void GameScreen::present()
             m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
-            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            m_renderer->renderBombs(m_bombs);
             m_renderer->renderExplosions(m_explosions);
+            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             
@@ -641,6 +639,10 @@ void GameScreen::processServerMessages()
                 {
                     gameOver(d);
                 }
+                else if(eventType == SUDDEN_DEATH && (m_gameState == RUNNING || m_gameState == SPECTATING))
+                {
+                    suddenDeath(d);
+                }
                 else if(eventType == PRE_GAME_SERVER_UPDATE && m_gameState == WAITING_FOR_SERVER)
                 {
                     m_waitingForServerInterface->handlePreGameServerUpdate(d);
@@ -755,6 +757,13 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
     }
     
     return false;
+}
+
+void GameScreen::suddenDeath(rapidjson::Document &d)
+{
+    GameSession::suddenDeath(d);
+    
+    // TODO, display some UI cue for the impending doom!
 }
 
 void GameScreen::gameOver(rapidjson::Document &d)

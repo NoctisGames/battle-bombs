@@ -15,7 +15,7 @@ BreakableBlock::BreakableBlock(int gridX, int gridY, int powerUpFlag) : GridGame
 {
     resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
     
-    m_breakableBlockState = NORMAL;
+    m_breakableBlockState = BB_NORMAL;
     m_fStateTime = 0;
     m_powerUpFlag = powerUpFlag;
 }
@@ -31,6 +31,15 @@ void BreakableBlock::update(float deltaTime)
             m_breakableBlockState = DESTROYED;
         }
     }
+    else if(m_breakableBlockState == BB_FREEZING)
+    {
+        m_fStateTime += deltaTime;
+        
+        if(m_fStateTime > 0.6f)
+        {
+            m_breakableBlockState = BB_FROZEN;
+        }
+    }
 }
 
 void BreakableBlock::onDestroy()
@@ -41,16 +50,6 @@ void BreakableBlock::onDestroy()
 bool BreakableBlock::hasPowerUp()
 {
     return m_powerUpFlag != POWER_UP_TYPE_NONE;
-}
-
-float BreakableBlock::getX()
-{
-    return getPosition().getX();
-}
-
-float BreakableBlock::getY()
-{
-    return getPosition().getY();
 }
 
 Breakable_Block_State BreakableBlock::getBreakableBlockState()

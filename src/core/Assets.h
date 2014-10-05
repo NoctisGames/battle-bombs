@@ -9,6 +9,8 @@
 #ifndef __battle_bombs__Assets__
 #define __battle_bombs__Assets__
 
+#define MAX_SOUNDS_TO_PLAY_PER_FRAME 3
+
 #include "ResourceConstants.h"
 #include "PowerUpType.h"
 
@@ -20,6 +22,10 @@ class BreakableBlock;
 class PlayerDynamicGameObject;
 class BombGameObject;
 class Fire;
+class FallingObjectShadow;
+class IceBall;
+class IcePatch;
+class InsideBlock;
 class BreakableBlock;
 class PowerUp;
 class PlayerAvatar;
@@ -42,7 +48,7 @@ public:
 
 	static TextureRegion& getMapBorderTextureRegion(MapBorder &mapBorder);
     
-    static TextureRegion& getInsideBlockTextureRegion();
+    static TextureRegion& getInsideBlockTextureRegion(InsideBlock &insideBlock);
     
     static TextureRegion& getNineTextureRegion();
     
@@ -55,14 +61,6 @@ public:
     static TextureRegion& getPlayerRowAvatarTextureRegion(PlayerRowAvatar &playerRowAvatar);
     
     static TextureRegion& getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatformAvatar &playerRowPlatformAvatar);
-    
-    static TextureRegion& getInterfaceOverlayTextureRegion();
-    
-    static TextureRegion& getSpectatorInterfaceOverlayTextureRegion();
-    
-    static TextureRegion& getPlayerAvatarTextureRegion(PlayerAvatar &playerAvatar);
-    
-    static TextureRegion& getDPadControlTextureRegion(DPadControl &dpadControl);
 
 	static TextureRegion& getPowerUpTextureRegion(PowerUp &powerUp);
     
@@ -78,11 +76,25 @@ public:
     
     static TextureRegion& getForceFieldTextureRegion(int forceFieldState, float forceFieldStateTime);
     
+    static TextureRegion& getFallingObjectShadowTextureRegion(FallingObjectShadow &fallingObjectShadow);
+    
+    static TextureRegion& getIceBallTextureRegion(IceBall &iceBall);
+    
+    static TextureRegion& getIcePatchTextureRegion(IcePatch &icePatch);
+    
+    static TextureRegion& getInterfaceOverlayTextureRegion();
+    
+    static TextureRegion& getPlayerAvatarTextureRegion(PlayerAvatar &playerAvatar);
+    
     static TextureRegion& getPowerUpBarItemTextureRegion(PowerUpBarItem &powerUpBarItem, float powerUpBarItemsStateTime);
     
     static TextureRegion& getActiveButtonTextureRegion(ActiveButton &activeButton, float buttonsStateTime);
     
     static TextureRegion& getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime);
+    
+    static TextureRegion& getSpectatorInterfaceOverlayTextureRegion();
+    
+    static TextureRegion& getDPadControlTextureRegion(DPadControl &dpadControl);
     
     static TextureRegion& getSpectatorControlsTextureRegion(SpectatorControls &spectatorControls);
     
