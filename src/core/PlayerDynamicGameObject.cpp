@@ -313,11 +313,14 @@ bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explo
 
 bool PlayerDynamicGameObject::isHitByIce(std::vector<std::unique_ptr<IcePatch >> &icePatches)
 {
-    for (std::vector <std::unique_ptr<IcePatch>> ::iterator itr = icePatches.begin(); itr != icePatches.end(); itr++)
+    if(m_playerState == ALIVE)
     {
-        if(OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        for (std::vector <std::unique_ptr<IcePatch>> ::iterator itr = icePatches.begin(); itr != icePatches.end(); itr++)
         {
-            return true;
+            if(OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+            {
+                return true;
+            }
         }
     }
     
