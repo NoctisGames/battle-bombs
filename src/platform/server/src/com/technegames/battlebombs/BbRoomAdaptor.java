@@ -36,9 +36,15 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final String BREAKABLE_BLOCK_X_VALUES = "breakableBlockXValues";
     private static final String BREAKABLE_BLOCK_Y_VALUES = "breakableBlockYValues";
     private static final String BREAKABLE_BLOCK_POWER_UP_FLAGS = "breakableBlockPowerUpFlags";
+    private static final int GRID_CELL_NUM_ROWS = 17;
+    private static final int NUM_GRID_CELLS_PER_ROW = 15;
     private static final int TIME_BETWEEN_ROUNDS = 20;
     private static final int PLATFORM_UNKNOWN = 0;
     private static final int NUM_MAPS = 3;
+    private static final int MAP_SPACE = 0;
+    private static final int MAP_GRASSLANDS = 1;
+    private static final int MAP_MOUNTAINS = 2;
+    private static final int MAP_BASE = 3;
     private static final short PRE_GAME_SERVER_UPDATE = 1335;
     private static final short BEGIN_SPECTATE = 1336;
     private static final short BEGIN_GAME = 1337;
@@ -232,6 +238,17 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                             {
                                 JSONObject tobeSent = new JSONObject();
                                 tobeSent.put(EVENT_TYPE, SUDDEN_DEATH);
+
+                                switch (mapType)
+                                {
+                                    case MAP_SPACE:
+                                        break;
+                                    case MAP_GRASSLANDS:
+                                        break;
+                                    case MAP_MOUNTAINS:
+                                        appendSuddenDeathMountainsData(tobeSent);
+                                        break;
+                                }
 
                                 updateRoomWithMessage(tobeSent.toString());
 
@@ -519,6 +536,47 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 tobeSent.put("playerIndex" + playerIndex + "Alive", is_player_alive(_room.getId(), playerIndex));
             }
         }
+    }
+
+    private void appendSuddenDeathMountainsData(JSONObject tobeSent) throws JSONException
+    {
+        String iceBallXValues = "";
+        String iceBallYValues = "";
+
+        int inset = 0;
+
+        for (; inset < 8; inset++)
+        {
+            for (int i = inset; i < (NUM_GRID_CELLS_PER_ROW - inset); i++)
+            {
+                iceBallXValues += "" + i + ",";
+                iceBallYValues += "" + (GRID_CELL_NUM_ROWS - 1 - inset) + ",";
+            }
+
+            for (int i = (GRID_CELL_NUM_ROWS - 2 - inset); i >= inset; i--)
+            {
+                iceBallXValues += "" + (NUM_GRID_CELLS_PER_ROW - 1 - inset) + ",";
+                iceBallYValues += "" + i + ",";
+            }
+
+            for (int i = (NUM_GRID_CELLS_PER_ROW - 2 - inset); i >= inset; i--)
+            {
+                iceBallXValues += "" + i + ",";
+                iceBallYValues += "" + inset + ",";
+            }
+
+            for (int i = (1 + inset); i < (GRID_CELL_NUM_ROWS - 1 - inset); i++)
+            {
+                iceBallXValues += "" + inset + ",";
+                iceBallYValues += "" + i + ",";
+            }
+        }
+
+        iceBallXValues += "-1";
+        iceBallYValues += "-1";
+
+        tobeSent.put("iceBallXValues", iceBallXValues);
+        tobeSent.put("iceBallYValues", iceBallYValues);
     }
 
     private void updateRoomWithMessage(final String message)
