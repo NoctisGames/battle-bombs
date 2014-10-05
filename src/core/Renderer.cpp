@@ -313,8 +313,11 @@ void Renderer::renderSuddenDeathMountainsIceBalls(std::vector<std::unique_ptr<Ic
     m_spriteBatcher->beginBatch();
     for (std::vector<std::unique_ptr<IceBall>>::iterator itr = iceBalls.begin(); itr != iceBalls.end(); itr++)
     {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getFallingObjectShadowTextureRegion((*itr)->getShadow()));
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getIceBallTextureRegion((**itr)));
+        if((*itr)->isVisible())
+        {
+            renderGameObjectWithRespectToPlayer((*itr)->getShadow(), Assets::getFallingObjectShadowTextureRegion((*itr)->getShadow()));
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getIceBallTextureRegion((**itr)));
+        }
     }
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
 }

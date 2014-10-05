@@ -75,6 +75,11 @@ float IceBall::getStateTime()
     return m_fStateTime;
 }
 
+bool IceBall::isVisible()
+{
+    return m_isVisible;
+}
+
 bool IceBall::isTargetReached()
 {
     return m_isTargetReached;

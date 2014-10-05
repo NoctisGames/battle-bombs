@@ -27,6 +27,8 @@ public:
     
     float getStateTime();
     
+    bool isVisible();
+    
     bool isTargetReached();
     
     FallingObjectShadow & getShadow();
