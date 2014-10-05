@@ -161,6 +161,7 @@ void ServerGameSession::init()
     m_powerUps.clear();
     m_iceBalls.clear();
     m_icePatches.clear();
+    m_gameListener->freeServerMessages();
 
     srand((int) time(NULL));
 

@@ -194,6 +194,8 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                         _isGameCountingDown = false;
                         _stateTime -= 3;
                     }
+
+                    update(_room.getId(), deltaTime);
                 }
                 else
                 {
