@@ -117,13 +117,15 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             {
                 if (!_playerSpotsOccupied[i])
                 {
-                    _stateTime = 0;
-                    _countdownTime = 0;
-                    _oneOrLessPlayersAliveTimer = 0;
+                    if (!_isGameRunning)
+                    {
+                        _stateTime = 0;
+                        _countdownTime = 0;
+                        _oneOrLessPlayersAliveTimer = 0;
+                    }
 
                     _playerSpotsOccupied[i] = true;
-                    _activePlayerNames[i] = user.getName();
-                    _inRoomUserSessionDataMap.put(user, new UserSessionData(0, i, PLATFORM_UNKNOWN));
+                    _inRoomUserSessionDataMap.put(user, new UserSessionData(user.getName(), 0, i, PLATFORM_UNKNOWN));
 
                     System.out.println(user.getName() + " joined the room");
 
@@ -185,13 +187,15 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             {
                 _stateTime += deltaTime;
 
-                if (_isGameCountingDown && _stateTime > 3)
+                if (_isGameCountingDown)
                 {
-                    _isGameCountingDown = false;
-                    _stateTime -= 3;
+                    if (_stateTime >= 3)
+                    {
+                        _isGameCountingDown = false;
+                        _stateTime -= 3;
+                    }
                 }
-
-                if (!_isGameCountingDown)
+                else
                 {
                     while (_stateTime >= 1)
                     {
