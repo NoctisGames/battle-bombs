@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#define TIME_BETWEEN_ICE_BALLS 0.2156862745098f
+#define TIME_BETWEEN_ICE_BALLS 0.23628691983122f
 
 #include "IceBall.h"
 #include "GameConstants.h"
