@@ -273,6 +273,10 @@ void ServerGameSession::updateRunning(float deltaTime)
             {
                 m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
             }
+            else if (m_player->isHitByIce(m_icePatches))
+            {
+                m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, (**itr));
+            }
         }
     }
 
