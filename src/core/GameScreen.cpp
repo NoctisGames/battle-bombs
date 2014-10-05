@@ -45,6 +45,9 @@
 #include "PlayerRow.h"
 #include "PlayerRowAvatar.h"
 #include "PlayerRowPlatformAvatar.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
 
 GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 {
@@ -374,6 +377,12 @@ void GameScreen::updateRunning(float deltaTime)
         
         m_gameState = SPECTATING;
     }
+    else if(m_player->isHitByIce(m_icePatches))
+    {
+        m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, *m_player);
+        
+        m_gameState = SPECTATING;
+    }
     
     if(m_isOffline)
     {
@@ -386,6 +395,10 @@ void GameScreen::updateRunning(float deltaTime)
                 if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
                 {
                     m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+                }
+                else if(m_player->isHitByIce(m_icePatches))
+                {
+                    m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, (**itr));
                 }
             }
         }
@@ -459,6 +472,10 @@ void GameScreen::updateSpectating(float deltaTime)
                 if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
                 {
                     m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+                }
+                else if(m_player->isHitByIce(m_icePatches))
+                {
+                    m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, (**itr));
                 }
             }
         }

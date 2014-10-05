@@ -25,6 +25,7 @@ class PowerUp;
 class Explosion;
 class GameListener;
 class BombGameObject;
+class IcePatch;
 
 class PlayerDynamicGameObject : public DynamicGridGameObject
 {
@@ -67,10 +68,14 @@ public:
 
     bool isHitByExplosion(std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     
+    bool isHitByIce(std::vector<std::unique_ptr<IcePatch >> &icePatches);
+    
     void handlePowerUps(std::vector<std::unique_ptr<PowerUp >> &powerUps);
     
     void onForceFieldHit();
 
+    void onFreeze();
+    
     void onDeath();
     
     void onWin();

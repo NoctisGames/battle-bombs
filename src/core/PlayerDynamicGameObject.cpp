@@ -22,6 +22,7 @@
 #include "Fire.h"
 #include "GameEvent.h"
 #include "PlayerForceFieldState.h"
+#include "IcePatch.h"
 
 #include <cstring>
 
@@ -310,6 +311,19 @@ bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explo
     return false;
 }
 
+bool PlayerDynamicGameObject::isHitByIce(std::vector<std::unique_ptr<IcePatch >> &icePatches)
+{
+    for (std::vector <std::unique_ptr<IcePatch>> ::iterator itr = icePatches.begin(); itr != icePatches.end(); itr++)
+    {
+        if(OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 void PlayerDynamicGameObject::handlePowerUps(std::vector<std::unique_ptr<PowerUp >> &powerUps)
 {
     for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
@@ -370,6 +384,17 @@ void PlayerDynamicGameObject::onForceFieldHit()
     }
     
     setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN);
+}
+
+void PlayerDynamicGameObject::onFreeze()
+{
+    m_playerState = FREEZING;
+    m_fStateTime = 0;
+    
+    m_isDisplayingName = false;
+    m_isDisplayingPointer = false;
+    
+    m_gameListener->playSound(SOUND_DEATH);
 }
 
 void PlayerDynamicGameObject::onDeath()

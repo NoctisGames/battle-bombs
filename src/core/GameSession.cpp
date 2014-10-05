@@ -231,15 +231,14 @@ void GameSession::updateCommon(float deltaTime)
                     
                     if ((*itr)->isTargetReached())
                     {
-                        FallingObjectShadow fallingObjectShadow = (*itr)->getShadow();
-                        if(fallingObjectShadow.isTargetOccupiedByInsideBlock())
+                        if((*itr)->getShadow().isTargetOccupiedByInsideBlock())
                         {
-                            InsideBlock *insideBlock = fallingObjectShadow.getTargetInsideBlock();
+                            InsideBlock *insideBlock = (*itr)->getShadow().getTargetInsideBlock();
                             insideBlock->onHitByIceBall();
                         }
-                        else if(fallingObjectShadow.isTargetOccupiedByBreakableBlock())
+                        else if((*itr)->getShadow().isTargetOccupiedByBreakableBlock())
                         {
-                            BreakableBlock *breakableBlock = fallingObjectShadow.getTargetBreakableBlock();
+                            BreakableBlock *breakableBlock = (*itr)->getShadow().getTargetBreakableBlock();
                             breakableBlock->onHitByIceBall();
                         }
                         else
@@ -337,28 +336,49 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
 
 void GameSession::suddenDeath(rapidjson::Document &d)
 {
-    static const char *numBreakableBlocksKey = "numIceBalls";
+    static const char *numFallingSpaceTilesKey = "numFallingSpaceTiles";
+    static const char *numFireBallsKey = "numFireBalls";
+    static const char *numIceBallsKey = "numIceBalls";
     
-    if(d.HasMember(numBreakableBlocksKey))
+    m_isSuddenDeath = true;
+    
+    switch (m_iMapType)
     {
-        m_breakableBlocks.clear();
-        
-        static const char *iceBallXValuesKey = "iceBallXValues";
-        static const char *iceBallYValuesKey = "iceBallYValues";
-        
-        std::vector<int> iceBallXValues;
-        std::vector<int> iceBallYValues;
-        
-        handleIntArrayInDocument(d, iceBallXValuesKey, iceBallXValues, -1);
-        handleIntArrayInDocument(d, iceBallYValuesKey, iceBallYValues, -1);
-        
-        int numBreakableBlocks = d[numBreakableBlocksKey].GetInt();
-        for(int i = 0; i < numBreakableBlocks; i++)
-        {
-            m_iceBalls.push_back(std::unique_ptr<IceBall>(new IceBall(iceBallXValues.at(i), iceBallYValues.at(i), m_insideBlocks, m_breakableBlocks)));
-        }
-        
-        m_isSuddenDeath = true;
+        case MAP_SPACE:
+            if(d.HasMember(numFallingSpaceTilesKey))
+            {
+                
+            }
+            break;
+        case MAP_GRASSLANDS:
+            if(d.HasMember(numFireBallsKey))
+            {
+                
+            }
+            break;
+        case MAP_MOUNTAINS:
+            if(d.HasMember(numIceBallsKey))
+            {
+                m_breakableBlocks.clear();
+                
+                static const char *iceBallXValuesKey = "iceBallXValues";
+                static const char *iceBallYValuesKey = "iceBallYValues";
+                
+                std::vector<int> iceBallXValues;
+                std::vector<int> iceBallYValues;
+                
+                handleIntArrayInDocument(d, iceBallXValuesKey, iceBallXValues, -1);
+                handleIntArrayInDocument(d, iceBallYValuesKey, iceBallYValues, -1);
+                
+                int numIceBalls = d[numIceBallsKey].GetInt();
+                for(int i = 0; i < numIceBalls; i++)
+                {
+                    m_iceBalls.push_back(std::unique_ptr<IceBall>(new IceBall(iceBallXValues.at(i), iceBallYValues.at(i), i, m_insideBlocks, m_breakableBlocks)));
+                }
+            }
+            break;
+        default:
+            break;
     }
 }
 
@@ -504,6 +524,9 @@ void GameSession::handlePlayerEvent(int event)
             break;
         case PLAYER_DEATH:
             m_players.at(playerIndex).get()->onDeath();
+            break;
+        case PLAYER_FREEZE:
+            m_players.at(playerIndex).get()->onFreeze();
             break;
         case PLAYER_PU_BOMB:
             m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_BOMB);

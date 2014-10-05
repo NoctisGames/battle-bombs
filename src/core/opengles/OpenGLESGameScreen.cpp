@@ -46,6 +46,9 @@
 #include "OpenGLESRectangleBatcher.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "SpriteBatcher.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
 
 OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
 {
