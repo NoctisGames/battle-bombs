@@ -30,7 +30,6 @@ void FallingObjectShadow::update(float deltaTime, std::vector<std::unique_ptr<In
     if(m_fStateTime > 2.0f)
     {
         m_fallingObjectShadowState = CLOSEST;
-        m_fStateTime = 0;
     }
     else if(m_fStateTime > 1.5f)
     {

@@ -23,9 +23,9 @@ IceBall::IceBall(int gridX, int gridY, int index, std::vector<std::unique_ptr<In
     m_fTargetY = m_position->getY();
     m_fTimeUntilAppearance = TIME_BETWEEN_ICE_BALLS * (float)index;
     
-    m_position->set(0, SCREEN_HEIGHT_X2 + GRID_CELL_HEIGHT);
-    m_velocity->set(0, -9);
-    m_acceleration->set(0, -9);
+    m_position->set(m_position->getX(), SCREEN_HEIGHT_X2 + GRID_CELL_HEIGHT);
+    m_velocity->set(0, -8);
+    m_acceleration->set(0, -12);
     
     m_fallingObjectShadow = std::unique_ptr<FallingObjectShadow>(new FallingObjectShadow(gridX, gridY, insideBlocks, breakableBlocks));
     
@@ -70,11 +70,6 @@ void IceBall::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >>
     }
 }
 
-void IceBall::begin()
-{
-    m_isVisible = true;
-}
-
 float IceBall::getStateTime()
 {
     return m_fStateTime;
@@ -82,7 +77,7 @@ float IceBall::getStateTime()
 
 bool IceBall::isTargetReached()
 {
-    return m_isDescending;
+    return m_isTargetReached;
 }
 
 FallingObjectShadow & IceBall::getShadow()
