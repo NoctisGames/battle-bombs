@@ -316,6 +316,13 @@ void Renderer::renderSuddenDeathMountainsIceBalls(std::vector<std::unique_ptr<Ic
         if((*itr)->isVisible())
         {
             renderGameObjectWithRespectToPlayer((*itr)->getShadow(), Assets::getFallingObjectShadowTextureRegion((*itr)->getShadow()));
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<IceBall>>::iterator itr = iceBalls.begin(); itr != iceBalls.end(); itr++)
+    {
+        if((*itr)->isVisible())
+        {
             renderGameObjectWithRespectToPlayer((**itr), Assets::getIceBallTextureRegion((**itr)));
         }
     }
