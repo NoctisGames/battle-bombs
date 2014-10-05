@@ -559,12 +559,19 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 int x = i;
                 int y = (GRID_CELL_NUM_ROWS - 1 - inset);
 
-                if ((x > 2 || y > 2) || (x < (NUM_GRID_CELLS_PER_ROW - 3) || y > 2))
+                if (x <= 2 && y <= 2)
                 {
-                    iceBallXValues += "" + x + ",";
-                    iceBallYValues += "" + y + ",";
-                    numIceBalls++;
+                    continue;
                 }
+
+                if (x >= (NUM_GRID_CELLS_PER_ROW - 3) && y <= 2)
+                {
+                    continue;
+                }
+
+                iceBallXValues += "" + x + ",";
+                iceBallYValues += "" + y + ",";
+                numIceBalls++;
             }
 
             for (int i = (GRID_CELL_NUM_ROWS - 2 - inset); i >= inset; i--)
@@ -572,12 +579,19 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 int x = (NUM_GRID_CELLS_PER_ROW - 1 - inset);
                 int y = i;
 
-                if ((x > 2 || y > 2) || (x < (NUM_GRID_CELLS_PER_ROW - 3) || y > 2))
+                if (x <= 2 && y <= 2)
                 {
-                    iceBallXValues += "" + x + ",";
-                    iceBallYValues += "" + y + ",";
-                    numIceBalls++;
+                    continue;
                 }
+
+                if (x >= (NUM_GRID_CELLS_PER_ROW - 3) && y <= 2)
+                {
+                    continue;
+                }
+
+                iceBallXValues += "" + x + ",";
+                iceBallYValues += "" + y + ",";
+                numIceBalls++;
             }
 
             for (int i = (NUM_GRID_CELLS_PER_ROW - 2 - inset); i >= inset; i--)
@@ -585,12 +599,19 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 int x = i;
                 int y = inset;
 
-                if ((x > 2 || y > 2) || (x < (NUM_GRID_CELLS_PER_ROW - 3) || y > 2))
+                if (x <= 2 && y <= 2)
                 {
-                    iceBallXValues += "" + x + ",";
-                    iceBallYValues += "" + y + ",";
-                    numIceBalls++;
+                    continue;
                 }
+
+                if (x >= (NUM_GRID_CELLS_PER_ROW - 3) && y <= 2)
+                {
+                    continue;
+                }
+
+                iceBallXValues += "" + x + ",";
+                iceBallYValues += "" + y + ",";
+                numIceBalls++;
             }
 
             for (int i = (1 + inset); i < (GRID_CELL_NUM_ROWS - 1 - inset); i++)
@@ -598,12 +619,19 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 int x = inset;
                 int y = i;
 
-                if ((x > 2 || y > 2) || (x < (NUM_GRID_CELLS_PER_ROW - 3) || y > 2))
+                if (x <= 2 && y <= 2)
                 {
-                    iceBallXValues += "" + x + ",";
-                    iceBallYValues += "" + y + ",";
-                    numIceBalls++;
+                    continue;
                 }
+
+                if (x >= (NUM_GRID_CELLS_PER_ROW - 3) && y <= 2)
+                {
+                    continue;
+                }
+
+                iceBallXValues += "" + x + ",";
+                iceBallYValues += "" + y + ",";
+                numIceBalls++;
             }
         }
 
