@@ -233,6 +233,39 @@ void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &ma
     m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
 }
 
+void Renderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
+}
+
+void Renderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<Explosion>>::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
+    {
+        for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
+        {
+            renderGameObjectWithRespectToPlayer((**itr2), Assets::getFireTextureRegion((**itr2)));
+        }
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
+}
+
+void Renderer::renderSuddenDeathMountainsIcePatches(std::vector<std::unique_ptr<IcePatch>> &icePatches)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<IcePatch>>::iterator itr = icePatches.begin(); itr != icePatches.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getIcePatchTextureRegion((**itr)));
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
 void Renderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
     for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
@@ -275,27 +308,15 @@ void Renderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject
     }
 }
 
-void Renderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
+void Renderer::renderSuddenDeathMountainsIceBalls(std::vector<std::unique_ptr<IceBall>> &iceBalls)
 {
     m_spriteBatcher->beginBatch();
-    for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+    for (std::vector<std::unique_ptr<IceBall>>::iterator itr = iceBalls.begin(); itr != iceBalls.end(); itr++)
     {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getFallingObjectShadowTextureRegion((*itr)->getShadow()));
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getIceBallTextureRegion((**itr)));
     }
-    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
-}
-
-void Renderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions)
-{
-    m_spriteBatcher->beginBatch();
-    for (std::vector<std::unique_ptr<Explosion>>::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
-    {
-        for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
-        {
-            renderGameObjectWithRespectToPlayer((**itr2), Assets::getFireTextureRegion((**itr2)));
-        }
-    }
-    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
 }
 
 void Renderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear)
@@ -307,22 +328,6 @@ void Renderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &map
         {
             renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
         }
-    }
-    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
-}
-
-void Renderer::renderSuddenDeathMountains(std::vector<std::unique_ptr<IceBall>> &iceBalls, std::vector<std::unique_ptr<IcePatch>> &icePatches)
-{
-    m_spriteBatcher->beginBatch();
-    for (std::vector<std::unique_ptr<IcePatch>>::iterator itr = icePatches.begin(); itr != icePatches.end(); itr++)
-    {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getIcePatchTextureRegion((**itr)));
-    }
-    
-    for (std::vector<std::unique_ptr<IceBall>>::iterator itr = iceBalls.begin(); itr != iceBalls.end(); itr++)
-    {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getFallingObjectShadowTextureRegion((*itr)->getShadow()));
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getIceBallTextureRegion((**itr)));
     }
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
 }

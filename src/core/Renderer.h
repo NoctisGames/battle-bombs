@@ -79,11 +79,13 @@ public:
 
     void renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions);
 
+    void renderSuddenDeathMountainsIcePatches(std::vector<std::unique_ptr<IcePatch>> &icePatches);
+    
     void renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
     
-    void renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear);
+    void renderSuddenDeathMountainsIceBalls(std::vector<std::unique_ptr<IceBall>> &iceBalls);
     
-    void renderSuddenDeathMountains(std::vector<std::unique_ptr<IceBall>> &iceBalls, std::vector<std::unique_ptr<IcePatch>> &icePatches);
+    void renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear);
     
     void renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject);
     

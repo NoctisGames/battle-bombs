@@ -41,8 +41,8 @@ void IceBall::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >>
     {
         m_fStateTime += deltaTime;
         
-        m_velocity->add(m_acceleration->getX(), m_acceleration->getY());
-        m_position->add(m_velocity->getX(), m_velocity->getY());
+        m_velocity->add(m_acceleration->getX() * deltaTime, m_acceleration->getY() * deltaTime);
+        m_position->add(m_velocity->getX() * deltaTime, m_velocity->getY() * deltaTime);
         
         if(m_position->getY() <= m_fTargetY)
         {
