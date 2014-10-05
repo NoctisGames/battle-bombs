@@ -205,6 +205,10 @@ void ServerGameSession::update(float deltaTime)
                     }
                 }
             }
+            else if (eventType == SUDDEN_DEATH)
+            {
+                suddenDeath(d);
+            }
         }
     }
 
