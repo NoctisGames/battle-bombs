@@ -27,6 +27,8 @@ class BombGameObject;
 class Explosion;
 class PlayerDynamicGameObject;
 class PowerUp;
+class IceBall;
+class IcePatch;
 
 class GameSession
 {
@@ -57,9 +59,12 @@ protected:
     std::vector<std::unique_ptr<BombGameObject >> m_bombs;
     std::vector<std::unique_ptr<Explosion >> m_explosions;
     std::vector<std::unique_ptr<PowerUp >> m_powerUps;
+    std::vector<std::unique_ptr<IceBall >> m_iceBalls;
+    std::vector<std::unique_ptr<IcePatch >> m_icePatches;
     std::vector<int> m_sEventIds;
     Game_State m_gameState;
     int m_iMapType;
+    bool m_isSuddenDeath;
 
     virtual void updateRunning(float deltaTime) = 0;
 

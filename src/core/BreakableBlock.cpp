@@ -42,6 +42,11 @@ void BreakableBlock::update(float deltaTime)
     }
 }
 
+void BreakableBlock::onHitByIceBall()
+{
+    m_breakableBlockState = BB_FREEZING;
+}
+
 void BreakableBlock::onDestroy()
 {
     m_breakableBlockState = EXPLODING;

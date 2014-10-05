@@ -19,6 +19,8 @@ public:
     
     void update(float deltaTime);
     
+    void onHitByIceBall();
+    
     Inside_Block_State getInsideBlockState();
     
     float getStateTime();

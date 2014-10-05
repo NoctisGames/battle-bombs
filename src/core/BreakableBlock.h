@@ -19,6 +19,8 @@ public:
 	BreakableBlock(int gridX, int gridY, int powerUpFlag);
     
     void update(float deltaTime);
+    
+    void onHitByIceBall();
 
     void onDestroy();
 

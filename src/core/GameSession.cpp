@@ -24,6 +24,9 @@
 #include "PlayerDynamicGameObject.h"
 #include "Fire.h"
 #include "PathFinder.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
 #include <iostream>
 
 GameSession::GameSession()
@@ -64,6 +67,7 @@ bool GameSession::isPlayerAliveAtIndex(short playerIndex)
 void GameSession::initializeInsideBlocksAndMapBordersForMapType(int mapType)
 {
     m_iMapType = mapType;
+    m_isSuddenDeath = false;
     
     m_mapBorders.clear();
     m_insideBlocks.clear();
@@ -209,6 +213,58 @@ void GameSession::updateCommon(float deltaTime)
             itr++;
         }
     }
+    
+    if(m_isSuddenDeath)
+    {
+        switch (m_iMapType)
+        {
+            case MAP_SPACE:
+                // TODO
+                break;
+            case MAP_GRASSLANDS:
+                // TODO
+                break;
+            case MAP_MOUNTAINS:
+                for (std::vector < std::unique_ptr < IceBall >> ::iterator itr = m_iceBalls.begin(); itr != m_iceBalls.end(); )
+                {
+                    (*itr)->update(deltaTime, m_insideBlocks, m_breakableBlocks);
+                    
+                    if ((*itr)->isTargetReached())
+                    {
+                        FallingObjectShadow fallingObjectShadow = (*itr)->getShadow();
+                        if(fallingObjectShadow.isTargetOccupiedByInsideBlock())
+                        {
+                            InsideBlock *insideBlock = fallingObjectShadow.getTargetInsideBlock();
+                            insideBlock->onHitByIceBall();
+                        }
+                        else if(fallingObjectShadow.isTargetOccupiedByBreakableBlock())
+                        {
+                            BreakableBlock *breakableBlock = fallingObjectShadow.getTargetBreakableBlock();
+                            breakableBlock->onHitByIceBall();
+                        }
+                        else
+                        {
+                            m_icePatches.push_back(std::unique_ptr<IcePatch>(new IcePatch((*itr)->getGridX(), (*itr)->getGridY())));
+                        }
+                        
+                        itr = m_iceBalls.erase(itr);
+                    }
+                    else
+                    {
+                        itr++;
+                    }
+                }
+                
+                for (std::vector < std::unique_ptr < IcePatch >> ::iterator itr = m_icePatches.begin(); itr != m_icePatches.end(); itr++)
+                {
+                    (**itr).update(deltaTime);
+                }
+                break;
+            case MAP_BASE:
+                // TODO
+                break;
+        }
+    }
 }
 
 void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
@@ -281,13 +337,28 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
 
 void GameSession::suddenDeath(rapidjson::Document &d)
 {
-    static const char *someKey = "some";
+    static const char *numBreakableBlocksKey = "numIceBalls";
     
-    if(d.HasMember(someKey))
+    if(d.HasMember(numBreakableBlocksKey))
     {
-        // Set a flag so that updateCommon will know to
-        // start hurling ice balls down towards the
-        // playing field
+        m_breakableBlocks.clear();
+        
+        static const char *iceBallXValuesKey = "iceBallXValues";
+        static const char *iceBallYValuesKey = "iceBallYValues";
+        
+        std::vector<int> iceBallXValues;
+        std::vector<int> iceBallYValues;
+        
+        handleIntArrayInDocument(d, iceBallXValuesKey, iceBallXValues, -1);
+        handleIntArrayInDocument(d, iceBallYValuesKey, iceBallYValues, -1);
+        
+        int numBreakableBlocks = d[numBreakableBlocksKey].GetInt();
+        for(int i = 0; i < numBreakableBlocks; i++)
+        {
+            m_iceBalls.push_back(std::unique_ptr<IceBall>(new IceBall(iceBallXValues.at(i), iceBallYValues.at(i), m_insideBlocks, m_breakableBlocks)));
+        }
+        
+        m_isSuddenDeath = true;
     }
 }
 

@@ -29,11 +29,19 @@ public:
     
     Falling_Object_Shadow_State getFallingObjectShadowState();
     
-    bool isTargetOccupiedByBlock();
+    InsideBlock * getTargetInsideBlock();
+    
+    BreakableBlock * getTargetBreakableBlock();
+    
+    bool isTargetOccupiedByInsideBlock();
+    
+    bool isTargetOccupiedByBreakableBlock();
     
 private:
     float m_fStateTime;
     Falling_Object_Shadow_State m_fallingObjectShadowState;
+    InsideBlock *m_targetInsideBlock;
+    BreakableBlock *m_targetBreakableBlock;
     bool m_isTargetInsideBlock;
     bool m_isTargetBreakableBlock;
     

@@ -32,6 +32,11 @@ void InsideBlock::update(float deltaTime)
     }
 }
 
+void InsideBlock::onHitByIceBall()
+{
+    m_insideBlockState = IB_FREEZING;
+}
+
 Inside_Block_State InsideBlock::getInsideBlockState()
 {
     return m_insideBlockState;

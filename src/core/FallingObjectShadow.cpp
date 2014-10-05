@@ -45,13 +45,9 @@ void FallingObjectShadow::update(float deltaTime, std::vector<std::unique_ptr<In
         m_fallingObjectShadowState = FAR;
     }
     
-    if(m_isTargetInsideBlock)
+    if(m_isTargetBreakableBlock)
     {
-        m_isTargetInsideBlock = isTargetInsideBlock(insideBlocks);
-    }
-    else if(m_isTargetBreakableBlock)
-    {
-        m_isTargetBreakableBlock = isTargetBreakableBlock(breakableBlocks);
+        m_isTargetBreakableBlock = m_targetBreakableBlock->getBreakableBlockState() == BB_NORMAL;
     }
     
     if(m_isTargetInsideBlock || m_isTargetBreakableBlock)
@@ -74,9 +70,24 @@ Falling_Object_Shadow_State FallingObjectShadow::getFallingObjectShadowState()
     return m_fallingObjectShadowState;
 }
 
-bool FallingObjectShadow::isTargetOccupiedByBlock()
+InsideBlock * FallingObjectShadow::getTargetInsideBlock()
 {
-    return m_isTargetInsideBlock || m_isTargetBreakableBlock;
+    return m_targetInsideBlock;
+}
+
+BreakableBlock * FallingObjectShadow::getTargetBreakableBlock()
+{
+    return m_targetBreakableBlock;
+}
+
+bool FallingObjectShadow::isTargetOccupiedByInsideBlock()
+{
+    return m_isTargetInsideBlock;
+}
+
+bool FallingObjectShadow::isTargetOccupiedByBreakableBlock()
+{
+    return m_isTargetBreakableBlock;
 }
 
 #pragma mark <Private>
@@ -87,6 +98,7 @@ bool FallingObjectShadow::isTargetInsideBlock(std::vector<std::unique_ptr<Inside
     {
         if(m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY())
         {
+            m_targetInsideBlock = (*itr).get();
             return true;
         }
     }
@@ -100,6 +112,7 @@ bool FallingObjectShadow::isTargetBreakableBlock(std::vector<std::unique_ptr<Bre
     {
         if(m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY())
         {
+            m_targetBreakableBlock = (*itr).get();
             return true;
         }
     }
