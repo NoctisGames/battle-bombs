@@ -95,6 +95,8 @@ void GameScreen::init()
     m_powerUps.clear();
     m_countDownNumbers.clear();
     m_displayGameOvers.clear();
+    m_iceBalls.clear();
+    m_icePatches.clear();
     
     m_gameState = m_isOffline ? WAITING_FOR_LOCAL_SETTINGS : WAITING_FOR_SERVER;
     m_iScreenState = 0;
