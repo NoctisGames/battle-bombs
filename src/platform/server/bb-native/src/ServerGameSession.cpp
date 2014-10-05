@@ -163,6 +163,8 @@ void ServerGameSession::init()
     m_icePatches.clear();
 
     srand((int) time(NULL));
+
+    m_fCountDownTimeLeft = 4;
 }
 
 void ServerGameSession::handleServerUpdate(const char *message)
@@ -190,12 +192,7 @@ void ServerGameSession::update(float deltaTime)
             }
             else if (eventType == BEGIN_GAME)
             {
-                for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-                {
-                    (*itr)->reset();
-                }
-
-                m_gameState = RUNNING;
+                m_gameState = COUNTING_DOWN;
             }
             else if (eventType == GAME_OVER)
             {
@@ -222,6 +219,18 @@ void ServerGameSession::update(float deltaTime)
 
     switch (m_gameState)
     {
+        case COUNTING_DOWN:
+            m_fCountDownTimeLeft -= deltaTime;
+            if (m_fCountDownTimeLeft < 0)
+            {
+                m_gameState = RUNNING;
+
+                for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+                {
+                    (*itr)->reset();
+                }
+            }
+            break;
         case RUNNING:
             updateRunning(deltaTime);
             break;
