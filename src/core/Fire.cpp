@@ -120,7 +120,7 @@ bool Fire::isExhausted()
 
 bool Fire::isDeadly()
 {
-    return m_fireType != BODY && m_fireType != NECK_AND_BODY_END && m_fireType != CORE_END;
+    return m_fireType != BODY && m_fireType != NECK_AND_BODY_END && m_fireType != CORE_END && !isEdge();
 }
 
 bool Fire::isEdge()
