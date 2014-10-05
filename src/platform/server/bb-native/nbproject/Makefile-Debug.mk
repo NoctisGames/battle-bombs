@@ -41,10 +41,13 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/32229614/DynamicGameObject.o \
 	${OBJECTDIR}/_ext/32229614/DynamicGridGameObject.o \
 	${OBJECTDIR}/_ext/32229614/Explosion.o \
+	${OBJECTDIR}/_ext/32229614/FallingObjectShadow.o \
 	${OBJECTDIR}/_ext/32229614/Fire.o \
 	${OBJECTDIR}/_ext/32229614/GameObject.o \
 	${OBJECTDIR}/_ext/32229614/GameSession.o \
 	${OBJECTDIR}/_ext/32229614/GridGameObject.o \
+	${OBJECTDIR}/_ext/32229614/IceBall.o \
+	${OBJECTDIR}/_ext/32229614/IcePatch.o \
 	${OBJECTDIR}/_ext/32229614/InsideBlock.o \
 	${OBJECTDIR}/_ext/32229614/Line.o \
 	${OBJECTDIR}/_ext/32229614/MapBorder.o \
@@ -115,6 +118,11 @@ ${OBJECTDIR}/_ext/32229614/Explosion.o: ../../../core/Explosion.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/Explosion.o ../../../core/Explosion.cpp
 
+${OBJECTDIR}/_ext/32229614/FallingObjectShadow.o: ../../../core/FallingObjectShadow.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/FallingObjectShadow.o ../../../core/FallingObjectShadow.cpp
+
 ${OBJECTDIR}/_ext/32229614/Fire.o: ../../../core/Fire.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
 	${RM} "$@.d"
@@ -134,6 +142,16 @@ ${OBJECTDIR}/_ext/32229614/GridGameObject.o: ../../../core/GridGameObject.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/GridGameObject.o ../../../core/GridGameObject.cpp
+
+${OBJECTDIR}/_ext/32229614/IceBall.o: ../../../core/IceBall.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/IceBall.o ../../../core/IceBall.cpp
+
+${OBJECTDIR}/_ext/32229614/IcePatch.o: ../../../core/IcePatch.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/32229614
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include -I../../../../../../../../../Program\ Files/Java/jdk1.7.0_51/include/win32 -I../../../core -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/32229614/IcePatch.o ../../../core/IcePatch.cpp
 
 ${OBJECTDIR}/_ext/32229614/InsideBlock.o: ../../../core/InsideBlock.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/32229614

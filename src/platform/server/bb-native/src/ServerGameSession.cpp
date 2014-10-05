@@ -27,6 +27,9 @@
 #include "PathFinder.h"
 #include "MapSearchNode.h"
 #include "PowerUpType.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
 
 //For RNG purposes
 #include <stdlib.h>
@@ -273,7 +276,7 @@ void ServerGameSession::updateRunning(float deltaTime)
             {
                 m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
             }
-            else if (m_player->isHitByIce(m_icePatches))
+            else if ((*itr)->isHitByIce(m_icePatches))
             {
                 m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, (**itr));
             }
