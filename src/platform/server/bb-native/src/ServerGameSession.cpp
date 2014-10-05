@@ -159,6 +159,8 @@ void ServerGameSession::init()
     m_bombs.clear();
     m_explosions.clear();
     m_powerUps.clear();
+    m_iceBalls.clear();
+    m_icePatches.clear();
 
     srand((int) time(NULL));
 }
