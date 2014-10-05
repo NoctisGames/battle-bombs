@@ -392,6 +392,8 @@ void PlayerDynamicGameObject::onForceFieldHit()
 void PlayerDynamicGameObject::onFreeze()
 {
     m_playerState = FREEZING;
+    m_playerActionState = IDLE;
+    setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_OFF);
     m_fStateTime = 0;
     
     m_isDisplayingName = false;
