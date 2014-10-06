@@ -169,6 +169,7 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
                 m_countDownNumbers.clear();
                 
                 m_gameListener->playSound(SOUND_BATTLE);
+                m_displayXMovingGameObject->begin();
                 m_gameState = RUNNING;
                 
                 for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
@@ -614,6 +615,8 @@ void GameScreen::updateSpectating(float deltaTime)
     
     m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
     
+    m_displayXMovingGameObject->update(deltaTime);
+    
     updateCommon(deltaTime);
 }
 
@@ -899,6 +902,7 @@ void GameScreen::suddenDeath(rapidjson::Document &d)
     
     m_displayXMovingGameObject.release();
     m_displayXMovingGameObject = std::unique_ptr<DisplayXMovingGameObject>(new DisplayXMovingGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f, HURRY_UP));
+    m_displayXMovingGameObject->begin();
 }
 
 void GameScreen::gameOver(rapidjson::Document &d)

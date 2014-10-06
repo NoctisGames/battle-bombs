@@ -17,12 +17,15 @@ class DisplayXMovingGameObject : public GameObject
 public:
 	DisplayXMovingGameObject(float x, float y, float width, float height, Display_X_Moving_Type type);
     
+    void begin();
+    
     void update(float deltaTime);
     
     Display_X_Moving_Type getType();
     
 private:
     float m_fStateTime;
+    bool m_isAnimating;
     Display_X_Moving_Type m_type;
 };
 
