@@ -79,12 +79,7 @@
     
     OnComplete onFailure = ^(NSDictionary *jsonResponse)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"connection_error_title", nil)
-                                                        message:NSLocalizedString(@"connection_error_message", nil)
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"connection_error_cancel", nil)
-                                              otherButtonTitles:nil];
-        [alert show];
+        [self showConnectionErrorMessage];
     };
     
     [[TGApiManager getInstance] sendJsonRequestWithOnSuccess:onSuccess andOnFailure:onFailure];
@@ -159,6 +154,18 @@
         [userDefaults setObject:_username forKey:@"USERNAME"];
         [userDefaults synchronize];
     }
+}
+
+#pragma mark <Public API>
+
+- (void)showConnectionErrorMessage
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"connection_error_title", nil)
+                                                    message:NSLocalizedString(@"connection_error_message", nil)
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"connection_error_cancel", nil)
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 @end

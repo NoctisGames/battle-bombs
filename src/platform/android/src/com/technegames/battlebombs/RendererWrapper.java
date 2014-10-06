@@ -207,6 +207,10 @@ public final class RendererWrapper implements Renderer
                     activity.finish();
                 }
                 break;
+            case 2:
+                activity.setResult(GameActivity.RESULT_CONNECTION_ERROR);
+                activity.finish();
+                break;
             default:
                 break;
         }

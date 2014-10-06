@@ -68,6 +68,8 @@ GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 void GameScreen::handleServerUpdate(const char *message)
 {
     m_gameListener->addServerMessage(message);
+    
+    m_fTimeSinceLastServerUpdate = 0;
 }
 
 void GameScreen::init()
@@ -101,6 +103,7 @@ void GameScreen::init()
     m_gameState = m_isOffline ? WAITING_FOR_LOCAL_SETTINGS : WAITING_FOR_SERVER;
     m_iScreenState = 0;
     m_fTimeSinceLastClientEvent = 0;
+    m_fTimeSinceLastServerUpdate = 0;
     m_fCountDownTimeLeft = 3;
     m_fTimeSinceGameOver = 0;
     m_fBlackCoverTransitionAlpha = 0;
@@ -129,6 +132,12 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
     if(m_gameState == WAITING_FOR_SERVER || m_gameState == COUNTING_DOWN || m_gameState == RUNNING || m_gameState == SPECTATING || m_gameState == GAME_ENDING)
     {
         m_fTimeSinceLastClientEvent += deltaTime;
+        m_fTimeSinceLastServerUpdate += deltaTime;
+    }
+    
+    if(m_fTimeSinceLastServerUpdate > 8)
+    {
+        m_iScreenState = 2;
     }
     
     processServerMessages();
@@ -768,7 +777,7 @@ void GameScreen::processServerMessages()
                 {
                     m_waitingForServerInterface->handlePreGameServerUpdate(d);
                 }
-                else if(eventType == PRE_GAME && m_gameState == WAITING_FOR_CONNECTION)
+                else if(eventType == PRE_GAME)
                 {
                     static const char *phaseKey = "phase";
                     

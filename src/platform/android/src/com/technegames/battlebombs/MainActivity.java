@@ -3,6 +3,7 @@ package com.technegames.battlebombs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
@@ -35,7 +36,7 @@ public final class MainActivity extends Activity
     }
 
     @Override
-    public void onPause()
+    protected void onPause()
     {
         super.onPause();
 
@@ -47,6 +48,17 @@ public final class MainActivity extends Activity
         if (_asyncTaskCallback != null)
         {
             _asyncTaskCallback.safeDismissProgressDialog();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GameActivity.REQUEST_CODE && resultCode == GameActivity.RESULT_CONNECTION_ERROR)
+        {
+            showConnectionErrorDialog();
         }
     }
 
@@ -91,7 +103,7 @@ public final class MainActivity extends Activity
                                 AppPrefs.getInstance(MainActivity.this).setPlayerName(username);
                                 if (username.length() >= 3 && username.length() <= 12)
                                 {
-                                    GameActivity.startActivity(MainActivity.this, username);
+                                    GameActivity.startActivityForResult(MainActivity.this, username);
                                 }
                                 else
                                 {
@@ -116,13 +128,7 @@ public final class MainActivity extends Activity
             @Override
             protected void onFailure()
             {
-                new AlertDialog.Builder(MainActivity.this).setTitle(R.string.connection_error_title).setMessage(R.string.connection_error_message).setPositiveButton(R.string.connection_error_cancel, new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int whichButton)
-                    {
-                        dialog.dismiss();
-                    }
-                }).show();
+                showConnectionErrorDialog();
             }
         };
 
@@ -166,6 +172,17 @@ public final class MainActivity extends Activity
     private void showInvalidUsernameDialog()
     {
         new AlertDialog.Builder(MainActivity.this).setTitle(R.string.invalid_username_title).setMessage(R.string.invalid_username_message).setPositiveButton(R.string.invalid_username_cancel, new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton)
+            {
+                dialog.dismiss();
+            }
+        }).show();
+    }
+
+    private void showConnectionErrorDialog()
+    {
+        new AlertDialog.Builder(MainActivity.this).setTitle(R.string.connection_error_title).setMessage(R.string.connection_error_message).setPositiveButton(R.string.connection_error_cancel, new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int whichButton)
             {

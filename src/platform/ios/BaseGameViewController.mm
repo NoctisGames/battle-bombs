@@ -171,6 +171,9 @@ static Logger *logger = nil;
         case 1:
             [self handleGameState:1];
             break;
+        case 2:
+            [self handleGameState:2];
+            break;
         default:
             break;
     }

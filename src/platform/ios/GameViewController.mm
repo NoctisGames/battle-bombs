@@ -12,6 +12,7 @@
 #define APPWARP_AUTH_DATA       @"T3chn3G4m35_1.1.0"
 
 #import "GameViewController.h"
+#import "MainViewController.h"
 
 // C++
 #include "game.h"
@@ -207,6 +208,14 @@ static NSString * const PHASE = @"phase";
     if(gameState == 1)
     {
         [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else if(gameState == 2)
+    {
+        MainViewController *mainViewController = (MainViewController *)self.presentingViewController;
+        [self dismissViewControllerAnimated:YES completion:^
+        {
+            [mainViewController showConnectionErrorMessage];
+        }];
     }
 }
 

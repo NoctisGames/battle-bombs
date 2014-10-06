@@ -19,6 +19,8 @@ import com.shephertz.app42.gaming.multiplayer.client.listener.NotifyListener;
 
 public final class GameActivity extends BaseGameActivity implements ConnectionRequestListener, NotifyListener
 {
+    public static final int REQUEST_CODE = 11;
+    public static final int RESULT_CONNECTION_ERROR = 136;
     private static final Logger logger = new Logger(GameActivity.class);
 
     private static final String EVENT_TYPE = "eventType";
@@ -40,11 +42,11 @@ public final class GameActivity extends BaseGameActivity implements ConnectionRe
         WarpClient.initialize(AppWarpConstants.APPWARP_APP_KEY, AppWarpConstants.APPWARP_HOST_ADDRESS);
     }
 
-    public static void startActivity(Activity activity, String username)
+    public static void startActivityForResult(Activity activity, String username)
     {
         Intent i = new Intent(activity, GameActivity.class);
         i.putExtra(EXTRA_USERNAME, username);
-        activity.startActivity(i);
+        activity.startActivityForResult(i, REQUEST_CODE);
     }
 
     private String _joinedRoomId;
