@@ -219,6 +219,10 @@ namespace BattleBombsComp
 				m_winRtCallback->Invoke("EXIT", "NULL");
 			}
 		}
+		else if (gameState == 2)
+		{
+			m_winRtCallback->Invoke("CONNECTION_ERROR", "NULL");
+		}
 
 		m_gameScreen->present();
 		m_gameScreen->handleSound();

@@ -24,6 +24,8 @@ namespace BattleBombs
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        public static Boolean isConnectionError = false;
+
         public MainPage()
         {
             InitializeComponent();
@@ -34,6 +36,13 @@ namespace BattleBombs
             base.OnNavigatedTo(e);
 
             PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Enabled;
+
+            if (isConnectionError)
+            {
+                MessageBox.Show("Your device is unable to connect to Techne Games. Please check your connection and try again.");
+            }
+
+            isConnectionError = false;
         }
 
         private void Start_Quick_Match(object sender, RoutedEventArgs e)

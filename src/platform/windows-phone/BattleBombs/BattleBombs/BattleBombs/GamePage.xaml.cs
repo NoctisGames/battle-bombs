@@ -133,6 +133,14 @@ namespace BattleBombs
                     NavigationService.GoBack();
                 });
             }
+            else if (command.Equals("CONNECTION_ERROR"))
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MainPage.isConnectionError = true;
+                    NavigationService.GoBack();
+                });
+            }
         }
 
         private class MyConnectionRequestListener : com.shephertz.app42.gaming.multiplayer.client.listener.ConnectionRequestListener
