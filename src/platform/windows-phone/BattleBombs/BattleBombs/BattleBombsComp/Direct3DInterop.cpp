@@ -42,6 +42,9 @@
 #include "RectangleBatcher.h"
 #include "GameSound.h"
 #include "PlayerRowAvatar.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
 #include <string.h>
 #include <sstream>
 

@@ -176,6 +176,8 @@
     <ClInclude Include="..\..\..\..\..\core\DynamicGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\DynamicGridGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\Explosion.h" />
+    <ClInclude Include="..\..\..\..\..\core\FallingObjectShadow.h" />
+    <ClInclude Include="..\..\..\..\..\core\FallingObjectShadowState.h" />
     <ClInclude Include="..\..\..\..\..\core\Fire.h" />
     <ClInclude Include="..\..\..\..\..\core\FireType.h" />
     <ClInclude Include="..\..\..\..\..\core\Font.h" />
@@ -189,6 +191,8 @@
     <ClInclude Include="..\..\..\..\..\core\GameSession.h" />
     <ClInclude Include="..\..\..\..\..\core\GameState.h" />
     <ClInclude Include="..\..\..\..\..\core\GridGameObject.h" />
+    <ClInclude Include="..\..\..\..\..\core\IceBall.h" />
+    <ClInclude Include="..\..\..\..\..\core\IcePatch.h" />
     <ClInclude Include="..\..\..\..\..\core\InsideBlock.h" />
     <ClInclude Include="..\..\..\..\..\core\InterfaceOverlay.h" />
     <ClInclude Include="..\..\..\..\..\core\Line.h" />
@@ -257,6 +261,7 @@
     <ClCompile Include="..\..\..\..\..\core\DynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\DynamicGridGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Explosion.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\FallingObjectShadow.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Fire.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Font.cpp" />
     <ClCompile Include="..\..\..\..\..\core\GameButton.cpp" />
@@ -265,6 +270,8 @@
     <ClCompile Include="..\..\..\..\..\core\GameScreen.cpp" />
     <ClCompile Include="..\..\..\..\..\core\GameSession.cpp" />
     <ClCompile Include="..\..\..\..\..\core\GridGameObject.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\IceBall.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\IcePatch.cpp" />
     <ClCompile Include="..\..\..\..\..\core\InsideBlock.cpp" />
     <ClCompile Include="..\..\..\..\..\core\InterfaceOverlay.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Line.cpp" />

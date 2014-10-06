@@ -12,9 +12,9 @@
 typedef enum
 {
     FARTHEST,
-    FAR,
+    FARTHER,
     HALFWAY,
-    CLOSE,
+    CLOSER,
     CLOSEST
 } Falling_Object_Shadow_State;
 

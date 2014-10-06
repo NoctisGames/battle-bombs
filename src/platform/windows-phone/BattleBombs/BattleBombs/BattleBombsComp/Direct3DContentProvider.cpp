@@ -41,6 +41,9 @@
 #include "Global.h"
 #include "GameSound.h"
 #include "PlayerRowAvatar.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
 
 using namespace BattleBombsComp;
 

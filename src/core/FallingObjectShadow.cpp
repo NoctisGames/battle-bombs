@@ -33,7 +33,7 @@ void FallingObjectShadow::update(float deltaTime, std::vector<std::unique_ptr<Br
     }
     else if(m_fStateTime > 1.5f)
     {
-        m_fallingObjectShadowState = CLOSE;
+        m_fallingObjectShadowState = CLOSER;
     }
     else if(m_fStateTime > 1.0f)
     {
@@ -41,7 +41,7 @@ void FallingObjectShadow::update(float deltaTime, std::vector<std::unique_ptr<Br
     }
     else if(m_fStateTime > 0.5f)
     {
-        m_fallingObjectShadowState = FAR;
+		m_fallingObjectShadowState = FARTHER;
     }
     
     if(m_isTargetBreakableBlock)
