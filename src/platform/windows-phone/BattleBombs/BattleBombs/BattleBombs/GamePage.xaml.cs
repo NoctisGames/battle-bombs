@@ -130,7 +130,6 @@ namespace BattleBombs
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    MainPage.isConnectionError = true;
                     NavigationService.GoBack();
                 });
             }
