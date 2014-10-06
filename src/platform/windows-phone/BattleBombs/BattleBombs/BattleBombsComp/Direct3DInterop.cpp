@@ -32,7 +32,7 @@
 #include "Font.h"
 #include "SpectatorControls.h"
 #include "CountDownNumberGameObject.h"
-#include "DisplayBattleGameObject.h"
+#include "DisplayXMovingGameObject.h"
 #include "DisplayGameOverGameObject.h"
 #include "PlayerRow.h"
 #include "PlayerRowPlatformAvatar.h"
