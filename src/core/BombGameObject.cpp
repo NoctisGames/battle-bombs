@@ -128,6 +128,11 @@ bool BombGameObject::isDestroyed()
     return m_isDestroyed;
 }
 
+void BombGameObject::destroy()
+{
+    m_isDestroyed = true;
+}
+
 void BombGameObject::pushed(int direction)
 {
 	m_isPushed = true;

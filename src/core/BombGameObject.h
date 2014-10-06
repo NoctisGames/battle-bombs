@@ -34,6 +34,8 @@ public:
     bool isExploding();
     
     bool isDestroyed();
+    
+    void destroy();
 
 	void pushed(int direction);
 

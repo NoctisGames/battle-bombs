@@ -258,7 +258,7 @@ void GameSession::updateCommon(float deltaTime)
                 
                 for (std::vector < std::unique_ptr < IcePatch >> ::iterator itr = m_icePatches.begin(); itr != m_icePatches.end(); itr++)
                 {
-                    (**itr).update(deltaTime);
+                    (**itr).update(deltaTime, m_bombs);
                 }
                 break;
             case MAP_BASE:

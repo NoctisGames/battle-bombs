@@ -16,13 +16,14 @@
 
 class InsideBlock;
 class BreakableBlock;
+class BombGameObject;
 
 class IcePatch : public GridGameObject
 {
 public:
     IcePatch(int gridX, int gridY);
     
-    void update(float deltaTime);
+    void update(float deltaTime, std::vector<std::unique_ptr<BombGameObject>> &bombs);
     
     float getStateTime();
     

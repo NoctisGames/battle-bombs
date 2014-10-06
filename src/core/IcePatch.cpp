@@ -12,6 +12,7 @@
 #include "Rectangle.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
+#include "BombGameObject.h"
 
 IcePatch::IcePatch(int gridX, int gridY) : GridGameObject(gridX, gridY, GRID_CELL_WIDTH * 2, GRID_CELL_HEIGHT * 2, 0)
 {
@@ -20,9 +21,18 @@ IcePatch::IcePatch(int gridX, int gridY) : GridGameObject(gridX, gridY, GRID_CEL
     m_fStateTime = 0;
 }
 
-void IcePatch::update(float deltaTime)
+void IcePatch::update(float deltaTime, std::vector<std::unique_ptr<BombGameObject>> &bombs)
 {
     m_fStateTime += deltaTime;
+    
+    for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+    {
+        if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
+        {
+            // If an Ice Ball lands on a Bomb, destroy that bomb
+            (*itr)->destroy();
+        }
+    }
 }
 
 float IcePatch::getStateTime()
