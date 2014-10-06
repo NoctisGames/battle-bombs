@@ -857,7 +857,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         int numPlayers = d[numPlayersKey].GetInt();
         for(int i = 0; i < numPlayers; i++)
         {
-            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(i, 0, 0, m_gameListener.get())));
+            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(i, -5, 0, m_gameListener.get())));
         }
         
         if(d.HasMember(numClientBotsKey))
@@ -865,7 +865,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
             int numClientBots = d[numClientBotsKey].GetInt();
             for(int i = 0; i < numClientBots; i++)
             {
-                m_players.push_back(std::unique_ptr<BotPlayerDynamicGameObject>(new BotPlayerDynamicGameObject(i + numPlayers, 0, 0, m_gameListener.get())));
+                m_players.push_back(std::unique_ptr<BotPlayerDynamicGameObject>(new BotPlayerDynamicGameObject(i + numPlayers, -5, 0, m_gameListener.get())));
             }
         }
         
