@@ -132,12 +132,16 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
     if(m_gameState == WAITING_FOR_SERVER || m_gameState == COUNTING_DOWN || m_gameState == RUNNING || m_gameState == SPECTATING || m_gameState == GAME_ENDING)
     {
         m_fTimeSinceLastClientEvent += deltaTime;
-        m_fTimeSinceLastServerUpdate += deltaTime;
-    }
-    
-    if(m_fTimeSinceLastServerUpdate > 8)
-    {
-        m_iScreenState = 2;
+        
+        if(!m_isOffline)
+        {
+            m_fTimeSinceLastServerUpdate += deltaTime;
+            
+            if(m_fTimeSinceLastServerUpdate > 8)
+            {
+                m_iScreenState = 2;
+            }
+        }
     }
     
     processServerMessages();
