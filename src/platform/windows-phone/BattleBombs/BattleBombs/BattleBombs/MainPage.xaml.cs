@@ -39,7 +39,10 @@ namespace BattleBombs
 
             if (isConnectionError)
             {
-                MessageBox.Show("Your device is unable to connect to Techne Games. Please check your connection and try again.");
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Your device is unable to connect to Techne Games. Please check your connection and try again.");
+                });
             }
 
             isConnectionError = false;
