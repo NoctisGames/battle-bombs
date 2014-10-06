@@ -614,8 +614,6 @@ void GameScreen::updateSpectating(float deltaTime)
     
     m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
     
-    m_displayXMovingGameObject->update(deltaTime);
-    
     updateCommon(deltaTime);
 }
 
