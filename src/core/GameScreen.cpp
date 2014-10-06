@@ -40,7 +40,7 @@
 #include "Font.h"
 #include "SpectatorControls.h"
 #include "CountDownNumberGameObject.h"
-#include "DisplayBattleGameObject.h"
+#include "DisplayXMovingGameObject.h"
 #include "DisplayGameOverGameObject.h"
 #include "PlayerRow.h"
 #include "PlayerRowAvatar.h"
@@ -76,8 +76,8 @@ void GameScreen::init()
 {
 	m_touchPoint.release();
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
-	m_displayBattle.release();
-	m_displayBattle = std::unique_ptr<DisplayBattleGameObject>(new DisplayBattleGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f));
+	m_displayXMovingGameObject.release();
+	m_displayXMovingGameObject = std::unique_ptr<DisplayXMovingGameObject>(new DisplayXMovingGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f, BATTLE));
 	m_gameListener.release();
 	m_gameListener = std::unique_ptr<GameListener>(new GameListener());
 	m_waitingForServerInterface.release();
@@ -216,6 +216,8 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
         default:
             break;
     }
+    
+    m_displayXMovingGameObject->update(deltaTime);
 }
 
 void GameScreen::present()
@@ -247,7 +249,7 @@ void GameScreen::present()
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
             
-            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayXMovingGameObject, m_displayGameOvers);
             
             m_renderer->endFrame();
             break;
@@ -297,7 +299,7 @@ void GameScreen::present()
             
             m_renderer->renderMapBordersNear(m_mapBorders);
             
-            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayXMovingGameObject, m_displayGameOvers);
             
             m_renderer->renderInterface(*m_interfaceOverlay);
             
@@ -349,7 +351,7 @@ void GameScreen::present()
             
             m_renderer->renderMapBordersNear(m_mapBorders);
             
-            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayXMovingGameObject, m_displayGameOvers);
             
             m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
             
@@ -401,7 +403,7 @@ void GameScreen::present()
             
             m_renderer->renderMapBordersNear(m_mapBorders);
             
-            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayXMovingGameObject, m_displayGameOvers);
             
             m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
             
@@ -545,8 +547,6 @@ void GameScreen::updateRunning(float deltaTime)
     m_sEventIds.clear();
     
     m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
-    
-    m_displayBattle->update(deltaTime);
     
     updateCommon(deltaTime);
 }
@@ -893,7 +893,8 @@ void GameScreen::suddenDeath(rapidjson::Document &d)
 {
     GameSession::suddenDeath(d);
     
-    // TODO, display some UI cue for the impending doom!
+    m_displayXMovingGameObject.release();
+    m_displayXMovingGameObject = std::unique_ptr<DisplayXMovingGameObject>(new DisplayXMovingGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f, HURRY_UP));
 }
 
 void GameScreen::gameOver(rapidjson::Document &d)

@@ -34,6 +34,7 @@
 #include "PlayerRowPlatformAvatar.h"
 #include "CountDownNumberGameObject.h"
 #include "DisplayGameOverGameObject.h"
+#include "DisplayXMovingGameObject.h"
 #include "GameEvent.h"
 #include <list>
 
@@ -47,6 +48,12 @@ TextureRegion& Assets::getWorldBackgroundTextureRegion()
 {
 	static TextureRegion textureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
 	return textureRegion;
+}
+
+TextureRegion& getSpaceTileTextureRegion()
+{
+    static TextureRegion textureRegion = TextureRegion(SPACE_TILE_TEXTURE_REGION_X, SPACE_TILE_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    return textureRegion;
 }
 
 TextureRegion& Assets::getMapBorderTextureRegion(MapBorder &mapBorder)
@@ -978,10 +985,18 @@ TextureRegion& Assets::getCountDownNumberTextureRegion(CountDownNumberGameObject
     }
 }
 
-TextureRegion& Assets::getDisplayBattleTextureRegion()
+TextureRegion& Assets::getDisplayXMovingTextureRegion(DisplayXMovingGameObject &displayXMovingGameObject)
 {
-    static TextureRegion textureRegion = TextureRegion(BATTLE_TEXTURE_REGION_X, BATTLE_TEXTURE_REGION_Y, BATTLE_TEXTURE_REGION_WIDTH, BATTLE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-    return textureRegion;
+    if(displayXMovingGameObject.getType() == BATTLE)
+    {
+        static TextureRegion textureRegion = TextureRegion(BATTLE_TEXTURE_REGION_X, BATTLE_TEXTURE_REGION_Y, BATTLE_TEXTURE_REGION_WIDTH, BATTLE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        return textureRegion;
+    }
+    else
+    {
+        static TextureRegion textureRegion = TextureRegion(HURRY_UP_TEXTURE_REGION_X, HURRY_UP_TEXTURE_REGION_Y, HURRY_UP_TEXTURE_REGION_WIDTH, HURRY_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        return textureRegion;
+    }
 }
 
 TextureRegion& Assets::getDisplayGameOverTextureRegion(DisplayGameOverGameObject &displayGameOverGameObject)

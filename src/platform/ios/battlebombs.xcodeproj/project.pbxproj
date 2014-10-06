@@ -164,7 +164,7 @@
 		BBBEC914194B425200AAB520 /* char_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBEC913194B425200AAB520 /* char_blue.png */; };
 		BBC92AD819C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92AD619C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp */; };
 		BBC92AE019C0FA7F004B44B2 /* CountDownNumberGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92ADE19C0FA7F004B44B2 /* CountDownNumberGameObject.cpp */; };
-		BBC92AE319C0FC77004B44B2 /* DisplayBattleGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92AE119C0FC77004B44B2 /* DisplayBattleGameObject.cpp */; };
+		BBC92AE319C0FC77004B44B2 /* DisplayXMovingGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92AE119C0FC77004B44B2 /* DisplayXMovingGameObject.cpp */; };
 		BBC92AE619C0FC92004B44B2 /* DisplayGameOverGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92AE419C0FC92004B44B2 /* DisplayGameOverGameObject.cpp */; };
 		BBCCF55E193847A0000F509A /* BotPlayerDynamicGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */; };
 		BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32418BFC8E1003A4EED /* Logger.m */; };
@@ -449,6 +449,7 @@
 		BBA1CD511958B10900AF2AD8 /* MapBorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapBorder.cpp; sourceTree = "<group>"; };
 		BBA1CD521958B10A00AF2AD8 /* MapBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBorder.h; sourceTree = "<group>"; };
 		BBA1CD541958C8D700AF2AD8 /* MapBorderType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapBorderType.h; sourceTree = "<group>"; };
+		BBA5C46A19E2F5B200809FDC /* DisplayXMovingType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DisplayXMovingType.h; sourceTree = "<group>"; };
 		BBA6492119B5FED100023E5A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BBAA545F19D5B06B004176FF /* PlayerRowAvatar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerRowAvatar.cpp; sourceTree = "<group>"; };
 		BBAA546019D5B06B004176FF /* PlayerRowAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerRowAvatar.h; sourceTree = "<group>"; };
@@ -464,8 +465,8 @@
 		BBC92AD719C0B963004B44B2 /* PlayerRowPlatformAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerRowPlatformAvatar.h; sourceTree = "<group>"; };
 		BBC92ADE19C0FA7F004B44B2 /* CountDownNumberGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CountDownNumberGameObject.cpp; sourceTree = "<group>"; };
 		BBC92ADF19C0FA7F004B44B2 /* CountDownNumberGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountDownNumberGameObject.h; sourceTree = "<group>"; };
-		BBC92AE119C0FC77004B44B2 /* DisplayBattleGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisplayBattleGameObject.cpp; sourceTree = "<group>"; };
-		BBC92AE219C0FC77004B44B2 /* DisplayBattleGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayBattleGameObject.h; sourceTree = "<group>"; };
+		BBC92AE119C0FC77004B44B2 /* DisplayXMovingGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisplayXMovingGameObject.cpp; sourceTree = "<group>"; };
+		BBC92AE219C0FC77004B44B2 /* DisplayXMovingGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayXMovingGameObject.h; sourceTree = "<group>"; };
 		BBC92AE419C0FC92004B44B2 /* DisplayGameOverGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisplayGameOverGameObject.cpp; sourceTree = "<group>"; };
 		BBC92AE519C0FC92004B44B2 /* DisplayGameOverGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayGameOverGameObject.h; sourceTree = "<group>"; };
 		BBC92AE719C0FCAA004B44B2 /* DisplayGameOverType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DisplayGameOverType.h; sourceTree = "<group>"; };
@@ -550,8 +551,9 @@
 				BBC92ADE19C0FA7F004B44B2 /* CountDownNumberGameObject.cpp */,
 				BBC92ADF19C0FA7F004B44B2 /* CountDownNumberGameObject.h */,
 				BBC92AE819C0FCE6004B44B2 /* CountDownNumberType.h */,
-				BBC92AE119C0FC77004B44B2 /* DisplayBattleGameObject.cpp */,
-				BBC92AE219C0FC77004B44B2 /* DisplayBattleGameObject.h */,
+				BBC92AE119C0FC77004B44B2 /* DisplayXMovingGameObject.cpp */,
+				BBC92AE219C0FC77004B44B2 /* DisplayXMovingGameObject.h */,
+				BBA5C46A19E2F5B200809FDC /* DisplayXMovingType.h */,
 				BBC92AE419C0FC92004B44B2 /* DisplayGameOverGameObject.cpp */,
 				BBC92AE519C0FC92004B44B2 /* DisplayGameOverGameObject.h */,
 				BBC92AE719C0FCAA004B44B2 /* DisplayGameOverType.h */,
@@ -1131,7 +1133,7 @@
 				BB0BC05C1971B7810092A968 /* PowerUpBarItem.cpp in Sources */,
 				0A8FBF7D179E07320039BA29 /* pngerror.c in Sources */,
 				BB25863419E04B7A00438F91 /* FallingObjectShadow.cpp in Sources */,
-				BBC92AE319C0FC77004B44B2 /* DisplayBattleGameObject.cpp in Sources */,
+				BBC92AE319C0FC77004B44B2 /* DisplayXMovingGameObject.cpp in Sources */,
 				BBDF1A6C190F256300ECDBE2 /* BombGameObject.cpp in Sources */,
 				BBA1CD531958B10A00AF2AD8 /* MapBorder.cpp in Sources */,
 				0A8FBF7E179E07320039BA29 /* pngget.c in Sources */,

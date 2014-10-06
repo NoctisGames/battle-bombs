@@ -37,7 +37,7 @@
 #include "PlayerRow.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "CountDownNumberGameObject.h"
-#include "DisplayBattleGameObject.h"
+#include "DisplayXMovingGameObject.h"
 #include "DisplayGameOverGameObject.h"
 #include <sstream>
 

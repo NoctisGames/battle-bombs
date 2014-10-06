@@ -40,7 +40,7 @@
 #include "PlayerRowAvatar.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "CountDownNumberGameObject.h"
-#include "DisplayBattleGameObject.h"
+#include "DisplayXMovingGameObject.h"
 #include "DisplayGameOverGameObject.h"
 #include "IceBall.h"
 #include "IcePatch.h"
@@ -342,7 +342,7 @@ void Renderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &map
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
 }
 
-void Renderer::renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject)
+void Renderer::renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayXMovingGameObject &displayXMovingGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject)
 {
     m_spriteBatcher->beginBatch();
     
@@ -411,7 +411,7 @@ void Renderer::renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObje
         renderGameObject((**itr), Assets::getCountDownNumberTextureRegion(**itr));
     }
     
-    renderGameObject(displayBattleGameObject, Assets::getDisplayBattleTextureRegion());
+    renderGameObject(displayXMovingGameObject, Assets::getDisplayXMovingTextureRegion(displayXMovingGameObject));
     
     for (std::vector<std::unique_ptr<DisplayGameOverGameObject>>::iterator itr = displayGameOverGameObject.begin(); itr != displayGameOverGameObject.end(); itr++)
     {

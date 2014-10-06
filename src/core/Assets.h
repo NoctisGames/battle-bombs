@@ -38,6 +38,7 @@ class PlayerRowAvatar;
 class PlayerRowPlatformAvatar;
 class CountDownNumberGameObject;
 class DisplayGameOverGameObject;
+class DisplayXMovingGameObject;
 
 class Assets
 {
@@ -45,6 +46,8 @@ public:
 	static Assets * getInstance();
 
 	static TextureRegion& getWorldBackgroundTextureRegion();
+    
+    static TextureRegion& getSpaceTileTextureRegion();
 
 	static TextureRegion& getMapBorderTextureRegion(MapBorder &mapBorder);
     
@@ -100,7 +103,7 @@ public:
     
     static TextureRegion& getCountDownNumberTextureRegion(CountDownNumberGameObject &countDownNumberGameObject);
     
-    static TextureRegion& getDisplayBattleTextureRegion();
+    static TextureRegion& getDisplayXMovingTextureRegion(DisplayXMovingGameObject &displayXMovingGameObject);
     
     static TextureRegion& getDisplayGameOverTextureRegion(DisplayGameOverGameObject &displayGameOverGameObject);
     

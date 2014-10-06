@@ -49,7 +49,7 @@ class Font;
 class SpriteBatcher;
 class RectangleBatcher;
 class CountDownNumberGameObject;
-class DisplayBattleGameObject;
+class DisplayXMovingGameObject;
 class DisplayGameOverGameObject;
 
 class Renderer
@@ -87,7 +87,7 @@ public:
     
     void renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear);
     
-    void renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject);
+    void renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayXMovingGameObject &displayXMovingGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject);
     
     void renderInterface(InterfaceOverlay &interfaceOverlay);
     
