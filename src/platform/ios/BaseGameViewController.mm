@@ -40,6 +40,7 @@
 @property (strong, nonatomic) Sound *powerUpShieldSound;
 @property (strong, nonatomic) Sound *forceFieldDownSound;
 @property (strong, nonatomic) Sound *deathSound;
+@property (strong, nonatomic) Sound *hurrySound;
 @property (strong, nonatomic) Sound *gameSetSound;
 @property (strong, nonatomic) Sound *drawSound;
 
@@ -87,6 +88,7 @@ static Logger *logger = nil;
     self.powerUpShieldSound = [[Sound alloc] initWithSoundNamed:@"pu_push.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.forceFieldDownSound = [[Sound alloc] initWithSoundNamed:@"force_field_down.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.hurrySound = [[Sound alloc] initWithSoundNamed:@"hurry.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.gameSetSound = [[Sound alloc] initWithSoundNamed:@"game_set.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.drawSound = [[Sound alloc] initWithSoundNamed:@"draw.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     
@@ -248,6 +250,9 @@ static Logger *logger = nil;
                 break;
             case SOUND_DEATH:
                 [self.deathSound play];
+                break;
+            case SOUND_HURRY:
+                [self.hurrySound play];
                 break;
             case SOUND_GAME_SET:
                 [self.gameSetSound play];

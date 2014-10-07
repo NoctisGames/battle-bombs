@@ -33,8 +33,9 @@
 #define SOUND_PU_SHIELD 12
 #define SOUND_FORCE_FIELD_DOWN 13
 #define SOUND_DEATH 14
-#define SOUND_GAME_SET 15
-#define SOUND_DRAW 16
+#define SOUND_HURRY 15
+#define SOUND_GAME_SET 16
+#define SOUND_DRAW 17
 
 //// Texture Definitions ////
 

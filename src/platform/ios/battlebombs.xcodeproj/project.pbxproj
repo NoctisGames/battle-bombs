@@ -122,6 +122,7 @@
 		BB8FBFA819DF533800C18AD9 /* IceBall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8FBFA619DF533800C18AD9 /* IceBall.cpp */; };
 		BB8FF7C619AE3FE4005D0701 /* interface_2.png in Resources */ = {isa = PBXBuildFile; fileRef = BB8FF7C519AE3FE4005D0701 /* interface_2.png */; };
 		BB9139C918BEFCC800E51FB5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9139C818BEFCC800E51FB5 /* MainViewController.m */; };
+		BB91730919E42DBA00BA7FD4 /* hurry.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB91730819E42DBA00BA7FD4 /* hurry.caf */; };
 		BB96EECE18B99A6900F7C356 /* Assets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEAE18B99A6900F7C356 /* Assets.cpp */; };
 		BB96EECF18B99A6900F7C356 /* DynamicGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEB118B99A6900F7C356 /* DynamicGameObject.cpp */; };
 		BB96EED018B99A6900F7C356 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB96EEB318B99A6900F7C356 /* Font.cpp */; };
@@ -388,6 +389,7 @@
 		BB90FA7818D50E4100733E9B /* GameEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameEvent.h; sourceTree = "<group>"; };
 		BB9139C718BEFCC800E51FB5 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		BB9139C818BEFCC800E51FB5 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		BB91730819E42DBA00BA7FD4 /* hurry.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = hurry.caf; sourceTree = "<group>"; };
 		BB96EEAE18B99A6900F7C356 /* Assets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Assets.cpp; sourceTree = "<group>"; };
 		BB96EEAF18B99A6900F7C356 /* Assets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Assets.h; sourceTree = "<group>"; };
 		BB96EEB018B99A6900F7C356 /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
@@ -877,6 +879,7 @@
 				BB16D96A191987B80034BE67 /* explosion.caf */,
 				BB5C577719B9F2B500AD76E7 /* force_field_down.caf */,
 				BB07505F19C248520028515E /* game_set.caf */,
+				BB91730819E42DBA00BA7FD4 /* hurry.caf */,
 				BB5C576B19B9F27B00AD76E7 /* plant_bomb.caf */,
 				BB5C576C19B9F27B00AD76E7 /* pu_bomb.caf */,
 				BB5C576D19B9F27B00AD76E7 /* pu_fire.caf */,
@@ -1089,6 +1092,7 @@
 				BBA0A400196F549C00737A74 /* bot_pink.png in Resources */,
 				0ADF1898178E2185005DA99E /* MainStoryboard_iPad.storyboard in Resources */,
 				BB4F3103197C1DCD00270703 /* offline_match_pressed.png in Resources */,
+				BB91730919E42DBA00BA7FD4 /* hurry.caf in Resources */,
 				BB71029F196E079500C7BA2F /* map_grasslands.png in Resources */,
 				BBDE14B4195A2D7400A91FD7 /* char_green.png in Resources */,
 				BBAE201719DA62A100B705FE /* texture_shader.vsh in Resources */,

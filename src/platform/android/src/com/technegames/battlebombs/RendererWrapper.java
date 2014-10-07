@@ -58,8 +58,9 @@ public final class RendererWrapper implements Renderer
     private static final short SOUND_PU_SHIELD = 12;
     private static final short SOUND_FORCE_FIELD_DOWN = 13;
     private static final short SOUND_DEATH = 14;
-    private static final short SOUND_GAME_SET = 15;
-    private static final short SOUND_DRAW = 16;
+    private static final short SOUND_HURRY = 15;
+    private static final short SOUND_GAME_SET = 16;
+    private static final short SOUND_DRAW = 17;
 
     // #frames involved in average calc (suggested values 5-100)
     private static final float movAveragePeriod = 40;
@@ -90,6 +91,7 @@ public final class RendererWrapper implements Renderer
     private final Sound powerUpPushSound;
     private final Sound forceFieldDownSound;
     private final Sound deathSound;
+    private final Sound hurrySound;
     private final Sound gameSetSound;
     private final Sound drawSound;
     private final boolean isOffline;
@@ -128,6 +130,7 @@ public final class RendererWrapper implements Renderer
         this.powerUpPushSound = audio.newSound("pu_push.ogg");
         this.forceFieldDownSound = audio.newSound("force_field_down.ogg");
         this.deathSound = audio.newSound("death.ogg");
+        this.hurrySound = audio.newSound("hurry.ogg");
         this.gameSetSound = audio.newSound("game_set.ogg");
         this.drawSound = audio.newSound("draw.ogg");
 
@@ -498,6 +501,9 @@ public final class RendererWrapper implements Renderer
                     break;
                 case SOUND_DEATH:
                     deathSound.play(1);
+                    break;
+                case SOUND_HURRY:
+                    hurrySound.play(1);
                     break;
                 case SOUND_GAME_SET:
                     gameSetSound.play(1);

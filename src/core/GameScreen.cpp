@@ -903,6 +903,8 @@ void GameScreen::suddenDeath(rapidjson::Document &d)
     m_displayXMovingGameObject.release();
     m_displayXMovingGameObject = std::unique_ptr<DisplayXMovingGameObject>(new DisplayXMovingGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f, HURRY_UP));
     m_displayXMovingGameObject->begin();
+    
+    m_gameListener->playSound(SOUND_HURRY);
 }
 
 void GameScreen::gameOver(rapidjson::Document &d)
