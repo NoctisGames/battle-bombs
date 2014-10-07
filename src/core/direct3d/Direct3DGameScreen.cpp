@@ -89,7 +89,7 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 		D3D_FEATURE_LEVEL_10_0,
 		D3D_FEATURE_LEVEL_9_3
 	};
-	
+
 	// Create the Direct3D 11 API device object and a corresponding context.
 	ComPtr<ID3D11Device> device;
 	ComPtr<ID3D11DeviceContext> context;
@@ -105,7 +105,7 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 		&m_featureLevel, // Returns feature level of device created.
 		&context // Returns the device immediate context.
 		);
-	
+
 	// Get the Direct3D 11.1 API device and context interfaces.
 	device.As(&dev);
 	context.As(&devcon);
@@ -153,6 +153,7 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	m_powerUpPushSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_push.wav"));
 	m_forceFieldDownSound = std::unique_ptr<GameSound>(new GameSound("assets\\force_field_down.wav"));
 	m_deathSound = std::unique_ptr<GameSound>(new GameSound("assets\\death.wav"));
+	m_hurrySound = std::unique_ptr<GameSound>(new GameSound("assets\\hurry.wav"));
 	m_gameSetSound = std::unique_ptr<GameSound>(new GameSound("assets\\game_set.wav"));
 	m_drawSound = std::unique_ptr<GameSound>(new GameSound("assets\\draw.wav"));
 }
@@ -207,6 +208,9 @@ void Direct3DGameScreen::handleSound()
 			break;
 		case SOUND_DEATH:
 			m_deathSound->play();
+			break;
+		case SOUND_HURRY:
+			m_hurrySound->play();
 			break;
 		case SOUND_GAME_SET:
 			m_gameSetSound->play();
