@@ -22,6 +22,8 @@ public:
     
 	void onSurfaceChanged(int deviceScreenWidth, int deviceScreenHeight, int dpWidth, int dpHeight);
     
+    void setRunningIOS8(bool isRunningIOS8);
+    
     virtual void touchToWorld(TouchEvent &touchEvent);
     
     virtual void platformResume();
@@ -33,6 +35,7 @@ public:
 private:
     int m_iDeviceScreenDpWidth;
     int m_iDeviceScreenDpHeight;
+    bool m_isRunningIOS8;
 };
 
 #endif /* defined(__battle_bombs__OpenGLESGameScreen__) */

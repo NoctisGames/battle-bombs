@@ -52,7 +52,7 @@
 
 OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
 {
-    // No further setup
+    m_isRunningIOS8 = false;
 }
 
 void OpenGLESGameScreen::onSurfaceCreated(int width, int height)
@@ -74,12 +74,24 @@ void OpenGLESGameScreen::onSurfaceChanged(int width, int height, int dpWidth, in
 	m_iDeviceScreenDpHeight = dpHeight;
 }
 
+void OpenGLESGameScreen::setRunningIOS8(bool isRunningIOS8)
+{
+    m_isRunningIOS8 = isRunningIOS8;
+}
+
 void OpenGLESGameScreen::touchToWorld(TouchEvent &touchEvent)
 {
 #ifdef TECHNE_GAMES_OPENGL_ANDROID
     m_touchPoint->set((touchEvent.getX() / (float) m_iDeviceScreenWidth) * SCREEN_WIDTH, (1 - touchEvent.getY() / (float) m_iDeviceScreenHeight) * SCREEN_HEIGHT);
 #elif defined TECHNE_GAMES_IOS
-    m_touchPoint->set((touchEvent.getY() / (float) m_iDeviceScreenDpHeight) * SCREEN_WIDTH, (touchEvent.getX() / (float) m_iDeviceScreenDpWidth) * SCREEN_HEIGHT);
+    if(m_isRunningIOS8)
+    {
+        m_touchPoint->set((touchEvent.getX() / (float) m_iDeviceScreenDpWidth) * SCREEN_WIDTH, (1 - touchEvent.getY() / (float) m_iDeviceScreenDpHeight) * SCREEN_HEIGHT);
+    }
+    else
+    {
+        m_touchPoint->set((touchEvent.getY() / (float) m_iDeviceScreenDpHeight) * SCREEN_WIDTH, (touchEvent.getX() / (float) m_iDeviceScreenDpWidth) * SCREEN_HEIGHT);
+    }
 #endif
 }
 

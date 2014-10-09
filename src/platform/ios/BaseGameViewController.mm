@@ -49,10 +49,12 @@
 @implementation BaseGameViewController
 
 static Logger *logger = nil;
+static bool isRunningiOS8 = false;
 
 + (void)initialize
 {
     logger = [[Logger alloc] initWithClass:[BaseGameViewController class]];
+    isRunningiOS8 = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0");
 }
 
 - (void)viewDidLoad
@@ -108,6 +110,8 @@ static Logger *logger = nil;
     }
     
     init([self.username UTF8String], [self isOffline]);
+    
+    set_running_ios_8(isRunningiOS8);
     
     on_surface_created(newSize.width, newSize.height);
     

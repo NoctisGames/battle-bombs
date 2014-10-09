@@ -93,6 +93,7 @@
 		BB5C577819B9F2B500AD76E7 /* force_field_down.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB5C577719B9F2B500AD76E7 /* force_field_down.caf */; };
 		BB5C577B19B9F87700AD76E7 /* BaseGameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB5C577A19B9F87700AD76E7 /* BaseGameViewController.mm */; };
 		BB600760192958CB008C11CC /* ActiveButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB60075E192958CB008C11CC /* ActiveButton.cpp */; };
+		BB65427819E5E2120057EC7F /* SpaceTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65427619E5E2120057EC7F /* SpaceTile.cpp */; };
 		BB68B02A192A82EF0065CE1D /* OfflineGameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB68B029192A82EF0065CE1D /* OfflineGameViewController.mm */; };
 		BB6FB26119B9433F0068F20E /* WaitingForServerInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6FB25F19B9433F0068F20E /* WaitingForServerInterface.cpp */; };
 		BB71029E196E079500C7BA2F /* map_base.png in Resources */ = {isa = PBXBuildFile; fileRef = BB71029A196E079500C7BA2F /* map_base.png */; };
@@ -337,6 +338,9 @@
 		BB5C577A19B9F87700AD76E7 /* BaseGameViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BaseGameViewController.mm; sourceTree = "<group>"; };
 		BB60075E192958CB008C11CC /* ActiveButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActiveButton.cpp; sourceTree = "<group>"; };
 		BB60075F192958CB008C11CC /* ActiveButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveButton.h; sourceTree = "<group>"; };
+		BB65427619E5E2120057EC7F /* SpaceTile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceTile.cpp; sourceTree = "<group>"; };
+		BB65427719E5E2120057EC7F /* SpaceTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceTile.h; sourceTree = "<group>"; };
+		BB65427919E5E2A20057EC7F /* SpaceTileState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpaceTileState.h; sourceTree = "<group>"; };
 		BB68B028192A82EF0065CE1D /* OfflineGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineGameViewController.h; sourceTree = "<group>"; };
 		BB68B029192A82EF0065CE1D /* OfflineGameViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OfflineGameViewController.mm; sourceTree = "<group>"; };
 		BB6FB25F19B9433F0068F20E /* WaitingForServerInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaitingForServerInterface.cpp; sourceTree = "<group>"; };
@@ -553,12 +557,12 @@
 				BBC92ADE19C0FA7F004B44B2 /* CountDownNumberGameObject.cpp */,
 				BBC92ADF19C0FA7F004B44B2 /* CountDownNumberGameObject.h */,
 				BBC92AE819C0FCE6004B44B2 /* CountDownNumberType.h */,
-				BBC92AE119C0FC77004B44B2 /* DisplayXMovingGameObject.cpp */,
-				BBC92AE219C0FC77004B44B2 /* DisplayXMovingGameObject.h */,
-				BBA5C46A19E2F5B200809FDC /* DisplayXMovingType.h */,
 				BBC92AE419C0FC92004B44B2 /* DisplayGameOverGameObject.cpp */,
 				BBC92AE519C0FC92004B44B2 /* DisplayGameOverGameObject.h */,
 				BBC92AE719C0FCAA004B44B2 /* DisplayGameOverType.h */,
+				BBC92AE119C0FC77004B44B2 /* DisplayXMovingGameObject.cpp */,
+				BBC92AE219C0FC77004B44B2 /* DisplayXMovingGameObject.h */,
+				BBA5C46A19E2F5B200809FDC /* DisplayXMovingType.h */,
 				BBF7CC5C18CCA2B700B7CD15 /* DPadControl.cpp */,
 				BBF7CC5D18CCA2B700B7CD15 /* DPadControl.h */,
 				BB0BC05919719ECB0092A968 /* DPadControlState.h */,
@@ -642,6 +646,9 @@
 				BB96EEC418B99A6900F7C356 /* Renderer.cpp */,
 				BB96EEC518B99A6900F7C356 /* Renderer.h */,
 				BB9948E31936736600A8E599 /* ResourceConstants.h */,
+				BB65427619E5E2120057EC7F /* SpaceTile.cpp */,
+				BB65427719E5E2120057EC7F /* SpaceTile.h */,
+				BB65427919E5E2A20057EC7F /* SpaceTileState.h */,
 				BBF5DE2319770CE500759BB1 /* SpectatorControls.cpp */,
 				BBF5DE2419770CE500759BB1 /* SpectatorControls.h */,
 				BBF5DE2619770DCD00759BB1 /* SpectatorControlState.h */,
@@ -1145,6 +1152,7 @@
 				0A8FBF7F179E07320039BA29 /* pngmem.c in Sources */,
 				BB6FB26119B9433F0068F20E /* WaitingForServerInterface.cpp in Sources */,
 				BB42C0AC1975A82E00B592E5 /* OpenGLESRectangleBatcher.cpp in Sources */,
+				BB65427819E5E2120057EC7F /* SpaceTile.cpp in Sources */,
 				BBC92AD819C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp in Sources */,
 				BB81B1B719BE163900548837 /* TGDialog.m in Sources */,
 				BB96EED418B99A6900F7C356 /* Line.cpp in Sources */,

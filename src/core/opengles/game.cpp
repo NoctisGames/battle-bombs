@@ -51,6 +51,11 @@ void on_surface_changed(int pixelWidth, int pixelHeight, int dpWidth, int dpHeig
     gameScreen->onSurfaceChanged(pixelWidth, pixelHeight, dpWidth, dpHeight);
 }
 
+void set_running_ios_8(bool isRunningIOS8)
+{
+    gameScreen->setRunningIOS8(isRunningIOS8);
+}
+
 void init(const char *username, bool isOffline)
 {
     touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
