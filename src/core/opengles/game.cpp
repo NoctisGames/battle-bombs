@@ -41,6 +41,28 @@ void addTouchEventForType(Touch_Type touchType, float x, float y)
 	touchEventsBuffer.push_back(touchEvent);
 }
 
+void init(const char *username, bool isOffline, bool isRunningIOS8)
+{
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
+    
+    gameScreen = new OpenGLESGameScreen(username, isOffline, isRunningIOS8);
+}
+
 void on_surface_created(int pixelWidth, int pixelHeight)
 {
     gameScreen->onSurfaceCreated(pixelWidth, pixelHeight);
@@ -49,28 +71,6 @@ void on_surface_created(int pixelWidth, int pixelHeight)
 void on_surface_changed(int pixelWidth, int pixelHeight, int dpWidth, int dpHeight)
 {
     gameScreen->onSurfaceChanged(pixelWidth, pixelHeight, dpWidth, dpHeight);
-}
-
-void init(const char *username, bool isOffline, bool isRunningIOS8)
-{
-    touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-	touchEventsPool.push_back(TouchEvent(0, 0, Touch_Type::DOWN));
-    
-    gameScreen = new OpenGLESGameScreen(username, isOffline, isRunningIOS8);
 }
 
 void on_resume()
