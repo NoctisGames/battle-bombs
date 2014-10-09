@@ -9,13 +9,11 @@
 #ifndef GAME_H
 #define GAME_H
 
-void init(const char *username, bool isOffline);
+void init(const char *username, bool isOffline, bool isRunningIOS8);
 
 void on_surface_created(int pixelWidth, int pixelHeight);
 
 void on_surface_changed(int pixelWidth, int pixelHeight, int dpWidth, int dpHeight);
-
-void set_running_ios_8(bool isRunningIOS8);
 
 void on_resume();
 

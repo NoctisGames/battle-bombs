@@ -50,9 +50,9 @@
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
 
-OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
+OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline, bool isRunningIOS8) : GameScreen(username, isOffline)
 {
-    m_isRunningIOS8 = false;
+    m_isRunningIOS8 = isRunningIOS8;
 }
 
 void OpenGLESGameScreen::onSurfaceCreated(int width, int height)
@@ -72,11 +72,6 @@ void OpenGLESGameScreen::onSurfaceChanged(int width, int height, int dpWidth, in
 	m_iDeviceScreenHeight = height;
     m_iDeviceScreenDpWidth = dpWidth;
 	m_iDeviceScreenDpHeight = dpHeight;
-}
-
-void OpenGLESGameScreen::setRunningIOS8(bool isRunningIOS8)
-{
-    m_isRunningIOS8 = isRunningIOS8;
 }
 
 void OpenGLESGameScreen::touchToWorld(TouchEvent &touchEvent)

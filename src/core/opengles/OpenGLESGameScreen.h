@@ -16,7 +16,7 @@ class OpenGLESRenderer;
 class OpenGLESGameScreen : public GameScreen
 {
 public:
-    OpenGLESGameScreen(const char *username, bool isOffline = false);
+    OpenGLESGameScreen(const char *username, bool isOffline = false, bool isRunningIOS8 = false);
     
     void onSurfaceCreated(int deviceScreenWidth, int deviceScreenHeight);
     

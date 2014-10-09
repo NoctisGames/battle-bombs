@@ -109,9 +109,7 @@ static bool isRunningiOS8 = false;
         [logger debug:[NSString stringWithFormat:@"dimension %f x %f", newSize.width, newSize.height]];
     }
     
-    init([self.username UTF8String], [self isOffline]);
-    
-    set_running_ios_8(isRunningiOS8);
+    init([self.username UTF8String], [self isOffline], isRunningiOS8);
     
     on_surface_created(newSize.width, newSize.height);
     
