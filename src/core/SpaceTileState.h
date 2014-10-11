@@ -13,7 +13,8 @@ typedef enum
 {
     ST_NORMAL,
     ST_DISLODGING,
-    ST_FALLING
+    ST_FALLING,
+    ST_ENTERING_ATMOSPHERE
 } Space_Tile_State;
 
 #endif

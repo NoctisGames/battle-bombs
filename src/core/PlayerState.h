@@ -14,8 +14,10 @@ typedef enum
     ALIVE,
     DYING,
     DEAD,
-    FREEZING,
-    FROZEN
+    ABOUT_TO_FALL, // for Space map
+    FALLING, // for Space map
+    FREEZING, // for Mountains map
+    FROZEN // for Mountains map
 } Player_State;
 
 #endif /* PLAYER_STATE_H */

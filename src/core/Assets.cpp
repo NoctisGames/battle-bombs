@@ -11,6 +11,7 @@
 #include "TextureRegion.h"
 #include "PlayerDynamicGameObject.h"
 #include "Vector2D.h"
+#include "SpaceTile.h"
 #include "MapBorder.h"
 #include "InsideBlock.h"
 #include "PlayerState.h"
@@ -50,10 +51,73 @@ TextureRegion& Assets::getWorldBackgroundTextureRegion()
 	return textureRegion;
 }
 
-TextureRegion& getSpaceTileTextureRegion()
+TextureRegion& Assets::getSpaceTileTextureRegion(SpaceTile &spaceTile)
 {
-    static TextureRegion textureRegion = TextureRegion(SPACE_TILE_TEXTURE_REGION_X, SPACE_TILE_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-    return textureRegion;
+    static TextureRegion stNormalTr = TextureRegion(SPACE_TILE_TEXTURE_REGION_X, SPACE_TILE_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    static std::vector<TextureRegion> spaceTileDislodgingTextureRegions;
+    if (spaceTileDislodgingTextureRegions.size() == 0)
+    {
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_1_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_2_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_3_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_4_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_5_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_6_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_7_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_8_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+    }
+    
+    static float spaceTileDislodgingCycleTime = 0.90f;
+    static std::vector<float> spaceTileDislodgingFrames;
+    if (spaceTileDislodgingFrames.size() == 0)
+    {
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.2f);
+    }
+    
+    static std::vector<TextureRegion> spaceTileFallingTextureRegions;
+    if (spaceTileFallingTextureRegions.size() == 0)
+    {
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_1_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_2_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_3_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_4_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_5_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_6_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_7_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+    }
+    
+    static float spaceTileFallingCycleTime = 0.80f;
+    static std::vector<float> spaceTileFallingFrames;
+    if (spaceTileFallingFrames.size() == 0)
+    {
+        spaceTileFallingFrames.push_back(0.1f);
+        spaceTileFallingFrames.push_back(0.1f);
+        spaceTileFallingFrames.push_back(0.1f);
+        spaceTileFallingFrames.push_back(0.1f);
+        spaceTileFallingFrames.push_back(0.1f);
+        spaceTileFallingFrames.push_back(0.1f);
+        spaceTileFallingFrames.push_back(0.2f);
+    }
+    
+    switch (spaceTile.getSpaceTileState())
+    {
+        case ST_DISLODGING:
+            return spaceTileDislodgingTextureRegions.at(getKeyFrameNumber(spaceTile.getStateTime(), spaceTileDislodgingCycleTime, spaceTileDislodgingFrames));
+        case ST_FALLING:
+            return spaceTileFallingTextureRegions.at(getKeyFrameNumber(spaceTile.getStateTime(), spaceTileFallingCycleTime, spaceTileFallingFrames));
+        case ST_ENTERING_ATMOSPHERE:
+        case ST_NORMAL:
+        default:
+            return stNormalTr;
+    }
 }
 
 TextureRegion& Assets::getMapBorderTextureRegion(MapBorder &mapBorder)

@@ -74,6 +74,10 @@ public:
     
     void onForceFieldHit();
 
+    void onTrappedOnFallingSpaceTile();
+    
+    void onFall();
+    
     void onFreeze();
     
     void onDeath();

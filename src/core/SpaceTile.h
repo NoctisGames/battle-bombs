@@ -20,19 +20,22 @@ class PlayerDynamicGameObject;
 class SpaceTile : public DynamicGridGameObject
 {
 public:
-    SpaceTile(int gridX, int gridY);
+    SpaceTile(int gridX, int gridY, int index);
     
-    void update(float deltaTime, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
+    void update(float deltaTime, bool isSuddenDeath, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
     
     Space_Tile_State getSpaceTileState();
     
     float getStateTime();
+    
+    bool isRemove();
     
 private:
     PlayerDynamicGameObject *m_fallingPlayer;
     Space_Tile_State m_spaceTileState;
     float m_fStateTime;
     float m_fOrigY;
+    float m_fTimeUntilDislodging;
 };
 
 #endif /* defined(__battlebombs__SpaceTile__) */

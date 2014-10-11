@@ -37,6 +37,7 @@ class WaitingForLocalSettingsInterface;
 class ActiveButton;
 class PlayerDynamicGameObject;
 class MapBorder;
+class SpaceTile;
 class InsideBlock;
 class BreakableBlock;
 class BombGameObject;
@@ -72,6 +73,8 @@ public:
     void renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
     
     void renderWorldBackground();
+    
+    void renderSpaceTiles(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles);
     
     void renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
     

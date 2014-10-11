@@ -17,6 +17,7 @@
 #include <vector>
 
 class TextureRegion;
+class SpaceTile;
 class MapBorder;
 class BreakableBlock;
 class PlayerDynamicGameObject;
@@ -47,7 +48,7 @@ public:
 
 	static TextureRegion& getWorldBackgroundTextureRegion();
     
-    static TextureRegion& getSpaceTileTextureRegion();
+    static TextureRegion& getSpaceTileTextureRegion(SpaceTile &spaceTile);
 
 	static TextureRegion& getMapBorderTextureRegion(MapBorder &mapBorder);
     

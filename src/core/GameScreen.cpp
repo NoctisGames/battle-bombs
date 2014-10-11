@@ -48,6 +48,7 @@
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
+#include "SpaceTile.h"
 
 GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 {
@@ -248,6 +249,7 @@ void GameScreen::present()
             m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
+            m_renderer->renderSpaceTiles(m_spaceTiles);
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
             m_renderer->renderPlayers(m_players);
             m_renderer->renderMapBordersNear(m_mapBorders);
@@ -262,6 +264,7 @@ void GameScreen::present()
             m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
+            m_renderer->renderSpaceTiles(m_spaceTiles);
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderBombs(m_bombs);
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
@@ -314,6 +317,7 @@ void GameScreen::present()
             m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
+            m_renderer->renderSpaceTiles(m_spaceTiles);
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderBombs(m_bombs);
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
@@ -366,6 +370,7 @@ void GameScreen::present()
             m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
+            m_renderer->renderSpaceTiles(m_spaceTiles);
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderBombs(m_bombs);
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);

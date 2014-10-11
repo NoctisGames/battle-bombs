@@ -6,31 +6,42 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
+#define TIME_BETWEEN_FALLING_SPACE_TILES 0.23628691983122f
+
 #include "SpaceTile.h"
 #include "GameConstants.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
 #include "PlayerDynamicGameObject.h"
+#include "PathFinder.h"
 
-SpaceTile::SpaceTile(int gridX, int gridY) : DynamicGridGameObject(gridX, gridY, GRID_CELL_WIDTH * 2, GRID_CELL_HEIGHT * 3, 0)
+SpaceTile::SpaceTile(int gridX, int gridY, int index) : DynamicGridGameObject(gridX, gridY, GRID_CELL_WIDTH * 2, GRID_CELL_HEIGHT * 3, 0)
 {
-    resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
-    
-    Vector2D &lowerLeft = m_bounds->getLowerLeft();
-    lowerLeft.set(lowerLeft.getX(), lowerLeft.getY() + GRID_CELL_HEIGHT / 2);
-    
+    m_position->add(0, GRID_CELL_HEIGHT / 2);
     m_velocity->set(0, 0);
     m_acceleration->set(0, -12);
     
     m_spaceTileState = ST_NORMAL;
     m_fStateTime = 0;
     m_fOrigY = m_position->getY();
+    
+    m_fTimeUntilDislodging = TIME_BETWEEN_FALLING_SPACE_TILES * (float)index;
 }
 
-void SpaceTile::update(float deltaTime, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
+void SpaceTile::update(float deltaTime, bool isSuddenDeath, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
     if(m_spaceTileState == ST_NORMAL)
     {
+        if(isSuddenDeath)
+        {
+            m_fStateTime += deltaTime;
+            if(m_fStateTime >= m_fTimeUntilDislodging)
+            {
+                m_spaceTileState = ST_DISLODGING;
+                m_fStateTime = 0;
+            }
+        }
+        
         return;
     }
     else
@@ -47,6 +58,8 @@ void SpaceTile::update(float deltaTime, std::vector<std::unique_ptr<PlayerDynami
                 for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = players.begin(); itr != players.end(); itr++)
                 {
                     m_fallingPlayer = (*itr).get();
+                    m_fallingPlayer->onTrappedOnFallingSpaceTile();
+                    PathFinder::getInstance().occupyGameGridCell(m_gridX, m_gridY);
                     break;
                 }
             }
@@ -56,14 +69,14 @@ void SpaceTile::update(float deltaTime, std::vector<std::unique_ptr<PlayerDynami
             m_velocity->add(m_acceleration->getX() * deltaTime, m_acceleration->getY() * deltaTime);
             m_position->add(m_velocity->getX() * deltaTime, m_velocity->getY() * deltaTime);
             
-            if(m_position->getY() < (m_fOrigY - 2))
+            if(m_position->getY() < (m_fOrigY - 1))
             {
-                // TODO, start making player descend as well
+                m_fallingPlayer->onFall();
             }
             
-            if(m_fStateTime >= 0.7f)
+            if(m_position->getY() < 0)
             {
-                // TODO, dissappear
+                m_spaceTileState = ST_ENTERING_ATMOSPHERE;
             }
         }
     }
@@ -77,4 +90,9 @@ Space_Tile_State SpaceTile::getSpaceTileState()
 float SpaceTile::getStateTime()
 {
     return m_fStateTime;
+}
+
+bool SpaceTile::isRemove()
+{
+    return m_spaceTileState == ST_ENTERING_ATMOSPHERE;
 }

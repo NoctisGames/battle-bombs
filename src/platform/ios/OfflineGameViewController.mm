@@ -74,7 +74,7 @@
         
         srand((int)time(NULL));
         
-        int beginGameMessagesIndex = rand() % 12;
+        int beginGameMessagesIndex = 0;//rand() % 12;
         
         NSString *beginGameMessage = [_beginGameMessages objectAtIndex:beginGameMessagesIndex];
         

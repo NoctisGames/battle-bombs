@@ -15,6 +15,7 @@
 #include "Assets.h"
 #include "OverlapTester.h"
 #include "MapBorder.h"
+#include "SpaceTile.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "GameEvent.h"
@@ -84,6 +85,121 @@ void GameSession::initializeInsideBlocksAndMapBordersForMapType(int mapType)
     {
         m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(MOUNTAINS_DOOR, GAME_X + GRID_CELL_WIDTH * 7 + GRID_CELL_WIDTH / 2.0f, GAME_Y + GRID_CELL_HEIGHT * GRID_CELL_NUM_ROWS + GRID_CELL_HEIGHT / 2, GRID_CELL_WIDTH * 3, GRID_CELL_HEIGHT * 3)));
     }
+    else if(mapType == MAP_SPACE)
+    {
+        // BEGIN TOP
+        int fallingIndex = 118;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + j : j > 7 ? fallingIndex + (14 - j) : fallingIndex + 7;
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 1, tempFallingIndex)));
+        }
+        
+        fallingIndex = 114;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + (j / 2) : fallingIndex + (7 - j / 2);
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 2, tempFallingIndex)));
+        }
+        
+        fallingIndex = 106;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + j : j > 7 ? fallingIndex + (14 - j) : fallingIndex + 7;
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 3, tempFallingIndex)));
+        }
+        
+        fallingIndex = 102;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + (j / 2) : fallingIndex + (7 - j / 2);
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 4, tempFallingIndex)));
+        }
+        
+        fallingIndex = 94;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + j : j > 7 ? fallingIndex + (14 - j) : fallingIndex + 7;
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 5, tempFallingIndex)));
+        }
+        
+        fallingIndex = 90;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + (j / 2) : fallingIndex + (7 - j / 2);
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 6, tempFallingIndex)));
+        }
+        
+        fallingIndex = 82;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + j : j > 7 ? fallingIndex + (14 - j) : fallingIndex + 7;
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 7, tempFallingIndex)));
+        }
+        
+        // BEGIN MIDDLE
+        fallingIndex = 80;
+        for (int j = 2; j < (NUM_GRID_CELLS_PER_ROW - 2); j += 2)
+        {
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, TOP_HALF_BOTTOM_GRID_Y - 1, fallingIndex + 1)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y + 1, fallingIndex)));
+        }
+        
+        // BEGIN BOTTOM
+        fallingIndex = 79;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y, fallingIndex--)));
+        }
+        
+        fallingIndex = 57;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+        {
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 1, fallingIndex++)));
+        }
+        
+        fallingIndex = 56;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 2, fallingIndex--)));
+        }
+        
+        fallingIndex = 35;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+        {
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 3, fallingIndex++)));
+        }
+        
+        fallingIndex = 34;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 4, fallingIndex--)));
+        }
+        
+        // BEGIN BOTTOM CENTER
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(3, 2, 15)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(5, 2, 16)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(7, 2, 17)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(9, 2, 18)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(11, 2, 19)));
+        
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(3, 1, 14)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(4, 1, 13)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(5, 1, 12)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(6, 1, 11)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(7, 1, 10)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(8, 1, 9)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(9, 1, 8)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(10, 1, 7)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(11, 1, 6)));
+        
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(3, 0, 0)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(4, 0, 1)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(6, 0, 2)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(8, 0, 3)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(10, 0, 4)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(11, 0, 5)));
+    }
     
     // BEGIN BOTTOM CENTER
     m_insideBlocks.push_back(std::unique_ptr<InsideBlock>(new InsideBlock( 5, 0)));
@@ -136,6 +252,23 @@ void GameSession::initializeInsideBlocksAndMapBordersForMapType(int mapType)
 
 void GameSession::updateCommon(float deltaTime)
 {
+    if(m_iMapType == MAP_SPACE)
+    {
+        for (std::vector < std::unique_ptr < SpaceTile >> ::iterator itr = m_spaceTiles.begin(); itr != m_spaceTiles.end(); )
+        {
+            (*itr)->update(deltaTime, m_isSuddenDeath, m_players);
+            
+            if ((*itr)->isRemove())
+            {
+                itr = m_spaceTiles.erase(itr);
+            }
+            else
+            {
+                itr++;
+            }
+        }
+    }
+    
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = m_bombs.begin(); itr != m_bombs.end();)
     {
         (**itr).update(deltaTime, m_explosions, m_mapBorders, m_insideBlocks, m_breakableBlocks, m_players, m_bombs);
@@ -214,7 +347,7 @@ void GameSession::updateCommon(float deltaTime)
         switch (m_iMapType)
         {
             case MAP_SPACE:
-                // TODO
+                // Space Tiles are always being updated, not just in Sudden Death
                 break;
             case MAP_GRASSLANDS:
                 // TODO
@@ -333,49 +466,30 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
 
 void GameSession::suddenDeath(rapidjson::Document &d)
 {
-    static const char *numFallingSpaceTilesKey = "numFallingSpaceTiles";
-    static const char *numFireBallsKey = "numFireBalls";
-    static const char *numIceBallsKey = "numIceBalls";
-    
     m_isSuddenDeath = true;
     
-    switch (m_iMapType)
+    if (m_iMapType == MAP_MOUNTAINS)
     {
-        case MAP_SPACE:
-            if(d.HasMember(numFallingSpaceTilesKey))
-            {
-                
-            }
-            break;
-        case MAP_GRASSLANDS:
-            if(d.HasMember(numFireBallsKey))
-            {
-                
-            }
-            break;
-        case MAP_MOUNTAINS:
-            if(d.HasMember(numIceBallsKey))
-            {
-                m_iceBalls.clear();
-                
-                static const char *iceBallXValuesKey = "iceBallXValues";
-                static const char *iceBallYValuesKey = "iceBallYValues";
-                
-                std::vector<int> iceBallXValues;
-                std::vector<int> iceBallYValues;
-                
-                handleIntArrayInDocument(d, iceBallXValuesKey, iceBallXValues, -1);
-                handleIntArrayInDocument(d, iceBallYValuesKey, iceBallYValues, -1);
-                
-                int numIceBalls = d[numIceBallsKey].GetInt();
-                for(int i = 0; i < numIceBalls; i++)
-                {
-                    m_iceBalls.push_back(std::unique_ptr<IceBall>(new IceBall(iceBallXValues.at(i), iceBallYValues.at(i), i, m_insideBlocks, m_breakableBlocks)));
-                }
-            }
-            break;
-        default:
-            break;
+        m_iceBalls.clear();
+        
+        static const char *iceBallXValuesChar = "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,14,14,14,14,14,14,14,14,14,14,14,14,14,11,10,9,8,7,6,5,4,3,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,13,13,13,13,13,13,13,13,13,13,13,13,11,10,9,8,7,6,5,4,3,1,1,1,1,1,1,1,1,1,1,1,1,2,3,4,5,6,7,8,9,10,11,12,12,12,12,12,12,12,12,12,12,12,12,11,10,9,8,7,6,5,4,3,2,2,2,2,2,2,2,2,2,2,2,3,4,5,6,7,8,9,10,11,11,11,11,11,11,11,11,11,11,11,10,9,8,7,6,5,4,3,3,3,3,3,3,3,3,3,3,4,5,6,7,8,9,10,10,10,10,10,10,10,10,10,9,8,7,6,5,4,4,4,4,4,4,4,4,5,6,7,8,9,9,9,9,9,9,9,8,7,6,5,5,5,5,5,5,6,7,8,8,8,8,8,7,6,6,6,6,7,7,7,7,-1";
+        static const char *iceBallYValuesChar = "16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,15,14,13,12,11,10,9,8,7,6,5,4,3,0,0,0,0,0,0,0,0,0,3,4,5,6,7,8,9,10,11,12,13,14,15,15,15,15,15,15,15,15,15,15,15,15,15,15,14,13,12,11,10,9,8,7,6,5,4,3,1,1,1,1,1,1,1,1,1,3,4,5,6,7,8,9,10,11,12,13,14,14,14,14,14,14,14,14,14,14,14,14,13,12,11,10,9,8,7,6,5,4,3,2,2,2,2,2,2,2,2,2,3,4,5,6,7,8,9,10,11,12,13,13,13,13,13,13,13,13,13,13,12,11,10,9,8,7,6,5,4,3,3,3,3,3,3,3,3,3,4,5,6,7,8,9,10,11,12,12,12,12,12,12,12,12,11,10,9,8,7,6,5,4,4,4,4,4,4,4,5,6,7,8,9,10,11,11,11,11,11,11,10,9,8,7,6,5,5,5,5,5,6,7,8,9,10,10,10,10,9,8,7,6,6,6,7,8,9,9,8,7,8,-1";
+        
+        std::vector<int> iceBallXValues;
+        std::vector<int> iceBallYValues;
+        
+        readCharArrayIntoIntArray(iceBallXValuesChar, iceBallXValues, -1);
+        readCharArrayIntoIntArray(iceBallYValuesChar, iceBallYValues, -1);
+        
+        static int numIceBalls = 238;
+        for(int i = 0; i < numIceBalls; i++)
+        {
+            m_iceBalls.push_back(std::unique_ptr<IceBall>(new IceBall(iceBallXValues.at(i), iceBallYValues.at(i), i, m_insideBlocks, m_breakableBlocks)));
+        }
+    }
+    else if(m_iMapType == MAP_GRASSLANDS)
+    {
+        
     }
 }
 
@@ -426,27 +540,32 @@ void GameSession::handleIntArrayInDocument(rapidjson::Document &d, const char *i
     {
         const char *charArray = d[intArrayKey].GetString();
 
-        char *copy = strdup(charArray);
-
-        char *value = std::strtok(copy, ",");
-
-        int i = 0;
-        
-        while (value != NULL)
-        {
-            int intValue = atoi(value);
-            if (intValue != sentinelValue)
-            {
-                intArray.push_back(intValue);
-            }
-
-            value = strtok(NULL, ","); // Get next event
-            i++;
-        }
-
-        free(copy);
-        free(value);
+        readCharArrayIntoIntArray(charArray, intArray, sentinelValue);
     }
+}
+
+void GameSession::readCharArrayIntoIntArray(const char *charArray, std::vector<int> &intArray, int sentinelValue)
+{
+    char *copy = strdup(charArray);
+    
+    char *value = std::strtok(copy, ",");
+    
+    int i = 0;
+    
+    while (value != NULL)
+    {
+        int intValue = atoi(value);
+        if (intValue != sentinelValue)
+        {
+            intArray.push_back(intValue);
+        }
+        
+        value = strtok(NULL, ","); // Get next event
+        i++;
+    }
+    
+    free(copy);
+    free(value);
 }
 
 void GameSession::handlePlayerEvent(int event)

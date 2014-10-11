@@ -18,6 +18,7 @@
 #include "ActiveButton.h"
 #include "PlayerDynamicGameObject.h"
 #include "MapBorder.h"
+#include "SpaceTile.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "BombGameObject.h"
@@ -202,6 +203,27 @@ void Renderer::renderWorldBackground()
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
 }
 
+void Renderer::renderSpaceTiles(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<SpaceTile>>::iterator itr = spaceTiles.begin(); itr != spaceTiles.end(); itr++)
+    {
+        if((*itr)->getSpaceTileState() == ST_NORMAL)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getSpaceTileTextureRegion(**itr));
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<SpaceTile>>::iterator itr = spaceTiles.begin(); itr != spaceTiles.end(); itr++)
+    {
+        if((*itr)->getSpaceTileState() != ST_NORMAL)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getSpaceTileTextureRegion(**itr));
+        }
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
 void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
 {
     m_spriteBatcher->beginBatch();
@@ -223,7 +245,6 @@ void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &ma
         renderGameObjectWithRespectToPlayer((**itr), Assets::getBreakableBlockTextureRegion((**itr)));
     }
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
-    
     
     m_spriteBatcher->beginBatch();
     for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)

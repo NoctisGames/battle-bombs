@@ -135,6 +135,18 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
             m_playerState = DEAD;
         }
     }
+    else if(m_playerState == FALLING)
+    {
+        m_velocity->add(m_acceleration->getX() * deltaTime, m_acceleration->getY() * deltaTime);
+        m_position->add(m_velocity->getX() * deltaTime, m_velocity->getY() * deltaTime);
+        
+        m_fAngle += 90 * deltaTime;
+        
+        if(m_position->getY() < 0)
+        {
+            m_playerState = DEAD;
+        }
+    }
     else if(m_playerState == FREEZING)
     {
         if (m_fStateTime > 0.6f)
@@ -389,26 +401,39 @@ void PlayerDynamicGameObject::onForceFieldHit()
     setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN);
 }
 
+void PlayerDynamicGameObject::onTrappedOnFallingSpaceTile()
+{
+    reset();
+    
+    m_playerState = ABOUT_TO_FALL;
+}
+
+void PlayerDynamicGameObject::onFall()
+{
+    reset();
+    
+    m_playerState = FALLING;
+    
+    m_velocity->set(0, 0);
+    m_acceleration->set(0, -12);
+    
+    m_gameListener->playSound(SOUND_DEATH);
+}
+
 void PlayerDynamicGameObject::onFreeze()
 {
-    m_playerState = FREEZING;
-    m_playerActionState = IDLE;
-    setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_OFF);
-    m_fStateTime = 0;
+    reset();
     
-    m_isDisplayingName = false;
-    m_isDisplayingPointer = false;
+    m_playerState = FREEZING;
     
     m_gameListener->playSound(SOUND_DEATH);
 }
 
 void PlayerDynamicGameObject::onDeath()
 {
-    m_playerState = DYING;
-    m_fStateTime = 0;
+    reset();
     
-    m_isDisplayingName = false;
-    m_isDisplayingPointer = false;
+    m_playerState = DYING;
 
     m_gameListener->playSound(SOUND_DEATH);
 }
@@ -637,6 +662,9 @@ void PlayerDynamicGameObject::reset()
     
     m_playerState = ALIVE;
     m_playerActionState = IDLE;
+    
+    m_isDisplayingName = false;
+    m_isDisplayingPointer = false;
 }
 
 // Private

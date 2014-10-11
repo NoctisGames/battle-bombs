@@ -21,6 +21,7 @@
 #include "GameState.h"
 
 class MapBorder;
+class SpaceTile;
 class InsideBlock;
 class BreakableBlock;
 class BombGameObject;
@@ -53,6 +54,7 @@ public:
 
 protected:
     std::vector<std::unique_ptr<MapBorder>> m_mapBorders;
+    std::vector<std::unique_ptr<SpaceTile>> m_spaceTiles;
     std::vector<std::unique_ptr<InsideBlock >> m_insideBlocks;
     std::vector<std::unique_ptr<BreakableBlock >> m_breakableBlocks;
     std::vector<std::unique_ptr<PlayerDynamicGameObject >> m_players;
@@ -83,6 +85,8 @@ protected:
     void handleClientEventsArrayInDocument(rapidjson::Document &d);
 
     void handleIntArrayInDocument(rapidjson::Document &d, const char *intArrayKey, std::vector<int> &intArray, int sentinelValue);
+    
+    void readCharArrayIntoIntArray(const char *charArray, std::vector<int> &intArray, int sentinelValue);
 
     void handlePlayerEvent(int event);
 
