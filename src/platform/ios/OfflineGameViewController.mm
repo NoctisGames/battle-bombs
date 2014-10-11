@@ -16,6 +16,7 @@
 {
     bool _playersAlive[8];
     NSMutableArray *_beginGameMessages;
+    bool _isSuddenDeath;
 }
 
 @end
@@ -69,6 +70,8 @@
         _playersAlive[5] = true;
         _playersAlive[6] = true;
         _playersAlive[7] = true;
+        
+        _isSuddenDeath = false;
         
         clear_state();
         
@@ -129,6 +132,14 @@
         NSString *gameOverMessage = [NSString stringWithFormat:@"{\"eventType\": %i, \"hasWinner\": false, \"winningPlayerIndex\": %i}", GAME_OVER, -1];
         
         on_chat_received([gameOverMessage UTF8String]);
+    }
+    else if(!_isSuddenDeath && get_num_seconds_left() <= 176)
+    {
+        NSString *suddenDeathMessage = @"{\"eventType\": 1339}";
+        
+        on_chat_received([suddenDeathMessage UTF8String]);
+        
+        _isSuddenDeath = true;
     }
 }
 

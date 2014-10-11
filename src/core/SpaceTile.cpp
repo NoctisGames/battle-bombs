@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#define TIME_BETWEEN_FALLING_SPACE_TILES 0.23628691983122f
+#define TIME_BETWEEN_FALLING_SPACE_TILES 0.416f
 
 #include "SpaceTile.h"
 #include "GameConstants.h"
