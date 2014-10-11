@@ -238,23 +238,12 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                             }
                         }
 
-                        if (!_isSuddenDeathMode && _numSecondsLeftForRound <= 60)
+                        if (!_isSuddenDeathMode && _numSecondsLeftForRound <= 176)
                         {
                             try
                             {
                                 JSONObject tobeSent = new JSONObject();
                                 tobeSent.put(EVENT_TYPE, SUDDEN_DEATH);
-
-                                switch (mapType)
-                                {
-                                    case MAP_SPACE:
-                                        break;
-                                    case MAP_GRASSLANDS:
-                                        break;
-                                    case MAP_MOUNTAINS:
-                                        appendSuddenDeathMountainsData(tobeSent);
-                                        break;
-                                }
 
                                 updateRoomWithMessage(tobeSent.toString());
 
@@ -397,6 +386,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     mapType = 0;
                 }
 
+                mapType = 2;
                 init(_room.getId(), _inGameUserSessionDataMap.size(), mapType);
 
                 for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
@@ -542,105 +532,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 tobeSent.put("playerIndex" + playerIndex + "Alive", is_player_alive(_room.getId(), playerIndex));
             }
         }
-    }
-
-    private void appendSuddenDeathMountainsData(JSONObject tobeSent) throws JSONException
-    {
-        String iceBallXValues = "";
-        String iceBallYValues = "";
-
-        int numIceBalls = 0;
-        int inset = 0;
-
-        for (; inset < 8; inset++)
-        {
-            for (int i = inset; i < (NUM_GRID_CELLS_PER_ROW - inset); i++)
-            {
-                int x = i;
-                int y = (GRID_CELL_NUM_ROWS - 1 - inset);
-
-                if (x <= 2 && y <= 2)
-                {
-                    continue;
-                }
-
-                if (x >= (NUM_GRID_CELLS_PER_ROW - 3) && y <= 2)
-                {
-                    continue;
-                }
-
-                iceBallXValues += "" + x + ",";
-                iceBallYValues += "" + y + ",";
-                numIceBalls++;
-            }
-
-            for (int i = (GRID_CELL_NUM_ROWS - 2 - inset); i >= inset; i--)
-            {
-                int x = (NUM_GRID_CELLS_PER_ROW - 1 - inset);
-                int y = i;
-
-                if (x <= 2 && y <= 2)
-                {
-                    continue;
-                }
-
-                if (x >= (NUM_GRID_CELLS_PER_ROW - 3) && y <= 2)
-                {
-                    continue;
-                }
-
-                iceBallXValues += "" + x + ",";
-                iceBallYValues += "" + y + ",";
-                numIceBalls++;
-            }
-
-            for (int i = (NUM_GRID_CELLS_PER_ROW - 2 - inset); i >= inset; i--)
-            {
-                int x = i;
-                int y = inset;
-
-                if (x <= 2 && y <= 2)
-                {
-                    continue;
-                }
-
-                if (x >= (NUM_GRID_CELLS_PER_ROW - 3) && y <= 2)
-                {
-                    continue;
-                }
-
-                iceBallXValues += "" + x + ",";
-                iceBallYValues += "" + y + ",";
-                numIceBalls++;
-            }
-
-            for (int i = (1 + inset); i < (GRID_CELL_NUM_ROWS - 1 - inset); i++)
-            {
-                int x = inset;
-                int y = i;
-
-                if (x <= 2 && y <= 2)
-                {
-                    continue;
-                }
-
-                if (x >= (NUM_GRID_CELLS_PER_ROW - 3) && y <= 2)
-                {
-                    continue;
-                }
-
-                iceBallXValues += "" + x + ",";
-                iceBallYValues += "" + y + ",";
-                numIceBalls++;
-            }
-        }
-
-        iceBallXValues += "-1";
-        iceBallYValues += "-1";
-
-        tobeSent.put("iceBallXValues", iceBallXValues);
-        tobeSent.put("iceBallYValues", iceBallYValues);
-        tobeSent.put("numIceBalls", numIceBalls);
     }
 
     private void updateRoomWithMessage(final String message)
