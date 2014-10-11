@@ -94,7 +94,7 @@ TextureRegion& Assets::getSpaceTileTextureRegion(SpaceTile &spaceTile)
         spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_7_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
     }
     
-    static float spaceTileFallingCycleTime = 0.80f;
+    static float spaceTileFallingCycleTime = 5.00f;
     static std::vector<float> spaceTileFallingFrames;
     if (spaceTileFallingFrames.size() == 0)
     {
@@ -104,7 +104,7 @@ TextureRegion& Assets::getSpaceTileTextureRegion(SpaceTile &spaceTile)
         spaceTileFallingFrames.push_back(0.1f);
         spaceTileFallingFrames.push_back(0.1f);
         spaceTileFallingFrames.push_back(0.1f);
-        spaceTileFallingFrames.push_back(0.2f);
+        spaceTileFallingFrames.push_back(5.4f);
     }
     
     switch (spaceTile.getSpaceTileState())
@@ -112,8 +112,8 @@ TextureRegion& Assets::getSpaceTileTextureRegion(SpaceTile &spaceTile)
         case ST_DISLODGING:
             return spaceTileDislodgingTextureRegions.at(getKeyFrameNumber(spaceTile.getStateTime(), spaceTileDislodgingCycleTime, spaceTileDislodgingFrames));
         case ST_FALLING:
-            return spaceTileFallingTextureRegions.at(getKeyFrameNumber(spaceTile.getStateTime(), spaceTileFallingCycleTime, spaceTileFallingFrames));
         case ST_ENTERING_ATMOSPHERE:
+            return spaceTileFallingTextureRegions.at(getKeyFrameNumber(spaceTile.getStateTime(), spaceTileFallingCycleTime, spaceTileFallingFrames));
         case ST_NORMAL:
         default:
             return stNormalTr;
@@ -842,6 +842,12 @@ TextureRegion& Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
             
             return player.isBot() ? playerWinningTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTimeForBot, botFrames)) : playerWinningTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
         }
+    }
+    else if (player.getPlayerState() == Player_State::FALLING || player.getPlayerState() == Player_State::ABOUT_TO_FALL)
+    {
+        static TextureRegion playerFallingLeftTextureRegion = TextureRegion(PLAYER_DEATH_FRAME_1_TEXTURE_REGION_X, PLAYER_DEATH_LEFT_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        
+        return playerFallingLeftTextureRegion;
     }
     else if (player.getPlayerState() == Player_State::FREEZING)
     {

@@ -274,13 +274,12 @@ void GameScreen::present()
             {
                 switch (m_iMapType)
                 {
-                    case MAP_SPACE:
-                        break;
                     case MAP_GRASSLANDS:
                         break;
                     case MAP_MOUNTAINS:
                         m_renderer->renderSuddenDeathMountainsIcePatches(m_icePatches);
                         break;
+                    case MAP_SPACE:
                     default:
                         break;
                 }
@@ -292,13 +291,12 @@ void GameScreen::present()
             {
                 switch (m_iMapType)
                 {
-                    case MAP_SPACE:
-                        break;
                     case MAP_GRASSLANDS:
                         break;
                     case MAP_MOUNTAINS:
                         m_renderer->renderSuddenDeathMountainsIceBalls(m_iceBalls);
                         break;
+                    case MAP_SPACE:
                     default:
                         break;
                 }
@@ -327,13 +325,12 @@ void GameScreen::present()
             {
                 switch (m_iMapType)
                 {
-                    case MAP_SPACE:
-                        break;
                     case MAP_GRASSLANDS:
                         break;
                     case MAP_MOUNTAINS:
                         m_renderer->renderSuddenDeathMountainsIcePatches(m_icePatches);
                         break;
+                    case MAP_SPACE:
                     default:
                         break;
                 }
@@ -345,13 +342,12 @@ void GameScreen::present()
             {
                 switch (m_iMapType)
                 {
-                    case MAP_SPACE:
-                        break;
                     case MAP_GRASSLANDS:
                         break;
                     case MAP_MOUNTAINS:
                         m_renderer->renderSuddenDeathMountainsIceBalls(m_iceBalls);
                         break;
+                    case MAP_SPACE:
                     default:
                         break;
                 }
@@ -380,13 +376,12 @@ void GameScreen::present()
             {
                 switch (m_iMapType)
                 {
-                    case MAP_SPACE:
-                        break;
                     case MAP_GRASSLANDS:
                         break;
                     case MAP_MOUNTAINS:
                         m_renderer->renderSuddenDeathMountainsIcePatches(m_icePatches);
                         break;
+                    case MAP_SPACE:
                     default:
                         break;
                 }
@@ -398,13 +393,12 @@ void GameScreen::present()
             {
                 switch (m_iMapType)
                 {
-                    case MAP_SPACE:
-                        break;
                     case MAP_GRASSLANDS:
                         break;
                     case MAP_MOUNTAINS:
                         m_renderer->renderSuddenDeathMountainsIceBalls(m_iceBalls);
                         break;
+                    case MAP_SPACE:
                     default:
                         break;
                 }
@@ -501,32 +495,33 @@ void GameScreen::updateRunning(float deltaTime)
         
         m_gameState = SPECTATING;
     }
-    else if(m_player->isHitByIce(m_icePatches))
+    
+    switch(m_iMapType)
     {
-        m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, *m_player);
-        
-        m_gameState = SPECTATING;
+        case MAP_SPACE:
+            if(m_player->isTrappedOnFallingSpaceTile(m_spaceTiles))
+            {
+                m_gameListener->addLocalEventForPlayer(PLAYER_ABOUT_TO_FALL, *m_player);
+            }
+            else if(m_player->isFallingDueToSpaceTile(m_spaceTiles))
+            {
+                m_gameListener->addLocalEventForPlayer(PLAYER_FALL, *m_player);
+                m_gameState = SPECTATING;
+            }
+            break;
+        case MAP_GRASSLANDS:
+            // TODO
+            break;
+        case MAP_MOUNTAINS:
+            if(m_player->isHitByIce(m_icePatches))
+            {
+                m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, *m_player);
+                m_gameState = SPECTATING;
+            }
+            break;
     }
     
-    if(m_isOffline)
-    {
-        for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-        {
-            if ((*itr)->isBot())
-            {
-                (*itr)->handlePowerUps(m_powerUps);
-                
-                if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
-                {
-                    m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
-                }
-                else if((*itr)->isHitByIce(m_icePatches))
-                {
-                    m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, (**itr));
-                }
-            }
-        }
-    }
+    updateForOffline(deltaTime);
     
     std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
     
@@ -585,25 +580,7 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 
 void GameScreen::updateSpectating(float deltaTime)
 {
-    if(m_isOffline)
-    {
-        for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-        {
-            if ((*itr)->isBot())
-            {
-                (*itr)->handlePowerUps(m_powerUps);
-                
-                if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
-                {
-                    m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
-                }
-                else if((*itr)->isHitByIce(m_icePatches))
-                {
-                    m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, (**itr));
-                }
-            }
-        }
-    }
+    updateForOffline(deltaTime);
 
     std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
     
@@ -689,6 +666,48 @@ void GameScreen::updateGameEnding(float deltaTime)
     else
     {
         updateSpectating(deltaTime / (m_fTimeSinceGameOver + 1));
+    }
+}
+
+void GameScreen::updateForOffline(float deltaTime)
+{
+    if(m_isOffline)
+    {
+        for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+        {
+            if ((*itr)->isBot())
+            {
+                (*itr)->handlePowerUps(m_powerUps);
+                
+                if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
+                {
+                    m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+                }
+                
+                switch(m_iMapType)
+                {
+                    case MAP_SPACE:
+                        if((*itr)->isTrappedOnFallingSpaceTile(m_spaceTiles))
+                        {
+                            m_gameListener->addLocalEventForPlayer(PLAYER_ABOUT_TO_FALL, (**itr));
+                        }
+                        else if((*itr)->isFallingDueToSpaceTile(m_spaceTiles))
+                        {
+                            m_gameListener->addLocalEventForPlayer(PLAYER_FALL, (**itr));
+                        }
+                        break;
+                    case MAP_GRASSLANDS:
+                        // TODO
+                        break;
+                    case MAP_MOUNTAINS:
+                        if((*itr)->isHitByIce(m_icePatches))
+                        {
+                            m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, (**itr));
+                        }
+                        break;
+                }
+            }
+        }
     }
 }
 

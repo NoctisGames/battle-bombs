@@ -120,6 +120,8 @@
         switch (event)
         {
             case PLAYER_DEATH:
+            case PLAYER_ABOUT_TO_FALL:
+            case PLAYER_FREEZE:
                 [self handleDeathForPlayerIndex:playerIndex];
                 continue;
             default:

@@ -252,23 +252,6 @@ void GameSession::initializeInsideBlocksAndMapBordersForMapType(int mapType)
 
 void GameSession::updateCommon(float deltaTime)
 {
-    if(m_iMapType == MAP_SPACE)
-    {
-        for (std::vector < std::unique_ptr < SpaceTile >> ::iterator itr = m_spaceTiles.begin(); itr != m_spaceTiles.end(); )
-        {
-            (*itr)->update(deltaTime, m_isSuddenDeath, m_players);
-            
-            if ((*itr)->isRemove())
-            {
-                itr = m_spaceTiles.erase(itr);
-            }
-            else
-            {
-                itr++;
-            }
-        }
-    }
-    
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = m_bombs.begin(); itr != m_bombs.end();)
     {
         (**itr).update(deltaTime, m_explosions, m_mapBorders, m_insideBlocks, m_breakableBlocks, m_players, m_bombs);
@@ -347,7 +330,19 @@ void GameSession::updateCommon(float deltaTime)
         switch (m_iMapType)
         {
             case MAP_SPACE:
-                // Space Tiles are always being updated, not just in Sudden Death
+                for (std::vector < std::unique_ptr < SpaceTile >> ::iterator itr = m_spaceTiles.begin(); itr != m_spaceTiles.end(); )
+                {
+                    (*itr)->update(deltaTime, m_isSuddenDeath, m_players, m_bombs, m_insideBlocks, m_breakableBlocks, m_powerUps);
+                    
+                    if ((*itr)->isRemove())
+                    {
+                        itr = m_spaceTiles.erase(itr);
+                    }
+                    else
+                    {
+                        itr++;
+                    }
+                }
                 break;
             case MAP_GRASSLANDS:
                 // TODO
@@ -644,6 +639,12 @@ void GameSession::handlePlayerEvent(int event)
             break;
         case PLAYER_DEATH:
             m_players.at(playerIndex).get()->onDeath();
+            break;
+        case PLAYER_ABOUT_TO_FALL:
+            m_players.at(playerIndex).get()->onTrappedOnFallingSpaceTile(m_spaceTiles);
+            break;
+        case PLAYER_FALL:
+            m_players.at(playerIndex).get()->onFall();
             break;
         case PLAYER_FREEZE:
             m_players.at(playerIndex).get()->onFreeze();

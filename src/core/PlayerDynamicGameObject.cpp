@@ -11,6 +11,7 @@
 #include "Vector2D.h"
 #include "Rectangle.h"
 #include "MapBorder.h"
+#include "SpaceTile.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "OverlapTester.h"
@@ -135,12 +136,16 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
             m_playerState = DEAD;
         }
     }
+    else if(m_playerState == ABOUT_TO_FALL)
+    {
+        m_fAngle += 180 * deltaTime;
+    }
     else if(m_playerState == FALLING)
     {
         m_velocity->add(m_acceleration->getX() * deltaTime, m_acceleration->getY() * deltaTime);
         m_position->add(m_velocity->getX() * deltaTime, m_velocity->getY() * deltaTime);
         
-        m_fAngle += 90 * deltaTime;
+        m_fAngle += 180 * deltaTime;
         
         if(m_position->getY() < 0)
         {
@@ -323,6 +328,44 @@ bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explo
     return false;
 }
 
+bool PlayerDynamicGameObject::isTrappedOnFallingSpaceTile(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles)
+{
+    if(m_playerState == ALIVE)
+    {
+        for (std::vector <std::unique_ptr<SpaceTile>> ::iterator itr = spaceTiles.begin(); itr != spaceTiles.end(); itr++)
+        {
+            if((*itr)->getSpaceTileState() == ST_FALLING)
+            {
+                if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    return false;
+}
+
+bool PlayerDynamicGameObject::isFallingDueToSpaceTile(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles)
+{
+    if(m_playerState == ABOUT_TO_FALL)
+    {
+        for (std::vector <std::unique_ptr<SpaceTile>> ::iterator itr = spaceTiles.begin(); itr != spaceTiles.end(); itr++)
+        {
+            if((*itr)->getSpaceTileState() == ST_FALLING && (*itr)->shouldPlayerStartFalling())
+            {
+                if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    return false;
+}
+
 bool PlayerDynamicGameObject::isHitByIce(std::vector<std::unique_ptr<IcePatch >> &icePatches)
 {
     if(m_playerState == ALIVE)
@@ -401,11 +444,20 @@ void PlayerDynamicGameObject::onForceFieldHit()
     setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN);
 }
 
-void PlayerDynamicGameObject::onTrappedOnFallingSpaceTile()
+void PlayerDynamicGameObject::onTrappedOnFallingSpaceTile(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles)
 {
     reset();
     
     m_playerState = ABOUT_TO_FALL;
+    
+    for (std::vector <std::unique_ptr<SpaceTile>> ::iterator itr = spaceTiles.begin(); itr != spaceTiles.end(); itr++)
+    {
+        if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
+        {
+            (*itr)->setFallingPlayer(this);
+            return;
+        }
+    }
 }
 
 void PlayerDynamicGameObject::onFall()
@@ -665,6 +717,14 @@ void PlayerDynamicGameObject::reset()
     
     m_isDisplayingName = false;
     m_isDisplayingPointer = false;
+}
+
+void PlayerDynamicGameObject::handleBombErasure(BombGameObject *bomb)
+{
+    if(bomb == m_lastBombDropped)
+    {
+        m_lastBombDropped = nullptr;
+    }
 }
 
 // Private

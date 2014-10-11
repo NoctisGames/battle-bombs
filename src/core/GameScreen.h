@@ -112,6 +112,8 @@ private:
     
     void updateGameEnding(float deltaTime);
     
+    void updateForOffline(float deltaTime);
+    
     void spectateNextLivePlayer();
     
     void spectatePreviousLivePlayer();

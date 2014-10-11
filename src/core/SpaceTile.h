@@ -16,17 +16,25 @@
 #include <memory>
 
 class PlayerDynamicGameObject;
+class BombGameObject;
+class InsideBlock;
+class BreakableBlock;
+class PowerUp;
 
 class SpaceTile : public DynamicGridGameObject
 {
 public:
     SpaceTile(int gridX, int gridY, int index);
     
-    void update(float deltaTime, bool isSuddenDeath, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
+    void update(float deltaTime, bool isSuddenDeath, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject>> &bombs, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
+    
+    void setFallingPlayer(PlayerDynamicGameObject *fallingPlayer);
     
     Space_Tile_State getSpaceTileState();
     
     float getStateTime();
+    
+    bool shouldPlayerStartFalling();
     
     bool isRemove();
     
@@ -36,6 +44,7 @@ private:
     float m_fStateTime;
     float m_fOrigY;
     float m_fTimeUntilDislodging;
+    bool m_shouldPlayerStartFalling;
 };
 
 #endif /* defined(__battlebombs__SpaceTile__) */

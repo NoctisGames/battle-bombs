@@ -36,7 +36,9 @@ public final class RendererWrapper implements Renderer
     private static final int PLAYER_EVENT_GRID_X_BASE = 100000;
     private static final int PLAYER_EVENT_GRID_Y_BASE = 1000;
     private static final int PLAYER_EVENT_MOD_BASE = 100;
-    private static final short PLAYER_DEATH = 11;
+    private static final int PLAYER_DEATH = 11;
+    private static final int PLAYER_ABOUT_TO_FALL = 12;
+    private static final int PLAYER_FREEZE = 14;
 
     // Definitions from src/core/ResourceConstants.h
     private static final short MUSIC_STOP = 1;
@@ -321,6 +323,8 @@ public final class RendererWrapper implements Renderer
                 switch (event)
                 {
                     case PLAYER_DEATH:
+                    case PLAYER_ABOUT_TO_FALL:
+                    case PLAYER_FREEZE:
                         handleDeathForPlayerIndex(playerIndex);
                         continue;
                     default:

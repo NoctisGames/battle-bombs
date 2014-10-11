@@ -19,6 +19,7 @@
 #include <vector>
 
 class MapBorder;
+class SpaceTile;
 class InsideBlock;
 class BreakableBlock;
 class PowerUp;
@@ -68,13 +69,17 @@ public:
 
     bool isHitByExplosion(std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     
+    bool isTrappedOnFallingSpaceTile(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles);
+    
+    bool isFallingDueToSpaceTile(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles);
+    
     bool isHitByIce(std::vector<std::unique_ptr<IcePatch >> &icePatches);
     
     void handlePowerUps(std::vector<std::unique_ptr<PowerUp >> &powerUps);
     
     void onForceFieldHit();
 
-    void onTrappedOnFallingSpaceTile();
+    void onTrappedOnFallingSpaceTile(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles);
     
     void onFall();
     
@@ -123,6 +128,8 @@ public:
     bool isDisplayingPointer();
     
     void reset();
+    
+    void handleBombErasure(BombGameObject *bomb);
 
 protected:
     BombGameObject *m_lastBombDropped;
