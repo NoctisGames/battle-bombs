@@ -57,10 +57,13 @@ void SpaceTile::update(float deltaTime, bool isSuddenDeath, std::vector<std::uni
                 
                 for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = players.begin(); itr != players.end(); itr++)
                 {
-                    m_fallingPlayer = (*itr).get();
-                    m_fallingPlayer->onTrappedOnFallingSpaceTile();
-                    PathFinder::getInstance().occupyGameGridCell(m_gridX, m_gridY);
-                    break;
+                    if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
+                    {
+                        m_fallingPlayer = (*itr).get();
+                        m_fallingPlayer->onTrappedOnFallingSpaceTile();
+                        PathFinder::getInstance().occupyGameGridCell(m_gridX, m_gridY);
+                        break;
+                    }
                 }
             }
         }
