@@ -26,6 +26,8 @@ SpaceTile::SpaceTile(int gridX, int gridY, int index) : DynamicGridGameObject(gr
     m_fOrigY = m_position->getY();
     
     m_fTimeUntilDislodging = TIME_BETWEEN_FALLING_SPACE_TILES * (float)index;
+    
+    m_fallingPlayer = nullptr;
 }
 
 void SpaceTile::update(float deltaTime, bool isSuddenDeath, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
@@ -74,7 +76,10 @@ void SpaceTile::update(float deltaTime, bool isSuddenDeath, std::vector<std::uni
             
             if(m_position->getY() < (m_fOrigY - 1))
             {
-                m_fallingPlayer->onFall();
+                if(m_fallingPlayer != nullptr)
+                {
+                    m_fallingPlayer->onFall();
+                }
             }
             
             if(m_position->getY() < 0)

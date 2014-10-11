@@ -98,6 +98,7 @@ void GameScreen::init()
     m_powerUps.clear();
     m_countDownNumbers.clear();
     m_displayGameOvers.clear();
+    m_spaceTiles.clear();
     m_iceBalls.clear();
     m_icePatches.clear();
     
