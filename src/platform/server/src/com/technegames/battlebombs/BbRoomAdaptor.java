@@ -36,15 +36,9 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final String BREAKABLE_BLOCK_X_VALUES = "breakableBlockXValues";
     private static final String BREAKABLE_BLOCK_Y_VALUES = "breakableBlockYValues";
     private static final String BREAKABLE_BLOCK_POWER_UP_FLAGS = "breakableBlockPowerUpFlags";
-    private static final int GRID_CELL_NUM_ROWS = 17;
-    private static final int NUM_GRID_CELLS_PER_ROW = 15;
     private static final int TIME_BETWEEN_ROUNDS = 20;
     private static final int PLATFORM_UNKNOWN = 0;
     private static final int NUM_MAPS = 3;
-    private static final int MAP_SPACE = 0;
-    private static final int MAP_GRASSLANDS = 1;
-    private static final int MAP_MOUNTAINS = 2;
-    private static final int MAP_BASE = 3;
     private static final short PRE_GAME_SERVER_UPDATE = 1335;
     private static final short BEGIN_SPECTATE = 1336;
     private static final short BEGIN_GAME = 1337;

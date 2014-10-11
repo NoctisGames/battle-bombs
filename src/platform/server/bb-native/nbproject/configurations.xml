@@ -277,6 +277,12 @@
       </item>
       <item path="../../../core/ResourceConstants.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/SpaceTile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/SpaceTile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/SpaceTileState.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/Triangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/Triangle.h" ex="false" tool="3" flavor2="0">
@@ -481,6 +487,12 @@
       <item path="../../../core/Renderer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/ResourceConstants.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/SpaceTile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/SpaceTile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/SpaceTileState.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/Triangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
