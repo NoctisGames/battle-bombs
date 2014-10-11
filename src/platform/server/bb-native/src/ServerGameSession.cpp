@@ -30,6 +30,7 @@
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
+#include "SpaceTile.h"
 
 //For RNG purposes
 #include <stdlib.h>
