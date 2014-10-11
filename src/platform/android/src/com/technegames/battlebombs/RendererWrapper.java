@@ -108,6 +108,7 @@ public final class RendererWrapper implements Renderer
     // For Offline Mode
     private static final String[] _beginGameMessages = new String[12];
     private boolean[] _playersAlive = { true, true, true, true, true, true, true, true };
+    boolean _isSuddenDeath;
     private float _timeSinceOneOrLessPlayersRemaining;
     private boolean _isGameOver;
 
@@ -338,6 +339,14 @@ public final class RendererWrapper implements Renderer
 
                 on_chat_received(gameOverMessage);
             }
+            else if (!_isSuddenDeath && get_num_seconds_left() <= 60)
+            {
+                String gameOverMessage = String.format(Locale.US, "{\"eventType\": %d}", SUDDEN_DEATH);
+
+                on_chat_received(gameOverMessage);
+
+                _isSuddenDeath = true;
+            }
         }
         else
         {
@@ -392,6 +401,8 @@ public final class RendererWrapper implements Renderer
         _playersAlive[5] = true;
         _playersAlive[6] = true;
         _playersAlive[7] = true;
+
+        _isSuddenDeath = false;
 
         _timeSinceOneOrLessPlayersRemaining = 0;
         _isGameOver = false;

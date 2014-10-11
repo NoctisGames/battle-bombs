@@ -77,7 +77,7 @@
         
         srand((int)time(NULL));
         
-        int beginGameMessagesIndex = 0;//rand() % 12;
+        int beginGameMessagesIndex = rand() % 12;
         
         NSString *beginGameMessage = [_beginGameMessages objectAtIndex:beginGameMessagesIndex];
         
@@ -135,9 +135,9 @@
         
         on_chat_received([gameOverMessage UTF8String]);
     }
-    else if(!_isSuddenDeath && get_num_seconds_left() <= 176)
+    else if(!_isSuddenDeath && get_num_seconds_left() <= 60)
     {
-        NSString *suddenDeathMessage = @"{\"eventType\": 1339}";
+        NSString *suddenDeathMessage = [NSString stringWithFormat:@"{\"eventType\": %i}", SUDDEN_DEATH];
         
         on_chat_received([suddenDeathMessage UTF8String]);
         
