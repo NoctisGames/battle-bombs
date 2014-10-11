@@ -232,7 +232,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                             }
                         }
 
-                        if (!_isSuddenDeathMode && _numSecondsLeftForRound <= 176)
+                        if (!_isSuddenDeathMode && _numSecondsLeftForRound <= 60)
                         {
                             try
                             {
@@ -380,7 +380,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     mapType = 0;
                 }
 
-                mapType = 2;
                 init(_room.getId(), _inGameUserSessionDataMap.size(), mapType);
 
                 for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
