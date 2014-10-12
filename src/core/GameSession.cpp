@@ -32,7 +32,9 @@
 
 GameSession::GameSession()
 {
-    // I guess this is empty now
+    m_gameState = WAITING;
+    m_iMapType = MAP_SPACE;
+    m_isSuddenDeath = false;
 }
 
 int GameSession::getNumPlayers()
