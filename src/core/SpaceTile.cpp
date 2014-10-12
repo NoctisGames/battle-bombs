@@ -25,13 +25,11 @@ SpaceTile::SpaceTile(int gridX, int gridY, int index) : DynamicGridGameObject(gr
     m_velocity->set(0, 0);
     m_acceleration->set(0, -12);
     
+    m_fallingPlayer = nullptr;
     m_spaceTileState = ST_NORMAL;
     m_fStateTime = 0;
     m_fOrigY = m_position->getY();
-    
     m_fTimeUntilDislodging = TIME_BETWEEN_FALLING_SPACE_TILES * (float)index;
-    
-    m_fallingPlayer = nullptr;
     m_shouldPlayerStartFalling = false;
 }
 
