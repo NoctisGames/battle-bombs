@@ -45,6 +45,7 @@
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
+#include "SpaceTile.h"
 #include <string.h>
 #include <sstream>
 
@@ -192,7 +193,7 @@ namespace BattleBombsComp
 			m_touchEvents.swap(m_touchEventsBuffer);
 			m_touchEventsBuffer.clear();
 
-			m_timer->Update(); 
+			m_timer->Update();
 			m_gameScreen->update(m_timer->Delta, m_touchEvents);
 
 			pushEvents();
@@ -275,6 +276,8 @@ namespace BattleBombsComp
 				switch (event)
 				{
 				case PLAYER_DEATH:
+				case PLAYER_ABOUT_TO_FALL:
+				case PLAYER_FREEZE:
 					handleDeathForPlayerIndex(playerIndex);
 					continue;
 				default:
@@ -292,6 +295,19 @@ namespace BattleBombsComp
 				const char *gameOverMessage = gameOverMessageString.c_str();
 
 				m_gameScreen->handleServerUpdate(gameOverMessage);
+			}
+			else if (!_isSuddenDeath && m_gameScreen->getNumSecondsLeft() <= 60)
+			{
+				std::stringstream ss;
+				ss << "{\"eventType\": ";
+				ss << SUDDEN_DEATH;
+				ss << "}";
+				std::string suddenDeathMessageString = ss.str();
+				const char *suddenDeathMessage = suddenDeathMessageString.c_str();
+
+				m_gameScreen->handleServerUpdate(suddenDeathMessage);
+
+				_isSuddenDeath = true;
 			}
 		}
 		else
@@ -348,6 +364,8 @@ namespace BattleBombsComp
 		m_playersAlive[6] = true;
 		m_playersAlive[7] = true;
 
+		_isSuddenDeath = false;
+
 		_timeSinceOneOrLessPlayersRemaining = 0;
 		_isGameOver = false;
 
@@ -356,7 +374,7 @@ namespace BattleBombsComp
 		srand((int)time(NULL));
 
 		int _beginGameMessagesIndex = rand() % 12;
-		
+
 		if (_beginGameMessagesIndex == 0)
 		{
 			std::stringstream ss;

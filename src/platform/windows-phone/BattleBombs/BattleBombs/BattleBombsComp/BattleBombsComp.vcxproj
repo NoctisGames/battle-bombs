@@ -220,6 +220,8 @@
     <ClInclude Include="..\..\..\..\..\core\RectangleBatcher.h" />
     <ClInclude Include="..\..\..\..\..\core\Renderer.h" />
     <ClInclude Include="..\..\..\..\..\core\ResourceConstants.h" />
+    <ClInclude Include="..\..\..\..\..\core\SpaceTile.h" />
+    <ClInclude Include="..\..\..\..\..\core\SpaceTileState.h" />
     <ClInclude Include="..\..\..\..\..\core\SpectatorControls.h" />
     <ClInclude Include="..\..\..\..\..\core\SpectatorControlState.h" />
     <ClInclude Include="..\..\..\..\..\core\SpriteBatcher.h" />
@@ -290,6 +292,7 @@
     <ClCompile Include="..\..\..\..\..\core\Rectangle.cpp" />
     <ClCompile Include="..\..\..\..\..\core\RectangleBatcher.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Renderer.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\SpaceTile.cpp" />
     <ClCompile Include="..\..\..\..\..\core\SpectatorControls.cpp" />
     <ClCompile Include="..\..\..\..\..\core\SpriteBatcher.cpp" />
     <ClCompile Include="..\..\..\..\..\core\TextureRegion.cpp" />

@@ -51,6 +51,7 @@
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
+#include "SpaceTile.h"
 
 ComPtr<ID3D11Device1> dev;                      // the device interface
 ComPtr<ID3D11DeviceContext1> devcon;            // the device context interface
