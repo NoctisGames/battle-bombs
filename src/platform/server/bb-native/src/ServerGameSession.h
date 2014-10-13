@@ -38,7 +38,6 @@ public:
     int popOldestEventId();
 
 private:
-    std::unique_ptr<GameListener> m_gameListener;
     std::vector<std::unique_ptr<BotPlayerDynamicGameObject >> m_bots;
     float m_fCountDownTimeLeft;
     
