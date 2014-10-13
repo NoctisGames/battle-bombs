@@ -20,6 +20,8 @@ FireBall::FireBall(int gridX, int gridY, int index, std::vector<std::unique_ptr<
 {
     resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
     
+    m_position->add(0, GRID_CELL_HEIGHT * 5 / 4);
+    
     m_fTargetY = m_position->getY();
     m_fTimeUntilAppearance = TIME_BETWEEN_FIRE_BALLS * (float)index;
     
@@ -40,6 +42,7 @@ void FireBall::update(float deltaTime, std::vector<std::unique_ptr<BreakableBloc
 {
     if(m_isTargetReached)
     {
+        m_fStateTime += deltaTime;
         m_isDescending = false;
         
         if(m_fStateTime >= 0.5f)
