@@ -159,6 +159,7 @@
     <ClInclude Include="..\..\..\..\..\core\Color.h" />
     <ClInclude Include="..\..\..\..\..\core\CountDownNumberGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\CountDownNumberType.h" />
+    <ClInclude Include="..\..\..\..\..\core\Crater.h" />
     <ClInclude Include="..\..\..\..\..\core\direct3d\BasicReaderWriter.h" />
     <ClInclude Include="..\..\..\..\..\core\direct3d\dds.h" />
     <ClInclude Include="..\..\..\..\..\core\direct3d\DDSTextureLoader.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="..\..\..\..\..\core\FallingObjectShadow.h" />
     <ClInclude Include="..\..\..\..\..\core\FallingObjectShadowState.h" />
     <ClInclude Include="..\..\..\..\..\core\Fire.h" />
+    <ClInclude Include="..\..\..\..\..\core\FireBall.h" />
     <ClInclude Include="..\..\..\..\..\core\FireType.h" />
     <ClInclude Include="..\..\..\..\..\core\Font.h" />
     <ClInclude Include="..\..\..\..\..\core\fsa.h" />
@@ -252,6 +254,7 @@
     <ClCompile Include="..\..\..\..\..\core\BotPlayerDynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\BreakableBlock.cpp" />
     <ClCompile Include="..\..\..\..\..\core\CountDownNumberGameObject.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\Crater.cpp" />
     <ClCompile Include="..\..\..\..\..\core\direct3d\BasicReaderWriter.cpp" />
     <ClCompile Include="..\..\..\..\..\core\direct3d\DDSTextureLoader.cpp" />
     <ClCompile Include="..\..\..\..\..\core\direct3d\Direct3DGameScreen.cpp" />
@@ -266,6 +269,7 @@
     <ClCompile Include="..\..\..\..\..\core\Explosion.cpp" />
     <ClCompile Include="..\..\..\..\..\core\FallingObjectShadow.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Fire.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\FireBall.cpp" />
     <ClCompile Include="..\..\..\..\..\core\Font.cpp" />
     <ClCompile Include="..\..\..\..\..\core\GameButton.cpp" />
     <ClCompile Include="..\..\..\..\..\core\GameListener.cpp" />
