@@ -16,7 +16,7 @@
 #include "BreakableBlock.h"
 #include "FallingObjectShadow.h"
 
-FireBall::FireBall(int gridX, int gridY, int index, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks) : DynamicGridGameObject(gridX, gridY, GRID_CELL_WIDTH * 2, GRID_CELL_HEIGHT * 2, 0)
+FireBall::FireBall(int gridX, int gridY, int index, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks) : DynamicGridGameObject(gridX, gridY, GRID_CELL_WIDTH * 5, GRID_CELL_HEIGHT * 4, 0)
 {
     resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
     
