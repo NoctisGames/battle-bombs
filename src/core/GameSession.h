@@ -72,6 +72,7 @@ protected:
     std::vector<int> m_sEventIds;
     Game_State m_gameState;
     int m_iMapType;
+    int m_iNumBreakableBlocksAtSpawnTime;
     bool m_isSuddenDeath;
 
     virtual void updateRunning(float deltaTime) = 0;

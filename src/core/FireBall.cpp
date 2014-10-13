@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#define TIME_BETWEEN_FIRE_BALLS 0.23628691983122f
+#define TIME_BETWEEN_FIRE_BALLS 0.23206751054852f
 
 #include "FireBall.h"
 #include "GameConstants.h"

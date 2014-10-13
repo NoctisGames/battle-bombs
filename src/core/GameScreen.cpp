@@ -834,8 +834,8 @@ void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)
         handleIntArrayInDocument(d, breakableBlockYValuesKey, breakableBlockYValues, -1);
         handleIntArrayInDocument(d, breakableBlockPowerUpFlagsKey, breakableBlockPowerUpFlags, -1);
         
-        int numBreakableBlocks = d[numBreakableBlocksKey].GetInt();
-        for(int i = 0; i < numBreakableBlocks; i++)
+        m_iNumBreakableBlocksAtSpawnTime = d[numBreakableBlocksKey].GetInt();
+        for(int i = 0; i < m_iNumBreakableBlocksAtSpawnTime; i++)
         {
             m_breakableBlocks.push_back(std::unique_ptr<BreakableBlock>(new BreakableBlock(breakableBlockXValues.at(i), breakableBlockYValues.at(i), breakableBlockPowerUpFlags.at(i))));
         }

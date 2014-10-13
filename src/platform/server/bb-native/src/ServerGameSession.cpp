@@ -116,7 +116,7 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
             {
                 continue;
             }
-
+            
             // 66% chance there will be a breakable block at all
             if ((rand() % 100 + 1) < 67)
             {
@@ -145,6 +145,8 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
 
                 // If these two blocks don't get caught, the flag remains 0 and no powerup will be created
                 m_breakableBlocks.push_back(std::unique_ptr<BreakableBlock>(new BreakableBlock(j, i, flag)));
+                
+                m_iNumBreakableBlocksAtSpawnTime++;
             }
         }
     }
@@ -168,11 +170,12 @@ void ServerGameSession::init()
     m_fireBalls.clear();
     m_iceBalls.clear();
     m_icePatches.clear();
-    m_gameListener->freeServerMessages();
 
     srand((int) time(NULL));
 
     m_fCountDownTimeLeft = 4;
+    
+    m_iNumBreakableBlocksAtSpawnTime = 0;
 }
 
 void ServerGameSession::handleServerUpdate(const char *message)
