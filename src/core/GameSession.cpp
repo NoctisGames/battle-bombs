@@ -364,7 +364,7 @@ void GameSession::updateCommon(float deltaTime)
                 {
                     (*itr)->update(deltaTime, m_breakableBlocks);
                     
-                    if ((*itr)->isTargetReached())
+                    if ((*itr)->isDescending() && (*itr)->isTargetReached())
                     {
                         if((*itr)->getShadow().isTargetOccupiedByInsideBlock())
                         {
@@ -393,7 +393,7 @@ void GameSession::updateCommon(float deltaTime)
                 
                 for (std::vector < std::unique_ptr < Crater >> ::iterator itr = m_craters.begin(); itr != m_craters.end(); itr++)
                 {
-                    // This is necessary, because as breakable block destroy animations are completed, freeGameGridCell will be called
+                    // This is necessary because as breakable block destroy animations are completed, freeGameGridCell will be called
                     PathFinder::getInstance().occupyGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
                 }
                 break;

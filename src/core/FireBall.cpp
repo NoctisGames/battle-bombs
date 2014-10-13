@@ -40,6 +40,8 @@ void FireBall::update(float deltaTime, std::vector<std::unique_ptr<BreakableBloc
 {
     if(m_isTargetReached)
     {
+        m_isDescending = false;
+        
         if(m_fStateTime >= 0.5f)
         {
             m_isExplosionCompleted = true;

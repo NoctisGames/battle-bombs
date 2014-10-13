@@ -363,7 +363,7 @@ void Renderer::renderSuddenDeathGrasslandsFireBalls(std::vector<std::unique_ptr<
     
     for (std::vector<std::unique_ptr<FireBall>>::iterator itr = fireBalls.begin(); itr != fireBalls.end(); itr++)
     {
-        if((*itr)->isDescending())
+        if((*itr)->isDescending() || (*itr)->isTargetReached())
         {
             renderGameObjectWithRespectToPlayer((**itr), Assets::getFireBallTextureRegion((**itr)));
         }
