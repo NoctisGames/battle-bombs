@@ -268,9 +268,18 @@ void GameSession::updateCommon(float deltaTime)
         }
     }
     
-    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = m_insideBlocks.begin(); itr != m_insideBlocks.end(); itr++)
+    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = m_insideBlocks.begin(); itr != m_insideBlocks.end(); )
     {
         (**itr).update(deltaTime);
+        
+        if((*itr)->getInsideBlockState() == IB_GONE)
+        {
+            itr = m_insideBlocks.erase(itr);
+        }
+        else
+        {
+            itr++;
+        }
     }
 
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end();)

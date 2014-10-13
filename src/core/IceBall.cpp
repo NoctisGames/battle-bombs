@@ -49,11 +49,12 @@ void IceBall::update(float deltaTime, std::vector<std::unique_ptr<BreakableBlock
             m_isTargetReached = true;
         }
     }
-    else if(m_isVisible)
+    
+    if(m_isVisible)
     {
         m_fallingObjectShadow->update(deltaTime, breakableBlocks);
         
-        if(m_fallingObjectShadow->getFallingObjectShadowState() == CLOSEST)
+        if(m_fallingObjectShadow->getFallingObjectShadowState() == CLOSER)
         {
             m_isDescending = true;
         }

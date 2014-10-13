@@ -39,6 +39,9 @@
 #include "GameEvent.h"
 #include <list>
 
+// For logging error conditions
+#include <iostream>
+
 Assets * Assets::getInstance()
 {
     static Assets *assets = new Assets();
@@ -158,17 +161,40 @@ TextureRegion& Assets::getInsideBlockTextureRegion(InsideBlock &insideBlock)
         
         return insideBlockTextureRegion;
     }
+    else if(insideBlock.getInsideBlockState() == IB_STRUCK_BY_METEOR)
+    {
+        static std::vector<TextureRegion> insideBlockStruckTextureRegions;
+        if (insideBlockStruckTextureRegions.size() == 0)
+        {
+            insideBlockStruckTextureRegions.push_back(TextureRegion(INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAME_1_TEXTURE_REGION_X, INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAMES_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockStruckTextureRegions.push_back(TextureRegion(INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAME_2_TEXTURE_REGION_X, INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAMES_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockStruckTextureRegions.push_back(TextureRegion(INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAME_3_TEXTURE_REGION_X, INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAMES_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockStruckTextureRegions.push_back(TextureRegion(INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAME_4_TEXTURE_REGION_X, INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAMES_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        }
+        
+        static float cycleTime = 0.50f;
+        static std::vector<float> frames;
+        if (frames.size() == 0)
+        {
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.2f);
+        }
+        
+        return insideBlockStruckTextureRegions.at(getKeyFrameNumber(insideBlock.getStateTime(), cycleTime, frames));
+    }
     else if(insideBlock.getInsideBlockState() == IB_FREEZING)
     {
         static std::vector<TextureRegion> insideBlockFreezingTextureRegions;
         if (insideBlockFreezingTextureRegions.size() == 0)
         {
-            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_1_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAMES_TEXTURE_REGION_Y, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
-            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_2_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAMES_TEXTURE_REGION_Y, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
-            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_3_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAMES_TEXTURE_REGION_Y, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
-            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_4_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAMES_TEXTURE_REGION_Y, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
-            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_5_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAMES_TEXTURE_REGION_Y, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
-            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_6_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAMES_TEXTURE_REGION_Y, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_1_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_1_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_2_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_2_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_3_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_3_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_4_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_4_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_5_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_5_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_6_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_6_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
         }
         
         static float cycleTime = 0.70f;
@@ -185,11 +211,20 @@ TextureRegion& Assets::getInsideBlockTextureRegion(InsideBlock &insideBlock)
         
         return insideBlockFreezingTextureRegions.at(getKeyFrameNumber(insideBlock.getStateTime(), cycleTime, frames));
     }
-    else
+    else if(insideBlock.getInsideBlockState() == IB_FROZEN)
     {
-        static TextureRegion insideBlockFrozenTextureRegion = TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_6_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAMES_TEXTURE_REGION_Y, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_INSIDE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        static TextureRegion insideBlockFrozenTextureRegion = TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_6_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_6_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
         
         return insideBlockFrozenTextureRegion;
+    }
+    else
+    {
+        // Default, but should never get this far...
+        std::cout << "getInsideBlockTextureRegion else condition reached!" << std::endl;
+        
+        static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        
+        return defaultTextureRegion;
     }
 }
 
@@ -255,12 +290,12 @@ TextureRegion& Assets::getBreakableBlockTextureRegion(BreakableBlock &breakableB
         static std::vector<TextureRegion> breakableBlockFreezingTextureRegions;
         if (breakableBlockFreezingTextureRegions.size() == 0)
         {
-            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_1_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_1_TEXTURE_REGION_Y, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
-            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_2_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_2_TEXTURE_REGION_Y, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
-            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_3_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_3_TEXTURE_REGION_Y, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
-            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_4_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_4_TEXTURE_REGION_Y, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
-            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_5_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_5_TEXTURE_REGION_Y, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
-            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_6_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_6_TEXTURE_REGION_Y, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_1_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_1_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_2_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_2_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_3_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_3_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_4_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_4_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_5_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_5_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_6_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_6_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
         }
         
         static float cycleTime = 0.70f;
@@ -279,7 +314,7 @@ TextureRegion& Assets::getBreakableBlockTextureRegion(BreakableBlock &breakableB
     }
     else if(breakableBlock.getBreakableBlockState() == BB_FROZEN)
     {
-        static TextureRegion breakableBlockFrozenTextureRegion = TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_6_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_6_TEXTURE_REGION_Y, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_WIDTH, FREEZING_BREAKABLE_BLOCK_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        static TextureRegion breakableBlockFrozenTextureRegion = TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_6_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_6_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
         
         return breakableBlockFrozenTextureRegion;
     }
@@ -339,7 +374,12 @@ TextureRegion& Assets::getPlayerRowAvatarTextureRegion(PlayerRowAvatar &playerRo
             break;
     }
     
-    // Crash
+    // Default, but should never get this far...
+    std::cout << "getPlayerRowAvatarTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    return defaultTextureRegion;
 }
 
 TextureRegion& Assets::getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatformAvatar &playerRowPlatformAvatar)
@@ -361,7 +401,12 @@ TextureRegion& Assets::getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatform
             break;
     }
     
-    // Crash
+    // Default, but should never get this far...
+    std::cout << "getPlayerRowPlatformAvatarTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    return defaultTextureRegion;
 }
 
 TextureRegion& Assets::getInterfaceOverlayTextureRegion()
@@ -1260,7 +1305,12 @@ TextureRegion& Assets::getForceFieldTextureRegion(int forceFieldState, float for
             break;
     }
     
-    // Crash
+    // Default, but should never get this far...
+    std::cout << "getForceFieldTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    return defaultTextureRegion;
 }
 
 TextureRegion& Assets::getFallingObjectShadowTextureRegion(FallingObjectShadow &fallingObjectShadow)
@@ -1497,7 +1547,12 @@ TextureRegion& Assets::getActiveButtonTextureRegion(ActiveButton &activeButton, 
         }
     }
     
-    // Crash
+    // Default, but should never get this far...
+    std::cout << "getActiveButtonTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    return defaultTextureRegion;
 }
 
 TextureRegion& Assets::getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime)
@@ -1651,7 +1706,12 @@ TextureRegion& Assets::getPowerUpTextureRegion(PowerUp &powerUp)
             break;
     }
     
-    // Crash
+    // Default, but should never get this far...
+    std::cout << "getPowerUpTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    return defaultTextureRegion;
 }
 
 void Assets::setMusicId(short musicId)

@@ -12,6 +12,8 @@
 typedef enum
 {
     IB_NORMAL,
+    IB_STRUCK_BY_METEOR,
+    IB_GONE,
     IB_FREEZING,
     IB_FROZEN
 } Inside_Block_State;

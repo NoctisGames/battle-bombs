@@ -237,19 +237,28 @@ void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &ma
     
     for (std::vector<std::unique_ptr<InsideBlock>>::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
     {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getInsideBlockTextureRegion((**itr)));
+        if((*itr)->getInsideBlockState() != IB_GONE)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getInsideBlockTextureRegion((**itr)));
+        }
     }
     
     for (std::vector<std::unique_ptr<BreakableBlock>>::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
     {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getBreakableBlockTextureRegion((**itr)));
+        if((*itr)->getBreakableBlockState() != DESTROYED)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getBreakableBlockTextureRegion((**itr)));
+        }
     }
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
     
     m_spriteBatcher->beginBatch();
     for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
     {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((**itr)));
+        if((*itr)->getType() != POWER_UP_TYPE_NONE)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((**itr)));
+        }
     }
     m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
 }
@@ -462,7 +471,7 @@ void Renderer::renderInterface(InterfaceOverlay &interfaceOverlay)
         }
     }
     
-    if(interfaceOverlay.getActiveButton().getPowerUpType() == POWER_UP_TYPE_PUSH || interfaceOverlay.getActiveButton().getPowerUpType() == POWER_UP_TYPE_SHIELD)
+    if(interfaceOverlay.getActiveButton().getPowerUpType() != POWER_UP_TYPE_NONE)
     {
         renderGameObject(interfaceOverlay.getActiveButton(), Assets::getActiveButtonTextureRegion(interfaceOverlay.getActiveButton(), interfaceOverlay.getButtonsStateTime()));
     }

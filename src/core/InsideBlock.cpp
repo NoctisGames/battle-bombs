@@ -11,7 +11,7 @@
 #include "Vector2D.h"
 #include "Rectangle.h"
 
-InsideBlock::InsideBlock(int gridX, int gridY) : GridGameObject(gridX, gridY, GRID_CELL_WIDTH * 2, GRID_CELL_HEIGHT * 2, 0)
+InsideBlock::InsideBlock(int gridX, int gridY) : GridGameObject(gridX, gridY, GRID_CELL_WIDTH * 3, GRID_CELL_HEIGHT * 3, 0)
 {
     resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
     
@@ -21,7 +21,16 @@ InsideBlock::InsideBlock(int gridX, int gridY) : GridGameObject(gridX, gridY, GR
 
 void InsideBlock::update(float deltaTime)
 {
-    if(m_insideBlockState == IB_FREEZING)
+    if(m_insideBlockState == IB_STRUCK_BY_METEOR)
+    {
+        m_fStateTime += deltaTime;
+        
+        if(m_fStateTime > 0.4f)
+        {
+            m_insideBlockState = IB_GONE;
+        }
+    }
+    else if(m_insideBlockState == IB_FREEZING)
     {
         m_fStateTime += deltaTime;
         
