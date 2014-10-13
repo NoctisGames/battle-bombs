@@ -17,6 +17,7 @@
     bool _playersAlive[8];
     NSMutableArray *_beginGameMessages;
     bool _isSuddenDeath;
+    bool _isGameOver;
 }
 
 @end
@@ -72,12 +73,13 @@
         _playersAlive[7] = true;
         
         _isSuddenDeath = false;
+        _isGameOver = false;
         
         clear_state();
         
         srand((int)time(NULL));
         
-        int beginGameMessagesIndex = rand() % 12;
+        int beginGameMessagesIndex = 1;//rand() % 12;
         
         NSString *beginGameMessage = [_beginGameMessages objectAtIndex:beginGameMessagesIndex];
         
@@ -135,7 +137,7 @@
         
         on_chat_received([gameOverMessage UTF8String]);
     }
-    else if(!_isSuddenDeath && get_num_seconds_left() <= 60)
+    else if(!_isSuddenDeath && get_num_seconds_left() <= 176)
     {
         NSString *suddenDeathMessage = [NSString stringWithFormat:@"{\"eventType\": %i}", SUDDEN_DEATH];
         
@@ -165,8 +167,9 @@
         }
     }
     
-    if(numAlive <= 1)
+    if(numAlive <= 1 && !_isGameOver)
     {
+        _isGameOver = true;
         [self performSelector:@selector(handleGameOver) withObject:nil afterDelay:0.5];
     }
 }
