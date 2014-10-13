@@ -282,11 +282,11 @@ bool PlayerDynamicGameObject::isHitByExplosion(std::vector<std::unique_ptr<Explo
         {
             for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
             {
-                if ((*itr2)->isDeadly() && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr2)->getBounds()))
+                if ((*itr2)->isDeadly() && m_gridX == (*itr2)->getGridX() && m_gridY == (*itr2)->getGridY())
                 {
                     isHitByExplosion = true;
                     
-                    if((*itr2)->isEdge() && m_playerActionState == SHIELD_RAISED)
+                    if(m_playerActionState == SHIELD_RAISED)
                     {
                         if((*itr2)->getDirection() == DIRECTION_RIGHT && m_iDirection == DIRECTION_LEFT)
                         {
