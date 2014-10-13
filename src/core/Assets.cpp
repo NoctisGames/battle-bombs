@@ -22,6 +22,7 @@
 #include "PowerUp.h"
 #include "Fire.h"
 #include "FallingObjectShadow.h"
+#include "FireBall.h"
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "DPadControl.h"
@@ -1334,6 +1335,62 @@ TextureRegion& Assets::getFallingObjectShadowTextureRegion(FallingObjectShadow &
         case CLOSEST:
         default:
             return TR_CLOSEST;
+    }
+}
+
+TextureRegion& Assets::getCraterTextureRegion()
+{
+    static TextureRegion textureRegion = TextureRegion(CRATER_TEXTURE_REGION_X, CRATER_TEXTURE_REGION_Y, CRATER_TEXTURE_REGION_WIDTH, CRATER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    return textureRegion;
+}
+
+TextureRegion& Assets::getFireBallTextureRegion(FireBall &fireBall)
+{
+    if(fireBall.isTargetReached())
+    {
+        static std::vector<TextureRegion> explosionTextureRegions;
+        if (explosionTextureRegions.size() == 0)
+        {
+            explosionTextureRegions.push_back(TextureRegion(IMPACTING_FIRE_FRAME_1_TEXTURE_REGION_X, IMPACTING_FIRE_FRAME_1_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            explosionTextureRegions.push_back(TextureRegion(IMPACTING_FIRE_FRAME_2_TEXTURE_REGION_X, IMPACTING_FIRE_FRAME_2_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            explosionTextureRegions.push_back(TextureRegion(IMPACTING_FIRE_FRAME_3_TEXTURE_REGION_X, IMPACTING_FIRE_FRAME_3_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            explosionTextureRegions.push_back(TextureRegion(IMPACTING_FIRE_FRAME_4_TEXTURE_REGION_X, IMPACTING_FIRE_FRAME_4_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            explosionTextureRegions.push_back(TextureRegion(IMPACTING_FIRE_FRAME_5_TEXTURE_REGION_X, IMPACTING_FIRE_FRAME_5_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        }
+        
+        static float cycleTime = 0.6f;
+        static std::vector<float> frames;
+        if (frames.size() == 0)
+        {
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.2f);
+        }
+        
+        return explosionTextureRegions.at(getKeyFrameNumber(fireBall.getStateTime(), cycleTime, frames));
+    }
+    else
+    {
+        static std::vector<TextureRegion> fireBallTextureRegions;
+        if (fireBallTextureRegions.size() == 0)
+        {
+            fireBallTextureRegions.push_back(TextureRegion(FALLING_FIRE_FRAME_1_TEXTURE_REGION_X, FALLING_FIRE_FRAME_1_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            fireBallTextureRegions.push_back(TextureRegion(FALLING_FIRE_FRAME_2_TEXTURE_REGION_X, FALLING_FIRE_FRAME_2_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            fireBallTextureRegions.push_back(TextureRegion(FALLING_FIRE_FRAME_3_TEXTURE_REGION_X, FALLING_FIRE_FRAME_3_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        }
+        
+        static float cycleTime = 0.4f;
+        static std::vector<float> frames;
+        if (frames.size() == 0)
+        {
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.2f);
+        }
+        
+        return fireBallTextureRegions.at(getKeyFrameNumber(fireBall.getStateTime(), cycleTime, frames));
     }
 }
 

@@ -1,13 +1,13 @@
 //
-//  IceBall.h
+//  FireBall.h
 //  battlebombs
 //
-//  Created by Stephen Gowen on 10/3/14.
+//  Created by Stephen Gowen on 10/13/14.
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#ifndef __battlebombs__IceBall__
-#define __battlebombs__IceBall__
+#ifndef __battlebombs__FireBall__
+#define __battlebombs__FireBall__
 
 #include "DynamicGridGameObject.h"
 
@@ -18,10 +18,10 @@ class InsideBlock;
 class BreakableBlock;
 class FallingObjectShadow;
 
-class IceBall : public DynamicGridGameObject
+class FireBall : public DynamicGridGameObject
 {
 public:
-    IceBall(int gridX, int gridY, int index, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+    FireBall(int gridX, int gridY, int index, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
     
     void update(float deltaTime, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
     
@@ -33,6 +33,8 @@ public:
     
     bool isTargetReached();
     
+    bool isExplosionCompleted();
+    
     FallingObjectShadow & getShadow();
     
 private:
@@ -43,6 +45,7 @@ private:
     bool m_isVisible;
     bool m_isDescending;
     bool m_isTargetReached;
+    bool m_isExplosionCompleted;
 };
 
-#endif /* defined(__battlebombs__IceBall__) */
+#endif /* defined(__battlebombs__FireBall__) */

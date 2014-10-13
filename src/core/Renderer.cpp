@@ -43,6 +43,8 @@
 #include "CountDownNumberGameObject.h"
 #include "DisplayXMovingGameObject.h"
 #include "DisplayGameOverGameObject.h"
+#include "Crater.h"
+#include "FireBall.h"
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
@@ -224,6 +226,16 @@ void Renderer::renderSpaceTiles(std::vector<std::unique_ptr<SpaceTile>> &spaceTi
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
 }
 
+void Renderer::renderCraters(std::vector<std::unique_ptr<Crater>> &craters)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<Crater>>::iterator itr = craters.begin(); itr != craters.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getCraterTextureRegion());
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
 void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
 {
     m_spriteBatcher->beginBatch();
@@ -338,6 +350,27 @@ void Renderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject
     }
 }
 
+void Renderer::renderSuddenDeathGrasslandsFireBalls(std::vector<std::unique_ptr<FireBall>> &fireBalls)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<FireBall>>::iterator itr = fireBalls.begin(); itr != fireBalls.end(); itr++)
+    {
+        if((*itr)->isVisible())
+        {
+            renderGameObjectWithRespectToPlayer((*itr)->getShadow(), Assets::getFallingObjectShadowTextureRegion((*itr)->getShadow()));
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<FireBall>>::iterator itr = fireBalls.begin(); itr != fireBalls.end(); itr++)
+    {
+        if((*itr)->isDescending())
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getFireBallTextureRegion((**itr)));
+        }
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
 void Renderer::renderSuddenDeathMountainsIceBalls(std::vector<std::unique_ptr<IceBall>> &iceBalls)
 {
     m_spriteBatcher->beginBatch();
@@ -351,7 +384,7 @@ void Renderer::renderSuddenDeathMountainsIceBalls(std::vector<std::unique_ptr<Ic
     
     for (std::vector<std::unique_ptr<IceBall>>::iterator itr = iceBalls.begin(); itr != iceBalls.end(); itr++)
     {
-        if((*itr)->isVisible())
+        if((*itr)->isDescending())
         {
             renderGameObjectWithRespectToPlayer((**itr), Assets::getIceBallTextureRegion((**itr)));
         }

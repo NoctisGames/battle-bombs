@@ -85,7 +85,6 @@ private:
     std::vector<std::unique_ptr<CountDownNumberGameObject>> m_countDownNumbers;
     std::unique_ptr<DisplayXMovingGameObject> m_displayXMovingGameObject;
     std::vector<std::unique_ptr<DisplayGameOverGameObject>> m_displayGameOvers;
-    std::unique_ptr<GameListener> m_gameListener;
     std::unique_ptr<WaitingForServerInterface> m_waitingForServerInterface;
     std::unique_ptr<WaitingForLocalSettingsInterface> m_waitingForLocalSettingsInterface;
     std::unique_ptr<InterfaceOverlay> m_interfaceOverlay;

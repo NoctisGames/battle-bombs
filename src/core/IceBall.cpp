@@ -81,6 +81,11 @@ bool IceBall::isVisible()
     return m_isVisible;
 }
 
+bool IceBall::isDescending()
+{
+    return m_isDescending;
+}
+
 bool IceBall::isTargetReached()
 {
     return m_isTargetReached;

@@ -43,6 +43,8 @@ class BreakableBlock;
 class BombGameObject;
 class Explosion;
 class PowerUp;
+class Crater;
+class FireBall;
 class IceBall;
 class IcePatch;
 class InterfaceOverlay;
@@ -76,6 +78,8 @@ public:
     
     void renderSpaceTiles(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles);
     
+    void renderCraters(std::vector<std::unique_ptr<Crater>> &craters);
+    
     void renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
     
     void renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs);
@@ -85,6 +89,8 @@ public:
     void renderSuddenDeathMountainsIcePatches(std::vector<std::unique_ptr<IcePatch>> &icePatches);
     
     void renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
+    
+    void renderSuddenDeathGrasslandsFireBalls(std::vector<std::unique_ptr<FireBall>> &fireBalls);
     
     void renderSuddenDeathMountainsIceBalls(std::vector<std::unique_ptr<IceBall>> &iceBalls);
     

@@ -45,6 +45,8 @@
 #include "PlayerRow.h"
 #include "PlayerRowAvatar.h"
 #include "PlayerRowPlatformAvatar.h"
+#include "Crater.h"
+#include "FireBall.h"
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
@@ -99,6 +101,8 @@ void GameScreen::init()
     m_countDownNumbers.clear();
     m_displayGameOvers.clear();
     m_spaceTiles.clear();
+    m_craters.clear();
+    m_fireBalls.clear();
     m_iceBalls.clear();
     m_icePatches.clear();
     
@@ -229,192 +233,64 @@ void GameScreen::present()
 {
     m_renderer->clearScreenWithColor(0, 0, 0, 1);
     
+    m_renderer->beginFrame();
+    
     switch (m_gameState)
     {
         case WAITING_FOR_CONNECTION:
         case CONNECTION_ERROR_WAITING_FOR_INPUT:
         case WAITING_FOR_SERVER:
-            m_renderer->beginFrame();
             m_renderer->renderWaitingForServerInterface(*m_waitingForServerInterface);
-            m_renderer->endFrame();
             break;
         case WAITING_FOR_LOCAL_SETTINGS:
             // TODO, Render interface for picking a map and setting # of bots
-            m_renderer->beginFrame();
             m_renderer->renderWaitingForLocalSettingsInterface(*m_waitingForLocalSettingsInterface);
-            m_renderer->endFrame();
             break;
         case COUNTING_DOWN:
-            m_renderer->calcScrollYForPlayer(*m_player);
-            
-            m_renderer->beginFrame();
-            m_renderer->renderWorldBackground();
-            
-            m_renderer->renderSpaceTiles(m_spaceTiles);
-            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            m_renderer->renderPlayers(m_players);
-            m_renderer->renderMapBordersNear(m_mapBorders);
-            
-            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayXMovingGameObject, m_displayGameOvers);
-            
-            m_renderer->endFrame();
-            break;
         case RUNNING:
-            m_renderer->calcScrollYForPlayer(*m_player);
-            
-            m_renderer->beginFrame();
-            m_renderer->renderWorldBackground();
-            
-            m_renderer->renderSpaceTiles(m_spaceTiles);
-            m_renderer->renderExplosions(m_explosions);
-            m_renderer->renderBombs(m_bombs);
-            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            
-            if(m_isSuddenDeath)
-            {
-                switch (m_iMapType)
-                {
-                    case MAP_GRASSLANDS:
-                        break;
-                    case MAP_MOUNTAINS:
-                        m_renderer->renderSuddenDeathMountainsIcePatches(m_icePatches);
-                        break;
-                    case MAP_SPACE:
-                    default:
-                        break;
-                }
-            }
-            
-            m_renderer->renderPlayers(m_players);
-            
-            if(m_isSuddenDeath)
-            {
-                switch (m_iMapType)
-                {
-                    case MAP_GRASSLANDS:
-                        break;
-                    case MAP_MOUNTAINS:
-                        m_renderer->renderSuddenDeathMountainsIceBalls(m_iceBalls);
-                        break;
-                    case MAP_SPACE:
-                    default:
-                        break;
-                }
-            }
-            
-            m_renderer->renderMapBordersNear(m_mapBorders);
-            
-            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayXMovingGameObject, m_displayGameOvers);
-            
-            m_renderer->renderInterface(*m_interfaceOverlay);
-            
-            m_renderer->endFrame();
-            break;
         case SPECTATING:
-            m_renderer->calcScrollYForPlayer(*m_player);
-            
-            m_renderer->beginFrame();
-            m_renderer->renderWorldBackground();
-            
-            m_renderer->renderSpaceTiles(m_spaceTiles);
-            m_renderer->renderExplosions(m_explosions);
-            m_renderer->renderBombs(m_bombs);
-            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            
-            if(m_isSuddenDeath)
-            {
-                switch (m_iMapType)
-                {
-                    case MAP_GRASSLANDS:
-                        break;
-                    case MAP_MOUNTAINS:
-                        m_renderer->renderSuddenDeathMountainsIcePatches(m_icePatches);
-                        break;
-                    case MAP_SPACE:
-                    default:
-                        break;
-                }
-            }
-            
-            m_renderer->renderPlayers(m_players);
-            
-            if(m_isSuddenDeath)
-            {
-                switch (m_iMapType)
-                {
-                    case MAP_GRASSLANDS:
-                        break;
-                    case MAP_MOUNTAINS:
-                        m_renderer->renderSuddenDeathMountainsIceBalls(m_iceBalls);
-                        break;
-                    case MAP_SPACE:
-                    default:
-                        break;
-                }
-            }
-            
-            m_renderer->renderMapBordersNear(m_mapBorders);
-            
-            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayXMovingGameObject, m_displayGameOvers);
-            
-            m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
-            
-            m_renderer->endFrame();
-            break;
         case GAME_ENDING:
             m_renderer->calcScrollYForPlayer(*m_player);
             
-            m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
+            m_renderer->renderCraters(m_craters);
             m_renderer->renderSpaceTiles(m_spaceTiles);
             m_renderer->renderExplosions(m_explosions);
             m_renderer->renderBombs(m_bombs);
             m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
             
-            if(m_isSuddenDeath)
-            {
-                switch (m_iMapType)
-                {
-                    case MAP_GRASSLANDS:
-                        break;
-                    case MAP_MOUNTAINS:
-                        m_renderer->renderSuddenDeathMountainsIcePatches(m_icePatches);
-                        break;
-                    case MAP_SPACE:
-                    default:
-                        break;
-                }
-            }
+            m_renderer->renderSuddenDeathMountainsIcePatches(m_icePatches);
             
             m_renderer->renderPlayers(m_players);
             
-            if(m_isSuddenDeath)
-            {
-                switch (m_iMapType)
-                {
-                    case MAP_GRASSLANDS:
-                        break;
-                    case MAP_MOUNTAINS:
-                        m_renderer->renderSuddenDeathMountainsIceBalls(m_iceBalls);
-                        break;
-                    case MAP_SPACE:
-                    default:
-                        break;
-                }
-            }
+            m_renderer->renderSuddenDeathGrasslandsFireBalls(m_fireBalls);
+            m_renderer->renderSuddenDeathMountainsIceBalls(m_iceBalls);
             
             m_renderer->renderMapBordersNear(m_mapBorders);
             
             m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayXMovingGameObject, m_displayGameOvers);
-            
-            m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
-            
-            m_renderer->endFrame();
             break;
         default:
             break;
     }
+    
+    switch (m_gameState)
+    {
+        case RUNNING:
+            m_renderer->renderInterface(*m_interfaceOverlay);
+            break;
+        case SPECTATING:
+            m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
+            break;
+        case GAME_ENDING:
+            m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
+            break;
+        default:
+            break;
+    }
+    
+    m_renderer->endFrame();
 }
 
 int GameScreen::getState()
@@ -510,7 +386,11 @@ void GameScreen::updateRunning(float deltaTime)
             }
             break;
         case MAP_GRASSLANDS:
-            // TODO
+            if(m_player->isHitByFireBall(m_craters))
+            {
+                m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *m_player);
+                m_gameState = SPECTATING;
+            }
             break;
         case MAP_MOUNTAINS:
             if(m_player->isHitByIce(m_icePatches))
@@ -673,41 +553,7 @@ void GameScreen::updateForOffline(float deltaTime)
 {
     if(m_isOffline)
     {
-        for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-        {
-            if ((*itr)->isBot())
-            {
-                (*itr)->handlePowerUps(m_powerUps);
-                
-                if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
-                {
-                    m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
-                }
-                
-                switch(m_iMapType)
-                {
-                    case MAP_SPACE:
-                        if((*itr)->isTrappedOnFallingSpaceTile(m_spaceTiles))
-                        {
-                            m_gameListener->addLocalEventForPlayer(PLAYER_ABOUT_TO_FALL, (**itr));
-                        }
-                        else if((*itr)->isFallingDueToSpaceTile(m_spaceTiles))
-                        {
-                            m_gameListener->addLocalEventForPlayer(PLAYER_FALL, (**itr));
-                        }
-                        break;
-                    case MAP_GRASSLANDS:
-                        // TODO
-                        break;
-                    case MAP_MOUNTAINS:
-                        if((*itr)->isHitByIce(m_icePatches))
-                        {
-                            m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, (**itr));
-                        }
-                        break;
-                }
-            }
-        }
+        updateBots();
     }
 }
 

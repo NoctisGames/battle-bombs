@@ -20,6 +20,7 @@
 
 #include "GameState.h"
 
+class GameListener;
 class MapBorder;
 class SpaceTile;
 class InsideBlock;
@@ -28,6 +29,8 @@ class BombGameObject;
 class Explosion;
 class PlayerDynamicGameObject;
 class PowerUp;
+class Crater;
+class FireBall;
 class IceBall;
 class IcePatch;
 
@@ -53,6 +56,7 @@ public:
     bool isPlayerAliveAtIndex(short playerIndex);
 
 protected:
+    std::unique_ptr<GameListener> m_gameListener;
     std::vector<std::unique_ptr<MapBorder>> m_mapBorders;
     std::vector<std::unique_ptr<SpaceTile>> m_spaceTiles;
     std::vector<std::unique_ptr<InsideBlock >> m_insideBlocks;
@@ -61,6 +65,8 @@ protected:
     std::vector<std::unique_ptr<BombGameObject >> m_bombs;
     std::vector<std::unique_ptr<Explosion >> m_explosions;
     std::vector<std::unique_ptr<PowerUp >> m_powerUps;
+    std::vector<std::unique_ptr<Crater >> m_craters;
+    std::vector<std::unique_ptr<FireBall >> m_fireBalls;
     std::vector<std::unique_ptr<IceBall >> m_iceBalls;
     std::vector<std::unique_ptr<IcePatch >> m_icePatches;
     std::vector<int> m_sEventIds;
@@ -75,6 +81,8 @@ protected:
     void initializeInsideBlocksAndMapBordersForMapType(int mapType);
     
     void updateCommon(float deltaTime);
+    
+    void updateBots();
 
     void clientUpdate(rapidjson::Document &d, bool isBeginGame);
     

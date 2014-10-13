@@ -48,6 +48,8 @@
 #include "SpriteBatcher.h"
 #include "Direct3DRectangleBatcher.h"
 #include "PlayerRowAvatar.h"
+#include "Crater.h"
+#include "FireBall.h"
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"

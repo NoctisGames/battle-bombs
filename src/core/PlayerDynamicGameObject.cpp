@@ -23,6 +23,7 @@
 #include "Fire.h"
 #include "GameEvent.h"
 #include "PlayerForceFieldState.h"
+#include "Crater.h"
 #include "IcePatch.h"
 
 #include <cstring>
@@ -58,7 +59,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
     m_isDisplayingPointer = false;
 }
 
-void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
     m_fStateTime += deltaTime;
     
@@ -121,7 +122,7 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
             m_lastBombDropped = nullptr;
         }
         
-        if (isCollision(mapBorders, insideBlocks, breakableBlocks, players, bombs))
+        if (isCollision(mapBorders, insideBlocks, breakableBlocks, craters, players, bombs))
         {
             m_position->sub(deltaX, deltaY);
             updateBounds();
@@ -359,6 +360,22 @@ bool PlayerDynamicGameObject::isFallingDueToSpaceTile(std::vector<std::unique_pt
                 {
                     return true;
                 }
+            }
+        }
+    }
+    
+    return false;
+}
+
+bool PlayerDynamicGameObject::isHitByFireBall(std::vector<std::unique_ptr<Crater >> &craters)
+{
+    if(m_playerState == ALIVE)
+    {
+        for (std::vector <std::unique_ptr<Crater>> ::iterator itr = craters.begin(); itr != craters.end(); itr++)
+        {
+            if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
+            {
+                return true;
             }
         }
     }
@@ -729,7 +746,7 @@ void PlayerDynamicGameObject::handleBombErasure(BombGameObject *bomb)
 
 // Private
 
-bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
     {
@@ -758,6 +775,14 @@ bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder 
     }
     
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
+    {
+        if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        {
+            return true;
+        }
+    }
+    
+    for (std::vector < std::unique_ptr < Crater >> ::iterator itr = craters.begin(); itr != craters.end(); itr++)
     {
         if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
         {

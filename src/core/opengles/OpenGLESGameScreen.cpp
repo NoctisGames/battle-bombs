@@ -46,6 +46,8 @@
 #include "OpenGLESRectangleBatcher.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "SpriteBatcher.h"
+#include "Crater.h"
+#include "FireBall.h"
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"

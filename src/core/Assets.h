@@ -24,6 +24,7 @@ class PlayerDynamicGameObject;
 class BombGameObject;
 class Fire;
 class FallingObjectShadow;
+class FireBall;
 class IceBall;
 class IcePatch;
 class InsideBlock;
@@ -81,6 +82,10 @@ public:
     static TextureRegion& getForceFieldTextureRegion(int forceFieldState, float forceFieldStateTime);
     
     static TextureRegion& getFallingObjectShadowTextureRegion(FallingObjectShadow &fallingObjectShadow);
+    
+    static TextureRegion& getCraterTextureRegion();
+    
+    static TextureRegion& getFireBallTextureRegion(FireBall &fireBall);
     
     static TextureRegion& getIceBallTextureRegion(IceBall &iceBall);
     

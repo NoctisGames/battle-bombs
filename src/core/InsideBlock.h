@@ -21,6 +21,8 @@ public:
     
     void onHitByIceBall();
     
+    void onDestroy();
+    
     Inside_Block_State getInsideBlockState();
     
     float getStateTime();

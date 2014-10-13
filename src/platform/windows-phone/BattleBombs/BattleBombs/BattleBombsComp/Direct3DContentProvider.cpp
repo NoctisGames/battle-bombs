@@ -41,6 +41,8 @@
 #include "Global.h"
 #include "GameSound.h"
 #include "PlayerRowAvatar.h"
+#include "Crater.h"
+#include "FireBall.h"
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"

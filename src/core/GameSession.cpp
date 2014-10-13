@@ -8,6 +8,7 @@
 
 #include "pch.h"
 #include "GameSession.h"
+#include "GameListener.h"
 #include "Vector2D.h"
 #include "TouchEvent.h"
 #include "Vector2D.h"
@@ -25,6 +26,8 @@
 #include "PlayerDynamicGameObject.h"
 #include "Fire.h"
 #include "PathFinder.h"
+#include "Crater.h"
+#include "FireBall.h"
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
@@ -319,7 +322,7 @@ void GameSession::updateCommon(float deltaTime)
 
     for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
     {
-        (**itr).update(deltaTime, m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps, m_explosions, m_players, m_bombs);
+        (**itr).update(deltaTime, m_mapBorders, m_insideBlocks, m_breakableBlocks, m_craters, m_powerUps, m_explosions, m_players, m_bombs);
     }
 
     for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end();)
@@ -356,7 +359,42 @@ void GameSession::updateCommon(float deltaTime)
                 }
                 break;
             case MAP_GRASSLANDS:
-                // TODO
+                for (std::vector < std::unique_ptr < FireBall >> ::iterator itr = m_fireBalls.begin(); itr != m_fireBalls.end(); )
+                {
+                    (*itr)->update(deltaTime, m_breakableBlocks);
+                    
+                    if ((*itr)->isTargetReached())
+                    {
+                        if((*itr)->getShadow().isTargetOccupiedByInsideBlock())
+                        {
+                            InsideBlock *insideBlock = (*itr)->getShadow().getTargetInsideBlock();
+                            insideBlock->onDestroy();
+                        }
+                        else if((*itr)->getShadow().isTargetOccupiedByBreakableBlock())
+                        {
+                            BreakableBlock *breakableBlock = (*itr)->getShadow().getTargetBreakableBlock();
+                            breakableBlock->onDestroy();
+                        }
+                        
+                        m_craters.push_back(std::unique_ptr<Crater>(new Crater((*itr)->getGridX(), (*itr)->getGridY())));
+                        
+                        itr++;
+                    }
+                    else if((*itr)->isExplosionCompleted())
+                    {
+                        itr = m_fireBalls.erase(itr);
+                    }
+                    else
+                    {
+                        itr++;
+                    }
+                }
+                
+                for (std::vector < std::unique_ptr < Crater >> ::iterator itr = m_craters.begin(); itr != m_craters.end(); itr++)
+                {
+                    // This is necessary, because as breakable block destroy animations are completed, freeGameGridCell will be called
+                    PathFinder::getInstance().occupyGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
+                }
                 break;
             case MAP_MOUNTAINS:
                 for (std::vector < std::unique_ptr < IceBall >> ::iterator itr = m_iceBalls.begin(); itr != m_iceBalls.end(); )
@@ -398,6 +436,49 @@ void GameSession::updateCommon(float deltaTime)
             case MAP_BASE:
                 // TODO
                 break;
+        }
+    }
+}
+
+void GameSession::updateBots()
+{
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        if ((*itr)->isBot())
+        {
+            (*itr)->handlePowerUps(m_powerUps);
+            
+            if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
+            {
+                m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+            }
+            
+            switch(m_iMapType)
+            {
+                case MAP_SPACE:
+                    if((*itr)->isTrappedOnFallingSpaceTile(m_spaceTiles))
+                    {
+                        m_gameListener->addLocalEventForPlayer(PLAYER_ABOUT_TO_FALL, (**itr));
+                    }
+                    else if((*itr)->isFallingDueToSpaceTile(m_spaceTiles))
+                    {
+                        m_gameListener->addLocalEventForPlayer(PLAYER_FALL, (**itr));
+                    }
+                    break;
+                case MAP_GRASSLANDS:
+                    if((*itr)->isHitByFireBall(m_craters))
+                    {
+                        m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+                        m_gameState = SPECTATING;
+                    }
+                    break;
+                case MAP_MOUNTAINS:
+                    if((*itr)->isHitByIce(m_icePatches))
+                    {
+                        m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, (**itr));
+                    }
+                    break;
+            }
         }
     }
 }

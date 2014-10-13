@@ -27,6 +27,8 @@
 #include "PathFinder.h"
 #include "MapSearchNode.h"
 #include "PowerUpType.h"
+#include "Crater.h"
+#include "FireBall.h"
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
@@ -162,6 +164,8 @@ void ServerGameSession::init()
     m_explosions.clear();
     m_powerUps.clear();
     m_spaceTiles.clear();
+    m_craters.clear();
+    m_fireBalls.clear();
     m_iceBalls.clear();
     m_icePatches.clear();
     m_gameListener->freeServerMessages();
@@ -272,22 +276,7 @@ int ServerGameSession::popOldestEventId()
 
 void ServerGameSession::updateRunning(float deltaTime)
 {
-    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-    {
-        if ((*itr)->isBot())
-        {
-            (*itr)->handlePowerUps(m_powerUps);
-
-            if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
-            {
-                m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
-            }
-            else if ((*itr)->isHitByIce(m_icePatches))
-            {
-                m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, (**itr));
-            }
-        }
-    }
+    updateBots();
 
     std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
 

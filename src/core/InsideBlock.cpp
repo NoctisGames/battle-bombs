@@ -46,6 +46,11 @@ void InsideBlock::onHitByIceBall()
     m_insideBlockState = IB_FREEZING;
 }
 
+void InsideBlock::onDestroy()
+{
+    m_insideBlockState = IB_STRUCK_BY_METEOR;
+}
+
 Inside_Block_State InsideBlock::getInsideBlockState()
 {
     return m_insideBlockState;
