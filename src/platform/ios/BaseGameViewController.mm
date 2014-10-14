@@ -87,7 +87,7 @@ static bool isRunningiOS8 = false;
     self.powerUpSpeedSound = [[Sound alloc] initWithSoundNamed:@"pu_speed.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.powerUpForceFieldSound = [[Sound alloc] initWithSoundNamed:@"pu_force_field.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.powerUpPushSound = [[Sound alloc] initWithSoundNamed:@"pu_push.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
-    self.powerUpShieldSound = [[Sound alloc] initWithSoundNamed:@"pu_push.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpShieldSound = [[Sound alloc] initWithSoundNamed:@"pu_shield.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.forceFieldDownSound = [[Sound alloc] initWithSoundNamed:@"force_field_down.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.hurrySound = [[Sound alloc] initWithSoundNamed:@"hurry.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
@@ -245,7 +245,7 @@ static bool isRunningiOS8 = false;
                 [self.powerUpPushSound play];
                 break;
             case SOUND_PU_SHIELD:
-                [self.powerUpPushSound play];
+                [self.powerUpShieldSound play];
                 break;
             case SOUND_FORCE_FIELD_DOWN:
                 [self.forceFieldDownSound play];
@@ -261,6 +261,27 @@ static bool isRunningiOS8 = false;
                 break;
             case SOUND_DRAW:
                 [self.drawSound play];
+                break;
+            case SOUND_RAISE_SHIELD:
+                // TODO
+                break;
+            case SOUND_DISLODGING_SPACE_TILE:
+                // TODO
+                break;
+            case SOUND_FALLING_SPACE_TILE:
+                // TODO
+                break;
+            case SOUND_FALLING_FIRE_BALL:
+                // TODO
+                break;
+            case SOUND_CRASHING_FIRE_BALL:
+                // TODO
+                break;
+            case SOUND_FALLING_ICE_BALL:
+                // TODO
+                break;
+            case SOUND_CRASHING_ICE_BALL:
+                // TODO
                 break;
             default:
                 continue;

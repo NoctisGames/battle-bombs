@@ -50,6 +50,7 @@ private:
 	std::unique_ptr<GameSound> m_powerUpSpeedSound;
 	std::unique_ptr<GameSound> m_powerUpForceFieldSound;
 	std::unique_ptr<GameSound> m_powerUpPushSound;
+    std::unique_ptr<GameSound> m_powerUpShieldSound;
 	std::unique_ptr<GameSound> m_forceFieldDownSound;
 	std::unique_ptr<GameSound> m_deathSound;
 	std::unique_ptr<GameSound> m_hurrySound;

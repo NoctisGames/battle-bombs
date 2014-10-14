@@ -63,6 +63,13 @@ public final class RendererWrapper implements Renderer
     private static final short SOUND_HURRY = 15;
     private static final short SOUND_GAME_SET = 16;
     private static final short SOUND_DRAW = 17;
+    private static final short SOUND_RAISE_SHIELD = 18;
+    private static final short SOUND_DISLODGING_SPACE_TILE = 19;
+    private static final short SOUND_FALLING_SPACE_TILE = 20;
+    private static final short SOUND_FALLING_FIRE_BALL = 21;
+    private static final short SOUND_CRASHING_FIRE_BALL = 22;
+    private static final short SOUND_FALLING_ICE_BALL = 23;
+    private static final short SOUND_CRASHING_ICE_BALL = 24;
 
     // #frames involved in average calc (suggested values 5-100)
     private static final float movAveragePeriod = 40;
@@ -91,6 +98,7 @@ public final class RendererWrapper implements Renderer
     private final Sound powerUpSpeedSound;
     private final Sound powerUpForceFieldSound;
     private final Sound powerUpPushSound;
+    private final Sound powerUpShieldSound;
     private final Sound forceFieldDownSound;
     private final Sound deathSound;
     private final Sound hurrySound;
@@ -131,6 +139,7 @@ public final class RendererWrapper implements Renderer
         this.powerUpSpeedSound = audio.newSound("pu_speed.ogg");
         this.powerUpForceFieldSound = audio.newSound("pu_force_field.ogg");
         this.powerUpPushSound = audio.newSound("pu_push.ogg");
+        this.powerUpShieldSound = audio.newSound("pu_shield.ogg");
         this.forceFieldDownSound = audio.newSound("force_field_down.ogg");
         this.deathSound = audio.newSound("death.ogg");
         this.hurrySound = audio.newSound("hurry.ogg");
@@ -503,7 +512,7 @@ public final class RendererWrapper implements Renderer
                     powerUpPushSound.play(1);
                     break;
                 case SOUND_PU_SHIELD:
-                    powerUpPushSound.play(1);
+                    powerUpShieldSound.play(1);
                     break;
                 case SOUND_FORCE_FIELD_DOWN:
                     forceFieldDownSound.play(1);
@@ -519,6 +528,27 @@ public final class RendererWrapper implements Renderer
                     break;
                 case SOUND_DRAW:
                     drawSound.play(1);
+                    break;
+                case SOUND_RAISE_SHIELD:
+                    // TODO
+                    break;
+                case SOUND_DISLODGING_SPACE_TILE:
+                    // TODO
+                    break;
+                case SOUND_FALLING_SPACE_TILE:
+                    // TODO
+                    break;
+                case SOUND_FALLING_FIRE_BALL:
+                    // TODO
+                    break;
+                case SOUND_CRASHING_FIRE_BALL:
+                    // TODO
+                    break;
+                case SOUND_FALLING_ICE_BALL:
+                    // TODO
+                    break;
+                case SOUND_CRASHING_ICE_BALL:
+                    // TODO
                     break;
                 default:
                     continue;

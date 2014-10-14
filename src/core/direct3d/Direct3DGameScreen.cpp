@@ -154,6 +154,7 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	m_powerUpSpeedSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_speed.wav"));
 	m_powerUpForceFieldSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_force_field.wav"));
 	m_powerUpPushSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_push.wav"));
+    m_powerUpShieldSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_shield.wav"));
 	m_forceFieldDownSound = std::unique_ptr<GameSound>(new GameSound("assets\\force_field_down.wav"));
 	m_deathSound = std::unique_ptr<GameSound>(new GameSound("assets\\death.wav"));
 	m_hurrySound = std::unique_ptr<GameSound>(new GameSound("assets\\hurry.wav"));
@@ -204,7 +205,7 @@ void Direct3DGameScreen::handleSound()
 			m_powerUpPushSound->play();
 			break;
 		case SOUND_PU_SHIELD:
-			m_powerUpPushSound->play();
+			m_powerUpShieldSound->play();
 			break;
 		case SOUND_FORCE_FIELD_DOWN:
 			m_forceFieldDownSound->play();
@@ -221,6 +222,27 @@ void Direct3DGameScreen::handleSound()
 		case SOUND_DRAW:
 			m_drawSound->play();
 			break;
+        case SOUND_RAISE_SHIELD:
+            // TODO
+            break;
+        case SOUND_DISLODGING_SPACE_TILE:
+            // TODO
+            break;
+        case SOUND_FALLING_SPACE_TILE:
+            // TODO
+            break;
+        case SOUND_FALLING_FIRE_BALL:
+            // TODO
+            break;
+        case SOUND_CRASHING_FIRE_BALL:
+            // TODO
+            break;
+        case SOUND_FALLING_ICE_BALL:
+            // TODO
+            break;
+        case SOUND_CRASHING_ICE_BALL:
+            // TODO
+            break;
 		default:
 			continue;
 		}
