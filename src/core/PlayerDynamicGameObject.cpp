@@ -116,6 +116,7 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
         
         m_position->add(deltaX, deltaY);
         updateBounds();
+        updateGrid();
         
         if(m_lastBombDropped != nullptr && !OverlapTester::doRectanglesOverlap(*m_bounds, m_lastBombDropped->getBounds()))
         {
@@ -352,7 +353,7 @@ bool PlayerDynamicGameObject::isTrappedOnFallingSpaceTile(std::vector<std::uniqu
 
 bool PlayerDynamicGameObject::isFallingDueToSpaceTile(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles)
 {
-    if(m_playerState == ABOUT_TO_FALL)
+    if(m_playerState == ALIVE || m_playerState == ABOUT_TO_FALL)
     {
         for (std::vector <std::unique_ptr<SpaceTile>> ::iterator itr = spaceTiles.begin(); itr != spaceTiles.end(); itr++)
         {
@@ -792,17 +793,7 @@ bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder 
         }
     }
     
-    bool isPlayerFloatingInSpace = spaceTiles.size() > 0 ? true : false;
-    for (std::vector < std::unique_ptr < SpaceTile >> ::iterator itr = spaceTiles.begin(); itr != spaceTiles.end(); itr++)
-    {
-        if (m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY())
-        {
-            isPlayerFloatingInSpace = false;
-            break;
-        }
-    }
-    
-    return isPlayerFloatingInSpace;
+    return false;
 }
 
 void PlayerDynamicGameObject::setPlayerForceFieldState(int playerForceFieldState)

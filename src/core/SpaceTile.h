@@ -37,8 +37,6 @@ public:
     
     bool shouldPlayerStartFalling();
     
-    bool isRemove();
-    
 private:
     GameListener *m_gameListener;
     PlayerDynamicGameObject *m_fallingPlayer;

@@ -345,18 +345,9 @@ void GameSession::updateCommon(float deltaTime)
         switch (m_iMapType)
         {
             case MAP_SPACE:
-                for (std::vector < std::unique_ptr < SpaceTile >> ::iterator itr = m_spaceTiles.begin(); itr != m_spaceTiles.end(); )
+                for (std::vector < std::unique_ptr < SpaceTile >> ::iterator itr = m_spaceTiles.begin(); itr != m_spaceTiles.end(); itr++)
                 {
                     (*itr)->update(deltaTime, m_isSuddenDeath, m_players, m_bombs, m_insideBlocks, m_breakableBlocks, m_powerUps);
-                    
-                    if ((*itr)->isRemove())
-                    {
-                        itr = m_spaceTiles.erase(itr);
-                    }
-                    else
-                    {
-                        itr++;
-                    }
                 }
                 break;
             case MAP_GRASSLANDS:

@@ -130,15 +130,7 @@ void SpaceTile::update(float deltaTime, bool isSuddenDeath, std::vector<std::uni
             
             if(m_position->getY() < (m_fOrigY - 1))
             {
-                if(m_fallingPlayer != nullptr)
-                {
-                    m_shouldPlayerStartFalling = true;
-                }
-            }
-            
-            if(m_position->getY() < 0)
-            {
-                m_spaceTileState = ST_ENTERING_ATMOSPHERE;
+                m_shouldPlayerStartFalling = true;
             }
         }
     }
@@ -162,9 +154,4 @@ float SpaceTile::getStateTime()
 bool SpaceTile::shouldPlayerStartFalling()
 {
     return m_shouldPlayerStartFalling;
-}
-
-bool SpaceTile::isRemove()
-{
-    return m_spaceTileState == ST_ENTERING_ATMOSPHERE;
 }
