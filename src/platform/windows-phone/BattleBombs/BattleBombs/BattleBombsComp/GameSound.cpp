@@ -9,7 +9,7 @@
 #include "pch.h"
 #include "GameSound.h"
 #include "Global.h"
-#include "Helpers/SoundFileReader.h"
+#include "SoundFileReader.h"
 
 GameSound::GameSound(Platform::String^ fileName)
 {

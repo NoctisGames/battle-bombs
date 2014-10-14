@@ -37,27 +37,37 @@
 @property (strong, nonatomic) Sound *powerUpSpeedSound;
 @property (strong, nonatomic) Sound *powerUpForceFieldSound;
 @property (strong, nonatomic) Sound *powerUpPushSound;
+@property (strong, nonatomic) Sound *powerUpShieldSound;
 @property (strong, nonatomic) Sound *forceFieldDownSound;
 @property (strong, nonatomic) Sound *deathSound;
+@property (strong, nonatomic) Sound *hurrySound;
 @property (strong, nonatomic) Sound *gameSetSound;
 @property (strong, nonatomic) Sound *drawSound;
+@property (strong, nonatomic) Sound *raiseShieldSound;
+@property (strong, nonatomic) Sound *dislodgingSpaceTileSound;
+@property (strong, nonatomic) Sound *fallingSpaceTileSound;
+@property (strong, nonatomic) Sound *fallingObjectSound;
+@property (strong, nonatomic) Sound *crashingFireBallSound;
+@property (strong, nonatomic) Sound *crashingIceBallSound;
 
 @end
 
 @implementation BaseGameViewController
 
 static Logger *logger = nil;
+static bool isRunningiOS8 = false;
 
 + (void)initialize
 {
     logger = [[Logger alloc] initWithClass:[BaseGameViewController class]];
+    isRunningiOS8 = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0");
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     if (!self.context)
     {
         [logger error:@"Failed to create ES context"];
@@ -68,12 +78,9 @@ static Logger *logger = nil;
     view.context = self.context;
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     view.userInteractionEnabled = YES;
-    
     [view setMultipleTouchEnabled:YES];
     
-    init([self.username UTF8String], [self isOffline]);
-    
-    [self setupGL];
+    self.preferredFramesPerSecond = 60;
     
     self.countDown3Sound = [[Sound alloc] initWithSoundNamed:@"countdown_3.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.countDown2Sound = [[Sound alloc] initWithSoundNamed:@"countdown_2.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
@@ -86,10 +93,40 @@ static Logger *logger = nil;
     self.powerUpSpeedSound = [[Sound alloc] initWithSoundNamed:@"pu_speed.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.powerUpForceFieldSound = [[Sound alloc] initWithSoundNamed:@"pu_force_field.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.powerUpPushSound = [[Sound alloc] initWithSoundNamed:@"pu_push.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpShieldSound = [[Sound alloc] initWithSoundNamed:@"pu_shield.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.forceFieldDownSound = [[Sound alloc] initWithSoundNamed:@"force_field_down.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.hurrySound = [[Sound alloc] initWithSoundNamed:@"hurry.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.gameSetSound = [[Sound alloc] initWithSoundNamed:@"game_set.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.drawSound = [[Sound alloc] initWithSoundNamed:@"draw.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
+    self.raiseShieldSound = [[Sound alloc] initWithSoundNamed:@"shield_raise.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
+    self.dislodgingSpaceTileSound = [[Sound alloc] initWithSoundNamed:@"dislodging_space_tile.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
+    self.fallingSpaceTileSound = [[Sound alloc] initWithSoundNamed:@"falling_space_tile.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
+    self.fallingObjectSound = [[Sound alloc] initWithSoundNamed:@"falling_object.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
+    self.crashingFireBallSound = [[Sound alloc] initWithSoundNamed:@"crashing_fire_ball.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
+    self.crashingIceBallSound = [[Sound alloc] initWithSoundNamed:@"crashing_ice_ball.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
+    
+    [EAGLContext setCurrentContext:self.context];
+    
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    CGSize screenSize = CGSizeMake(screenBounds.size.width * screenScale, screenBounds.size.height * screenScale);
+    
+    CGSize newSize = CGSizeMake(screenSize.width, screenSize.height);
+    newSize.width = roundf(newSize.width);
+    newSize.height = roundf(newSize.height);
+    
+    if([Logger isDebugEnabled])
+    {
+        [logger debug:[NSString stringWithFormat:@"dimension %f x %f", newSize.width, newSize.height]];
+    }
+    
+    init([self.username UTF8String], [self isOffline], isRunningiOS8);
+    
+    on_surface_created(newSize.width, newSize.height);
+    
+    on_surface_changed(newSize.width, newSize.height, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
+    on_resume();
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onPause)
@@ -149,6 +186,9 @@ static Logger *logger = nil;
             break;
         case 1:
             [self handleGameState:1];
+            break;
+        case 2:
+            [self handleGameState:2];
             break;
         default:
             break;
@@ -216,17 +256,41 @@ static Logger *logger = nil;
             case SOUND_PU_PUSH:
                 [self.powerUpPushSound play];
                 break;
+            case SOUND_PU_SHIELD:
+                [self.powerUpShieldSound play];
+                break;
             case SOUND_FORCE_FIELD_DOWN:
                 [self.forceFieldDownSound play];
                 break;
             case SOUND_DEATH:
                 [self.deathSound play];
                 break;
+            case SOUND_HURRY:
+                [self.hurrySound play];
+                break;
             case SOUND_GAME_SET:
                 [self.gameSetSound play];
                 break;
             case SOUND_DRAW:
                 [self.drawSound play];
+                break;
+            case SOUND_RAISE_SHIELD:
+                [self.raiseShieldSound play];
+                break;
+            case SOUND_DISLODGING_SPACE_TILE:
+                [self.dislodgingSpaceTileSound play];
+                break;
+            case SOUND_FALLING_SPACE_TILE:
+                [self.fallingSpaceTileSound play];
+                break;
+            case SOUND_FALLING_OBJECT:
+                [self.fallingObjectSound play];
+                break;
+            case SOUND_CRASHING_FIRE_BALL:
+                [self.crashingFireBallSound play];
+                break;
+            case SOUND_CRASHING_ICE_BALL:
+                [self.crashingIceBallSound play];
                 break;
             default:
                 continue;
@@ -291,33 +355,6 @@ static Logger *logger = nil;
 - (bool)isOffline
 {
     return false;
-}
-
-#pragma mark <Private>
-
-- (void)setupGL
-{
-    [EAGLContext setCurrentContext:self.context];
-    
-    self.preferredFramesPerSecond = 60;
-    
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-    CGSize screenSize = CGSizeMake(screenBounds.size.width * screenScale, screenBounds.size.height * screenScale);
-    
-    CGSize newSize = CGSizeMake(screenSize.width, screenSize.height);
-    newSize.width = roundf(newSize.width);
-	newSize.height = roundf(newSize.height);
-    
-    if([Logger isDebugEnabled])
-    {
-        [logger debug:[NSString stringWithFormat:@"dimension %f x %f", newSize.width, newSize.height]];
-    }
-    
-    on_surface_created(newSize.width, newSize.height);
-    
-    on_surface_changed(newSize.width, newSize.height, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
-    on_resume();
 }
 
 @end

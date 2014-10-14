@@ -68,7 +68,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_init(JNI
 	UNUSED(cls);
 
 	const char *nativeUsername = (env)->GetStringUTFChars(username, nullptr);
-	init(nativeUsername, is_offline);
+	init(nativeUsername, is_offline, false);
 }
 
 JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1surface_1created(JNIEnv * env, jclass cls, jint pixel_width, jint pixel_height)

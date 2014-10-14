@@ -17,14 +17,15 @@
 
 class InsideBlock;
 class BreakableBlock;
+class PlayerDynamicGameObject;
 class Fire;
 
 class Explosion : public GridGameObject
 {
 public:
-    Explosion(short power, int gridX, int gridY, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, float width = GRID_CELL_WIDTH, float height = GRID_CELL_HEIGHT);
+    Explosion(short power, int gridX, int gridY, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, float width = GRID_CELL_WIDTH, float height = GRID_CELL_HEIGHT);
     
-    void update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+    void update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
     
     std::vector<std::unique_ptr<Fire >> & getFireParts();
     
@@ -56,7 +57,7 @@ private:
     int m_iDownGridY;
     bool m_isComplete;
     
-    void runBlockLogic(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+    void runBlockLogic(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
     
     void runPostBlockLogic();
 };

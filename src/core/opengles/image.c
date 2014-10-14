@@ -7,7 +7,6 @@
 //
 
 #include "image.h"
-#include "platform_log.h"
 #include <assert.h>
 #include "png.h"
 #include <string.h>
@@ -52,7 +51,7 @@ RawImageData get_raw_image_data_from_png(const void* png_data, const int png_dat
 
 	if (setjmp(png_jmpbuf(png_ptr)))
     {
-		CRASH("Error reading PNG file!");
+        // Error reading PNG file!
 	}
 
 	const PngInfo png_info = read_and_update_info(png_ptr, info_ptr);

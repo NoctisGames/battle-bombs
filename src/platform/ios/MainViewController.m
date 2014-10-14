@@ -60,8 +60,8 @@
                 alertTextField.placeholder = NSLocalizedString(@"enter_username_hint", nil);
                 
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                NSString *username = [userDefaults objectForKey:@"USERNAME"];
-                [alertTextField setText:username];
+                _username = [userDefaults objectForKey:@"USERNAME"];
+                [alertTextField setText:_username];
                 
                 [alert show];
             }
@@ -79,12 +79,7 @@
     
     OnComplete onFailure = ^(NSDictionary *jsonResponse)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"connection_error_title", nil)
-                                                        message:NSLocalizedString(@"connection_error_message", nil)
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"connection_error_cancel", nil)
-                                              otherButtonTitles:nil];
-        [alert show];
+        [self showConnectionErrorMessage];
     };
     
     [[TGApiManager getInstance] sendJsonRequestWithOnSuccess:onSuccess andOnFailure:onFailure];
@@ -104,8 +99,8 @@
     alertTextField.placeholder = NSLocalizedString(@"enter_username_hint", nil);
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *username = [userDefaults objectForKey:@"USERNAME"];
-    [alertTextField setText:username];
+    _username = [userDefaults objectForKey:@"USERNAME"];
+    [alertTextField setText:_username];
     
     [alert show];
 }
@@ -159,6 +154,18 @@
         [userDefaults setObject:_username forKey:@"USERNAME"];
         [userDefaults synchronize];
     }
+}
+
+#pragma mark <Public API>
+
+- (void)showConnectionErrorMessage
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"connection_error_title", nil)
+                                                    message:NSLocalizedString(@"connection_error_message", nil)
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"connection_error_cancel", nil)
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 @end

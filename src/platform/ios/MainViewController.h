@@ -15,4 +15,6 @@
 
 - (IBAction)startQuickOfflineMatch:(id)sender;
 
+- (void)showConnectionErrorMessage;
+
 @end

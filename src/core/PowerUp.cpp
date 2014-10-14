@@ -13,6 +13,8 @@
 
 PowerUp::PowerUp(int gridX, int gridY, int powerUpType) : GridGameObject(gridX, gridY, GRID_CELL_WIDTH * 4 / 5, GRID_CELL_HEIGHT * 4 / 5, 0)
 {
+    m_position->add(0, GRID_CELL_HEIGHT / 4);
+    
     m_fStateTime = 0;
 	m_isPickedUp = false;
 	m_powerUpType = powerUpType;

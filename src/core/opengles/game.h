@@ -9,7 +9,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-void init(const char *username, bool isOffline);
+void init(const char *username, bool isOffline, bool isRunningIOS8);
 
 void on_surface_created(int pixelWidth, int pixelHeight);
 

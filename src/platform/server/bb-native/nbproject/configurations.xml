@@ -10,6 +10,8 @@
       <itemPath>../../../core/DynamicGameObject.h</itemPath>
       <itemPath>../../../core/DynamicGridGameObject.h</itemPath>
       <itemPath>../../../core/Explosion.h</itemPath>
+      <itemPath>../../../core/FallingObjectShadow.h</itemPath>
+      <itemPath>../../../core/FallingObjectShadowState.h</itemPath>
       <itemPath>../../../core/Fire.h</itemPath>
       <itemPath>../../../core/FireType.h</itemPath>
       <itemPath>../../../core/GameConstants.h</itemPath>
@@ -19,6 +21,8 @@
       <itemPath>../../../core/GameSession.h</itemPath>
       <itemPath>../../../core/GameState.h</itemPath>
       <itemPath>../../../core/GridGameObject.h</itemPath>
+      <itemPath>../../../core/IceBall.h</itemPath>
+      <itemPath>../../../core/IcePatch.h</itemPath>
       <itemPath>../../../core/InsideBlock.h</itemPath>
       <itemPath>../../../core/Line.h</itemPath>
       <itemPath>../../../core/MapBorder.h</itemPath>
@@ -55,11 +59,14 @@
       <itemPath>../../../core/DynamicGameObject.cpp</itemPath>
       <itemPath>../../../core/DynamicGridGameObject.cpp</itemPath>
       <itemPath>../../../core/Explosion.cpp</itemPath>
+      <itemPath>../../../core/FallingObjectShadow.cpp</itemPath>
       <itemPath>../../../core/Fire.cpp</itemPath>
       <itemPath>src/GameListener.cpp</itemPath>
       <itemPath>../../../core/GameObject.cpp</itemPath>
       <itemPath>../../../core/GameSession.cpp</itemPath>
       <itemPath>../../../core/GridGameObject.cpp</itemPath>
+      <itemPath>../../../core/IceBall.cpp</itemPath>
+      <itemPath>../../../core/IcePatch.cpp</itemPath>
       <itemPath>../../../core/InsideBlock.cpp</itemPath>
       <itemPath>../../../core/Line.cpp</itemPath>
       <itemPath>../../../core/MapBorder.cpp</itemPath>
@@ -143,6 +150,10 @@
       </item>
       <item path="../../../core/BreakableBlock.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/Crater.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/Crater.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/DynamicGameObject.cpp"
             ex="false"
             tool="1"
@@ -164,9 +175,28 @@
       </item>
       <item path="../../../core/Explosion.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/FallingObjectShadow.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/FallingObjectShadow.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/FallingObjectShadowState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../../../core/Fire.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/Fire.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/FireBall.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/FireBall.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/FireType.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -189,6 +219,14 @@
       <item path="../../../core/GridGameObject.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/GridGameObject.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/IceBall.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/IceBall.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/IcePatch.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/IcePatch.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/InsideBlock.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -246,6 +284,12 @@
       <item path="../../../core/Renderer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/ResourceConstants.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/SpaceTile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/SpaceTile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/SpaceTileState.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/Triangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -325,6 +369,10 @@
       </item>
       <item path="../../../core/BreakableBlock.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/Crater.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/Crater.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/DynamicGameObject.cpp"
             ex="false"
             tool="1"
@@ -346,9 +394,28 @@
       </item>
       <item path="../../../core/Explosion.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/FallingObjectShadow.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/FallingObjectShadow.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/FallingObjectShadowState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../../../core/Fire.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/Fire.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/FireBall.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/FireBall.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/FireType.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -371,6 +438,14 @@
       <item path="../../../core/GridGameObject.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/GridGameObject.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/IceBall.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/IceBall.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/IcePatch.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/IcePatch.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/InsideBlock.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -428,6 +503,12 @@
       <item path="../../../core/Renderer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/ResourceConstants.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/SpaceTile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/SpaceTile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/SpaceTileState.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/Triangle.cpp" ex="false" tool="1" flavor2="0">
       </item>

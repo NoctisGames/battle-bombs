@@ -38,21 +38,16 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final String BREAKABLE_BLOCK_POWER_UP_FLAGS = "breakableBlockPowerUpFlags";
     private static final int TIME_BETWEEN_ROUNDS = 20;
     private static final int PLATFORM_UNKNOWN = 0;
-    private static final int PLATFORM_ANDROID = 1;
-    private static final int PLATFORM_IOS = 2;
-    private static final int PLATFORM_WINDOWS_PHONE = 3;
     private static final int NUM_MAPS = 3;
     private static final short PRE_GAME_SERVER_UPDATE = 1335;
     private static final short BEGIN_SPECTATE = 1336;
     private static final short BEGIN_GAME = 1337;
     private static final short CLIENT_UPDATE = 1338;
-    private static final short GAME_OVER = 1339;
-    private static final int PLAYER_DEATH = 9;
+    private static final short SUDDEN_DEATH = 1339;
+    private static final short GAME_OVER = 1340;
+    private static final int PLAYER_DEATH = 11;
     private static final int PLAYER_EVENT_BASE = 100000000;
     private static final int PLAYER_EVENT_DIRECTION_BASE = 10000000;
-    private static final int PLAYER_EVENT_GRID_X_BASE = 100000;
-    private static final int PLAYER_EVENT_GRID_Y_BASE = 1000;
-    private static final int PLAYER_EVENT_MOD_BASE = 100;
 
     // smooth constant elements to play with
     private static final float movAveragePeriod = 40; // #frames involved in average calc (suggested values 5-100)
@@ -76,9 +71,11 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
 
     private int _numSecondsLeftForRound;
     private float _stateTime;
-    private float _timeSinceLastPlayersAliveUpdate;
+    private float _oneOrLessPlayersAliveTimer;
     private float _countdownTime;
     private boolean _isGameRunning;
+    private boolean _isGameCountingDown;
+    private boolean _isSuddenDeathMode;
     private float smoothedDeltaRealTime_ms = 17.5f; // initial value, Optionally you can save the new computed value (will change with each hardware) in Preferences to optimize the first drawing frames
     private float movAverageDeltaTime_ms = smoothedDeltaRealTime_ms; // mov Average start with default value
     private long lastRealTimeMeasurement_ms; // temporal storage for last time measurement
@@ -88,9 +85,11 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     {
         _room = room;
         _stateTime = 0;
-        _timeSinceLastPlayersAliveUpdate = 0;
+        _oneOrLessPlayersAliveTimer = 0;
         _countdownTime = 0;
         _isGameRunning = false;
+        _isGameCountingDown = false;
+        _isSuddenDeathMode = false;
 
         System.out.println("Creating Adapter for Room: " + _room.getName() + ", with MAX USERS: " + _room.getMaxUsers());
 
@@ -112,12 +111,15 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             {
                 if (!_playerSpotsOccupied[i])
                 {
-                    _stateTime = 0;
-                    _countdownTime = 0;
+                    if (!_isGameRunning)
+                    {
+                        _stateTime = 0;
+                        _countdownTime = 0;
+                        _oneOrLessPlayersAliveTimer = 0;
+                    }
 
                     _playerSpotsOccupied[i] = true;
-                    _activePlayerNames[i] = user.getName();
-                    _inRoomUserSessionDataMap.put(user, new UserSessionData(0, i, PLATFORM_UNKNOWN));
+                    _inRoomUserSessionDataMap.put(user, new UserSessionData(user.getName(), 0, i, PLATFORM_UNKNOWN));
 
                     System.out.println(user.getName() + " joined the room");
 
@@ -178,121 +180,130 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             else
             {
                 _stateTime += deltaTime;
-                _timeSinceLastPlayersAliveUpdate += deltaTime;
-                while (_stateTime >= 1)
+
+                if (_isGameCountingDown)
                 {
-                    _numSecondsLeftForRound--;
-                    _stateTime -= 1;
-                }
-                
-                if (_timeSinceLastPlayersAliveUpdate > 5)
-                {
-                    try
+                    if (_stateTime >= 3)
                     {
-                        JSONObject tobeSent = new JSONObject();
-                        tobeSent.put(EVENT_TYPE, CLIENT_UPDATE);
-
-                        for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
-                        {
-                            tobeSent.put("playerIndex" + playerIndex + "Alive", is_player_alive(_room.getId(), playerIndex));
-                        }
-
-                        updateRoomWithMessage(tobeSent.toString());
-                    }
-                    catch (JSONException e)
-                    {
-                        System.err.println(e.toString());
-                    }
-
-                    _timeSinceLastPlayersAliveUpdate = 0;
-                }
-                
-                short numAlive = 0;
-                short winningPlayerIndex = -1;
-                for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
-                {
-                    if (is_player_alive(_room.getId(), playerIndex))
-                    {
-                        winningPlayerIndex = playerIndex;
-                        numAlive++;
-                    }
-                }
-
-                // This is a temporary hack
-                // we are using -3 here to account for the 3 second countdown
-                // before the game starts on the client
-                if (_numSecondsLeftForRound > -3 && numAlive > 1)
-                {
-                    for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
-                    {
-                        IUser user = (IUser) entry.getKey();
-                        if (_inRoomUserSessionDataMap.get(user)._timeSinceLastChat > 1000)
-                        {
-                            short playerIndex = _inRoomUserSessionDataMap.get(user)._playerIndex;
-                            if (!_playerSpotsReceivedGameStateCommand[playerIndex] && _numSecondsLeftForRound >= 3)
-                            {
-                                String beginGameCommand = getGameStateCommand(BEGIN_SPECTATE);
-                                if (beginGameCommand != null)
-                                {
-                                    updateRoomWithMessage(beginGameCommand);
-                                }
-
-                                _playerSpotsReceivedGameStateCommand[playerIndex] = true;
-                                logRoom();
-                            }
-                        }
+                        _isGameCountingDown = false;
+                        _stateTime -= 3;
                     }
 
                     update(_room.getId(), deltaTime);
-
-                    int eventId = get_oldest_event_id(_room.getId());
-
-                    if (eventId > 0)
-                    {
-                        String eventsMessage = eventId + ",";
-                        while ((eventId = get_oldest_event_id(_room.getId())) > 0)
-                        {
-                            eventsMessage += eventId + ",";
-                        }
-
-                        eventsMessage += "0"; // Terminate with 0
-
-                        try
-                        {
-                            JSONObject tobeSent = new JSONObject();
-                            tobeSent.put(EVENT_TYPE, CLIENT_UPDATE);
-                            tobeSent.put(EVENTS, eventsMessage);
-
-                            appendBotData(tobeSent);
-
-                            _room.BroadcastChat(SERVER, tobeSent.toString());
-                        }
-                        catch (JSONException e)
-                        {
-                            System.err.println(e.toString());
-                        }
-                    }
                 }
                 else
                 {
-                    endGame();
-
-                    boolean hasWinner = numAlive == 1;
-
-                    try
+                    while (_stateTime >= 1)
                     {
-                        JSONObject tobeSent = new JSONObject();
-                        tobeSent.put(EVENT_TYPE, GAME_OVER);
-                        tobeSent.put(HAS_WINNER, hasWinner);
-                        tobeSent.put(WINNING_PLAYER_INDEX, winningPlayerIndex);
-
-                        updateRoomWithMessage(tobeSent.toString());
-
-                        System.out.println(GAME_OVER_LOG);
+                        _numSecondsLeftForRound--;
+                        _stateTime -= 1;
                     }
-                    catch (JSONException e)
+
+                    short numAlive = 0;
+                    short winningPlayerIndex = -1;
+                    for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
                     {
-                        System.err.println(e.toString());
+                        if (is_player_alive(_room.getId(), playerIndex))
+                        {
+                            winningPlayerIndex = playerIndex;
+                            numAlive++;
+                        }
+                    }
+
+                    if (_numSecondsLeftForRound > 0 && numAlive > 1)
+                    {
+                        for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
+                        {
+                            IUser user = (IUser) entry.getKey();
+                            if (_inRoomUserSessionDataMap.get(user)._timeSinceLastChat > 1000)
+                            {
+                                short playerIndex = _inRoomUserSessionDataMap.get(user)._playerIndex;
+                                if (!_playerSpotsReceivedGameStateCommand[playerIndex] && _numSecondsLeftForRound >= 6)
+                                {
+                                    String beginGameCommand = getGameStateCommand(BEGIN_SPECTATE);
+                                    if (beginGameCommand != null)
+                                    {
+                                        updateRoomWithMessage(beginGameCommand);
+                                    }
+
+                                    _playerSpotsReceivedGameStateCommand[playerIndex] = true;
+                                    logRoom();
+                                }
+                            }
+                        }
+
+                        if (!_isSuddenDeathMode && _numSecondsLeftForRound <= 60)
+                        {
+                            try
+                            {
+                                JSONObject tobeSent = new JSONObject();
+                                tobeSent.put(EVENT_TYPE, SUDDEN_DEATH);
+
+                                updateRoomWithMessage(tobeSent.toString());
+
+                                _isSuddenDeathMode = true;
+                            }
+                            catch (JSONException e)
+                            {
+                                System.err.println(e.toString());
+                            }
+                        }
+
+                        update(_room.getId(), deltaTime);
+
+                        int eventId = get_oldest_event_id(_room.getId());
+
+                        if (eventId > 0)
+                        {
+                            String eventsMessage = eventId + ",";
+                            while ((eventId = get_oldest_event_id(_room.getId())) > 0)
+                            {
+                                eventsMessage += eventId + ",";
+                            }
+
+                            eventsMessage += "0"; // Terminate with 0
+
+                            try
+                            {
+                                JSONObject tobeSent = new JSONObject();
+                                tobeSent.put(EVENT_TYPE, CLIENT_UPDATE);
+                                tobeSent.put(EVENTS, eventsMessage);
+
+                                appendBotData(tobeSent);
+
+                                _room.BroadcastChat(SERVER, tobeSent.toString());
+                            }
+                            catch (JSONException e)
+                            {
+                                System.err.println(e.toString());
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _oneOrLessPlayersAliveTimer += deltaTime;
+                        if (_oneOrLessPlayersAliveTimer > 0.5f)
+                        {
+                            endGame();
+
+                            boolean hasWinner = numAlive == 1;
+
+                            try
+                            {
+                                JSONObject tobeSent = new JSONObject();
+                                tobeSent.put(EVENT_TYPE, GAME_OVER);
+                                tobeSent.put(HAS_WINNER, hasWinner);
+                                tobeSent.put(WINNING_PLAYER_INDEX, winningPlayerIndex);
+
+                                updateRoomWithMessage(tobeSent.toString());
+
+                                System.out.println(GAME_OVER_LOG);
+                            }
+                            catch (JSONException e)
+                            {
+                                System.err.println(e.toString());
+                            }
+                        }
                     }
                 }
             }
@@ -303,7 +314,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             _countdownTime += deltaTime;
             if (_countdownTime > 1)
             {
-                _countdownTime = 0;
+                _countdownTime -= 1;
 
                 try
                 {
@@ -363,12 +374,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     i++;
                 }
 
-                mapType++;
-                if (mapType == NUM_MAPS)
-                {
-                    mapType = 0;
-                }
-
                 init(_room.getId(), _inGameUserSessionDataMap.size(), mapType);
 
                 for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
@@ -393,7 +398,10 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     updateRoomWithMessage(beginGameCommand);
 
                     _isGameRunning = true;
+                    _isGameCountingDown = true;
+                    _isSuddenDeathMode = false;
                     _stateTime = 0;
+                    _oneOrLessPlayersAliveTimer = 0;
                     _countdownTime = 0;
 
                     System.out.println(GAME_BEGIN_LOG);
@@ -403,6 +411,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         else
         {
             _stateTime = 0;
+            _oneOrLessPlayersAliveTimer = 0;
             _countdownTime = 0;
         }
 
@@ -522,9 +531,17 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private void endGame()
     {
         _isGameRunning = false;
+        _isGameCountingDown = false;
+        _isSuddenDeathMode = false;
         _stateTime = 0;
-        _timeSinceLastPlayersAliveUpdate = 0;
+        _oneOrLessPlayersAliveTimer = 0;
         _countdownTime = 0;
+
+        mapType++;
+        if (mapType == NUM_MAPS)
+        {
+            mapType = 0;
+        }
     }
 
     private void removeUser(IUser user, boolean onUserLeaveRequest)

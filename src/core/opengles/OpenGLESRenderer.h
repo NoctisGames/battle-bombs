@@ -22,15 +22,7 @@ public:
     
     virtual void beginFrame();
     
-    virtual void renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
-    
-    virtual void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface);
-    
-    virtual void renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
-    
     virtual void endFrame();
-    
-    virtual void cleanUp();
 };
 
 #endif /* defined(__battle_bombs__OpenGLESRenderer__) */

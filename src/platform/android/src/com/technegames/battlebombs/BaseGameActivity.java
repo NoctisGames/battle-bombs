@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
@@ -22,7 +23,7 @@ public abstract class BaseGameActivity extends Activity
 
     protected RendererWrapper _rendererWrapper;
     private GLSurfaceView _glSurfaceView;
-    private AdView _adView;
+    protected AdView _adView;
     protected String _username;
 
     protected abstract boolean isOffline();
@@ -31,6 +32,11 @@ public abstract class BaseGameActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        // Do the stuff that initialize() would do for you
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
         setContentView(R.layout.activity_game);
 
@@ -45,14 +51,12 @@ public abstract class BaseGameActivity extends Activity
 
         _rendererWrapper = new RendererWrapper(this, size.x, size.y, _username, isOffline());
         _glSurfaceView = new GLSurfaceView(this);
-        _glSurfaceView.setEGLContextClientVersion(1);
+        _glSurfaceView.setEGLContextClientVersion(2);
         _glSurfaceView.setRenderer(_rendererWrapper);
 
         LinearLayout gameContainer = (LinearLayout) findViewById(R.id.game);
         gameContainer.addView(_glSurfaceView);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         _glSurfaceView.setOnTouchListener(new OnTouchListener()
@@ -92,9 +96,8 @@ public abstract class BaseGameActivity extends Activity
         });
 
         _adView = (AdView) findViewById(R.id.adView);
-        _adView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        AdRequest adRequest = new AdRequest.Builder().build();
 
         _adView.loadAd(adRequest);
     }
@@ -116,15 +119,18 @@ public abstract class BaseGameActivity extends Activity
     @Override
     protected void onPause()
     {
+        _rendererWrapper.onPause();
+        _glSurfaceView.onPause();
+
         if (_adView != null)
         {
             _adView.pause();
         }
 
-        _rendererWrapper.onPause();
-        _glSurfaceView.onPause();
-
-        finish();
+        if (!isFinishing())
+        {
+            finish();
+        }
 
         super.onPause();
     }
@@ -136,6 +142,7 @@ public abstract class BaseGameActivity extends Activity
         {
             _adView.destroy();
         }
+
         super.onDestroy();
     }
 

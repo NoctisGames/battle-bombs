@@ -58,17 +58,31 @@ bool PathFinder::isLocationOccupiedByOtherPlayer(std::vector<std::unique_ptr<Pla
     return false;
 }
 
-bool PathFinder::isLocationOccupiedByBombOrExplosionPath(std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, int gridX, int gridY)
+bool PathFinder::isLocationOccupiedByBombOrExplosionPath(std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, int gridX, int gridY, bool isCurrentlyTakingCover)
 {
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
     {
         if(gridX == (*itr)->getGridX() && gridY >= (*itr)->getGridY() - (*itr)->getPower() && gridY <= (*itr)->getGridY() + (*itr)->getPower())
         {
-            return true;
+            if(isCurrentlyTakingCover)
+            {
+                return (*itr)->getStateTime() > 1.8f;
+            }
+            else
+            {
+                return true;
+            }
         }
         else if(gridY == (*itr)->getGridY() && gridX >= (*itr)->getGridX() - (*itr)->getPower() && gridX <= (*itr)->getGridX() + (*itr)->getPower())
         {
-            return true;
+            if(isCurrentlyTakingCover)
+            {
+                return (*itr)->getStateTime() > 1.8f;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
     
@@ -140,7 +154,7 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             // tX is Traversal X
             for (int tX = gridLeftX; tX <= gridRightX; tX++)
             {
-                if(PathFinder::getInstance().getGridCellCost(tX, gridTopY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, tX, gridTopY))
+                if(PathFinder::getInstance().getGridCellCost(tX, gridTopY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, tX, gridTopY, false))
                 {
                     if(!hasBombEscapeNodeBeenUsedAlready(badBombEscapeNodes, tX, gridTopY))
                     {
@@ -163,7 +177,7 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             // tX is Traversal X
             for (int tX = gridLeftX; tX <= gridRightX; tX++)
             {
-                if(PathFinder::getInstance().getGridCellCost(tX, gridBottomY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, tX, gridBottomY))
+                if(PathFinder::getInstance().getGridCellCost(tX, gridBottomY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, tX, gridBottomY, false))
                 {
                     if(!hasBombEscapeNodeBeenUsedAlready(badBombEscapeNodes, tX, gridBottomY))
                     {
@@ -186,7 +200,7 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             // tY is Traversal Y
             for (int tY = gridBottomY; tY <= gridTopY; tY++)
             {
-                if(PathFinder::getInstance().getGridCellCost(gridLeftX, tY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, gridLeftX, tY))
+                if(PathFinder::getInstance().getGridCellCost(gridLeftX, tY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, gridLeftX, tY, false))
                 {
                     if(!hasBombEscapeNodeBeenUsedAlready(badBombEscapeNodes, gridLeftX, tY))
                     {
@@ -209,7 +223,7 @@ bool PathFinder::calculateClosestSafeNodeFromStartingNode(std::vector<std::uniqu
             // tY is Traversal Y
             for (int tY = gridBottomY; tY <= gridTopY; tY++)
             {
-                if(PathFinder::getInstance().getGridCellCost(gridRightX, tY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, gridRightX, tY))
+                if(PathFinder::getInstance().getGridCellCost(gridRightX, tY) != 9 && !isLocationOccupiedByBombOrExplosionPath(bombs, explosions, gridRightX, tY, false))
                 {
                     if(!hasBombEscapeNodeBeenUsedAlready(badBombEscapeNodes, gridRightX, tY))
                     {
@@ -408,7 +422,8 @@ void PathFinder::resetGameGrid()
     {
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
-            game_grid[j][i] = 1;
+            _gameGrid[j][i] = 1;
+            _gameGridOverlay[j][i] = 1;
         }
     }
 }
@@ -419,54 +434,64 @@ void PathFinder::initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &
     {
         int gridX = (*itr)->getGridX();
         int gridY = (*itr)->getGridY();
-        game_grid[gridX][gridY] = 9;
+        _gameGrid[gridX][gridY] = 9;
     }
     
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
     {
         int gridX = (*itr)->getGridX();
         int gridY = (*itr)->getGridY();
-        game_grid[gridX][gridY] = 9;
+        _gameGrid[gridX][gridY] = 9;
     }
     
     // For Map Borders
     
-    game_grid[0][0] = 9;
-    game_grid[1][0] = 9;
-    game_grid[2][0] = 9;
-    game_grid[0][1] = 9;
-    game_grid[1][1] = 9;
-    game_grid[2][1] = 9;
-    game_grid[0][2] = 9;
-    game_grid[1][2] = 9;
-    game_grid[2][2] = 9;
+    _gameGrid[0][0] = 9;
+    _gameGrid[1][0] = 9;
+    _gameGrid[2][0] = 9;
+    _gameGrid[0][1] = 9;
+    _gameGrid[1][1] = 9;
+    _gameGrid[2][1] = 9;
+    _gameGrid[0][2] = 9;
+    _gameGrid[1][2] = 9;
+    _gameGrid[2][2] = 9;
     
-    game_grid[NUM_GRID_CELLS_PER_ROW - 3][0] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 2][0] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 1][0] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 3][1] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 2][1] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 1][1] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 3][2] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 2][2] = 9;
-    game_grid[NUM_GRID_CELLS_PER_ROW - 1][2] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 3][0] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 2][0] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 1][0] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 3][1] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 2][1] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 1][1] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 3][2] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 2][2] = 9;
+    _gameGrid[NUM_GRID_CELLS_PER_ROW - 1][2] = 9;
     
     if(mapType == MAP_MOUNTAINS)
     {
-        game_grid[6][GRID_CELL_NUM_ROWS - 1] = 9;
-        game_grid[7][GRID_CELL_NUM_ROWS - 1] = 9;
-        game_grid[8][GRID_CELL_NUM_ROWS - 1] = 9;
+        _gameGrid[6][GRID_CELL_NUM_ROWS - 1] = 9;
+        _gameGrid[7][GRID_CELL_NUM_ROWS - 1] = 9;
+        _gameGrid[8][GRID_CELL_NUM_ROWS - 1] = 9;
     }
 }
 
 void PathFinder::freeGameGridCell(int gridX, int gridY)
 {
-    game_grid[gridX][gridY] = 1;
+    _gameGrid[gridX][gridY] = 1;
 }
 
 void PathFinder::occupyGameGridCell(int gridX, int gridY)
 {
-    game_grid[gridX][gridY] = 9;
+    _gameGrid[gridX][gridY] = 9;
+}
+
+void PathFinder::freeGameGridOverlayCell(int gridX, int gridY)
+{
+    _gameGridOverlay[gridX][gridY] = 1;
+}
+
+void PathFinder::occupyGameGridOverlayCell(int gridX, int gridY)
+{
+    _gameGridOverlay[gridX][gridY] = 9;
 }
 
 int PathFinder::getGridCellCost(int x, int y)
@@ -476,7 +501,12 @@ int PathFinder::getGridCellCost(int x, int y)
 		return 9;
 	}
     
-	return game_grid[x][y];
+    if(_gameGridOverlay[x][y] > _gameGrid[x][y])
+    {
+        return _gameGridOverlay[x][y];
+    }
+    
+	return _gameGrid[x][y];
 }
 
 bool PathFinder::hasBombEscapeNodeBeenUsedAlready(std::vector<Node> &badBombEscapeNodes, int gridX, int gridY)

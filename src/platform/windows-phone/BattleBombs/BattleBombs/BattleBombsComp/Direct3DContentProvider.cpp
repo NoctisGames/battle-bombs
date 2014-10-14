@@ -31,7 +31,7 @@
 #include "Font.h"
 #include "SpectatorControls.h"
 #include "CountDownNumberGameObject.h"
-#include "DisplayBattleGameObject.h"
+#include "DisplayXMovingGameObject.h"
 #include "DisplayGameOverGameObject.h"
 #include "PlayerRow.h"
 #include "PlayerRowPlatformAvatar.h"
@@ -39,9 +39,14 @@
 #include "SpriteBatcher.h"
 #include "RectangleBatcher.h"
 #include "Global.h"
-#include "Direct3DAssets.h"
 #include "GameSound.h"
 #include "PlayerRowAvatar.h"
+#include "Crater.h"
+#include "FireBall.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
+#include "SpaceTile.h"
 
 using namespace BattleBombsComp;
 

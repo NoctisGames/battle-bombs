@@ -11,14 +11,20 @@
 #include "TextureRegion.h"
 #include "PlayerDynamicGameObject.h"
 #include "Vector2D.h"
+#include "SpaceTile.h"
 #include "MapBorder.h"
 #include "InsideBlock.h"
 #include "PlayerState.h"
 #include "BombGameObject.h"
 #include "Explosion.h"
+#include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "PowerUp.h"
 #include "Fire.h"
+#include "FallingObjectShadow.h"
+#include "FireBall.h"
+#include "IceBall.h"
+#include "IcePatch.h"
 #include "DPadControl.h"
 #include "PowerUpBarItem.h"
 #include "ActiveButton.h"
@@ -30,8 +36,12 @@
 #include "PlayerRowPlatformAvatar.h"
 #include "CountDownNumberGameObject.h"
 #include "DisplayGameOverGameObject.h"
+#include "DisplayXMovingGameObject.h"
 #include "GameEvent.h"
 #include <list>
+
+// For logging error conditions
+#include <iostream>
 
 Assets * Assets::getInstance()
 {
@@ -43,6 +53,75 @@ TextureRegion& Assets::getWorldBackgroundTextureRegion()
 {
 	static TextureRegion textureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
 	return textureRegion;
+}
+
+TextureRegion& Assets::getSpaceTileTextureRegion(SpaceTile &spaceTile)
+{
+    static TextureRegion stNormalTr = TextureRegion(SPACE_TILE_TEXTURE_REGION_X, SPACE_TILE_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    static std::vector<TextureRegion> spaceTileDislodgingTextureRegions;
+    if (spaceTileDislodgingTextureRegions.size() == 0)
+    {
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_1_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_2_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_3_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_4_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_5_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_6_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_7_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileDislodgingTextureRegions.push_back(TextureRegion(SPACE_TILE_DISLODGING_FRAME_8_TEXTURE_REGION_X, SPACE_TILE_DISLODGING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+    }
+    
+    static float spaceTileDislodgingCycleTime = 0.90f;
+    static std::vector<float> spaceTileDislodgingFrames;
+    if (spaceTileDislodgingFrames.size() == 0)
+    {
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.1f);
+        spaceTileDislodgingFrames.push_back(0.2f);
+    }
+    
+    static std::vector<TextureRegion> spaceTileFallingTextureRegions;
+    if (spaceTileFallingTextureRegions.size() == 0)
+    {
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_1_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_2_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_3_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_4_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_5_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_6_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        spaceTileFallingTextureRegions.push_back(TextureRegion(SPACE_TILE_FALLING_FRAME_7_TEXTURE_REGION_X, SPACE_TILE_FALLING_FRAMES_TEXTURE_REGION_Y, SPACE_TILE_TEXTURE_REGION_WIDTH, SPACE_TILE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+    }
+    
+    static float spaceTileFallingCycleTime = 5.00f;
+    static std::vector<float> spaceTileFallingFrames;
+    if (spaceTileFallingFrames.size() == 0)
+    {
+        spaceTileFallingFrames.push_back(0.1f);
+        spaceTileFallingFrames.push_back(0.1f);
+        spaceTileFallingFrames.push_back(0.1f);
+        spaceTileFallingFrames.push_back(0.1f);
+        spaceTileFallingFrames.push_back(0.1f);
+        spaceTileFallingFrames.push_back(0.1f);
+        spaceTileFallingFrames.push_back(5.4f);
+    }
+    
+    switch (spaceTile.getSpaceTileState())
+    {
+        case ST_DISLODGING:
+            return spaceTileDislodgingTextureRegions.at(getKeyFrameNumber(spaceTile.getStateTime(), spaceTileDislodgingCycleTime, spaceTileDislodgingFrames));
+        case ST_FALLING:
+        case ST_ENTERING_ATMOSPHERE:
+            return spaceTileFallingTextureRegions.at(getKeyFrameNumber(spaceTile.getStateTime(), spaceTileFallingCycleTime, spaceTileFallingFrames));
+        case ST_NORMAL:
+        default:
+            return stNormalTr;
+    }
 }
 
 TextureRegion& Assets::getMapBorderTextureRegion(MapBorder &mapBorder)
@@ -75,11 +154,79 @@ TextureRegion& Assets::getMapBorderTextureRegion(MapBorder &mapBorder)
 	}
 }
 
-TextureRegion& Assets::getInsideBlockTextureRegion()
+TextureRegion& Assets::getInsideBlockTextureRegion(InsideBlock &insideBlock)
 {
-    static TextureRegion insideBlockTextureRegion = TextureRegion(INSIDE_BLOCK_TEXTURE_REGION_X, INSIDE_BLOCK_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-
-    return insideBlockTextureRegion;
+    if(insideBlock.getInsideBlockState() == IB_NORMAL)
+    {
+        static TextureRegion insideBlockTextureRegion = TextureRegion(INSIDE_BLOCK_TEXTURE_REGION_X, INSIDE_BLOCK_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        
+        return insideBlockTextureRegion;
+    }
+    else if(insideBlock.getInsideBlockState() == IB_STRUCK_BY_METEOR)
+    {
+        static std::vector<TextureRegion> insideBlockStruckTextureRegions;
+        if (insideBlockStruckTextureRegions.size() == 0)
+        {
+            insideBlockStruckTextureRegions.push_back(TextureRegion(INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAME_1_TEXTURE_REGION_X, INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAMES_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockStruckTextureRegions.push_back(TextureRegion(INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAME_2_TEXTURE_REGION_X, INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAMES_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockStruckTextureRegions.push_back(TextureRegion(INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAME_3_TEXTURE_REGION_X, INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAMES_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockStruckTextureRegions.push_back(TextureRegion(INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAME_4_TEXTURE_REGION_X, INSIDE_BLOCK_HIT_BY_FIRE_BALL_FRAMES_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        }
+        
+        static float cycleTime = 0.50f;
+        static std::vector<float> frames;
+        if (frames.size() == 0)
+        {
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.2f);
+        }
+        
+        return insideBlockStruckTextureRegions.at(getKeyFrameNumber(insideBlock.getStateTime(), cycleTime, frames));
+    }
+    else if(insideBlock.getInsideBlockState() == IB_FREEZING)
+    {
+        static std::vector<TextureRegion> insideBlockFreezingTextureRegions;
+        if (insideBlockFreezingTextureRegions.size() == 0)
+        {
+            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_1_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_1_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_2_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_2_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_3_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_3_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_4_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_4_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_5_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_5_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            insideBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_6_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_6_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        }
+        
+        static float cycleTime = 0.70f;
+        static std::vector<float> frames;
+        if (frames.size() == 0)
+        {
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.2f);
+        }
+        
+        return insideBlockFreezingTextureRegions.at(getKeyFrameNumber(insideBlock.getStateTime(), cycleTime, frames));
+    }
+    else if(insideBlock.getInsideBlockState() == IB_FROZEN)
+    {
+        static TextureRegion insideBlockFrozenTextureRegion = TextureRegion(FREEZING_INSIDE_BLOCK_FRAME_6_TEXTURE_REGION_X, FREEZING_INSIDE_BLOCK_FRAME_6_TEXTURE_REGION_Y, INSIDE_BLOCK_TEXTURE_REGION_WIDTH, INSIDE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        
+        return insideBlockFrozenTextureRegion;
+    }
+    else
+    {
+        // Default, but should never get this far...
+        std::cout << "getInsideBlockTextureRegion else condition reached!" << std::endl;
+        
+        static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        
+        return defaultTextureRegion;
+    }
 }
 
 TextureRegion& Assets::getNineTextureRegion()
@@ -98,7 +245,7 @@ TextureRegion& Assets::getOneTextureRegion()
 
 TextureRegion& Assets::getBreakableBlockTextureRegion(BreakableBlock &breakableBlock)
 {
-    if(breakableBlock.getBreakableBlockState() == NORMAL)
+    if(breakableBlock.getBreakableBlockState() == BB_NORMAL)
     {
         static TextureRegion textureRegion = TextureRegion(BREAKABLE_BLOCK_TEXTURE_REGION_X, BREAKABLE_BLOCK_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
         
@@ -138,6 +285,39 @@ TextureRegion& Assets::getBreakableBlockTextureRegion(BreakableBlock &breakableB
         }
         
         return breakableBlockTextureRegions.at(getKeyFrameNumber(breakableBlock.getStateTime(), cycleTime, frames));
+    }
+    else if(breakableBlock.getBreakableBlockState() == BB_FREEZING)
+    {
+        static std::vector<TextureRegion> breakableBlockFreezingTextureRegions;
+        if (breakableBlockFreezingTextureRegions.size() == 0)
+        {
+            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_1_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_1_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_2_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_2_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_3_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_3_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_4_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_4_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_5_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_5_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            breakableBlockFreezingTextureRegions.push_back(TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_6_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_6_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        }
+        
+        static float cycleTime = 0.70f;
+        static std::vector<float> frames;
+        if (frames.size() == 0)
+        {
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.2f);
+        }
+        
+        return breakableBlockFreezingTextureRegions.at(getKeyFrameNumber(breakableBlock.getStateTime(), cycleTime, frames));
+    }
+    else if(breakableBlock.getBreakableBlockState() == BB_FROZEN)
+    {
+        static TextureRegion breakableBlockFrozenTextureRegion = TextureRegion(FREEZING_BREAKABLE_BLOCK_FRAME_6_TEXTURE_REGION_X, FREEZING_BREAKABLE_BLOCK_FRAME_6_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        
+        return breakableBlockFrozenTextureRegion;
     }
     else
     {
@@ -194,6 +374,13 @@ TextureRegion& Assets::getPlayerRowAvatarTextureRegion(PlayerRowAvatar &playerRo
         default:
             break;
     }
+    
+    // Default, but should never get this far...
+    std::cout << "getPlayerRowAvatarTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    return defaultTextureRegion;
 }
 
 TextureRegion& Assets::getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatformAvatar &playerRowPlatformAvatar)
@@ -214,6 +401,13 @@ TextureRegion& Assets::getPlayerRowPlatformAvatarTextureRegion(PlayerRowPlatform
         default:
             break;
     }
+    
+    // Default, but should never get this far...
+    std::cout << "getPlayerRowPlatformAvatarTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    return defaultTextureRegion;
 }
 
 TextureRegion& Assets::getInterfaceOverlayTextureRegion()
@@ -579,6 +773,82 @@ TextureRegion& Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
                     return playerPushingBombDownTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
             }
         }
+        else if(player.getPlayerActionState() == RAISING_SHIELD)
+        {
+            static std::vector<TextureRegion> playerShieldRaiseRightTextureRegions;
+            if (playerShieldRaiseRightTextureRegions.size() == 0)
+            {
+                playerShieldRaiseRightTextureRegions.push_back(TextureRegion(PLAYER_RAISE_SHIELD_RIGHT_FRAME_1_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_RIGHT_FRAME_1_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerShieldRaiseRightTextureRegions.push_back(TextureRegion(PLAYER_RAISE_SHIELD_RIGHT_FRAME_2_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_RIGHT_FRAME_2_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerShieldRaiseRightTextureRegions.push_back(TextureRegion(PLAYER_RAISE_SHIELD_RIGHT_FRAME_3_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_RIGHT_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            }
+            
+            static std::vector<TextureRegion> playerShieldRaiseUpTextureRegions;
+            if (playerShieldRaiseUpTextureRegions.size() == 0)
+            {
+                playerShieldRaiseUpTextureRegions.push_back(TextureRegion(PLAYER_RAISE_SHIELD_UP_FRAME_1_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_UP_FRAME_1_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerShieldRaiseUpTextureRegions.push_back(TextureRegion(PLAYER_RAISE_SHIELD_UP_FRAME_2_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_UP_FRAME_2_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerShieldRaiseUpTextureRegions.push_back(TextureRegion(PLAYER_RAISE_SHIELD_UP_FRAME_3_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_UP_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            }
+            
+            static std::vector<TextureRegion> playerShieldRaiseLeftTextureRegions;
+            if (playerShieldRaiseLeftTextureRegions.size() == 0)
+            {
+                playerShieldRaiseLeftTextureRegions.push_back(TextureRegion(PLAYER_RAISE_SHIELD_LEFT_FRAME_1_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_LEFT_FRAME_1_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerShieldRaiseLeftTextureRegions.push_back(TextureRegion(PLAYER_RAISE_SHIELD_LEFT_FRAME_2_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_LEFT_FRAME_2_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerShieldRaiseLeftTextureRegions.push_back(TextureRegion(PLAYER_RAISE_SHIELD_LEFT_FRAME_3_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_LEFT_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            }
+            
+            static std::vector<TextureRegion> playerShieldRaiseDownTextureRegions;
+            if (playerShieldRaiseDownTextureRegions.size() == 0)
+            {
+                playerShieldRaiseDownTextureRegions.push_back(TextureRegion(PLAYER_RAISE_SHIELD_DOWN_FRAME_1_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_DOWN_FRAME_1_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerShieldRaiseDownTextureRegions.push_back(TextureRegion(PLAYER_RAISE_SHIELD_DOWN_FRAME_2_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_DOWN_FRAME_2_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+                playerShieldRaiseDownTextureRegions.push_back(TextureRegion(PLAYER_RAISE_SHIELD_DOWN_FRAME_3_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_DOWN_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            }
+            
+            static float cycleTime = 0.40f;
+            static std::vector<float> playerFrames;
+            if (playerFrames.size() == 0)
+            {
+                playerFrames.push_back(0.10f);
+                playerFrames.push_back(0.10f);
+                playerFrames.push_back(0.20f);
+            }
+            
+            switch (player.getDirection())
+            {
+                case DIRECTION_RIGHT:
+                    return playerShieldRaiseRightTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+                case DIRECTION_UP:
+                    return playerShieldRaiseUpTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+                case DIRECTION_LEFT:
+                    return playerShieldRaiseLeftTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+                case DIRECTION_DOWN:
+                default:
+                    return playerShieldRaiseDownTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+            }
+        }
+        else if(player.getPlayerActionState() == SHIELD_RAISED)
+        {
+            static TextureRegion playerRightShieldRaisedTextureRegion = TextureRegion(PLAYER_RAISE_SHIELD_RIGHT_FRAME_3_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_RIGHT_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+            static TextureRegion playerUpShieldRaisedTextureRegion = TextureRegion(PLAYER_RAISE_SHIELD_UP_FRAME_3_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_UP_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+            static TextureRegion playerLeftShieldRaisedTextureRegion = TextureRegion(PLAYER_RAISE_SHIELD_LEFT_FRAME_3_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_LEFT_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+            static TextureRegion playerDownShieldRaisedTextureRegion = TextureRegion(PLAYER_RAISE_SHIELD_DOWN_FRAME_3_TEXTURE_REGION_X, PLAYER_RAISE_SHIELD_DOWN_FRAME_3_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+            
+            switch (player.getDirection())
+            {
+                case DIRECTION_RIGHT:
+                    return playerRightShieldRaisedTextureRegion;
+                case DIRECTION_UP:
+                    return playerUpShieldRaisedTextureRegion;
+                case DIRECTION_LEFT:
+                    return playerLeftShieldRaisedTextureRegion;
+                case DIRECTION_DOWN:
+                default:
+                    return playerDownShieldRaisedTextureRegion;
+            }
+        }
         else
         {
             static std::vector<TextureRegion> playerWinningTextureRegions;
@@ -618,6 +888,45 @@ TextureRegion& Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
             
             return player.isBot() ? playerWinningTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTimeForBot, botFrames)) : playerWinningTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
         }
+    }
+    else if (player.getPlayerState() == Player_State::FALLING || player.getPlayerState() == Player_State::ABOUT_TO_FALL)
+    {
+        static TextureRegion playerFallingLeftTextureRegion = TextureRegion(PLAYER_DEATH_FRAME_1_TEXTURE_REGION_X, PLAYER_DEATH_LEFT_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        
+        return playerFallingLeftTextureRegion;
+    }
+    else if (player.getPlayerState() == Player_State::FREEZING)
+    {
+        static std::vector<TextureRegion> playerFreezingLeftTextureRegions;
+        if (playerFreezingLeftTextureRegions.size() == 0)
+        {
+            playerFreezingLeftTextureRegions.push_back(TextureRegion(PLAYER_FREEZING_FRAME_1_TEXTURE_REGION_X, PLAYER_FREEZING_FRAMES_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            playerFreezingLeftTextureRegions.push_back(TextureRegion(PLAYER_FREEZING_FRAME_2_TEXTURE_REGION_X, PLAYER_FREEZING_FRAMES_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            playerFreezingLeftTextureRegions.push_back(TextureRegion(PLAYER_FREEZING_FRAME_3_TEXTURE_REGION_X, PLAYER_FREEZING_FRAMES_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            playerFreezingLeftTextureRegions.push_back(TextureRegion(PLAYER_FREEZING_FRAME_4_TEXTURE_REGION_X, PLAYER_FREEZING_FRAMES_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            playerFreezingLeftTextureRegions.push_back(TextureRegion(PLAYER_FREEZING_FRAME_5_TEXTURE_REGION_X, PLAYER_FREEZING_FRAMES_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            playerFreezingLeftTextureRegions.push_back(TextureRegion(PLAYER_FREEZING_FRAME_6_TEXTURE_REGION_X, PLAYER_FREEZING_FRAMES_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        }
+        
+        static float cycleTime = 0.6f;
+        static std::vector<float> playerFrames;
+        if (playerFrames.size() == 0)
+        {
+            playerFrames.push_back(0.1f);
+            playerFrames.push_back(0.1f);
+            playerFrames.push_back(0.1f);
+            playerFrames.push_back(0.1f);
+            playerFrames.push_back(0.1f);
+            playerFrames.push_back(0.1f);
+        }
+        
+        return playerFreezingLeftTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+    }
+    else if (player.getPlayerState() == Player_State::FROZEN)
+    {
+        static TextureRegion playerFrozenLeftTextureRegion = TextureRegion(PLAYER_FREEZING_FRAME_6_TEXTURE_REGION_X, PLAYER_FREEZING_FRAMES_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        
+        return playerFrozenLeftTextureRegion;
     }
     else
     {
@@ -792,10 +1101,18 @@ TextureRegion& Assets::getCountDownNumberTextureRegion(CountDownNumberGameObject
     }
 }
 
-TextureRegion& Assets::getDisplayBattleTextureRegion()
+TextureRegion& Assets::getDisplayXMovingTextureRegion(DisplayXMovingGameObject &displayXMovingGameObject)
 {
-    static TextureRegion textureRegion = TextureRegion(BATTLE_TEXTURE_REGION_X, BATTLE_TEXTURE_REGION_Y, BATTLE_TEXTURE_REGION_WIDTH, BATTLE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
-    return textureRegion;
+    if(displayXMovingGameObject.getType() == BATTLE)
+    {
+        static TextureRegion textureRegion = TextureRegion(BATTLE_TEXTURE_REGION_X, BATTLE_TEXTURE_REGION_Y, BATTLE_TEXTURE_REGION_WIDTH, BATTLE_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        return textureRegion;
+    }
+    else
+    {
+        static TextureRegion textureRegion = TextureRegion(HURRY_UP_TEXTURE_REGION_X, HURRY_UP_TEXTURE_REGION_Y, HURRY_UP_TEXTURE_REGION_WIDTH, HURRY_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        return textureRegion;
+    }
 }
 
 TextureRegion& Assets::getDisplayGameOverTextureRegion(DisplayGameOverGameObject &displayGameOverGameObject)
@@ -989,7 +1306,155 @@ TextureRegion& Assets::getForceFieldTextureRegion(int forceFieldState, float for
             break;
     }
     
-    // Crash
+    // Default, but should never get this far...
+    std::cout << "getForceFieldTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    return defaultTextureRegion;
+}
+
+TextureRegion& Assets::getFallingObjectShadowTextureRegion(FallingObjectShadow &fallingObjectShadow)
+{
+    static TextureRegion TR_FARTHEST = TextureRegion(FALLING_OBJECT_SHADOW_FRAME_1_TEXTURE_REGION_X, FALLING_OBJECT_SHADOW_FRAMES_TEXTURE_REGION_Y, FALLING_OBJECT_SHADOW_FRAME_TEXTURE_REGION_WIDTH, FALLING_OBJECT_SHADOW_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+	static TextureRegion TR_FARTHER = TextureRegion(FALLING_OBJECT_SHADOW_FRAME_2_TEXTURE_REGION_X, FALLING_OBJECT_SHADOW_FRAMES_TEXTURE_REGION_Y, FALLING_OBJECT_SHADOW_FRAME_TEXTURE_REGION_WIDTH, FALLING_OBJECT_SHADOW_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion TR_HALFWAY = TextureRegion(FALLING_OBJECT_SHADOW_FRAME_3_TEXTURE_REGION_X, FALLING_OBJECT_SHADOW_FRAMES_TEXTURE_REGION_Y, FALLING_OBJECT_SHADOW_FRAME_TEXTURE_REGION_WIDTH, FALLING_OBJECT_SHADOW_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion TR_CLOSER = TextureRegion(FALLING_OBJECT_SHADOW_FRAME_4_TEXTURE_REGION_X, FALLING_OBJECT_SHADOW_FRAMES_TEXTURE_REGION_Y, FALLING_OBJECT_SHADOW_FRAME_TEXTURE_REGION_WIDTH, FALLING_OBJECT_SHADOW_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    static TextureRegion TR_CLOSEST = TextureRegion(FALLING_OBJECT_SHADOW_FRAME_5_TEXTURE_REGION_X, FALLING_OBJECT_SHADOW_FRAMES_TEXTURE_REGION_Y, FALLING_OBJECT_SHADOW_FRAME_TEXTURE_REGION_WIDTH, FALLING_OBJECT_SHADOW_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    switch (fallingObjectShadow.getFallingObjectShadowState())
+    {
+        case FARTHEST:
+            return TR_FARTHEST;
+		case FARTHER:
+			return TR_FARTHER;
+        case HALFWAY:
+            return TR_HALFWAY;
+        case CLOSER:
+            return TR_CLOSER;
+        case CLOSEST:
+        default:
+            return TR_CLOSEST;
+    }
+}
+
+TextureRegion& Assets::getCraterTextureRegion()
+{
+    static TextureRegion textureRegion = TextureRegion(CRATER_TEXTURE_REGION_X, CRATER_TEXTURE_REGION_Y, CRATER_TEXTURE_REGION_WIDTH, CRATER_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    return textureRegion;
+}
+
+TextureRegion& Assets::getFireBallTextureRegion(FireBall &fireBall)
+{
+    if(fireBall.isTargetReached())
+    {
+        static std::vector<TextureRegion> explosionTextureRegions;
+        if (explosionTextureRegions.size() == 0)
+        {
+            explosionTextureRegions.push_back(TextureRegion(IMPACTING_FIRE_FRAME_1_TEXTURE_REGION_X, IMPACTING_FIRE_FRAME_1_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            explosionTextureRegions.push_back(TextureRegion(IMPACTING_FIRE_FRAME_2_TEXTURE_REGION_X, IMPACTING_FIRE_FRAME_2_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            explosionTextureRegions.push_back(TextureRegion(IMPACTING_FIRE_FRAME_3_TEXTURE_REGION_X, IMPACTING_FIRE_FRAME_3_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            explosionTextureRegions.push_back(TextureRegion(IMPACTING_FIRE_FRAME_4_TEXTURE_REGION_X, IMPACTING_FIRE_FRAME_4_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            explosionTextureRegions.push_back(TextureRegion(IMPACTING_FIRE_FRAME_5_TEXTURE_REGION_X, IMPACTING_FIRE_FRAME_5_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        }
+        
+        static float cycleTime = 0.6f;
+        static std::vector<float> frames;
+        if (frames.size() == 0)
+        {
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.2f);
+        }
+        
+        return explosionTextureRegions.at(getKeyFrameNumber(fireBall.getStateTime(), cycleTime, frames));
+    }
+    else
+    {
+        static std::vector<TextureRegion> fireBallTextureRegions;
+        if (fireBallTextureRegions.size() == 0)
+        {
+            fireBallTextureRegions.push_back(TextureRegion(FALLING_FIRE_FRAME_1_TEXTURE_REGION_X, FALLING_FIRE_FRAME_1_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            fireBallTextureRegions.push_back(TextureRegion(FALLING_FIRE_FRAME_2_TEXTURE_REGION_X, FALLING_FIRE_FRAME_2_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            fireBallTextureRegions.push_back(TextureRegion(FALLING_FIRE_FRAME_3_TEXTURE_REGION_X, FALLING_FIRE_FRAME_3_TEXTURE_REGION_Y, FALLING_FIRE_FRAME_TEXTURE_REGION_WIDTH, FALLING_FIRE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        }
+        
+        static float cycleTime = 0.4f;
+        static std::vector<float> frames;
+        if (frames.size() == 0)
+        {
+            frames.push_back(0.1f);
+            frames.push_back(0.1f);
+            frames.push_back(0.2f);
+        }
+        
+        return fireBallTextureRegions.at(getKeyFrameNumber(fireBall.getStateTime(), cycleTime, frames));
+    }
+}
+
+TextureRegion& Assets::getIceBallTextureRegion(IceBall &iceBall)
+{
+    static std::vector<TextureRegion> iceBallTextureRegions;
+    if (iceBallTextureRegions.size() == 0)
+    {
+        iceBallTextureRegions.push_back(TextureRegion(FALLING_ICE_FRAME_1_TEXTURE_REGION_X, FALLING_ICE_FRAMES_TEXTURE_REGION_Y, FALLING_ICE_FRAME_TEXTURE_REGION_WIDTH, FALLING_ICE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        iceBallTextureRegions.push_back(TextureRegion(FALLING_ICE_FRAME_2_TEXTURE_REGION_X, FALLING_ICE_FRAMES_TEXTURE_REGION_Y, FALLING_ICE_FRAME_TEXTURE_REGION_WIDTH, FALLING_ICE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        iceBallTextureRegions.push_back(TextureRegion(FALLING_ICE_FRAME_3_TEXTURE_REGION_X, FALLING_ICE_FRAMES_TEXTURE_REGION_Y, FALLING_ICE_FRAME_TEXTURE_REGION_WIDTH, FALLING_ICE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        iceBallTextureRegions.push_back(TextureRegion(FALLING_ICE_FRAME_4_TEXTURE_REGION_X, FALLING_ICE_FRAMES_TEXTURE_REGION_Y, FALLING_ICE_FRAME_TEXTURE_REGION_WIDTH, FALLING_ICE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        iceBallTextureRegions.push_back(TextureRegion(FALLING_ICE_FRAME_5_TEXTURE_REGION_X, FALLING_ICE_FRAMES_TEXTURE_REGION_Y, FALLING_ICE_FRAME_TEXTURE_REGION_WIDTH, FALLING_ICE_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+    }
+    
+    static float iceBallCycleTime = 0.5f;
+    static std::vector<float> iceBallFrames;
+    if (iceBallFrames.size() == 0)
+    {
+        iceBallFrames.push_back(0.1f);
+        iceBallFrames.push_back(0.1f);
+        iceBallFrames.push_back(0.1f);
+        iceBallFrames.push_back(0.1f);
+        iceBallFrames.push_back(0.1f);
+    }
+    
+    return iceBallTextureRegions.at(getKeyFrameNumber(iceBall.getStateTime(), iceBallCycleTime, iceBallFrames));
+}
+
+TextureRegion& Assets::getIcePatchTextureRegion(IcePatch &icePatch)
+{
+    if(icePatch.getStateTime() > 0.6f)
+    {
+        static TextureRegion icePatchTr = TextureRegion(ICE_PATCH_FRAME_6_TEXTURE_REGION_X, ICE_PATCH_FRAMES_TEXTURE_REGION_Y, ICE_PATCH_FRAME_TEXTURE_REGION_WIDTH, ICE_PATCH_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        
+        return icePatchTr;
+    }
+    else
+    {
+        static std::vector<TextureRegion> icePatchTextureRegions;
+        if (icePatchTextureRegions.size() == 0)
+        {
+            icePatchTextureRegions.push_back(TextureRegion(ICE_PATCH_FRAME_1_TEXTURE_REGION_X, ICE_PATCH_FRAMES_TEXTURE_REGION_Y, ICE_PATCH_FRAME_TEXTURE_REGION_WIDTH, ICE_PATCH_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            icePatchTextureRegions.push_back(TextureRegion(ICE_PATCH_FRAME_2_TEXTURE_REGION_X, ICE_PATCH_FRAMES_TEXTURE_REGION_Y, ICE_PATCH_FRAME_TEXTURE_REGION_WIDTH, ICE_PATCH_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            icePatchTextureRegions.push_back(TextureRegion(ICE_PATCH_FRAME_3_TEXTURE_REGION_X, ICE_PATCH_FRAMES_TEXTURE_REGION_Y, ICE_PATCH_FRAME_TEXTURE_REGION_WIDTH, ICE_PATCH_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            icePatchTextureRegions.push_back(TextureRegion(ICE_PATCH_FRAME_4_TEXTURE_REGION_X, ICE_PATCH_FRAMES_TEXTURE_REGION_Y, ICE_PATCH_FRAME_TEXTURE_REGION_WIDTH, ICE_PATCH_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            icePatchTextureRegions.push_back(TextureRegion(ICE_PATCH_FRAME_5_TEXTURE_REGION_X, ICE_PATCH_FRAMES_TEXTURE_REGION_Y, ICE_PATCH_FRAME_TEXTURE_REGION_WIDTH, ICE_PATCH_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+            icePatchTextureRegions.push_back(TextureRegion(ICE_PATCH_FRAME_6_TEXTURE_REGION_X, ICE_PATCH_FRAMES_TEXTURE_REGION_Y, ICE_PATCH_FRAME_TEXTURE_REGION_WIDTH, ICE_PATCH_FRAME_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        }
+        
+        static float icePatchCycleTime = 0.7f;
+        static std::vector<float> icePatchFrames;
+        if (icePatchFrames.size() == 0)
+        {
+            icePatchFrames.push_back(0.1f);
+            icePatchFrames.push_back(0.1f);
+            icePatchFrames.push_back(0.1f);
+            icePatchFrames.push_back(0.1f);
+            icePatchFrames.push_back(0.1f);
+            icePatchFrames.push_back(0.2f);
+        }
+        
+        return icePatchTextureRegions.at(getKeyFrameNumber(icePatch.getStateTime(), icePatchCycleTime, icePatchFrames));
+    }
 }
 
 TextureRegion& Assets::getPowerUpBarItemTextureRegion(PowerUpBarItem &powerUpBarItem, float powerUpBarItemsStateTime)
@@ -1077,11 +1542,11 @@ TextureRegion& Assets::getActiveButtonTextureRegion(ActiveButton &activeButton, 
             }
             else
             {
-                static std::vector<TextureRegion> bombButtonEnabledTextureRegions;
-                if (bombButtonEnabledTextureRegions.size() == 0)
+                static std::vector<TextureRegion> activeButtonEnabledTextureRegions;
+                if (activeButtonEnabledTextureRegions.size() == 0)
                 {
-                    bombButtonEnabledTextureRegions.push_back(TR_BUTTON_PUSH_ENABLED_TEXTURE_REGION);
-                    bombButtonEnabledTextureRegions.push_back(TR_BUTTON_PUSH_HIGHLIGHTED_TEXTURE_REGION);
+                    activeButtonEnabledTextureRegions.push_back(TR_BUTTON_PUSH_ENABLED_TEXTURE_REGION);
+                    activeButtonEnabledTextureRegions.push_back(TR_BUTTON_PUSH_HIGHLIGHTED_TEXTURE_REGION);
                 }
                 
                 static float cycleTime = 1.00f;
@@ -1092,7 +1557,7 @@ TextureRegion& Assets::getActiveButtonTextureRegion(ActiveButton &activeButton, 
                     frames.push_back(0.3f);
                 }
                 
-                return bombButtonEnabledTextureRegions.at(getKeyFrameNumber(buttonsStateTime, cycleTime, frames));
+                return activeButtonEnabledTextureRegions.at(getKeyFrameNumber(buttonsStateTime, cycleTime, frames));
             }
         }
         else
@@ -1100,8 +1565,51 @@ TextureRegion& Assets::getActiveButtonTextureRegion(ActiveButton &activeButton, 
             return TR_BUTTON_PUSH_DISABLED_TEXTURE_REGION;
         }
     }
+    else if(activeButton.getPowerUpType() == POWER_UP_TYPE_SHIELD)
+    {
+        static TextureRegion TR_BUTTON_SHIELD_ENABLED_TEXTURE_REGION = TextureRegion(BUTTON_SHIELD_ENABLED_TEXTURE_REGION_X, BUTTON_SHIELD_ENABLED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        static TextureRegion TR_BUTTON_SHIELD_HIGHLIGHTED_TEXTURE_REGION = TextureRegion(BUTTON_SHIELD_HIGHLIGHTED_TEXTURE_REGION_X, BUTTON_SHIELD_HIGHLIGHTED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        static TextureRegion TR_BUTTON_SHIELD_PRESSED_TEXTURE_REGION = TextureRegion(BUTTON_SHIELD_PRESSED_TEXTURE_REGION_X, BUTTON_SHIELD_PRESSED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        static TextureRegion TR_BUTTON_SHIELD_DISABLED_TEXTURE_REGION = TextureRegion(BUTTON_SHIELD_DISABLED_TEXTURE_REGION_X, BUTTON_SHIELD_DISABLED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+        
+        if (activeButton.getButtonState() == ENABLED)
+        {
+            if(activeButton.isPressed())
+            {
+                return TR_BUTTON_SHIELD_PRESSED_TEXTURE_REGION;
+            }
+            else
+            {
+                static std::vector<TextureRegion> activeButtonEnabledTextureRegions;
+                if (activeButtonEnabledTextureRegions.size() == 0)
+                {
+                    activeButtonEnabledTextureRegions.push_back(TR_BUTTON_SHIELD_ENABLED_TEXTURE_REGION);
+                    activeButtonEnabledTextureRegions.push_back(TR_BUTTON_SHIELD_HIGHLIGHTED_TEXTURE_REGION);
+                }
+                
+                static float cycleTime = 1.00f;
+                static std::vector<float> frames;
+                if (frames.size() == 0)
+                {
+                    frames.push_back(0.7f);
+                    frames.push_back(0.3f);
+                }
+                
+                return activeButtonEnabledTextureRegions.at(getKeyFrameNumber(buttonsStateTime, cycleTime, frames));
+            }
+        }
+        else
+        {
+            return TR_BUTTON_SHIELD_DISABLED_TEXTURE_REGION;
+        }
+    }
     
-    // Crash
+    // Default, but should never get this far...
+    std::cout << "getActiveButtonTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    return defaultTextureRegion;
 }
 
 TextureRegion& Assets::getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime)
@@ -1210,6 +1718,19 @@ TextureRegion& Assets::getPowerUpTextureRegion(PowerUp &powerUp)
         powerUpPushTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_8_TEXTURE_REGION_X, POWER_UP_PUSH_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
     }
     
+    static std::vector<TextureRegion> powerUpShieldTextureRegions;
+    if (powerUpShieldTextureRegions.size() == 0)
+    {
+        powerUpShieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_SHIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpShieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_2_TEXTURE_REGION_X, POWER_UP_SHIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpShieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_3_TEXTURE_REGION_X, POWER_UP_SHIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpShieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_4_TEXTURE_REGION_X, POWER_UP_SHIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpShieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_5_TEXTURE_REGION_X, POWER_UP_SHIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpShieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_6_TEXTURE_REGION_X, POWER_UP_SHIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpShieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_7_TEXTURE_REGION_X, POWER_UP_SHIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+        powerUpShieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_8_TEXTURE_REGION_X, POWER_UP_SHIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT));
+    }
+    
     static float cycleTime = 0.80f;
     static std::vector<float> frames;
     if (frames.size() == 0)
@@ -1236,11 +1757,18 @@ TextureRegion& Assets::getPowerUpTextureRegion(PowerUp &powerUp)
             return powerUpSpeedTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
         case POWER_UP_TYPE_PUSH:
             return powerUpPushTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
+        case POWER_UP_TYPE_SHIELD:
+            return powerUpShieldTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
         default:
             break;
     }
     
-    // Crash
+    // Default, but should never get this far...
+    std::cout << "getPowerUpTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, GAME_TEXTURE_WIDTH, GAME_TEXTURE_HEIGHT);
+    
+    return defaultTextureRegion;
 }
 
 void Assets::setMusicId(short musicId)

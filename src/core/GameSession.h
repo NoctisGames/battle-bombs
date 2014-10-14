@@ -20,13 +20,19 @@
 
 #include "GameState.h"
 
+class GameListener;
 class MapBorder;
+class SpaceTile;
 class InsideBlock;
 class BreakableBlock;
 class BombGameObject;
 class Explosion;
 class PlayerDynamicGameObject;
 class PowerUp;
+class Crater;
+class FireBall;
+class IceBall;
+class IcePatch;
 
 class GameSession
 {
@@ -50,16 +56,24 @@ public:
     bool isPlayerAliveAtIndex(short playerIndex);
 
 protected:
+    std::unique_ptr<GameListener> m_gameListener;
     std::vector<std::unique_ptr<MapBorder>> m_mapBorders;
+    std::vector<std::unique_ptr<SpaceTile>> m_spaceTiles;
     std::vector<std::unique_ptr<InsideBlock >> m_insideBlocks;
     std::vector<std::unique_ptr<BreakableBlock >> m_breakableBlocks;
     std::vector<std::unique_ptr<PlayerDynamicGameObject >> m_players;
     std::vector<std::unique_ptr<BombGameObject >> m_bombs;
     std::vector<std::unique_ptr<Explosion >> m_explosions;
     std::vector<std::unique_ptr<PowerUp >> m_powerUps;
+    std::vector<std::unique_ptr<Crater >> m_craters;
+    std::vector<std::unique_ptr<FireBall >> m_fireBalls;
+    std::vector<std::unique_ptr<IceBall >> m_iceBalls;
+    std::vector<std::unique_ptr<IcePatch >> m_icePatches;
     std::vector<int> m_sEventIds;
     Game_State m_gameState;
     int m_iMapType;
+    int m_iNumBreakableBlocksAtSpawnTime;
+    bool m_isSuddenDeath;
 
     virtual void updateRunning(float deltaTime) = 0;
 
@@ -68,14 +82,20 @@ protected:
     void initializeInsideBlocksAndMapBordersForMapType(int mapType);
     
     void updateCommon(float deltaTime);
+    
+    void updateBots();
 
     void clientUpdate(rapidjson::Document &d, bool isBeginGame);
+    
+    virtual void suddenDeath(rapidjson::Document &d);
 
     void handlePlayerDataUpdate(rapidjson::Document &d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame);
 
     void handleClientEventsArrayInDocument(rapidjson::Document &d);
 
     void handleIntArrayInDocument(rapidjson::Document &d, const char *intArrayKey, std::vector<int> &intArray, int sentinelValue);
+    
+    void readCharArrayIntoIntArray(const char *charArray, std::vector<int> &intArray, int sentinelValue);
 
     void handlePlayerEvent(int event);
 

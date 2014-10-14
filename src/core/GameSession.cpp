@@ -8,6 +8,7 @@
 
 #include "pch.h"
 #include "GameSession.h"
+#include "GameListener.h"
 #include "Vector2D.h"
 #include "TouchEvent.h"
 #include "Vector2D.h"
@@ -15,6 +16,7 @@
 #include "Assets.h"
 #include "OverlapTester.h"
 #include "MapBorder.h"
+#include "SpaceTile.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "GameEvent.h"
@@ -24,11 +26,19 @@
 #include "PlayerDynamicGameObject.h"
 #include "Fire.h"
 #include "PathFinder.h"
+#include "Crater.h"
+#include "FireBall.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
 #include <iostream>
 
 GameSession::GameSession()
 {
-    // I guess this is empty now
+    m_gameState = WAITING;
+    m_iMapType = MAP_SPACE;
+    m_iNumBreakableBlocksAtSpawnTime = 0;
+    m_isSuddenDeath = false;
 }
 
 int GameSession::getNumPlayers()
@@ -64,6 +74,7 @@ bool GameSession::isPlayerAliveAtIndex(short playerIndex)
 void GameSession::initializeInsideBlocksAndMapBordersForMapType(int mapType)
 {
     m_iMapType = mapType;
+    m_isSuddenDeath = false;
     
     m_mapBorders.clear();
     m_insideBlocks.clear();
@@ -79,6 +90,121 @@ void GameSession::initializeInsideBlocksAndMapBordersForMapType(int mapType)
     if(mapType == MAP_MOUNTAINS)
     {
         m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(MOUNTAINS_DOOR, GAME_X + GRID_CELL_WIDTH * 7 + GRID_CELL_WIDTH / 2.0f, GAME_Y + GRID_CELL_HEIGHT * GRID_CELL_NUM_ROWS + GRID_CELL_HEIGHT / 2, GRID_CELL_WIDTH * 3, GRID_CELL_HEIGHT * 3)));
+    }
+    else if(mapType == MAP_SPACE)
+    {
+        // BEGIN TOP
+        int fallingIndex = 118;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + j : j > 7 ? fallingIndex + (14 - j) : fallingIndex + 7;
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 1, tempFallingIndex, m_gameListener.get())));
+        }
+        
+        fallingIndex = 114;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + (j / 2) : fallingIndex + (7 - j / 2);
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 2, tempFallingIndex, m_gameListener.get())));
+        }
+        
+        fallingIndex = 106;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + j : j > 7 ? fallingIndex + (14 - j) : fallingIndex + 7;
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 3, tempFallingIndex, m_gameListener.get())));
+        }
+        
+        fallingIndex = 102;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + (j / 2) : fallingIndex + (7 - j / 2);
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 4, tempFallingIndex, m_gameListener.get())));
+        }
+        
+        fallingIndex = 94;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + j : j > 7 ? fallingIndex + (14 - j) : fallingIndex + 7;
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 5, tempFallingIndex, m_gameListener.get())));
+        }
+        
+        fallingIndex = 90;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + (j / 2) : fallingIndex + (7 - j / 2);
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 6, tempFallingIndex, m_gameListener.get())));
+        }
+        
+        fallingIndex = 82;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            int tempFallingIndex = j < 7 ? fallingIndex + j : j > 7 ? fallingIndex + (14 - j) : fallingIndex + 7;
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 7, tempFallingIndex, m_gameListener.get())));
+        }
+        
+        // BEGIN MIDDLE
+        fallingIndex = 80;
+        for (int j = 2; j < (NUM_GRID_CELLS_PER_ROW - 2); j += 2)
+        {
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, TOP_HALF_BOTTOM_GRID_Y - 1, fallingIndex + 1, m_gameListener.get())));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y + 1, fallingIndex, m_gameListener.get())));
+        }
+        
+        // BEGIN BOTTOM
+        fallingIndex = 79;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y, fallingIndex--, m_gameListener.get())));
+        }
+        
+        fallingIndex = 57;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+        {
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 1, fallingIndex++, m_gameListener.get())));
+        }
+        
+        fallingIndex = 56;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 2, fallingIndex--, m_gameListener.get())));
+        }
+        
+        fallingIndex = 35;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+        {
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 3, fallingIndex++, m_gameListener.get())));
+        }
+        
+        fallingIndex = 34;
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 4, fallingIndex--, m_gameListener.get())));
+        }
+        
+        // BEGIN BOTTOM CENTER
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(3, 2, 15, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(5, 2, 16, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(7, 2, 17, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(9, 2, 18, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(11, 2, 19, m_gameListener.get())));
+        
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(3, 1, 14, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(4, 1, 13, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(5, 1, 12, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(6, 1, 11, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(7, 1, 10, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(8, 1, 9, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(9, 1, 8, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(10, 1, 7, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(11, 1, 6, m_gameListener.get())));
+        
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(3, 0, 0, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(4, 0, 1, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(6, 0, 2, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(8, 0, 3, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(10, 0, 4, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(11, 0, 5, m_gameListener.get())));
     }
     
     // BEGIN BOTTOM CENTER
@@ -145,8 +271,22 @@ void GameSession::updateCommon(float deltaTime)
             itr++;
         }
     }
+    
+    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = m_insideBlocks.begin(); itr != m_insideBlocks.end(); )
+    {
+        (**itr).update(deltaTime);
+        
+        if((*itr)->getInsideBlockState() == IB_GONE)
+        {
+            itr = m_insideBlocks.erase(itr);
+        }
+        else
+        {
+            itr++;
+        }
+    }
 
-    for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end();)
+    for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end(); )
     {
         (**itr).update(deltaTime);
         
@@ -163,18 +303,13 @@ void GameSession::updateCommon(float deltaTime)
         }
         else
         {
-            if ((**itr).getBreakableBlockState() == EXPLODING)
-            {
-                PathFinder::getInstance().freeGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
-            }
-            
             itr++;
         }
     }
 
     for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = m_explosions.begin(); itr != m_explosions.end();)
     {
-        (**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks);
+        (**itr).update(deltaTime, m_insideBlocks, m_breakableBlocks, m_players);
 
         if ((**itr).isComplete())
         {
@@ -188,7 +323,7 @@ void GameSession::updateCommon(float deltaTime)
 
     for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
     {
-        (**itr).update(deltaTime, m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps, m_explosions, m_players, m_bombs);
+        (**itr).update(deltaTime, m_mapBorders, m_spaceTiles, m_insideBlocks, m_breakableBlocks, m_craters, m_powerUps, m_explosions, m_players, m_bombs);
     }
 
     for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end();)
@@ -202,6 +337,139 @@ void GameSession::updateCommon(float deltaTime)
         else
         {
             itr++;
+        }
+    }
+    
+    if(m_isSuddenDeath)
+    {
+        switch (m_iMapType)
+        {
+            case MAP_SPACE:
+                for (std::vector < std::unique_ptr < SpaceTile >> ::iterator itr = m_spaceTiles.begin(); itr != m_spaceTiles.end(); itr++)
+                {
+                    (*itr)->update(deltaTime, m_isSuddenDeath, m_players, m_bombs, m_insideBlocks, m_breakableBlocks, m_powerUps);
+                }
+                break;
+            case MAP_GRASSLANDS:
+                for (std::vector < std::unique_ptr < FireBall >> ::iterator itr = m_fireBalls.begin(); itr != m_fireBalls.end(); )
+                {
+                    (*itr)->update(deltaTime, m_breakableBlocks);
+                    
+                    if ((*itr)->isDescending() && (*itr)->isTargetReached())
+                    {
+                        if((*itr)->getShadow().isTargetOccupiedByInsideBlock())
+                        {
+                            InsideBlock *insideBlock = (*itr)->getShadow().getTargetInsideBlock();
+                            insideBlock->onDestroy();
+                        }
+                        else if((*itr)->getShadow().isTargetOccupiedByBreakableBlock())
+                        {
+                            BreakableBlock *breakableBlock = (*itr)->getShadow().getTargetBreakableBlock();
+                            breakableBlock->onDestroy();
+                        }
+                        
+                        m_craters.push_back(std::unique_ptr<Crater>(new Crater((*itr)->getGridX(), (*itr)->getGridY())));
+                        
+                        itr++;
+                    }
+                    else if((*itr)->isExplosionCompleted())
+                    {
+                        itr = m_fireBalls.erase(itr);
+                    }
+                    else
+                    {
+                        itr++;
+                    }
+                }
+                
+                for (std::vector < std::unique_ptr < Crater >> ::iterator itr = m_craters.begin(); itr != m_craters.end(); itr++)
+                {
+                    // This is necessary because as breakable block destroy animations are completed, freeGameGridCell will be called
+                    PathFinder::getInstance().occupyGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
+                }
+                break;
+            case MAP_MOUNTAINS:
+                for (std::vector < std::unique_ptr < IceBall >> ::iterator itr = m_iceBalls.begin(); itr != m_iceBalls.end(); )
+                {
+                    (*itr)->update(deltaTime, m_breakableBlocks);
+                    
+                    if ((*itr)->isTargetReached())
+                    {
+                        if((*itr)->getShadow().isTargetOccupiedByInsideBlock())
+                        {
+                            InsideBlock *insideBlock = (*itr)->getShadow().getTargetInsideBlock();
+                            insideBlock->onHitByIceBall();
+                        }
+                        else if((*itr)->getShadow().isTargetOccupiedByBreakableBlock())
+                        {
+                            BreakableBlock *breakableBlock = (*itr)->getShadow().getTargetBreakableBlock();
+                            breakableBlock->onHitByIceBall();
+                        }
+                        else
+                        {
+                            m_icePatches.push_back(std::unique_ptr<IcePatch>(new IcePatch((*itr)->getGridX(), (*itr)->getGridY())));
+                        }
+                        
+                        PathFinder::getInstance().occupyGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
+                        
+                        itr = m_iceBalls.erase(itr);
+                    }
+                    else
+                    {
+                        itr++;
+                    }
+                }
+                
+                for (std::vector < std::unique_ptr < IcePatch >> ::iterator itr = m_icePatches.begin(); itr != m_icePatches.end(); itr++)
+                {
+                    (**itr).update(deltaTime, m_bombs);
+                }
+                break;
+            case MAP_BASE:
+                // TODO
+                break;
+        }
+    }
+}
+
+void GameSession::updateBots()
+{
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        if ((*itr)->isBot())
+        {
+            (*itr)->handlePowerUps(m_powerUps);
+            
+            if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
+            {
+                m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+            }
+            
+            switch(m_iMapType)
+            {
+                case MAP_SPACE:
+                    if((*itr)->isTrappedOnFallingSpaceTile(m_spaceTiles))
+                    {
+                        m_gameListener->addLocalEventForPlayer(PLAYER_ABOUT_TO_FALL, (**itr));
+                    }
+                    else if((*itr)->isFallingDueToSpaceTile(m_spaceTiles))
+                    {
+                        m_gameListener->addLocalEventForPlayer(PLAYER_FALL, (**itr));
+                    }
+                    break;
+                case MAP_GRASSLANDS:
+                    if((*itr)->isHitByFireBall(m_craters))
+                    {
+                        m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
+                    }
+                    break;
+                case MAP_MOUNTAINS:
+                    if((*itr)->isHitByIce(m_icePatches))
+                    {
+                        m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, (**itr));
+                    }
+                    break;
+            }
         }
     }
 }
@@ -274,6 +542,55 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
     handleClientEventsArrayInDocument(d);
 }
 
+void GameSession::suddenDeath(rapidjson::Document &d)
+{
+    m_isSuddenDeath = true;
+    
+    if (m_iMapType == MAP_MOUNTAINS)
+    {
+        m_iceBalls.clear();
+        
+        static const char *iceBallXValuesChar = "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,14,14,14,14,14,14,14,14,14,14,14,14,14,11,10,9,8,7,6,5,4,3,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,13,13,13,13,13,13,13,13,13,13,13,13,11,10,9,8,7,6,5,4,3,1,1,1,1,1,1,1,1,1,1,1,1,2,3,4,5,6,7,8,9,10,11,12,12,12,12,12,12,12,12,12,12,12,12,11,10,9,8,7,6,5,4,3,2,2,2,2,2,2,2,2,2,2,2,3,4,5,6,7,8,9,10,11,11,11,11,11,11,11,11,11,11,11,10,9,8,7,6,5,4,3,3,3,3,3,3,3,3,3,3,4,5,6,7,8,9,10,10,10,10,10,10,10,10,10,9,8,7,6,5,4,4,4,4,4,4,4,4,5,6,7,8,9,9,9,9,9,9,9,8,7,6,5,5,5,5,5,5,6,7,8,8,8,8,8,7,6,6,6,6,7,7,7,7,-1";
+        static const char *iceBallYValuesChar = "16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,15,14,13,12,11,10,9,8,7,6,5,4,3,0,0,0,0,0,0,0,0,0,3,4,5,6,7,8,9,10,11,12,13,14,15,15,15,15,15,15,15,15,15,15,15,15,15,15,14,13,12,11,10,9,8,7,6,5,4,3,1,1,1,1,1,1,1,1,1,3,4,5,6,7,8,9,10,11,12,13,14,14,14,14,14,14,14,14,14,14,14,14,13,12,11,10,9,8,7,6,5,4,3,2,2,2,2,2,2,2,2,2,3,4,5,6,7,8,9,10,11,12,13,13,13,13,13,13,13,13,13,13,12,11,10,9,8,7,6,5,4,3,3,3,3,3,3,3,3,3,4,5,6,7,8,9,10,11,12,12,12,12,12,12,12,12,11,10,9,8,7,6,5,4,4,4,4,4,4,4,5,6,7,8,9,10,11,11,11,11,11,11,10,9,8,7,6,5,5,5,5,5,6,7,8,9,10,10,10,10,9,8,7,6,6,6,7,8,9,9,8,7,8,-1";
+        
+        std::vector<int> iceBallXValues;
+        std::vector<int> iceBallYValues;
+        
+        readCharArrayIntoIntArray(iceBallXValuesChar, iceBallXValues, -1);
+        readCharArrayIntoIntArray(iceBallYValuesChar, iceBallYValues, -1);
+        
+        static int numIceBalls = 238;
+        for(int i = 0; i < numIceBalls; i++)
+        {
+            m_iceBalls.push_back(std::unique_ptr<IceBall>(new IceBall(iceBallXValues.at(i), iceBallYValues.at(i), i, m_gameListener.get(), m_insideBlocks, m_breakableBlocks)));
+        }
+    }
+    else if(m_iMapType == MAP_GRASSLANDS)
+    {
+        m_fireBalls.clear();
+        
+        static const char *fireBallXValuesChar1 = "4,1,12,10,9,7,5,4,13,14,12,13,8,8,8,0,10,12,13,1,10,3,14,9,0,6,6,9,7,8,13,4,2,0,1,9,1,0,7,2,13,2,3,2,11,10,13,13,10,6,0,11,8,2,7,3,14,12,11,2,5,1,12,6,9,7,7,13,6,5,9,10,2,5,12,10,9,13,4,6,8,5,5,6,7,0,9,7,10,13,13,10,1,0,7,8,6,4,11,5,5,11,8,12,9,7,0,7,4,8,2,7,11,8,12,13,1,11,2,6,11,0,3,0,14,3,5,8,3,1,14,5,14,4,3,6,11,4,5,9,12,4,11,4,3,10,12,11,14,9,11,7,7,13,11,1,3,11,12,0,6,9,8,6,0,6,4,1,14,2,10,5,2,9,3,3,7,10,14,4,11,9,1,5,13,4,3,8,10,11,10,12,3,4,9,14,10,1,5,8,3,9,7,10,11,8,3,0,14,4,7,3,2,14,6,8,1,12,10,9,2,4,14,2,12,0,3,6,5,14,6,8,4,5,1,5,6,-1";
+        static const char *fireBallYValuesChar1 = "16,16,5,1,12,8,5,0,12,14,12,11,3,0,10,5,15,3,14,4,13,2,16,6,4,7,13,10,1,15,13,14,4,11,3,2,8,13,11,7,15,3,4,16,14,7,8,16,6,11,8,4,4,8,6,8,5,4,7,14,4,10,7,0,11,13,16,5,16,12,16,9,13,13,8,12,13,7,15,8,12,15,16,9,3,6,0,15,11,9,6,14,6,9,7,5,6,9,16,1,0,10,8,13,5,5,16,12,11,13,6,0,1,7,9,4,11,6,15,2,2,7,13,12,15,5,10,6,3,13,6,9,9,2,14,15,0,12,6,8,10,7,12,8,15,0,6,13,4,1,9,2,14,10,3,9,9,8,16,15,10,9,11,5,14,14,4,7,7,10,5,2,12,4,10,12,10,4,12,6,5,14,5,7,3,10,1,9,2,11,8,14,16,13,3,3,10,15,3,14,0,7,4,16,15,1,11,3,10,1,9,6,5,8,4,2,14,11,3,15,9,5,11,11,15,10,7,1,8,13,12,16,3,14,12,11,3,-1";
+        
+        static const char *fireBallXValuesChar2 = "9,4,6,14,1,10,8,5,8,5,4,6,11,13,7,6,12,7,3,12,11,1,8,1,14,0,11,12,1,2,0,6,0,9,11,12,8,12,7,4,7,12,14,6,5,14,2,13,5,10,6,14,13,5,0,10,10,3,4,10,11,0,8,12,3,3,6,4,13,1,10,3,8,3,2,4,11,2,10,10,13,5,6,9,14,4,0,13,2,14,2,1,5,8,6,14,2,9,10,5,2,3,3,3,0,13,9,6,13,6,8,11,1,2,9,11,8,8,2,8,1,7,9,6,8,9,14,9,11,10,7,11,5,14,13,9,9,1,7,9,5,5,7,2,6,13,5,2,12,4,11,11,5,6,10,4,10,5,5,12,8,11,0,4,2,7,1,14,13,7,10,10,1,11,3,10,10,8,5,0,13,7,9,12,14,4,8,6,7,13,0,0,2,4,8,11,4,3,10,11,12,11,14,3,7,3,9,4,7,0,5,7,3,7,0,12,3,4,0,3,9,14,4,4,7,6,9,1,9,12,1,1,13,12,8,3,6,-1";
+        static const char *fireBallYValuesChar2 = "15,15,1,8,13,1,0,6,5,1,1,12,6,12,0,7,13,7,4,8,3,8,10,6,4,8,7,14,16,7,6,11,12,1,8,15,8,11,5,16,11,3,3,16,13,6,15,9,3,14,0,16,14,8,15,15,13,5,6,2,15,10,6,5,6,10,6,13,7,11,4,8,12,9,12,3,2,6,8,12,6,9,15,0,13,7,4,3,3,11,10,14,10,2,3,15,14,11,9,4,8,1,3,16,14,4,10,2,15,13,3,4,7,13,12,1,1,9,4,15,9,6,5,14,4,7,9,13,9,3,2,11,5,14,11,3,4,4,13,9,16,14,14,9,9,8,11,16,10,0,10,0,2,4,11,5,16,0,12,12,11,12,9,11,5,1,15,10,13,9,6,5,3,13,12,10,7,13,15,7,5,4,16,9,12,12,7,8,10,16,13,3,11,9,14,14,4,14,0,16,4,5,7,15,12,2,14,8,3,5,7,15,13,16,11,16,0,2,16,7,6,5,10,14,8,5,8,5,2,6,10,12,10,7,16,11,10,-1";
+        
+        std::vector<int> fireBallXValues;
+        std::vector<int> fireBallYValues;
+        
+        bool isNumBreakableBlocksAtSpawnTimeEven = m_iNumBreakableBlocksAtSpawnTime % 2 == 0;
+        
+        readCharArrayIntoIntArray(isNumBreakableBlocksAtSpawnTimeEven ? fireBallXValuesChar1 : fireBallXValuesChar2, fireBallXValues, -1);
+        readCharArrayIntoIntArray(isNumBreakableBlocksAtSpawnTimeEven ? fireBallYValuesChar1 : fireBallYValuesChar2, fireBallYValues, -1);
+        
+        static int numFireBalls = 237;
+        for(int i = 0; i < numFireBalls; i++)
+        {
+            m_fireBalls.push_back(std::unique_ptr<FireBall>(new FireBall(fireBallXValues.at(i), fireBallYValues.at(i), i, m_gameListener.get(), m_insideBlocks, m_breakableBlocks)));
+        }
+    }
+}
+
 void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame)
 {
     if (d.HasMember(keyX) && d.HasMember(keyY) && d.HasMember(keyDirection))
@@ -294,7 +611,11 @@ void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *key
     if(d.HasMember(keyAlive))
     {
         bool isPlayerAlive = d[keyAlive].GetBool();
-        m_players.at(playerIndex).get()->setPlayerState(isPlayerAlive ? ALIVE : DEAD);
+        Player_State playerState = m_players.at(playerIndex).get()->getPlayerState();
+        if(playerState == ALIVE && !isPlayerAlive)
+        {
+            m_players.at(playerIndex).get()->setPlayerState(DEAD);
+        }
     }
     
     if(d.HasMember(keyIsBot))
@@ -317,27 +638,32 @@ void GameSession::handleIntArrayInDocument(rapidjson::Document &d, const char *i
     {
         const char *charArray = d[intArrayKey].GetString();
 
-        char *copy = strdup(charArray);
-
-        char *value = std::strtok(copy, ",");
-
-        int i = 0;
-        
-        while (value != NULL)
-        {
-            int intValue = atoi(value);
-            if (intValue != sentinelValue)
-            {
-                intArray.push_back(intValue);
-            }
-
-            value = strtok(NULL, ","); // Get next event
-            i++;
-        }
-
-        free(copy);
-        free(value);
+        readCharArrayIntoIntArray(charArray, intArray, sentinelValue);
     }
+}
+
+void GameSession::readCharArrayIntoIntArray(const char *charArray, std::vector<int> &intArray, int sentinelValue)
+{
+    char *copy = strdup(charArray);
+    
+    char *value = std::strtok(copy, ",");
+    
+    int i = 0;
+    
+    while (value != NULL)
+    {
+        int intValue = atoi(value);
+        if (intValue != sentinelValue)
+        {
+            intArray.push_back(intValue);
+        }
+        
+        value = strtok(NULL, ","); // Get next event
+        i++;
+    }
+    
+    free(copy);
+    free(value);
 }
 
 void GameSession::handlePlayerEvent(int event)
@@ -405,11 +731,26 @@ void GameSession::handlePlayerEvent(int event)
         case PLAYER_PUSH_BOMB:
             pushBombForPlayer(m_players.at(playerIndex).get());
             break;
+        case PLAYER_RAISE_SHIELD:
+            m_players.at(playerIndex).get()->raiseShield();
+            break;
+        case PLAYER_LOWER_SHIELD:
+            m_players.at(playerIndex).get()->lowerShield();
+            break;
         case PLAYER_FORCE_FIELD_HIT:
             m_players.at(playerIndex).get()->onForceFieldHit();
             break;
         case PLAYER_DEATH:
             m_players.at(playerIndex).get()->onDeath();
+            break;
+        case PLAYER_ABOUT_TO_FALL:
+            m_players.at(playerIndex).get()->onTrappedOnFallingSpaceTile(m_spaceTiles);
+            break;
+        case PLAYER_FALL:
+            m_players.at(playerIndex).get()->onFall();
+            break;
+        case PLAYER_FREEZE:
+            m_players.at(playerIndex).get()->onFreeze();
             break;
         case PLAYER_PU_BOMB:
             m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_BOMB);
@@ -425,6 +766,9 @@ void GameSession::handlePlayerEvent(int event)
             break;
         case PLAYER_PU_PUSH:
             m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_PUSH);
+            break;
+        case PLAYER_PU_SHIELD:
+            m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_SHIELD);
             break;
         default:
             break;

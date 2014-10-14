@@ -9,7 +9,6 @@
 #include "pch.h"
 #include "Direct3DRectangleBatcher.h"
 #include "BasicReaderWriter.h"
-#include "DirectXHelper.h"
 #include "GameConstants.h"
 #include "Rectangle.h"
 #include "Vector2D.h"
@@ -26,6 +25,8 @@ ComPtr<ID3D11InputLayout> inputlayout1; // the input layout interface
 ComPtr<ID3D11Buffer> constantbuffer1; // the constant buffer interface
 ComPtr<ID3D11Buffer> vertexbuffer1; // the vertex buffer interface
 ComPtr<ID3D11Buffer> indexbuffer1; // the index buffer interface
+
+DirectX::XMMATRIX matFinal1;
 
 static const size_t MaxBatchSize = 256;
 static const size_t MaxRectangleBatchSize = 128;
@@ -86,6 +87,20 @@ Direct3DRectangleBatcher::Direct3DRectangleBatcher(ID3D11Device1 *d3dDevice, ID3
 	bd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
 	m_d3dDevice1->CreateBuffer(&bd2, nullptr, &constantbuffer1);
+
+	using namespace DirectX;
+
+	// calculate the view transformation
+	XMVECTOR vecCamPosition = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1, 0);
+	XMVECTOR vecCamLookAt = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0);
+	XMVECTOR vecCamUp = XMVectorSet(0, 1, 0, 0);
+	XMMATRIX matView = XMMatrixLookAtRH(vecCamPosition, vecCamLookAt, vecCamUp);
+
+	// calculate the projection transformation
+	XMMATRIX matProjection = XMMatrixOrthographicRH(SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
+
+	// calculate the final matrix
+	matFinal1 = matView * matProjection;
 }
 
 void Direct3DRectangleBatcher::beginBatch()
@@ -112,22 +127,8 @@ void Direct3DRectangleBatcher::endBatch()
 
 		m_d3dContext1->IASetIndexBuffer(indexbuffer1.Get(), DXGI_FORMAT_R16_UINT, 0);
 
-		using namespace DirectX;
-
-		// calculate the view transformation
-		XMVECTOR vecCamPosition = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1, 0);
-		XMVECTOR vecCamLookAt = XMVectorSet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0);
-		XMVECTOR vecCamUp = XMVectorSet(0, 1, 0, 0);
-		XMMATRIX matView = XMMatrixLookAtRH(vecCamPosition, vecCamLookAt, vecCamUp);
-
-		// calculate the projection transformation
-		XMMATRIX matProjection = XMMatrixOrthographicRH(SCREEN_WIDTH, SCREEN_HEIGHT, -1.0, 1.0);
-
-		// calculate the final matrix
-		XMMATRIX matFinal = matView * matProjection;
-
 		// send the final matrix to video memory
-		m_d3dContext1->UpdateSubresource(constantbuffer1.Get(), 0, 0, &matFinal, 0, 0);
+		m_d3dContext1->UpdateSubresource(constantbuffer1.Get(), 0, 0, &matFinal1, 0, 0);
 
 		m_d3dContext1->VSSetConstantBuffers(0, 1, constantbuffer1.GetAddressOf());
 
@@ -150,7 +151,7 @@ void Direct3DRectangleBatcher::endBatch()
 			bd.Usage = D3D11_USAGE_DEFAULT;
 			srd.pSysMem = &tempColorVertices.front();
 
-			DX::ThrowIfFailed(m_d3dDevice1->CreateBuffer(&bd, &srd, &vertexbuffer1));
+			m_d3dDevice1->CreateBuffer(&bd, &srd, &vertexbuffer1);
 
 			// Set the vertex and index buffer
 			UINT stride = sizeof(COLOR_VERTEX);
@@ -208,8 +209,7 @@ void Direct3DRectangleBatcher::createIndexBuffer()
 
 	indexDataDesc.pSysMem = &indexValues.front();
 
-	using namespace DirectX;
-	DX::ThrowIfFailed(m_d3dDevice1->CreateBuffer(&indexBufferDesc, &indexDataDesc, &indexbuffer1));
+	m_d3dDevice1->CreateBuffer(&indexBufferDesc, &indexDataDesc, &indexbuffer1);
 }
 
 // Helper for populating the SpriteBatch index buffer.

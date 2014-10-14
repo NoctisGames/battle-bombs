@@ -16,11 +16,13 @@ class OpenGLESRenderer;
 class OpenGLESGameScreen : public GameScreen
 {
 public:
-    OpenGLESGameScreen(const char *username, bool isOffline = false);
+    OpenGLESGameScreen(const char *username, bool isOffline = false, bool isRunningIOS8 = false);
     
     void onSurfaceCreated(int deviceScreenWidth, int deviceScreenHeight);
     
 	void onSurfaceChanged(int deviceScreenWidth, int deviceScreenHeight, int dpWidth, int dpHeight);
+    
+    void setRunningIOS8(bool isRunningIOS8);
     
     virtual void touchToWorld(TouchEvent &touchEvent);
     
@@ -33,6 +35,7 @@ public:
 private:
     int m_iDeviceScreenDpWidth;
     int m_iDeviceScreenDpHeight;
+    bool m_isRunningIOS8;
 };
 
 #endif /* defined(__battle_bombs__OpenGLESGameScreen__) */

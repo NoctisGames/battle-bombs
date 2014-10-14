@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -24,6 +26,8 @@ namespace BattleBombs
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        public static Boolean isConnectionError = false;
+
         public MainPage()
         {
             InitializeComponent();
@@ -34,6 +38,13 @@ namespace BattleBombs
             base.OnNavigatedTo(e);
 
             PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Enabled;
+
+            if (isConnectionError)
+            {
+                showConnectionErrorMessageAfterDelay(1000);
+            }
+
+            isConnectionError = false;
         }
 
         private void Start_Quick_Match(object sender, RoutedEventArgs e)
@@ -124,6 +135,20 @@ namespace BattleBombs
                 }
             };
             box.Show();
+        }
+
+        private void showConnectionErrorMessageAfterDelay(int delayInMilliseconds)
+        {
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += (s, e) => Thread.Sleep(delayInMilliseconds);
+
+            worker.RunWorkerCompleted += (s, e) => Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                MessageBox.Show("Your device is unable to connect to Techne Games. Please check your connection and try again.");
+            });
+
+            worker.RunWorkerAsync();
         }
     }
 

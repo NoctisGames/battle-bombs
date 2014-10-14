@@ -16,18 +16,23 @@
 class Fire : public GridGameObject
 {
 public:
-    Fire(Fire_Type type, int gridX, int gridY, float angle, float width = GRID_CELL_WIDTH, float height = GRID_CELL_HEIGHT);
+    Fire(Fire_Type type, int gridX, int gridY, int direction, float width = GRID_CELL_WIDTH, float height = GRID_CELL_HEIGHT);
     
     void nextFrame(short explosionPowerRemaining);
+    
+    int getDirection();
     
     bool isExhausted();
     
     bool isDeadly();
     
+    bool isEdge();
+    
     Fire_Type getFireType();
     
 private:
     Fire_Type m_fireType;
+    int m_iDirection;
     bool m_isExhausted;
 };
 

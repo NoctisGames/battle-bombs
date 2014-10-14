@@ -27,6 +27,12 @@
 #include "PathFinder.h"
 #include "MapSearchNode.h"
 #include "PowerUpType.h"
+#include "Crater.h"
+#include "FireBall.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
+#include "SpaceTile.h"
 
 //For RNG purposes
 #include <stdlib.h>
@@ -34,8 +40,6 @@
 
 ServerGameSession::ServerGameSession()
 {
-    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
-
     init();
 }
 
@@ -112,9 +116,9 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
             {
                 continue;
             }
-
-            // 70% chance there will be a breakable block at all
-            if ((rand() % 100 + 1) < 71)
+            
+            // 66% chance there will be a breakable block at all
+            if ((rand() % 100 + 1) < 67)
             {
                 int flag = POWER_UP_TYPE_NONE;
 
@@ -122,21 +126,27 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
                 // This will be used to determine which type of powerups will appear
                 int flagRange = (rand() % 100 + 1);
 
-                if (flagRange <= 25)
+                if (flagRange <= 35)
                 {
                     flag = rand() % POWER_UP_TYPE_SPEED + 1;
                 }
-                else if (flagRange > 25 && flagRange <= 30)
+                else if (flagRange > 35 && flagRange <= 40)
                 {
                     flag = POWER_UP_TYPE_FORCE_FIELD;
                 }
-                else if (flagRange > 30 && flagRange <= 35)
+                else if (flagRange > 40 && flagRange <= 45)
                 {
                     flag = POWER_UP_TYPE_PUSH;
+                }
+                else if (flagRange > 45 && flagRange <= 50)
+                {
+                    flag = POWER_UP_TYPE_SHIELD;
                 }
 
                 // If these two blocks don't get caught, the flag remains 0 and no powerup will be created
                 m_breakableBlocks.push_back(std::unique_ptr<BreakableBlock>(new BreakableBlock(j, i, flag)));
+                
+                m_iNumBreakableBlocksAtSpawnTime++;
             }
         }
     }
@@ -147,15 +157,25 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
 
 void ServerGameSession::init()
 {
+    m_gameListener.release();
+    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
+
     m_breakableBlocks.clear();
     m_players.clear();
     m_bombs.clear();
     m_explosions.clear();
     m_powerUps.clear();
+    m_spaceTiles.clear();
+    m_craters.clear();
+    m_fireBalls.clear();
+    m_iceBalls.clear();
+    m_icePatches.clear();
 
     srand((int) time(NULL));
 
     m_fCountDownTimeLeft = 4;
+    
+    m_iNumBreakableBlocksAtSpawnTime = 0;
 }
 
 void ServerGameSession::handleServerUpdate(const char *message)
@@ -201,6 +221,10 @@ void ServerGameSession::update(float deltaTime)
                     }
                 }
             }
+            else if (eventType == SUDDEN_DEATH)
+            {
+                suddenDeath(d);
+            }
         }
     }
 
@@ -211,6 +235,11 @@ void ServerGameSession::update(float deltaTime)
             if (m_fCountDownTimeLeft < 0)
             {
                 m_gameState = RUNNING;
+
+                for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+                {
+                    (*itr)->reset();
+                }
             }
             break;
         case RUNNING:
@@ -250,18 +279,7 @@ int ServerGameSession::popOldestEventId()
 
 void ServerGameSession::updateRunning(float deltaTime)
 {
-    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-    {
-        if ((*itr)->isBot())
-        {
-            (*itr)->handlePowerUps(m_powerUps);
-
-            if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
-            {
-                m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
-            }
-        }
-    }
+    updateBots();
 
     std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
 

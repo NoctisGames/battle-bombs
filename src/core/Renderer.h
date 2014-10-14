@@ -32,30 +32,33 @@
 
 class GameObject;
 class TextureRegion;
+class WaitingForServerInterface;
+class WaitingForLocalSettingsInterface;
 class ActiveButton;
 class PlayerDynamicGameObject;
 class MapBorder;
+class SpaceTile;
 class InsideBlock;
 class BreakableBlock;
 class BombGameObject;
 class Explosion;
 class PowerUp;
-class WaitingForServerInterface;
-class WaitingForLocalSettingsInterface;
+class Crater;
+class FireBall;
+class IceBall;
+class IcePatch;
 class InterfaceOverlay;
 class Font;
 class SpriteBatcher;
 class RectangleBatcher;
 class CountDownNumberGameObject;
-class DisplayBattleGameObject;
+class DisplayXMovingGameObject;
 class DisplayGameOverGameObject;
 
 class Renderer
 {
 public:
     Renderer();
-
-	void calcScrollYForPlayer(PlayerDynamicGameObject &player);
     
     virtual void loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players) = 0;
     
@@ -63,41 +66,52 @@ public:
     
     virtual void beginFrame() = 0;
     
-    virtual void renderWorldBackground();
-    
-    virtual void renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
-    
-	virtual void renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs);
-
-	virtual void renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions);
-
-    virtual void renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
-    
-    virtual void renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear);
-    
-    virtual void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface);
-    
-    virtual void renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
-    
-    virtual void renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject);
-    
-    virtual void renderInterface(InterfaceOverlay &interfaceOverlay);
-    
-    virtual void renderSpectatorInterface(InterfaceOverlay &interfaceOverlay);
-    
-    virtual void renderGameOverBlackCover(float alpha);
-    
-    virtual void renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]);
-    
     virtual void endFrame() = 0;
+    
+    void calcScrollYForPlayer(PlayerDynamicGameObject &player);
+    
+    void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface);
+    
+    void renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
+    
+    void renderWorldBackground();
+    
+    void renderSpaceTiles(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles);
+    
+    void renderCraters(std::vector<std::unique_ptr<Crater>> &craters);
+    
+    void renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
+    
+    void renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs);
 
-	virtual void cleanUp() = 0;
+    void renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions);
+
+    void renderSuddenDeathMountainsIcePatches(std::vector<std::unique_ptr<IcePatch>> &icePatches);
+    
+    void renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
+    
+    void renderSuddenDeathGrasslandsFireBalls(std::vector<std::unique_ptr<FireBall>> &fireBalls);
+    
+    void renderSuddenDeathMountainsIceBalls(std::vector<std::unique_ptr<IceBall>> &iceBalls);
+    
+    void renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear);
+    
+    void renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayXMovingGameObject &displayXMovingGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject);
+    
+    void renderInterface(InterfaceOverlay &interfaceOverlay);
+    
+    void renderSpectatorInterface(InterfaceOverlay &interfaceOverlay);
+    
+    void renderGameOverBlackCover(float alpha);
+    
+    void renderGameGrid(int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]);
     
 protected:
     std::unique_ptr<SpriteBatcher> m_spriteBatcher;
     std::unique_ptr<RectangleBatcher> m_rectangleBatcher;
 	std::unique_ptr<Font> m_font;
     std::unique_ptr<TextureWrapper> m_gameTexture;
+    std::unique_ptr<TextureWrapper> m_mapTexture;
     std::unique_ptr<TextureWrapper> m_interfaceTexture;
     std::unique_ptr<TextureWrapper> m_interfaceTexture2;
     std::unique_ptr<TextureWrapper> m_charBlackTexture;

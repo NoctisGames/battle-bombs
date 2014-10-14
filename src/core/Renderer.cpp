@@ -18,6 +18,7 @@
 #include "ActiveButton.h"
 #include "PlayerDynamicGameObject.h"
 #include "MapBorder.h"
+#include "SpaceTile.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "BombGameObject.h"
@@ -40,8 +41,13 @@
 #include "PlayerRowAvatar.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "CountDownNumberGameObject.h"
-#include "DisplayBattleGameObject.h"
+#include "DisplayXMovingGameObject.h"
 #include "DisplayGameOverGameObject.h"
+#include "Crater.h"
+#include "FireBall.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
 #include <sstream>
 
 Renderer::Renderer()
@@ -74,121 +80,6 @@ void Renderer::calcScrollYForPlayer(PlayerDynamicGameObject &player)
 	{
 		m_fScrollY = 0;
 	}
-}
-
-void Renderer::renderWorldBackground()
-{
-    m_spriteBatcher->beginBatch();
-    m_spriteBatcher->drawSprite(WORLD_BACKGROUND_X, WORLD_BACKGROUND_Y - m_fScrollY, WORLD_BACKGROUND_WIDTH, WORLD_BACKGROUND_HEIGHT, 0, Assets::getWorldBackgroundTextureRegion());
-    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
-}
-
-void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
-{
-    m_spriteBatcher->beginBatch();
-    
-    for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersFar.begin(); itr != mapBordersFar.end(); itr++)
-    {
-        if(!(*itr)->isNearFront())
-        {
-            renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
-        }
-    }
-    
-    for (std::vector<std::unique_ptr<InsideBlock>>::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
-    {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getInsideBlockTextureRegion());
-    }
-    
-    for (std::vector<std::unique_ptr<BreakableBlock>>::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
-    {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getBreakableBlockTextureRegion((**itr)));
-    }
-    
-    for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
-    {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((**itr)));
-    }
-    
-    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
-}
-
-void Renderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
-{
-    for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
-    {
-        if((**itr).getPlayerState() != Player_State::DEAD)
-        {
-            m_spriteBatcher->beginBatch();
-            renderGameObjectWithRespectToPlayer((**itr), Assets::getPlayerTextureRegion((**itr)));
-            
-            switch ((**itr).getPlayerIndex())
-            {
-                case 0:
-                    m_spriteBatcher->endBatchWithTexture(*m_charBlackTexture);
-                    break;
-                case 1:
-                    m_spriteBatcher->endBatchWithTexture(*m_charBlueTexture);
-                    break;
-                case 2:
-                    m_spriteBatcher->endBatchWithTexture(*m_charGreenTexture);
-                    break;
-                case 3:
-                    m_spriteBatcher->endBatchWithTexture(*m_charOrangeTexture);
-                    break;
-                case 4:
-                    m_spriteBatcher->endBatchWithTexture(*m_charPinkTexture);
-                    break;
-                case 5:
-                    m_spriteBatcher->endBatchWithTexture(*m_charRedTexture);
-                    break;
-                case 6:
-                    m_spriteBatcher->endBatchWithTexture(*m_charWhiteTexture);
-                    break;
-                case 7:
-                    m_spriteBatcher->endBatchWithTexture(*m_charYellowTexture);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-}
-
-void Renderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
-{
-    m_spriteBatcher->beginBatch();
-    for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
-    {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
-    }
-    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
-}
-
-void Renderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions)
-{
-    m_spriteBatcher->beginBatch();
-    for (std::vector<std::unique_ptr<Explosion>>::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
-    {
-        for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
-        {
-            renderGameObjectWithRespectToPlayer((**itr2), Assets::getFireTextureRegion((**itr2)));
-        }
-    }
-    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
-}
-
-void Renderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear)
-{
-    m_spriteBatcher->beginBatch();
-    for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersNear.begin(); itr != mapBordersNear.end(); itr++)
-    {
-        if((*itr)->isNearFront())
-        {
-            renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
-        }
-    }
-    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
 }
 
 void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface)
@@ -232,7 +123,7 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
         
         if(waitingForServerInterface.renderTimeToNextRound())
         {
-			static Color timerColor = Color(1, 1, 1, 1);
+            static Color timerColor = Color(1, 1, 1, 1);
             
             std::stringstream ss2;
             ss2 << waitingForServerInterface.getTimeToNextRound();
@@ -243,7 +134,7 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
         
         if(waitingForServerInterface.renderMessage())
         {
-			static Color interfaceColor = Color(1, 1, 1, 1);
+            static Color interfaceColor = Color(1, 1, 1, 1);
             interfaceColor.alpha -= 0.025f;
             if(interfaceColor.alpha < 0.2f)
             {
@@ -289,7 +180,7 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
 
 void Renderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
 {
-	static Color interfaceColor = Color(1, 1, 1, 1);
+    static Color interfaceColor = Color(1, 1, 1, 1);
     interfaceColor.alpha -= 0.025f;
     if(interfaceColor.alpha < 0.2f)
     {
@@ -307,7 +198,214 @@ void Renderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInt
     m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture);
 }
 
-void Renderer::renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayBattleGameObject &displayBattleGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject)
+void Renderer::renderWorldBackground()
+{
+    m_spriteBatcher->beginBatch();
+    m_spriteBatcher->drawSprite(WORLD_BACKGROUND_X, WORLD_BACKGROUND_Y - m_fScrollY, WORLD_BACKGROUND_WIDTH, WORLD_BACKGROUND_HEIGHT, 0, Assets::getWorldBackgroundTextureRegion());
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
+void Renderer::renderSpaceTiles(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<SpaceTile>>::iterator itr = spaceTiles.begin(); itr != spaceTiles.end(); itr++)
+    {
+        if((*itr)->getSpaceTileState() == ST_NORMAL)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getSpaceTileTextureRegion(**itr));
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<SpaceTile>>::iterator itr = spaceTiles.begin(); itr != spaceTiles.end(); itr++)
+    {
+        if((*itr)->getSpaceTileState() != ST_NORMAL)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getSpaceTileTextureRegion(**itr));
+        }
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
+void Renderer::renderCraters(std::vector<std::unique_ptr<Crater>> &craters)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<Crater>>::iterator itr = craters.begin(); itr != craters.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getCraterTextureRegion());
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
+void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersFar.begin(); itr != mapBordersFar.end(); itr++)
+    {
+        if(!(*itr)->isNearFront())
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<InsideBlock>>::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
+    {
+        if((*itr)->getInsideBlockState() != IB_GONE)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getInsideBlockTextureRegion((**itr)));
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<BreakableBlock>>::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
+    {
+        if((*itr)->getBreakableBlockState() != DESTROYED)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getBreakableBlockTextureRegion((**itr)));
+        }
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+    
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<PowerUp>>::iterator itr = powerUps.begin(); itr != powerUps.end(); itr++)
+    {
+        if((*itr)->getType() != POWER_UP_TYPE_NONE)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((**itr)));
+        }
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
+}
+
+void Renderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
+}
+
+void Renderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<Explosion>>::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
+    {
+        for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
+        {
+            renderGameObjectWithRespectToPlayer((**itr2), Assets::getFireTextureRegion((**itr2)));
+        }
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
+}
+
+void Renderer::renderSuddenDeathMountainsIcePatches(std::vector<std::unique_ptr<IcePatch>> &icePatches)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<IcePatch>>::iterator itr = icePatches.begin(); itr != icePatches.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getIcePatchTextureRegion((**itr)));
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
+void Renderer::renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
+{
+    for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
+    {
+        if((**itr).getPlayerState() != Player_State::DEAD)
+        {
+            m_spriteBatcher->beginBatch();
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getPlayerTextureRegion((**itr)));
+            
+            switch ((**itr).getPlayerIndex())
+            {
+                case 0:
+                    m_spriteBatcher->endBatchWithTexture(*m_charBlackTexture);
+                    break;
+                case 1:
+                    m_spriteBatcher->endBatchWithTexture(*m_charBlueTexture);
+                    break;
+                case 2:
+                    m_spriteBatcher->endBatchWithTexture(*m_charGreenTexture);
+                    break;
+                case 3:
+                    m_spriteBatcher->endBatchWithTexture(*m_charOrangeTexture);
+                    break;
+                case 4:
+                    m_spriteBatcher->endBatchWithTexture(*m_charPinkTexture);
+                    break;
+                case 5:
+                    m_spriteBatcher->endBatchWithTexture(*m_charRedTexture);
+                    break;
+                case 6:
+                    m_spriteBatcher->endBatchWithTexture(*m_charWhiteTexture);
+                    break;
+                case 7:
+                    m_spriteBatcher->endBatchWithTexture(*m_charYellowTexture);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+void Renderer::renderSuddenDeathGrasslandsFireBalls(std::vector<std::unique_ptr<FireBall>> &fireBalls)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<FireBall>>::iterator itr = fireBalls.begin(); itr != fireBalls.end(); itr++)
+    {
+        if((*itr)->isVisible())
+        {
+            renderGameObjectWithRespectToPlayer((*itr)->getShadow(), Assets::getFallingObjectShadowTextureRegion((*itr)->getShadow()));
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<FireBall>>::iterator itr = fireBalls.begin(); itr != fireBalls.end(); itr++)
+    {
+        if((*itr)->isDescending() || (*itr)->isTargetReached())
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getFireBallTextureRegion((**itr)));
+        }
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
+void Renderer::renderSuddenDeathMountainsIceBalls(std::vector<std::unique_ptr<IceBall>> &iceBalls)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<IceBall>>::iterator itr = iceBalls.begin(); itr != iceBalls.end(); itr++)
+    {
+        if((*itr)->isVisible())
+        {
+            renderGameObjectWithRespectToPlayer((*itr)->getShadow(), Assets::getFallingObjectShadowTextureRegion((*itr)->getShadow()));
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<IceBall>>::iterator itr = iceBalls.begin(); itr != iceBalls.end(); itr++)
+    {
+        if((*itr)->isDescending())
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getIceBallTextureRegion((**itr)));
+        }
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
+void Renderer::renderMapBordersNear(std::vector<std::unique_ptr<MapBorder>> &mapBordersNear)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersNear.begin(); itr != mapBordersNear.end(); itr++)
+    {
+        if((*itr)->isNearFront())
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getMapBorderTextureRegion((**itr)));
+        }
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
+void Renderer::renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<CountDownNumberGameObject>> &countDownNumbers, DisplayXMovingGameObject &displayXMovingGameObject, std::vector<std::unique_ptr<DisplayGameOverGameObject>> &displayGameOverGameObject)
 {
     m_spriteBatcher->beginBatch();
     
@@ -376,7 +474,7 @@ void Renderer::renderUIEffects(std::vector<std::unique_ptr<PlayerDynamicGameObje
         renderGameObject((**itr), Assets::getCountDownNumberTextureRegion(**itr));
     }
     
-    renderGameObject(displayBattleGameObject, Assets::getDisplayBattleTextureRegion());
+    renderGameObject(displayXMovingGameObject, Assets::getDisplayXMovingTextureRegion(displayXMovingGameObject));
     
     for (std::vector<std::unique_ptr<DisplayGameOverGameObject>>::iterator itr = displayGameOverGameObject.begin(); itr != displayGameOverGameObject.end(); itr++)
     {
@@ -406,7 +504,7 @@ void Renderer::renderInterface(InterfaceOverlay &interfaceOverlay)
         }
     }
     
-    if(interfaceOverlay.getActiveButton().getPowerUpType() == POWER_UP_TYPE_PUSH)
+    if(interfaceOverlay.getActiveButton().getPowerUpType() != POWER_UP_TYPE_NONE)
     {
         renderGameObject(interfaceOverlay.getActiveButton(), Assets::getActiveButtonTextureRegion(interfaceOverlay.getActiveButton(), interfaceOverlay.getButtonsStateTime()));
     }

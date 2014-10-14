@@ -108,7 +108,7 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
         if (m_fStateTime > 0.2f)
         {
             m_isDestroyed = true;
-            explosions.push_back(std::unique_ptr<Explosion>(new Explosion(m_sPower, m_gridX, m_gridY, insideBlocks, breakableBlocks)));
+            explosions.push_back(std::unique_ptr<Explosion>(new Explosion(m_sPower, m_gridX, m_gridY, insideBlocks, breakableBlocks, players)));
         }
     }
 }
@@ -126,6 +126,11 @@ bool BombGameObject::isExploding()
 bool BombGameObject::isDestroyed()
 {
     return m_isDestroyed;
+}
+
+void BombGameObject::destroy()
+{
+    m_isDestroyed = true;
 }
 
 void BombGameObject::pushed(int direction)

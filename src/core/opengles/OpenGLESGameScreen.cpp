@@ -38,7 +38,7 @@
 #include "Font.h"
 #include "SpectatorControls.h"
 #include "CountDownNumberGameObject.h"
-#include "DisplayBattleGameObject.h"
+#include "DisplayXMovingGameObject.h"
 #include "DisplayGameOverGameObject.h"
 #include "OpenGLESRenderer.h"
 #include "PlayerRow.h"
@@ -46,11 +46,16 @@
 #include "OpenGLESRectangleBatcher.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "SpriteBatcher.h"
-#include "Vertices2D.h"
+#include "Crater.h"
+#include "FireBall.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
+#include "SpaceTile.h"
 
-OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
+OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline, bool isRunningIOS8) : GameScreen(username, isOffline)
 {
-    // No further setup
+    m_isRunningIOS8 = isRunningIOS8;
 }
 
 void OpenGLESGameScreen::onSurfaceCreated(int width, int height)
@@ -60,15 +65,6 @@ void OpenGLESGameScreen::onSurfaceCreated(int width, int height)
     
     glViewport(0, 0, width, height);
 	glScissor(0, 0, width, height);
-    
-	glLoadIdentity();
-    
-	glMatrixMode(GL_PROJECTION);
-	glOrthof(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-    
-	glLoadIdentity();
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
     m_renderer = std::unique_ptr<OpenGLESRenderer>(new OpenGLESRenderer(m_iDeviceScreenWidth, m_iDeviceScreenHeight));
 }
@@ -86,7 +82,14 @@ void OpenGLESGameScreen::touchToWorld(TouchEvent &touchEvent)
 #ifdef TECHNE_GAMES_OPENGL_ANDROID
     m_touchPoint->set((touchEvent.getX() / (float) m_iDeviceScreenWidth) * SCREEN_WIDTH, (1 - touchEvent.getY() / (float) m_iDeviceScreenHeight) * SCREEN_HEIGHT);
 #elif defined TECHNE_GAMES_IOS
-    m_touchPoint->set((touchEvent.getY() / (float) m_iDeviceScreenDpHeight) * SCREEN_WIDTH, (touchEvent.getX() / (float) m_iDeviceScreenDpWidth) * SCREEN_HEIGHT);
+    if(m_isRunningIOS8)
+    {
+        m_touchPoint->set((touchEvent.getX() / (float) m_iDeviceScreenDpWidth) * SCREEN_WIDTH, (1 - touchEvent.getY() / (float) m_iDeviceScreenDpHeight) * SCREEN_HEIGHT);
+    }
+    else
+    {
+        m_touchPoint->set((touchEvent.getY() / (float) m_iDeviceScreenDpHeight) * SCREEN_WIDTH, (touchEvent.getX() / (float) m_iDeviceScreenDpWidth) * SCREEN_HEIGHT);
+    }
 #endif
 }
 

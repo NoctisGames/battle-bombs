@@ -9,34 +9,49 @@
 #ifndef __battlebombs__OpenGLESRectangleBatcher__
 #define __battlebombs__OpenGLESRectangleBatcher__
 
-#include "RectangleBatcher.h"
-#include <memory>
-
 extern "C"
 {
 #include "platform_gl.h"
+#include "linmath.h"
 }
 
-class Vertices2D;
+typedef struct
+{
+    GLuint program;
+    
+    GLint u_mvp_matrix_location;
+    GLint a_position_location;
+    GLint a_color_location;
+} ColorProgram;
+
+#include "RectangleBatcher.h"
+#include <memory>
+#include <vector>
 
 class OpenGLESRectangleBatcher : public RectangleBatcher
 {
 public:
-    OpenGLESRectangleBatcher(int maxRectangles, bool isFill);
+    OpenGLESRectangleBatcher(bool isFill);
     
     virtual void beginBatch();
     
     virtual void endBatch();
     
-    virtual void renderRectangle(float leftX, float bottomY, float rightX, float topY, Color &color);
+    virtual void renderRectangle(float x1, float y1, float x2, float y2, Color &color);
     
 private:
-    std::unique_ptr<Vertices2D> m_vertices;
-    std::unique_ptr<GLshort> m_indices;
+    std::vector<GLfloat> m_colorVertices;
+    std::vector<GLshort> m_indices;
+    ColorProgram m_colorProgram;
+    mat4x4 m_viewMatrix;
+    mat4x4 m_projectionMatrix;
+    mat4x4 m_viewProjectionMatrix;
     
-    void addColorCoordinates(Color &color);
+    void addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a);
     
-    void generateIndices(int maxSprites);
+    ColorProgram get_color_program(GLuint program);
+    
+    void generateIndices();
 };
 
 #endif /* defined(__battlebombs__OpenGLESRectangleBatcher__) */

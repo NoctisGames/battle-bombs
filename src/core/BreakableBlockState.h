@@ -11,7 +11,9 @@
 
 typedef enum
 {
-    NORMAL,
+    BB_NORMAL,
+    BB_FREEZING,
+    BB_FROZEN,
     EXPLODING,
     DESTROYED
 } Breakable_Block_State;

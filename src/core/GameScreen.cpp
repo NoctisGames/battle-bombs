@@ -40,11 +40,17 @@
 #include "Font.h"
 #include "SpectatorControls.h"
 #include "CountDownNumberGameObject.h"
-#include "DisplayBattleGameObject.h"
+#include "DisplayXMovingGameObject.h"
 #include "DisplayGameOverGameObject.h"
 #include "PlayerRow.h"
 #include "PlayerRowAvatar.h"
 #include "PlayerRowPlatformAvatar.h"
+#include "Crater.h"
+#include "FireBall.h"
+#include "IceBall.h"
+#include "IcePatch.h"
+#include "FallingObjectShadow.h"
+#include "SpaceTile.h"
 
 GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 {
@@ -65,14 +71,16 @@ GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 void GameScreen::handleServerUpdate(const char *message)
 {
     m_gameListener->addServerMessage(message);
+    
+    m_fTimeSinceLastServerUpdate = 0;
 }
 
 void GameScreen::init()
 {
 	m_touchPoint.release();
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
-	m_displayBattle.release();
-	m_displayBattle = std::unique_ptr<DisplayBattleGameObject>(new DisplayBattleGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f));
+	m_displayXMovingGameObject.release();
+	m_displayXMovingGameObject = std::unique_ptr<DisplayXMovingGameObject>(new DisplayXMovingGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f, BATTLE));
 	m_gameListener.release();
 	m_gameListener = std::unique_ptr<GameListener>(new GameListener());
 	m_waitingForServerInterface.release();
@@ -92,10 +100,16 @@ void GameScreen::init()
     m_powerUps.clear();
     m_countDownNumbers.clear();
     m_displayGameOvers.clear();
+    m_spaceTiles.clear();
+    m_craters.clear();
+    m_fireBalls.clear();
+    m_iceBalls.clear();
+    m_icePatches.clear();
     
     m_gameState = m_isOffline ? WAITING_FOR_LOCAL_SETTINGS : WAITING_FOR_SERVER;
     m_iScreenState = 0;
     m_fTimeSinceLastClientEvent = 0;
+    m_fTimeSinceLastServerUpdate = 0;
     m_fCountDownTimeLeft = 3;
     m_fTimeSinceGameOver = 0;
     m_fBlackCoverTransitionAlpha = 0;
@@ -116,8 +130,6 @@ void GameScreen::onPause()
 {
     Assets::getInstance()->setMusicId(MUSIC_STOP);
     
-    m_renderer->cleanUp();
-    
     platformPause();
 }
 
@@ -126,6 +138,16 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
     if(m_gameState == WAITING_FOR_SERVER || m_gameState == COUNTING_DOWN || m_gameState == RUNNING || m_gameState == SPECTATING || m_gameState == GAME_ENDING)
     {
         m_fTimeSinceLastClientEvent += deltaTime;
+        
+        if(!m_isOffline)
+        {
+            m_fTimeSinceLastServerUpdate += deltaTime;
+            
+            if(m_fTimeSinceLastServerUpdate > 8)
+            {
+                m_iScreenState = 2;
+            }
+        }
     }
     
     processServerMessages();
@@ -153,6 +175,7 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
                 m_countDownNumbers.clear();
                 
                 m_gameListener->playSound(SOUND_BATTLE);
+                m_displayXMovingGameObject->begin();
                 m_gameState = RUNNING;
                 
                 for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
@@ -191,10 +214,7 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
             
             break;
         case RUNNING:
-            if(m_player->getPlayerState() == ALIVE && m_player->getPlayerActionState() != WINNING)
-            {
-                updateInputRunning(touchEvents);
-            }
+            updateInputRunning(touchEvents);
             updateRunning(deltaTime);
             break;
         case SPECTATING:
@@ -213,92 +233,64 @@ void GameScreen::present()
 {
     m_renderer->clearScreenWithColor(0, 0, 0, 1);
     
+    m_renderer->beginFrame();
+    
     switch (m_gameState)
     {
         case WAITING_FOR_CONNECTION:
         case CONNECTION_ERROR_WAITING_FOR_INPUT:
         case WAITING_FOR_SERVER:
-            m_renderer->beginFrame();
             m_renderer->renderWaitingForServerInterface(*m_waitingForServerInterface);
-            m_renderer->endFrame();
             break;
         case WAITING_FOR_LOCAL_SETTINGS:
             // TODO, Render interface for picking a map and setting # of bots
-            m_renderer->beginFrame();
             m_renderer->renderWaitingForLocalSettingsInterface(*m_waitingForLocalSettingsInterface);
-            m_renderer->endFrame();
             break;
         case COUNTING_DOWN:
-            m_renderer->calcScrollYForPlayer(*m_player);
-            
-            m_renderer->beginFrame();
-            m_renderer->renderWorldBackground();
-            
-            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-			m_renderer->renderBombs(m_bombs);
-            m_renderer->renderExplosions(m_explosions);
-            m_renderer->renderPlayers(m_players);
-            m_renderer->renderMapBordersNear(m_mapBorders);
-            
-            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
-            
-            m_renderer->endFrame();
-            break;
         case RUNNING:
-            m_renderer->calcScrollYForPlayer(*m_player);
-            
-            m_renderer->beginFrame();
-            m_renderer->renderWorldBackground();
-            
-            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-			m_renderer->renderBombs(m_bombs);
-            m_renderer->renderExplosions(m_explosions);
-            m_renderer->renderPlayers(m_players);
-            m_renderer->renderMapBordersNear(m_mapBorders);
-            m_renderer->renderInterface(*m_interfaceOverlay);
-            
-            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
-            
-            m_renderer->endFrame();
-            break;
         case SPECTATING:
-            m_renderer->calcScrollYForPlayer(*m_player);
-            
-            m_renderer->beginFrame();
-            m_renderer->renderWorldBackground();
-            
-            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            m_renderer->renderBombs(m_bombs);
-            m_renderer->renderExplosions(m_explosions);
-            m_renderer->renderPlayers(m_players);
-            m_renderer->renderMapBordersNear(m_mapBorders);
-            m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
-            
-            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
-            
-            m_renderer->endFrame();
-            break;
         case GAME_ENDING:
             m_renderer->calcScrollYForPlayer(*m_player);
             
-            m_renderer->beginFrame();
             m_renderer->renderWorldBackground();
             
-            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
-            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderCraters(m_craters);
+            m_renderer->renderSpaceTiles(m_spaceTiles);
             m_renderer->renderExplosions(m_explosions);
+            m_renderer->renderBombs(m_bombs);
+            m_renderer->renderWorldForeground(m_mapBorders, m_insideBlocks, m_breakableBlocks, m_powerUps);
+            
+            m_renderer->renderSuddenDeathMountainsIcePatches(m_icePatches);
+            
             m_renderer->renderPlayers(m_players);
+            
+            m_renderer->renderSuddenDeathGrasslandsFireBalls(m_fireBalls);
+            m_renderer->renderSuddenDeathMountainsIceBalls(m_iceBalls);
+            
             m_renderer->renderMapBordersNear(m_mapBorders);
             
-            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayBattle, m_displayGameOvers);
-            
-            m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
-            
-            m_renderer->endFrame();
+            m_renderer->renderUIEffects(m_players, m_countDownNumbers, *m_displayXMovingGameObject, m_displayGameOvers);
             break;
         default:
             break;
     }
+    
+    switch (m_gameState)
+    {
+        case RUNNING:
+            m_renderer->renderInterface(*m_interfaceOverlay);
+            break;
+        case SPECTATING:
+            m_renderer->renderSpectatorInterface(*m_interfaceOverlay);
+            break;
+        case GAME_ENDING:
+            m_renderer->renderGameOverBlackCover(m_fBlackCoverTransitionAlpha);
+            break;
+        default:
+            break;
+    }
+    
+    m_renderer->endFrame();
 }
 
 int GameScreen::getState()
@@ -380,21 +372,36 @@ void GameScreen::updateRunning(float deltaTime)
         m_gameState = SPECTATING;
     }
     
-    if(m_isOffline)
+    switch(m_iMapType)
     {
-        for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-        {
-            if ((*itr)->isBot())
+        case MAP_SPACE:
+            if(m_player->isTrappedOnFallingSpaceTile(m_spaceTiles))
             {
-                (*itr)->handlePowerUps(m_powerUps);
-                
-                if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
-                {
-                    m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
-                }
+                m_gameListener->addLocalEventForPlayer(PLAYER_ABOUT_TO_FALL, *m_player);
             }
-        }
+            else if(m_player->isFallingDueToSpaceTile(m_spaceTiles))
+            {
+                m_gameListener->addLocalEventForPlayer(PLAYER_FALL, *m_player);
+                m_gameState = SPECTATING;
+            }
+            break;
+        case MAP_GRASSLANDS:
+            if(m_player->isHitByFireBall(m_craters))
+            {
+                m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *m_player);
+                m_gameState = SPECTATING;
+            }
+            break;
+        case MAP_MOUNTAINS:
+            if(m_player->isHitByIce(m_icePatches))
+            {
+                m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, *m_player);
+                m_gameState = SPECTATING;
+            }
+            break;
     }
+    
+    updateForOffline(deltaTime);
     
     std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
     
@@ -425,7 +432,7 @@ void GameScreen::updateRunning(float deltaTime)
     
     m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
     
-    m_displayBattle->update(deltaTime);
+    m_displayXMovingGameObject->update(deltaTime);
     
     updateCommon(deltaTime);
 }
@@ -453,21 +460,7 @@ void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
 
 void GameScreen::updateSpectating(float deltaTime)
 {
-    if(m_isOffline)
-    {
-        for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
-        {
-            if ((*itr)->isBot())
-            {
-                (*itr)->handlePowerUps(m_powerUps);
-                
-                if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
-                {
-                    m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
-                }
-            }
-        }
-    }
+    updateForOffline(deltaTime);
 
     std::vector<int> localConsumedEventIds = m_gameListener->freeLocalEventIds();
     
@@ -484,6 +477,8 @@ void GameScreen::updateSpectating(float deltaTime)
     m_sEventIds.clear();
     
     m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
+    
+    m_displayXMovingGameObject->update(deltaTime);
     
     updateCommon(deltaTime);
 }
@@ -551,6 +546,14 @@ void GameScreen::updateGameEnding(float deltaTime)
     else
     {
         updateSpectating(deltaTime / (m_fTimeSinceGameOver + 1));
+    }
+}
+
+void GameScreen::updateForOffline(float deltaTime)
+{
+    if(m_isOffline)
+    {
+        updateBots();
     }
 }
 
@@ -644,11 +647,15 @@ void GameScreen::processServerMessages()
                 {
                     gameOver(d);
                 }
+                else if(eventType == SUDDEN_DEATH && (m_gameState == RUNNING || m_gameState == SPECTATING))
+                {
+                    suddenDeath(d);
+                }
                 else if(eventType == PRE_GAME_SERVER_UPDATE && m_gameState == WAITING_FOR_SERVER)
                 {
                     m_waitingForServerInterface->handlePreGameServerUpdate(d);
                 }
-                else if(eventType == PRE_GAME && m_gameState == WAITING_FOR_CONNECTION)
+                else if(eventType == PRE_GAME)
                 {
                     static const char *phaseKey = "phase";
                     
@@ -724,7 +731,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         int numPlayers = d[numPlayersKey].GetInt();
         for(int i = 0; i < numPlayers; i++)
         {
-            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(i, 0, 0, m_gameListener.get())));
+            m_players.push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(i, -5, 0, m_gameListener.get())));
         }
         
         if(d.HasMember(numClientBotsKey))
@@ -732,7 +739,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
             int numClientBots = d[numClientBotsKey].GetInt();
             for(int i = 0; i < numClientBots; i++)
             {
-                m_players.push_back(std::unique_ptr<BotPlayerDynamicGameObject>(new BotPlayerDynamicGameObject(i + numPlayers, 0, 0, m_gameListener.get())));
+                m_players.push_back(std::unique_ptr<BotPlayerDynamicGameObject>(new BotPlayerDynamicGameObject(i + numPlayers, -5, 0, m_gameListener.get())));
             }
         }
         
@@ -760,6 +767,17 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
     return false;
 }
 
+void GameScreen::suddenDeath(rapidjson::Document &d)
+{
+    GameSession::suddenDeath(d);
+    
+    m_displayXMovingGameObject.release();
+    m_displayXMovingGameObject = std::unique_ptr<DisplayXMovingGameObject>(new DisplayXMovingGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f, HURRY_UP));
+    m_displayXMovingGameObject->begin();
+    
+    m_gameListener->playSound(SOUND_HURRY);
+}
+
 void GameScreen::gameOver(rapidjson::Document &d)
 {
     static const char *hasWinnerKey = "hasWinner";
@@ -783,7 +801,9 @@ void GameScreen::gameOver(rapidjson::Document &d)
             
             m_gameListener->playSound(SOUND_GAME_SET);
             
-            m_displayGameOvers.push_back(std::unique_ptr<DisplayGameOverGameObject>(new DisplayGameOverGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.25f, GRID_CELL_WIDTH * 14.75f, GRID_CELL_HEIGHT * 1.5f, GAME_SET)));
+            float gameSetYValue = m_player->getGridY() < 3 ? SCREEN_HEIGHT * 0.65f : SCREEN_HEIGHT * 0.25f;
+            
+            m_displayGameOvers.push_back(std::unique_ptr<DisplayGameOverGameObject>(new DisplayGameOverGameObject(SCREEN_WIDTH / 2, gameSetYValue, GRID_CELL_WIDTH * 14.75f, GRID_CELL_HEIGHT * 1.5f, GAME_SET)));
         }
         else
         {
@@ -816,8 +836,8 @@ void GameScreen::handleBreakableBlocksArrayInDocument(rapidjson::Document &d)
         handleIntArrayInDocument(d, breakableBlockYValuesKey, breakableBlockYValues, -1);
         handleIntArrayInDocument(d, breakableBlockPowerUpFlagsKey, breakableBlockPowerUpFlags, -1);
         
-        int numBreakableBlocks = d[numBreakableBlocksKey].GetInt();
-        for(int i = 0; i < numBreakableBlocks; i++)
+        m_iNumBreakableBlocksAtSpawnTime = d[numBreakableBlocksKey].GetInt();
+        for(int i = 0; i < m_iNumBreakableBlocksAtSpawnTime; i++)
         {
             m_breakableBlocks.push_back(std::unique_ptr<BreakableBlock>(new BreakableBlock(breakableBlockXValues.at(i), breakableBlockYValues.at(i), breakableBlockPowerUpFlags.at(i))));
         }

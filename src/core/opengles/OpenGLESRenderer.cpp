@@ -32,13 +32,12 @@
 #include "OpenGLESRectangleBatcher.h"
 #include "MiniMapGridType.h"
 #include "Rectangle.h"
-#include "Vertices2D.h"
 #include "PlayerForceFieldState.h"
 #include "SpectatorControls.h"
 #include "PlayerRow.h"
 #include "PlayerRowPlatformAvatar.h"
 #include "CountDownNumberGameObject.h"
-#include "DisplayBattleGameObject.h"
+#include "DisplayXMovingGameObject.h"
 #include "DisplayGameOverGameObject.h"
 #include <sstream>
 
@@ -50,10 +49,11 @@ extern "C"
 
 OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
 {
-    m_spriteBatcher = std::unique_ptr<OpenGLESSpriteBatcher>(new OpenGLESSpriteBatcher(4096));
-    m_rectangleBatcher = std::unique_ptr<OpenGLESRectangleBatcher>(new OpenGLESRectangleBatcher(1024, true));
+    m_spriteBatcher = std::unique_ptr<OpenGLESSpriteBatcher>(new OpenGLESSpriteBatcher());
+    m_rectangleBatcher = std::unique_ptr<OpenGLESRectangleBatcher>(new OpenGLESRectangleBatcher(true));
     
-    m_gameTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("map_space.png")));
+    m_mapTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("map_space.png")));
+    m_gameTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("game.png")));
     m_interfaceTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("interface.png")));
     m_interfaceTexture2 = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("interface_2.png")));
     
@@ -69,22 +69,22 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
 
 void OpenGLESRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
-    glDeleteTextures(1, &m_gameTexture->texture);
+    glDeleteTextures(1, &m_mapTexture->texture);
     
     switch (mapType)
     {
         case MAP_SPACE:
-            m_gameTexture->texture = load_png_asset_into_texture("map_space.png");
+            m_mapTexture->texture = load_png_asset_into_texture("map_space.png");
             break;
         case MAP_GRASSLANDS:
-            m_gameTexture->texture = load_png_asset_into_texture("map_grasslands.png");
+            m_mapTexture->texture = load_png_asset_into_texture("map_grasslands.png");
             break;
         case MAP_MOUNTAINS:
-            m_gameTexture->texture = load_png_asset_into_texture("map_mountains.png");
+            m_mapTexture->texture = load_png_asset_into_texture("map_mountains.png");
             break;
         case MAP_BASE:
         default:
-            m_gameTexture->texture = load_png_asset_into_texture("map_base.png");
+            m_mapTexture->texture = load_png_asset_into_texture("map_base.png");
             break;
     }
     
@@ -148,30 +148,9 @@ void OpenGLESRenderer::clearScreenWithColor(float r, float g, float b, float a)
 void OpenGLESRenderer::beginFrame()
 {
     glEnable(GL_TEXTURE_2D);
-}
-
-void OpenGLESRenderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
-{
+    
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    Renderer::renderWorldForeground(mapBordersFar, insideBlocks, breakableBlocks, powerUps);
-}
-
-void OpenGLESRenderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface)
-{
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    Renderer::renderWaitingForServerInterface(waitingForServerInterface);
-}
-
-void OpenGLESRenderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
-{
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    Renderer::renderWaitingForLocalSettingsInterface(waitingForLocalSettingsInterface);
 }
 
 void OpenGLESRenderer::endFrame()
@@ -179,19 +158,4 @@ void OpenGLESRenderer::endFrame()
     glDisable(GL_BLEND);
     
     glDisable(GL_TEXTURE_2D);
-}
-
-void OpenGLESRenderer::cleanUp()
-{
-    glDeleteTextures(1, &m_gameTexture->texture);
-    glDeleteTextures(1, &m_interfaceTexture->texture);
-    glDeleteTextures(1, &m_interfaceTexture2->texture);
-    glDeleteTextures(1, &m_charBlackTexture->texture);
-    glDeleteTextures(1, &m_charBlueTexture->texture);
-    glDeleteTextures(1, &m_charGreenTexture->texture);
-    glDeleteTextures(1, &m_charOrangeTexture->texture);
-    glDeleteTextures(1, &m_charPinkTexture->texture);
-    glDeleteTextures(1, &m_charRedTexture->texture);
-    glDeleteTextures(1, &m_charWhiteTexture->texture);
-    glDeleteTextures(1, &m_charYellowTexture->texture);
 }

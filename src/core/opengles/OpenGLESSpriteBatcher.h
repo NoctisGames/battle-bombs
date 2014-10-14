@@ -9,20 +9,31 @@
 #ifndef __battle_bombs__OpenGLESSpriteBatcher__
 #define __battle_bombs__OpenGLESSpriteBatcher__
 
-#include <memory>
-#include "SpriteBatcher.h"
-
 extern "C"
 {
 #include "platform_gl.h"
+#include "linmath.h"
 }
 
-class Vertices2D;
+typedef struct
+{
+    GLuint program;
+    
+    GLint u_mvp_matrix_location;
+    GLint a_position_location;
+    GLint a_color_location;
+    GLint a_texture_coordinates_location;
+    GLint u_texture_unit_location;
+} TextureProgram;
+
+#include "SpriteBatcher.h"
+#include <memory>
+#include <vector>
 
 class OpenGLESSpriteBatcher : public SpriteBatcher
 {
 public:
-    OpenGLESSpriteBatcher(int maxSprites);
+    OpenGLESSpriteBatcher();
     
     virtual void beginBatch();
     
@@ -38,12 +49,18 @@ protected:
     virtual void drawSprite(float x, float y, float width, float height, Color &color, TextureRegion tr);
 
 private:
-    std::unique_ptr<Vertices2D> m_vertices;
-    std::unique_ptr<GLshort> m_indices;
+    std::vector<GLfloat> m_textureVertices;
+    std::vector<GLshort> m_indices;
+    TextureProgram m_textureProgram;
+    mat4x4 m_viewMatrix;
+    mat4x4 m_projectionMatrix;
+    mat4x4 m_viewProjectionMatrix;
     
-    void addColorCoordinates(Color &color);
+    void addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a, GLfloat u, GLfloat v);
     
-    void generateIndices(int maxSprites);
+    TextureProgram get_texture_program(GLuint program);
+    
+    void generateIndices();
 };
 
 #endif /* defined(__battle_bombs__OpenGLESSpriteBatcher__) */

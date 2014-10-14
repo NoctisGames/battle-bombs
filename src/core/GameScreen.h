@@ -22,7 +22,7 @@ class WaitingForServerInterface;
 class WaitingForLocalSettingsInterface;
 class InterfaceOverlay;
 class CountDownNumberGameObject;
-class DisplayBattleGameObject;
+class DisplayXMovingGameObject;
 class DisplayGameOverGameObject;
 
 class GameScreen : public GameSession
@@ -83,13 +83,13 @@ protected:
 
 private:
     std::vector<std::unique_ptr<CountDownNumberGameObject>> m_countDownNumbers;
-    std::unique_ptr<DisplayBattleGameObject> m_displayBattle;
+    std::unique_ptr<DisplayXMovingGameObject> m_displayXMovingGameObject;
     std::vector<std::unique_ptr<DisplayGameOverGameObject>> m_displayGameOvers;
-    std::unique_ptr<GameListener> m_gameListener;
     std::unique_ptr<WaitingForServerInterface> m_waitingForServerInterface;
     std::unique_ptr<WaitingForLocalSettingsInterface> m_waitingForLocalSettingsInterface;
     std::unique_ptr<InterfaceOverlay> m_interfaceOverlay;
     float m_fCountDownTimeLeft;
+    float m_fTimeSinceLastServerUpdate;
     bool m_isGameOver;
     float m_fTimeSinceGameOver;
     float m_fBlackCoverTransitionAlpha;
@@ -111,6 +111,8 @@ private:
     
     void updateGameEnding(float deltaTime);
     
+    void updateForOffline(float deltaTime);
+    
     void spectateNextLivePlayer();
     
     void spectatePreviousLivePlayer();
@@ -124,6 +126,8 @@ private:
     void beginSpectate(rapidjson::Document &d);
     
     bool beginCommon(rapidjson::Document &d, bool isBeginGame);
+    
+    virtual void suddenDeath(rapidjson::Document &d);
     
     void gameOver(rapidjson::Document &d);
     

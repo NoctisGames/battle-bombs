@@ -35,7 +35,7 @@ public:
     
     static bool isLocationOccupiedByOtherPlayer(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, PlayerDynamicGameObject *player, int gridX, int gridY);
     
-    static bool isLocationOccupiedByBombOrExplosionPath(std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, int gridX, int gridY);
+    static bool isLocationOccupiedByBombOrExplosionPath(std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, int gridX, int gridY, bool isCurrentlyTakingCover);
     
     // Calculate closest safe node, returning true if one was indeed calculated
     // Store the result in the node param
@@ -43,7 +43,8 @@ public:
     
     static bool shouldPlayerPlantBomb(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, PlayerDynamicGameObject *player);
     
-    int game_grid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS];
+    int _gameGrid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS];
+    int _gameGridOverlay[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]; // For Bombs, Explosions
     
     void resetGameGrid();
     
@@ -52,6 +53,10 @@ public:
     void freeGameGridCell(int gridX, int gridY);
     
     void occupyGameGridCell(int gridX, int gridY);
+    
+    void freeGameGridOverlayCell(int gridX, int gridY);
+    
+    void occupyGameGridOverlayCell(int gridX, int gridY);
     
     int getGridCellCost(int x, int y);
 
