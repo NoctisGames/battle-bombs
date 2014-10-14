@@ -50,12 +50,18 @@ private:
 	std::unique_ptr<GameSound> m_powerUpSpeedSound;
 	std::unique_ptr<GameSound> m_powerUpForceFieldSound;
 	std::unique_ptr<GameSound> m_powerUpPushSound;
-    std::unique_ptr<GameSound> m_powerUpShieldSound;
+	std::unique_ptr<GameSound> m_powerUpShieldSound;
 	std::unique_ptr<GameSound> m_forceFieldDownSound;
 	std::unique_ptr<GameSound> m_deathSound;
 	std::unique_ptr<GameSound> m_hurrySound;
 	std::unique_ptr<GameSound> m_gameSetSound;
 	std::unique_ptr<GameSound> m_drawSound;
+	std::unique_ptr<GameSound> m_raiseShieldSound;
+	std::unique_ptr<GameSound> m_dislodgingSpaceTileSound;
+	std::unique_ptr<GameSound> m_fallingSpaceTileSound;
+	std::unique_ptr<GameSound> m_fallingObjectSound;
+	std::unique_ptr<GameSound> m_crashingFireBallSound;
+	std::unique_ptr<GameSound> m_crashingIceBallSound;
 
 	D3D_FEATURE_LEVEL m_featureLevel;
 

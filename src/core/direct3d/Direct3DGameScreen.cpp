@@ -154,12 +154,18 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	m_powerUpSpeedSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_speed.wav"));
 	m_powerUpForceFieldSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_force_field.wav"));
 	m_powerUpPushSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_push.wav"));
-    m_powerUpShieldSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_shield.wav"));
+	m_powerUpShieldSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_shield.wav"));
 	m_forceFieldDownSound = std::unique_ptr<GameSound>(new GameSound("assets\\force_field_down.wav"));
 	m_deathSound = std::unique_ptr<GameSound>(new GameSound("assets\\death.wav"));
 	m_hurrySound = std::unique_ptr<GameSound>(new GameSound("assets\\hurry.wav"));
 	m_gameSetSound = std::unique_ptr<GameSound>(new GameSound("assets\\game_set.wav"));
 	m_drawSound = std::unique_ptr<GameSound>(new GameSound("assets\\draw.wav"));
+	m_raiseShieldSound = std::unique_ptr<GameSound>(new GameSound("assets\\shield_raise.wav"));
+	m_dislodgingSpaceTileSound = std::unique_ptr<GameSound>(new GameSound("assets\\dislodging_space_tile.wav"));
+	m_fallingSpaceTileSound = std::unique_ptr<GameSound>(new GameSound("assets\\falling_space_tile.wav"));
+	m_fallingObjectSound = std::unique_ptr<GameSound>(new GameSound("assets\\falling_object.wav"));
+	m_crashingFireBallSound = std::unique_ptr<GameSound>(new GameSound("assets\\crashing_fire_ball.wav"));
+	m_crashingIceBallSound = std::unique_ptr<GameSound>(new GameSound("assets\\crashing_ice_ball.wav"));
 }
 
 void Direct3DGameScreen::handleSound()
@@ -222,24 +228,24 @@ void Direct3DGameScreen::handleSound()
 		case SOUND_DRAW:
 			m_drawSound->play();
 			break;
-            case SOUND_RAISE_SHIELD:
-                // TODO
-                break;
-            case SOUND_DISLODGING_SPACE_TILE:
-                // TODO
-                break;
-            case SOUND_FALLING_SPACE_TILE:
-                // TODO
-                break;
-            case SOUND_FALLING_OBJECT:
-                // TODO
-                break;
-            case SOUND_CRASHING_FIRE_BALL:
-                // TODO
-                break;
-            case SOUND_CRASHING_ICE_BALL:
-                // TODO
-                break;
+		case SOUND_RAISE_SHIELD:
+			m_raiseShieldSound->play();
+			break;
+		case SOUND_DISLODGING_SPACE_TILE:
+			m_dislodgingSpaceTileSound->play();
+			break;
+		case SOUND_FALLING_SPACE_TILE:
+			m_fallingSpaceTileSound->play();
+			break;
+		case SOUND_FALLING_OBJECT:
+			m_fallingObjectSound->play();
+			break;
+		case SOUND_CRASHING_FIRE_BALL:
+			m_crashingFireBallSound->play();
+			break;
+		case SOUND_CRASHING_ICE_BALL:
+			m_crashingIceBallSound->play();
+			break;
 		default:
 			continue;
 		}
