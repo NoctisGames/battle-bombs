@@ -24,6 +24,7 @@
 SpaceTile::SpaceTile(int gridX, int gridY, int index, GameListener *gameListener) : DynamicGridGameObject(gridX, gridY, GRID_CELL_WIDTH * 2, GRID_CELL_HEIGHT * 3, 0)
 {
     m_position->add(0, GRID_CELL_HEIGHT / 2);
+    resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
     m_velocity->set(0, 0);
     m_acceleration->set(0, -12);
     
@@ -124,6 +125,8 @@ void SpaceTile::update(float deltaTime, bool isSuddenDeath, std::vector<std::uni
         {
             m_velocity->add(m_acceleration->getX() * deltaTime, m_acceleration->getY() * deltaTime);
             m_position->add(m_velocity->getX() * deltaTime, m_velocity->getY() * deltaTime);
+            
+            updateBounds();
             
             if(m_position->getY() < (m_fOrigY - 1))
             {

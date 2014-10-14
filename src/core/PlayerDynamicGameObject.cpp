@@ -59,7 +59,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
     m_isDisplayingPointer = false;
 }
 
-void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
     m_fStateTime += deltaTime;
     
@@ -122,7 +122,7 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
             m_lastBombDropped = nullptr;
         }
         
-        if (isCollision(mapBorders, insideBlocks, breakableBlocks, craters, players, bombs))
+        if (isCollision(mapBorders, spaceTiles, insideBlocks, breakableBlocks, craters, players, bombs))
         {
             m_position->sub(deltaX, deltaY);
             updateBounds();
@@ -748,7 +748,7 @@ void PlayerDynamicGameObject::handleBombErasure(BombGameObject *bomb)
 
 // Private
 
-bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
     {
@@ -792,7 +792,17 @@ bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder 
         }
     }
     
-    return false;
+    bool isPlayerFloatingInSpace = spaceTiles.size() > 0 ? true : false;
+    for (std::vector < std::unique_ptr < SpaceTile >> ::iterator itr = spaceTiles.begin(); itr != spaceTiles.end(); itr++)
+    {
+        if (m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY())
+        {
+            isPlayerFloatingInSpace = false;
+            break;
+        }
+    }
+    
+    return isPlayerFloatingInSpace;
 }
 
 void PlayerDynamicGameObject::setPlayerForceFieldState(int playerForceFieldState)
