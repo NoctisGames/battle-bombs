@@ -59,6 +59,11 @@
 
 - (void)transformViewIfNecessary
 {
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0"))
+    {
+        return;
+    }
+    
     if ([nibName rangeOfString:@"Landscape"].location != NSNotFound)
     {
         CGAffineTransform landscapeTransform = CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(90));
