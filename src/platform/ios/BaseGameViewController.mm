@@ -43,6 +43,12 @@
 @property (strong, nonatomic) Sound *hurrySound;
 @property (strong, nonatomic) Sound *gameSetSound;
 @property (strong, nonatomic) Sound *drawSound;
+@property (strong, nonatomic) Sound *raiseShieldSound;
+@property (strong, nonatomic) Sound *dislodgingSpaceTileSound;
+@property (strong, nonatomic) Sound *fallingSpaceTileSound;
+@property (strong, nonatomic) Sound *fallingObjectSound;
+@property (strong, nonatomic) Sound *crashingFireBallSound;
+@property (strong, nonatomic) Sound *crashingIceBallSound;
 
 @end
 
@@ -93,6 +99,12 @@ static bool isRunningiOS8 = false;
     self.hurrySound = [[Sound alloc] initWithSoundNamed:@"hurry.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.gameSetSound = [[Sound alloc] initWithSoundNamed:@"game_set.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.drawSound = [[Sound alloc] initWithSoundNamed:@"draw.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
+    self.raiseShieldSound = [[Sound alloc] initWithSoundNamed:@"shield_raise.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
+    self.dislodgingSpaceTileSound = [[Sound alloc] initWithSoundNamed:@"dislodging_space_tile.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
+    self.fallingSpaceTileSound = [[Sound alloc] initWithSoundNamed:@"falling_space_tile.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
+    self.fallingObjectSound = [[Sound alloc] initWithSoundNamed:@"falling_object.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
+    self.crashingFireBallSound = [[Sound alloc] initWithSoundNamed:@"crashing_fire_ball.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
+    self.crashingIceBallSound = [[Sound alloc] initWithSoundNamed:@"crashing_ice_ball.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
     
     [EAGLContext setCurrentContext:self.context];
     
@@ -263,25 +275,22 @@ static bool isRunningiOS8 = false;
                 [self.drawSound play];
                 break;
             case SOUND_RAISE_SHIELD:
-                // TODO
+                [self.raiseShieldSound play];
                 break;
             case SOUND_DISLODGING_SPACE_TILE:
-                // TODO
+                [self.dislodgingSpaceTileSound play];
                 break;
             case SOUND_FALLING_SPACE_TILE:
-                // TODO
+                [self.fallingSpaceTileSound play];
                 break;
-            case SOUND_FALLING_FIRE_BALL:
-                // TODO
+            case SOUND_FALLING_OBJECT:
+                [self.fallingObjectSound play];
                 break;
             case SOUND_CRASHING_FIRE_BALL:
-                // TODO
-                break;
-            case SOUND_FALLING_ICE_BALL:
-                // TODO
+                [self.crashingFireBallSound play];
                 break;
             case SOUND_CRASHING_ICE_BALL:
-                // TODO
+                [self.crashingIceBallSound play];
                 break;
             default:
                 continue;

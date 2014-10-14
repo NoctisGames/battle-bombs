@@ -98,113 +98,113 @@ void GameSession::initializeInsideBlocksAndMapBordersForMapType(int mapType)
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
             int tempFallingIndex = j < 7 ? fallingIndex + j : j > 7 ? fallingIndex + (14 - j) : fallingIndex + 7;
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 1, tempFallingIndex)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 1, tempFallingIndex, m_gameListener.get())));
         }
         
         fallingIndex = 114;
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
         {
             int tempFallingIndex = j < 7 ? fallingIndex + (j / 2) : fallingIndex + (7 - j / 2);
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 2, tempFallingIndex)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 2, tempFallingIndex, m_gameListener.get())));
         }
         
         fallingIndex = 106;
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
             int tempFallingIndex = j < 7 ? fallingIndex + j : j > 7 ? fallingIndex + (14 - j) : fallingIndex + 7;
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 3, tempFallingIndex)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 3, tempFallingIndex, m_gameListener.get())));
         }
         
         fallingIndex = 102;
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
         {
             int tempFallingIndex = j < 7 ? fallingIndex + (j / 2) : fallingIndex + (7 - j / 2);
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 4, tempFallingIndex)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 4, tempFallingIndex, m_gameListener.get())));
         }
         
         fallingIndex = 94;
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
             int tempFallingIndex = j < 7 ? fallingIndex + j : j > 7 ? fallingIndex + (14 - j) : fallingIndex + 7;
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 5, tempFallingIndex)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 5, tempFallingIndex, m_gameListener.get())));
         }
         
         fallingIndex = 90;
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
         {
             int tempFallingIndex = j < 7 ? fallingIndex + (j / 2) : fallingIndex + (7 - j / 2);
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 6, tempFallingIndex)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 6, tempFallingIndex, m_gameListener.get())));
         }
         
         fallingIndex = 82;
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
             int tempFallingIndex = j < 7 ? fallingIndex + j : j > 7 ? fallingIndex + (14 - j) : fallingIndex + 7;
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 7, tempFallingIndex)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, GRID_CELL_NUM_ROWS - 7, tempFallingIndex, m_gameListener.get())));
         }
         
         // BEGIN MIDDLE
         fallingIndex = 80;
         for (int j = 2; j < (NUM_GRID_CELLS_PER_ROW - 2); j += 2)
         {
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, TOP_HALF_BOTTOM_GRID_Y - 1, fallingIndex + 1)));
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y + 1, fallingIndex)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, TOP_HALF_BOTTOM_GRID_Y - 1, fallingIndex + 1, m_gameListener.get())));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y + 1, fallingIndex, m_gameListener.get())));
         }
         
         // BEGIN BOTTOM
         fallingIndex = 79;
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y, fallingIndex--)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y, fallingIndex--, m_gameListener.get())));
         }
         
         fallingIndex = 57;
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
         {
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 1, fallingIndex++)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 1, fallingIndex++, m_gameListener.get())));
         }
         
         fallingIndex = 56;
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 2, fallingIndex--)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 2, fallingIndex--, m_gameListener.get())));
         }
         
         fallingIndex = 35;
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j += 2)
         {
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 3, fallingIndex++)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 3, fallingIndex++, m_gameListener.get())));
         }
         
         fallingIndex = 34;
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
-            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 4, fallingIndex--)));
+            m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(j, BOTTOM_HALF_TOP_GRID_Y - 4, fallingIndex--, m_gameListener.get())));
         }
         
         // BEGIN BOTTOM CENTER
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(3, 2, 15)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(5, 2, 16)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(7, 2, 17)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(9, 2, 18)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(11, 2, 19)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(3, 2, 15, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(5, 2, 16, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(7, 2, 17, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(9, 2, 18, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(11, 2, 19, m_gameListener.get())));
         
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(3, 1, 14)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(4, 1, 13)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(5, 1, 12)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(6, 1, 11)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(7, 1, 10)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(8, 1, 9)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(9, 1, 8)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(10, 1, 7)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(11, 1, 6)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(3, 1, 14, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(4, 1, 13, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(5, 1, 12, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(6, 1, 11, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(7, 1, 10, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(8, 1, 9, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(9, 1, 8, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(10, 1, 7, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(11, 1, 6, m_gameListener.get())));
         
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(3, 0, 0)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(4, 0, 1)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(6, 0, 2)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(8, 0, 3)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(10, 0, 4)));
-        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(11, 0, 5)));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(3, 0, 0, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(4, 0, 1, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(6, 0, 2, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(8, 0, 3, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(10, 0, 4, m_gameListener.get())));
+        m_spaceTiles.push_back(std::unique_ptr<SpaceTile>(new SpaceTile(11, 0, 5, m_gameListener.get())));
     }
     
     // BEGIN BOTTOM CENTER
@@ -571,7 +571,7 @@ void GameSession::suddenDeath(rapidjson::Document &d)
         static int numIceBalls = 238;
         for(int i = 0; i < numIceBalls; i++)
         {
-            m_iceBalls.push_back(std::unique_ptr<IceBall>(new IceBall(iceBallXValues.at(i), iceBallYValues.at(i), i, m_insideBlocks, m_breakableBlocks)));
+            m_iceBalls.push_back(std::unique_ptr<IceBall>(new IceBall(iceBallXValues.at(i), iceBallYValues.at(i), i, m_gameListener.get(), m_insideBlocks, m_breakableBlocks)));
         }
     }
     else if(m_iMapType == MAP_GRASSLANDS)
@@ -595,7 +595,7 @@ void GameSession::suddenDeath(rapidjson::Document &d)
         static int numFireBalls = 237;
         for(int i = 0; i < numFireBalls; i++)
         {
-            m_fireBalls.push_back(std::unique_ptr<FireBall>(new FireBall(fireBallXValues.at(i), fireBallYValues.at(i), i, m_insideBlocks, m_breakableBlocks)));
+            m_fireBalls.push_back(std::unique_ptr<FireBall>(new FireBall(fireBallXValues.at(i), fireBallYValues.at(i), i, m_gameListener.get(), m_insideBlocks, m_breakableBlocks)));
         }
     }
 }

@@ -252,6 +252,8 @@ void PlayerDynamicGameObject::raiseShield()
 {
     m_playerActionState = RAISING_SHIELD;
     m_fStateTime = 0;
+    
+    m_gameListener->playSound(SOUND_RAISE_SHIELD);
 }
 
 void PlayerDynamicGameObject::lowerShield()

@@ -10,18 +10,21 @@
 
 #include "FireBall.h"
 #include "GameConstants.h"
+#include "ResourceConstants.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
+#include "GameListener.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "FallingObjectShadow.h"
 
-FireBall::FireBall(int gridX, int gridY, int index, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks) : DynamicGridGameObject(gridX, gridY, GRID_CELL_WIDTH * 5, GRID_CELL_HEIGHT * 4, 0)
+FireBall::FireBall(int gridX, int gridY, int index, GameListener *gameListener, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks) : DynamicGridGameObject(gridX, gridY, GRID_CELL_WIDTH * 5, GRID_CELL_HEIGHT * 4, 0)
 {
     resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
     
     m_position->add(0, GRID_CELL_HEIGHT * 5 / 4);
     
+    m_gameListener = gameListener;
     m_fTargetY = m_position->getY();
     m_fTimeUntilAppearance = TIME_BETWEEN_FIRE_BALLS * (float)index;
     
@@ -64,6 +67,8 @@ void FireBall::update(float deltaTime, std::vector<std::unique_ptr<BreakableBloc
                 m_isTargetReached = true;
                 m_isVisible = false;
                 m_fStateTime = 0;
+                
+                m_gameListener->playSound(SOUND_CRASHING_FIRE_BALL);
             }
         }
         
@@ -84,6 +89,8 @@ void FireBall::update(float deltaTime, std::vector<std::unique_ptr<BreakableBloc
             {
                 m_isVisible = true;
                 m_fStateTime = 0;
+                
+                m_gameListener->playSound(SOUND_FALLING_OBJECT);
             }
         }
     }

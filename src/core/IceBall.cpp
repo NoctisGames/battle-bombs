@@ -10,15 +10,19 @@
 
 #include "IceBall.h"
 #include "GameConstants.h"
+#include "ResourceConstants.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
+#include "GameListener.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
 #include "FallingObjectShadow.h"
 
-IceBall::IceBall(int gridX, int gridY, int index, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks) : DynamicGridGameObject(gridX, gridY, GRID_CELL_WIDTH * 2, GRID_CELL_HEIGHT * 2, 0)
+IceBall::IceBall(int gridX, int gridY, int index, GameListener *gameListener, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks) : DynamicGridGameObject(gridX, gridY, GRID_CELL_WIDTH * 2, GRID_CELL_HEIGHT * 2, 0)
 {
     resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
+    
+    m_gameListener = gameListener;
     
     m_fTargetY = m_position->getY();
     m_fTimeUntilAppearance = TIME_BETWEEN_ICE_BALLS * (float)index;
@@ -47,6 +51,8 @@ void IceBall::update(float deltaTime, std::vector<std::unique_ptr<BreakableBlock
         if(m_position->getY() <= m_fTargetY)
         {
             m_isTargetReached = true;
+            
+            m_gameListener->playSound(SOUND_CRASHING_ICE_BALL);
         }
     }
     
@@ -66,7 +72,9 @@ void IceBall::update(float deltaTime, std::vector<std::unique_ptr<BreakableBlock
         if(m_fStateTime >= m_fTimeUntilAppearance)
         {
             m_isVisible = true;
-             m_fStateTime = 0;
+            m_fStateTime = 0;
+            
+            m_gameListener->playSound(SOUND_FALLING_OBJECT);
         }
     }
 }

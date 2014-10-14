@@ -66,10 +66,9 @@ public final class RendererWrapper implements Renderer
     private static final short SOUND_RAISE_SHIELD = 18;
     private static final short SOUND_DISLODGING_SPACE_TILE = 19;
     private static final short SOUND_FALLING_SPACE_TILE = 20;
-    private static final short SOUND_FALLING_FIRE_BALL = 21;
+    private static final short SOUND_FALLING_OBJECT = 21;
     private static final short SOUND_CRASHING_FIRE_BALL = 22;
-    private static final short SOUND_FALLING_ICE_BALL = 23;
-    private static final short SOUND_CRASHING_ICE_BALL = 24;
+    private static final short SOUND_CRASHING_ICE_BALL = 23;
 
     // #frames involved in average calc (suggested values 5-100)
     private static final float movAveragePeriod = 40;
@@ -104,6 +103,12 @@ public final class RendererWrapper implements Renderer
     private final Sound hurrySound;
     private final Sound gameSetSound;
     private final Sound drawSound;
+    private final Sound raiseShieldSound;
+    private final Sound dislodgingSpaceTileSound;
+    private final Sound fallingSpaceTileSound;
+    private final Sound fallingObjectSound;
+    private final Sound crashingFireBallSound;
+    private final Sound crashingIceBallSound;
     private final boolean isOffline;
 
     private Music bgm;
@@ -145,6 +150,12 @@ public final class RendererWrapper implements Renderer
         this.hurrySound = audio.newSound("hurry.ogg");
         this.gameSetSound = audio.newSound("game_set.ogg");
         this.drawSound = audio.newSound("draw.ogg");
+        this.raiseShieldSound = audio.newSound("shield_raise.ogg");
+        this.dislodgingSpaceTileSound = audio.newSound("dislodging_space_tile.ogg");
+        this.fallingSpaceTileSound = audio.newSound("falling_space_tile.ogg");
+        this.fallingObjectSound = audio.newSound("falling_object.ogg");
+        this.crashingFireBallSound = audio.newSound("crashing_fire_ball.ogg");
+        this.crashingIceBallSound = audio.newSound("crashing_ice_ball.ogg");
 
         this.isInitialized = false;
 
@@ -530,25 +541,22 @@ public final class RendererWrapper implements Renderer
                     drawSound.play(1);
                     break;
                 case SOUND_RAISE_SHIELD:
-                    // TODO
+                    raiseShieldSound.play(1);
                     break;
                 case SOUND_DISLODGING_SPACE_TILE:
-                    // TODO
+                    dislodgingSpaceTileSound.play(1);
                     break;
                 case SOUND_FALLING_SPACE_TILE:
-                    // TODO
+                    fallingSpaceTileSound.play(1);
                     break;
-                case SOUND_FALLING_FIRE_BALL:
-                    // TODO
+                case SOUND_FALLING_OBJECT:
+                    fallingObjectSound.play(1);
                     break;
                 case SOUND_CRASHING_FIRE_BALL:
-                    // TODO
-                    break;
-                case SOUND_FALLING_ICE_BALL:
-                    // TODO
+                    crashingFireBallSound.play(1);
                     break;
                 case SOUND_CRASHING_ICE_BALL:
-                    // TODO
+                    crashingIceBallSound.play(1);
                     break;
                 default:
                     continue;

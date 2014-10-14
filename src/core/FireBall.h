@@ -14,6 +14,7 @@
 #include <memory>
 #include <vector>
 
+class GameListener;
 class InsideBlock;
 class BreakableBlock;
 class FallingObjectShadow;
@@ -21,7 +22,7 @@ class FallingObjectShadow;
 class FireBall : public DynamicGridGameObject
 {
 public:
-    FireBall(int gridX, int gridY, int index, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
+    FireBall(int gridX, int gridY, int index, GameListener *gameListener, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
     
     void update(float deltaTime, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks);
     
@@ -38,6 +39,7 @@ public:
     FallingObjectShadow & getShadow();
     
 private:
+    GameListener *m_gameListener;
     std::unique_ptr<FallingObjectShadow> m_fallingObjectShadow;
     float m_fStateTime;
     float m_fTimeUntilAppearance;

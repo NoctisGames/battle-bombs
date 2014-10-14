@@ -10,8 +10,10 @@
 
 #include "SpaceTile.h"
 #include "GameConstants.h"
+#include "ResourceConstants.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
+#include "GameListener.h"
 #include "PlayerDynamicGameObject.h"
 #include "BombGameObject.h"
 #include "InsideBlock.h"
@@ -19,12 +21,13 @@
 #include "PowerUp.h"
 #include "PathFinder.h"
 
-SpaceTile::SpaceTile(int gridX, int gridY, int index) : DynamicGridGameObject(gridX, gridY, GRID_CELL_WIDTH * 2, GRID_CELL_HEIGHT * 3, 0)
+SpaceTile::SpaceTile(int gridX, int gridY, int index, GameListener *gameListener) : DynamicGridGameObject(gridX, gridY, GRID_CELL_WIDTH * 2, GRID_CELL_HEIGHT * 3, 0)
 {
     m_position->add(0, GRID_CELL_HEIGHT / 2);
     m_velocity->set(0, 0);
     m_acceleration->set(0, -12);
     
+    m_gameListener = gameListener;
     m_fallingPlayer = nullptr;
     m_spaceTileState = ST_NORMAL;
     m_fStateTime = 0;
@@ -42,6 +45,8 @@ void SpaceTile::update(float deltaTime, bool isSuddenDeath, std::vector<std::uni
         {
             m_spaceTileState = ST_DISLODGING;
             m_fStateTime = 0;
+            
+            m_gameListener->playSound(SOUND_DISLODGING_SPACE_TILE);
         }
         
         return;
@@ -111,6 +116,8 @@ void SpaceTile::update(float deltaTime, bool isSuddenDeath, std::vector<std::uni
                 m_fStateTime = 0;
                 
                 PathFinder::getInstance().occupyGameGridCell(m_gridX, m_gridY);
+                
+                m_gameListener->playSound(SOUND_FALLING_SPACE_TILE);
             }
         }
         else if(m_spaceTileState == ST_FALLING)

@@ -164,6 +164,13 @@
 		BBB24BA219638A9300EF78B2 /* interface.png in Resources */ = {isa = PBXBuildFile; fileRef = BBB24BA119638A9300EF78B2 /* interface.png */; };
 		BBB24BA51963AFFA00EF78B2 /* InterfaceOverlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */; };
 		BBBEC914194B425200AAB520 /* char_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = BBBEC913194B425200AAB520 /* char_blue.png */; };
+		BBC4863019ED7637001CC8A2 /* crashing_fire_ball.caf in Resources */ = {isa = PBXBuildFile; fileRef = BBC4862919ED7637001CC8A2 /* crashing_fire_ball.caf */; };
+		BBC4863119ED7637001CC8A2 /* crashing_ice_ball.caf in Resources */ = {isa = PBXBuildFile; fileRef = BBC4862A19ED7637001CC8A2 /* crashing_ice_ball.caf */; };
+		BBC4863219ED7637001CC8A2 /* dislodging_space_tile.caf in Resources */ = {isa = PBXBuildFile; fileRef = BBC4862B19ED7637001CC8A2 /* dislodging_space_tile.caf */; };
+		BBC4863319ED7637001CC8A2 /* falling_object.caf in Resources */ = {isa = PBXBuildFile; fileRef = BBC4862C19ED7637001CC8A2 /* falling_object.caf */; };
+		BBC4863419ED7637001CC8A2 /* falling_space_tile.caf in Resources */ = {isa = PBXBuildFile; fileRef = BBC4862D19ED7637001CC8A2 /* falling_space_tile.caf */; };
+		BBC4863519ED7637001CC8A2 /* pu_shield.caf in Resources */ = {isa = PBXBuildFile; fileRef = BBC4862E19ED7637001CC8A2 /* pu_shield.caf */; };
+		BBC4863619ED7637001CC8A2 /* shield_raise.caf in Resources */ = {isa = PBXBuildFile; fileRef = BBC4862F19ED7637001CC8A2 /* shield_raise.caf */; };
 		BBC92AD819C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92AD619C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp */; };
 		BBC92AE019C0FA7F004B44B2 /* CountDownNumberGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92ADE19C0FA7F004B44B2 /* CountDownNumberGameObject.cpp */; };
 		BBC92AE319C0FC77004B44B2 /* DisplayXMovingGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92AE119C0FC77004B44B2 /* DisplayXMovingGameObject.cpp */; };
@@ -469,6 +476,13 @@
 		BBB24BA31963AFFA00EF78B2 /* InterfaceOverlay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InterfaceOverlay.cpp; sourceTree = "<group>"; };
 		BBB24BA41963AFFA00EF78B2 /* InterfaceOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterfaceOverlay.h; sourceTree = "<group>"; };
 		BBBEC913194B425200AAB520 /* char_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_blue.png; sourceTree = "<group>"; };
+		BBC4862919ED7637001CC8A2 /* crashing_fire_ball.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = crashing_fire_ball.caf; sourceTree = "<group>"; };
+		BBC4862A19ED7637001CC8A2 /* crashing_ice_ball.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = crashing_ice_ball.caf; sourceTree = "<group>"; };
+		BBC4862B19ED7637001CC8A2 /* dislodging_space_tile.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = dislodging_space_tile.caf; sourceTree = "<group>"; };
+		BBC4862C19ED7637001CC8A2 /* falling_object.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = falling_object.caf; sourceTree = "<group>"; };
+		BBC4862D19ED7637001CC8A2 /* falling_space_tile.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = falling_space_tile.caf; sourceTree = "<group>"; };
+		BBC4862E19ED7637001CC8A2 /* pu_shield.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = pu_shield.caf; sourceTree = "<group>"; };
+		BBC4862F19ED7637001CC8A2 /* shield_raise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = shield_raise.caf; sourceTree = "<group>"; };
 		BBC92AD619C0B963004B44B2 /* PlayerRowPlatformAvatar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerRowPlatformAvatar.cpp; sourceTree = "<group>"; };
 		BBC92AD719C0B963004B44B2 /* PlayerRowPlatformAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerRowPlatformAvatar.h; sourceTree = "<group>"; };
 		BBC92ADE19C0FA7F004B44B2 /* CountDownNumberGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CountDownNumberGameObject.cpp; sourceTree = "<group>"; };
@@ -891,9 +905,14 @@
 				BB07505B19C248520028515E /* countdown_1.caf */,
 				BB07505C19C248520028515E /* countdown_2.caf */,
 				BB07505D19C248520028515E /* countdown_3.caf */,
+				BBC4862919ED7637001CC8A2 /* crashing_fire_ball.caf */,
+				BBC4862A19ED7637001CC8A2 /* crashing_ice_ball.caf */,
 				BB16D969191987B80034BE67 /* death.caf */,
+				BBC4862B19ED7637001CC8A2 /* dislodging_space_tile.caf */,
 				BB07505E19C248520028515E /* draw.caf */,
 				BB16D96A191987B80034BE67 /* explosion.caf */,
+				BBC4862C19ED7637001CC8A2 /* falling_object.caf */,
+				BBC4862D19ED7637001CC8A2 /* falling_space_tile.caf */,
 				BB5C577719B9F2B500AD76E7 /* force_field_down.caf */,
 				BB07505F19C248520028515E /* game_set.caf */,
 				BB91730819E42DBA00BA7FD4 /* hurry.caf */,
@@ -902,7 +921,9 @@
 				BB5C576D19B9F27B00AD76E7 /* pu_fire.caf */,
 				BB5C576E19B9F27B00AD76E7 /* pu_force_field.caf */,
 				BB5C576F19B9F27B00AD76E7 /* pu_push.caf */,
+				BBC4862E19ED7637001CC8A2 /* pu_shield.caf */,
 				BB5C577019B9F27B00AD76E7 /* pu_speed.caf */,
+				BBC4862F19ED7637001CC8A2 /* shield_raise.caf */,
 			);
 			name = sounds;
 			sourceTree = "<group>";
@@ -1053,6 +1074,7 @@
 				BB5C577819B9F2B500AD76E7 /* force_field_down.caf in Resources */,
 				BBDE14B5195A2D7400A91FD7 /* char_orange.png in Resources */,
 				BBA0A3FF196F549C00737A74 /* bot_orange.png in Resources */,
+				BBC4863119ED7637001CC8A2 /* crashing_ice_ball.caf in Resources */,
 				BBBEC914194B425200AAB520 /* char_blue.png in Resources */,
 				BB5C577319B9F27B00AD76E7 /* pu_fire.caf in Resources */,
 				BB5C577619B9F27B00AD76E7 /* pu_speed.caf in Resources */,
@@ -1065,9 +1087,11 @@
 				BBDE14B7195A2D7400A91FD7 /* char_red.png in Resources */,
 				BBA0A3FD196F549C00737A74 /* bot_black.png in Resources */,
 				BB07506019C248520028515E /* battle.caf in Resources */,
+				BBC4863019ED7637001CC8A2 /* crashing_fire_ball.caf in Resources */,
 				BB07506219C248520028515E /* countdown_2.caf in Resources */,
 				BB71029E196E079500C7BA2F /* map_base.png in Resources */,
 				BBB24BA219638A9300EF78B2 /* interface.png in Resources */,
+				BBC4863219ED7637001CC8A2 /* dislodging_space_tile.caf in Resources */,
 				BBA0A401196F549C00737A74 /* bot_red.png in Resources */,
 				BBA0A3FE196F549C00737A74 /* bot_green.png in Resources */,
 				BB4B6DAA19DDBF8900539A44 /* game.png in Resources */,
@@ -1086,9 +1110,11 @@
 				BB5C577219B9F27B00AD76E7 /* pu_bomb.caf in Resources */,
 				BB065FAF19D4D62900B3BE12 /* README.txt in Resources */,
 				BBA6492219B5FED100023E5A /* Images.xcassets in Resources */,
+				BBC4863319ED7637001CC8A2 /* falling_object.caf in Resources */,
 				BB065FAD19D4D62900B3BE12 /* GoogleMobileAdsSdkiOS-6.12.0_readme.txt in Resources */,
 				BBAE201419DA62A100B705FE /* color_shader.fsh in Resources */,
 				BB39D6E5196ED81400BC895B /* bot_blue.png in Resources */,
+				BBC4863619ED7637001CC8A2 /* shield_raise.caf in Resources */,
 				BB4F3101197C1DCD00270703 /* offline_match_highlighted.png in Resources */,
 				BB4F3102197C1DCD00270703 /* offline_match_normal.png in Resources */,
 				BB5C577519B9F27B00AD76E7 /* pu_push.caf in Resources */,
@@ -1106,7 +1132,9 @@
 				BB07506119C248520028515E /* countdown_1.caf in Resources */,
 				BBAE201619DA62A100B705FE /* texture_shader.fsh in Resources */,
 				BB4F30F8197C1DC300270703 /* bg@2x~ipad.png in Resources */,
+				BBC4863419ED7637001CC8A2 /* falling_space_tile.caf in Resources */,
 				BBA0A400196F549C00737A74 /* bot_pink.png in Resources */,
+				BBC4863519ED7637001CC8A2 /* pu_shield.caf in Resources */,
 				0ADF1898178E2185005DA99E /* MainStoryboard_iPad.storyboard in Resources */,
 				BB4F3103197C1DCD00270703 /* offline_match_pressed.png in Resources */,
 				BB91730919E42DBA00BA7FD4 /* hurry.caf in Resources */,

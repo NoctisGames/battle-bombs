@@ -222,27 +222,24 @@ void Direct3DGameScreen::handleSound()
 		case SOUND_DRAW:
 			m_drawSound->play();
 			break;
-        case SOUND_RAISE_SHIELD:
-            // TODO
-            break;
-        case SOUND_DISLODGING_SPACE_TILE:
-            // TODO
-            break;
-        case SOUND_FALLING_SPACE_TILE:
-            // TODO
-            break;
-        case SOUND_FALLING_FIRE_BALL:
-            // TODO
-            break;
-        case SOUND_CRASHING_FIRE_BALL:
-            // TODO
-            break;
-        case SOUND_FALLING_ICE_BALL:
-            // TODO
-            break;
-        case SOUND_CRASHING_ICE_BALL:
-            // TODO
-            break;
+            case SOUND_RAISE_SHIELD:
+                // TODO
+                break;
+            case SOUND_DISLODGING_SPACE_TILE:
+                // TODO
+                break;
+            case SOUND_FALLING_SPACE_TILE:
+                // TODO
+                break;
+            case SOUND_FALLING_OBJECT:
+                // TODO
+                break;
+            case SOUND_CRASHING_FIRE_BALL:
+                // TODO
+                break;
+            case SOUND_CRASHING_ICE_BALL:
+                // TODO
+                break;
 		default:
 			continue;
 		}
