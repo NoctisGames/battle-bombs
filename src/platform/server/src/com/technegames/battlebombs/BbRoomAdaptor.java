@@ -374,12 +374,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     i++;
                 }
 
-                mapType++;
-                if (mapType == NUM_MAPS)
-                {
-                    mapType = 0;
-                }
-
                 init(_room.getId(), _inGameUserSessionDataMap.size(), mapType);
 
                 for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
@@ -542,6 +536,12 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         _stateTime = 0;
         _oneOrLessPlayersAliveTimer = 0;
         _countdownTime = 0;
+
+        mapType++;
+        if (mapType == NUM_MAPS)
+        {
+            mapType = 0;
+        }
     }
 
     private void removeUser(IUser user, boolean onUserLeaveRequest)
