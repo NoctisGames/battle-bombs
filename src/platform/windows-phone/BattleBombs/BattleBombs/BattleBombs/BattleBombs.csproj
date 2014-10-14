@@ -293,6 +293,9 @@
     <Content Include="Assets\pu_push.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\pu_shield.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\pu_speed.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
