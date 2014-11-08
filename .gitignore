@@ -36,9 +36,6 @@ rapidjson/
 # Newtonsoft.Json, Windows Phone Toolkit
 packages/
 
-# Windows Phone Toolkit
-Toolkit.Content/
-
 # Eclipse
 bin/
 gen/
