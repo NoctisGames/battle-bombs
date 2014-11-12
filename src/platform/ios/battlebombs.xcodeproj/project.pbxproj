@@ -177,7 +177,6 @@
 		BBC92AE619C0FC92004B44B2 /* DisplayGameOverGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBC92AE419C0FC92004B44B2 /* DisplayGameOverGameObject.cpp */; };
 		BBCCF55E193847A0000F509A /* BotPlayerDynamicGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCCF55C193847A0000F509A /* BotPlayerDynamicGameObject.cpp */; };
 		BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32418BFC8E1003A4EED /* Logger.m */; };
-		BBCDD32918BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCDD32818BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m */; };
 		BBD0A2C3197420C900804A7C /* PlayerAvatar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD0A2C1197420C900804A7C /* PlayerAvatar.cpp */; };
 		BBD15D0619EC51AD0097F9B4 /* Crater.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD15D0419EC51AD0097F9B4 /* Crater.cpp */; };
 		BBD15D0919EC57570097F9B4 /* FireBall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD15D0719EC57570097F9B4 /* FireBall.cpp */; };
@@ -497,8 +496,6 @@
 		BBCCF55D193847A0000F509A /* BotPlayerDynamicGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BotPlayerDynamicGameObject.h; sourceTree = "<group>"; };
 		BBCDD32318BFC8E1003A4EED /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
 		BBCDD32418BFC8E1003A4EED /* Logger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Logger.m; sourceTree = "<group>"; };
-		BBCDD32718BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
-		BBCDD32818BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
 		BBD0A2C1197420C900804A7C /* PlayerAvatar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerAvatar.cpp; sourceTree = "<group>"; };
 		BBD0A2C2197420C900804A7C /* PlayerAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerAvatar.h; sourceTree = "<group>"; };
 		BBD15D0419EC51AD0097F9B4 /* Crater.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Crater.cpp; sourceTree = "<group>"; };
@@ -805,8 +802,6 @@
 				BB81B1B919BE197E00548837 /* TGJsonUtils.m */,
 				BB81B1B119BE15E700548837 /* TGProgressDialog.h */,
 				BB81B1B219BE15E700548837 /* TGProgressDialog.m */,
-				BBCDD32718BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.h */,
-				BBCDD32818BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m */,
 				0ADF1882178E2185005DA99E /* Supporting Files */,
 			);
 			name = ios;
@@ -939,6 +934,17 @@
 			name = music;
 			sourceTree = "<group>";
 		};
+		BB64BFA91A14032D00D20E19 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				BBAE201019DA62A100B705FE /* color_shader.fsh */,
+				BBAE201119DA62A100B705FE /* color_shader.vsh */,
+				BBAE201219DA62A100B705FE /* texture_shader.fsh */,
+				BBAE201319DA62A100B705FE /* texture_shader.vsh */,
+			);
+			name = shaders;
+			sourceTree = "<group>";
+		};
 		BB96EEDC18B99A7100F7C356 /* opengles */ = {
 			isa = PBXGroup;
 			children = (
@@ -991,8 +997,7 @@
 				BBDE14B0195A2D7400A91FD7 /* char_red.png */,
 				BBDE14B1195A2D7400A91FD7 /* char_white.png */,
 				BBDE14B2195A2D7400A91FD7 /* char_yellow.png */,
-				BBAE201019DA62A100B705FE /* color_shader.fsh */,
-				BBAE201119DA62A100B705FE /* color_shader.vsh */,
+				BB64BFA91A14032D00D20E19 /* shaders */,
 				BB4B6DA919DDBF8900539A44 /* game.png */,
 				BB8FF7C519AE3FE4005D0701 /* interface_2.png */,
 				BBB24BA119638A9300EF78B2 /* interface.png */,
@@ -1008,8 +1013,6 @@
 				BB4F30FF197C1DCD00270703 /* quick_match_normal.png */,
 				BB4F3100197C1DCD00270703 /* quick_match_pressed.png */,
 				BB07506619C248950028515E /* sounds */,
-				BBAE201219DA62A100B705FE /* texture_shader.fsh */,
-				BBAE201319DA62A100B705FE /* texture_shader.vsh */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -1173,7 +1176,6 @@
 				0A8FBF90179E07440039BA29 /* main.m in Sources */,
 				BB82057A19D524C700F383A6 /* RectangleBatcher.cpp in Sources */,
 				BB96EECE18B99A6900F7C356 /* Assets.cpp in Sources */,
-				BBCDD32918BFD8FE003A4EED /* TPKeyboardAvoidingScrollView.m in Sources */,
 				BB96EEF218B99A7100F7C356 /* OpenGLESSpriteBatcher.cpp in Sources */,
 				0A8FBF7C179E07320039BA29 /* png.c in Sources */,
 				BB8FBFA819DF533800C18AD9 /* IceBall.cpp in Sources */,

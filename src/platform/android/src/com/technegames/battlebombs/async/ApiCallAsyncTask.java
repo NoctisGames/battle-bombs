@@ -7,13 +7,13 @@ import java.net.URL;
 
 import android.os.AsyncTask;
 
-import com.technegames.battlebombs.ApiConstants;
 import com.technegames.battlebombs.HttpHeaderLogger;
 import com.technegames.battlebombs.IOUtils;
 import com.technegames.battlebombs.InstanceManager;
 import com.technegames.battlebombs.Logger;
 import com.technegames.battlebombs.NetworkUtil;
 import com.technegames.battlebombs.R;
+import com.technegames.battlebombs.api.ApiConstants;
 import com.technegames.battlebombs.api.ServerStatusResponse;
 import com.technegames.battlebombs.callback.AsyncTaskCallback;
 import com.technegames.battlebombs.json.JsonDeserializer;

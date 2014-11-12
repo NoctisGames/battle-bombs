@@ -1,4 +1,4 @@
-package com.technegames.battlebombs;
+package com.technegames.battlebombs.api;
 
 public final class ApiConstants
 {

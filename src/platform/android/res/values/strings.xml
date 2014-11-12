@@ -10,12 +10,12 @@
 
     <!-- Down for Maintenance Dialog -->
     <string name="down_for_maintenance_title">Down for Maintenance</string>
-    <string name="down_for_maintenance_message">Techne Games is down for maintenance, but will be back online soon.\nFeel free to enjoy the offline mode in the meantime.</string>
+    <string name="down_for_maintenance_message">Battle Bombs is down for maintenance, but will be back online soon.\nFeel free to enjoy the offline mode in the meantime.</string>
     <string name="down_for_maintenance_cancel">OK</string>
 
     <!-- Connection Error Dialog -->
     <string name="connection_error_title">Connection Error</string>
-    <string name="connection_error_message">Your device is unable to connect to Techne Games. Please check your connection and try again.</string>
+    <string name="connection_error_message">Your device is unable to connect to Battle Bombs. Please check your connection and try again.</string>
     <string name="connection_error_cancel">OK</string>
 
     <!-- Enter Username Dialog -->
