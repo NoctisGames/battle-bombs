@@ -1,1 +1,1 @@
-../../../core/opengles/color_shader.vsh
+../../../core/framework/opengles/color_shader.vsh
