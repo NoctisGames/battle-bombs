@@ -43,10 +43,9 @@
 #define SOUND_CRASHING_FIRE_BALL 22
 #define SOUND_CRASHING_ICE_BALL 23
 
-//// Texture Definitions ////
+//// Texture Size Definitions ////
 
-#define GAME_TEXTURE_WIDTH 1024
-#define GAME_TEXTURE_HEIGHT 1024
+#define TEXTURE_SIZE_1024x1024 1024
 
 //// Texture Region Definitions ////
 
