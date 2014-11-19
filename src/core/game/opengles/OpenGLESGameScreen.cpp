@@ -52,6 +52,7 @@
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
 #include "SpaceTile.h"
+#include "OpenGLESManager.h"
 
 OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline, bool isRunningIOS8) : GameScreen(username, isOffline)
 {
