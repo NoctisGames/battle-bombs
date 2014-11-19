@@ -63,8 +63,7 @@ void OpenGLESGameScreen::onSurfaceCreated(int width, int height)
 	m_iDeviceScreenWidth = width;
 	m_iDeviceScreenHeight = height;
     
-    glViewport(0, 0, width, height);
-	glScissor(0, 0, width, height);
+    OGLESManager->init(width, height);
     
     m_renderer = std::unique_ptr<OpenGLESRenderer>(new OpenGLESRenderer(m_iDeviceScreenWidth, m_iDeviceScreenHeight));
 }
