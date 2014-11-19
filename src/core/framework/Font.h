@@ -10,8 +10,8 @@
 #define __gowengamedev__Font__
 
 #include <string>
-#include "Color.h"
 #include "TextureRegion.h"
+#include "Color.h"
 
 #include <vector>
 #include <memory>

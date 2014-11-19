@@ -111,14 +111,14 @@ Vector2D Vector2D::nor()
 float Vector2D::angle()
 {
     float radians = atan2f(m_fY, m_fX);
-    //float angle = RADIANS_TO_DEGREES(radians);
+    float angle = RADIANS_TO_DEGREES(radians);
     
-    //if (angle < 0)
-    //{
-    //    angle += 360;
-    //}
+    if (angle < 0)
+    {
+        angle += 360;
+    }
     
-    return radians;
+    return angle;
 }
 
 Vector2D Vector2D::rotate(float angle)

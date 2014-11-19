@@ -10,7 +10,8 @@
 #define __gowengamedev__Line__
 
 #include <memory>
-#include "Vector2D.h"
+
+class Vector2D;
 
 class Line
 {

@@ -16,8 +16,4 @@
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0f * M_PI)
 #define RADIANS_TO_DEGREES(angle) ((angle) / M_PI * 180.0f)
 
-#ifdef TECHNE_GAMES_DIRECT_3D
-#define DEGREES_TO_RADIANS_WP(angle) -((angle) / 180.0f * M_PI)
-#endif
-
 #endif /* Macros_H */

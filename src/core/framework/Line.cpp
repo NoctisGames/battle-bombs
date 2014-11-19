@@ -8,6 +8,7 @@
 
 #include "pch.h"
 #include "Line.h"
+#include "Vector2D.h"
 
 Line::Line(float x1, float y1, float x2, float y2)
 {

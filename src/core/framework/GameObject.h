@@ -37,9 +37,7 @@ public:
     const float& getWidth();
 
     const float& getHeight();
-
-    // Should be overridden in cases where the object will only faces certain directions
-    // This method could return 1 of several constant angles based on direction or something
+    
     virtual float getAngle();
 };
 
