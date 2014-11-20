@@ -54,11 +54,7 @@
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
 #include "SpaceTile.h"
-
-ComPtr<ID3D11Device1> dev;                      // the device interface
-ComPtr<ID3D11DeviceContext1> devcon;            // the device context interface
-ComPtr<ID3D11Texture2D> m_renderTarget;         // the render target texture
-ComPtr<ID3D11RenderTargetView> rendertarget;    // the render target interface
+#include "DirectXManager.h"
 
 Direct3DGameScreen::Direct3DGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
 {
@@ -73,75 +69,13 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	m_fGameScreenToDeviceScreenHeightRatio = deviceScreenHeight / SCREEN_HEIGHT;
 	m_fDipToPixelRatio = (float)deviceScreenWidth / (float)deviceScreenDpWidth;
 
-	// This flag adds support for surfaces with a different color channel ordering
-	// than the API default. It is required for compatibility with Direct2D.
-	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
-#if defined(_DEBUG)
-	// If the project is in a debug build, enable debugging via SDK Layers with this flag.
-	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
-	// This array defines the set of DirectX hardware feature levels this app will support.
-	// Note the ordering should be preserved.
-	// Don't forget to declare your application's minimum required feature level in its
-	// description. All applications are assumed to support 9.1 unless otherwise stated.
-	D3D_FEATURE_LEVEL featureLevels[] =
-	{
-		D3D_FEATURE_LEVEL_11_1,
-		D3D_FEATURE_LEVEL_11_0,
-		D3D_FEATURE_LEVEL_10_1,
-		D3D_FEATURE_LEVEL_10_0,
-		D3D_FEATURE_LEVEL_9_3
-	};
+	DXManager->init(deviceScreenWidth, deviceScreenWidth);
 
-	// Create the Direct3D 11 API device object and a corresponding context.
-	ComPtr<ID3D11Device> device;
-	ComPtr<ID3D11DeviceContext> context;
-	D3D11CreateDevice(
-		nullptr, // Specify nullptr to use the default adapter.
-		D3D_DRIVER_TYPE_HARDWARE,
-		nullptr,
-		creationFlags, // Set set debug and Direct2D compatibility flags.
-		featureLevels, // List of feature levels this app can support.
-		ARRAYSIZE(featureLevels),
-		D3D11_SDK_VERSION, // Always set this to D3D11_SDK_VERSION.
-		&device, // Returns the Direct3D device created.
-		&m_featureLevel, // Returns feature level of device created.
-		&context // Returns the device immediate context.
-		);
-
-	// Get the Direct3D 11.1 API device and context interfaces.
-	device.As(&dev);
-	context.As(&devcon);
-
-	// Create a descriptor for the render target buffer.
-	CD3D11_TEXTURE2D_DESC renderTargetDesc(
-		DXGI_FORMAT_B8G8R8A8_UNORM,
-		static_cast<UINT>(deviceScreenWidth),
-		static_cast<UINT>(deviceScreenHeight),
-		1,
-		1,
-		D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE
-		);
-	renderTargetDesc.MiscFlags = D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX | D3D11_RESOURCE_MISC_SHARED_NTHANDLE;
-
-	// Allocate a 2-D surface as the render target buffer.
-	dev->CreateTexture2D(&renderTargetDesc, nullptr, &m_renderTarget);
-	dev->CreateRenderTargetView(m_renderTarget.Get(), nullptr, &rendertarget);
-
-	// set the viewport
-	D3D11_VIEWPORT viewport = { 0 };
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	viewport.Width = static_cast<float>(deviceScreenWidth);
-	viewport.Height = static_cast<float>(deviceScreenHeight);
-
-	devcon->RSSetViewports(1, &viewport);
-
-	m_renderer = std::unique_ptr<Direct3DRenderer>(new Direct3DRenderer(dev.Get(), devcon.Get(), rendertarget.Get()));
+	m_renderer = std::unique_ptr<Direct3DRenderer>(new Direct3DRenderer());
 
 	// Load Background Music
 	m_mediaPlayer = std::unique_ptr<MediaEnginePlayer>(new MediaEnginePlayer);
-	m_mediaPlayer->Initialize(dev.Get(), DXGI_FORMAT_B8G8R8A8_UNORM);
+	m_mediaPlayer->Initialize(DXManager->m_device, DXGI_FORMAT_B8G8R8A8_UNORM);
 
 	m_countDown3Sound = std::unique_ptr<GameSound>(new GameSound("assets\\countdown_3.wav"));
 	m_countDown2Sound = std::unique_ptr<GameSound>(new GameSound("assets\\countdown_2.wav"));
@@ -291,11 +225,13 @@ void Direct3DGameScreen::unload()
 	}
 
 	m_mediaPlayer->Shutdown();
+
+	DXManager->cleanUp();
 }
 
 ID3D11Texture2D* Direct3DGameScreen::getTexture()
 {
-	return m_renderTarget.Get();
+	return DXManager->m_renderTarget;
 }
 
 void Direct3DGameScreen::touchToWorld(TouchEvent &touchEvent)

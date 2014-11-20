@@ -150,13 +150,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\core\framework\Circle.h" />
+    <ClInclude Include="..\..\..\..\..\core\framework\CircleBatcher.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\Color.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\direct3d\BasicReaderWriter.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\direct3d\dds.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\direct3d\DDSTextureLoader.h" />
+    <ClInclude Include="..\..\..\..\..\core\framework\direct3d\Direct3DCircleBatcher.h" />
+    <ClInclude Include="..\..\..\..\..\core\framework\direct3d\Direct3DLineBatcher.h" />
+    <ClInclude Include="..\..\..\..\..\core\framework\direct3d\Direct3DProgram.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\direct3d\Direct3DRectangleBatcher.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\direct3d\Direct3DSpriteBatcher.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\direct3d\DirectXHelpers.h" />
+    <ClInclude Include="..\..\..\..\..\core\framework\direct3d\DirectXManager.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\direct3d\PlatformHelpers.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\DynamicGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\DynamicGridGameObject.h" />
@@ -164,6 +169,7 @@
     <ClInclude Include="..\..\..\..\..\core\framework\GameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\GridGameObject.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\Line.h" />
+    <ClInclude Include="..\..\..\..\..\core\framework\LineBatcher.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\macros.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\Node.h" />
     <ClInclude Include="..\..\..\..\..\core\framework\OverlapTester.h" />
@@ -252,16 +258,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\core\framework\Circle.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\framework\CircleBatcher.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\direct3d\BasicReaderWriter.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\direct3d\DDSTextureLoader.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\framework\direct3d\Direct3DCircleBatcher.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\framework\direct3d\Direct3DLineBatcher.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\framework\direct3d\Direct3DProgram.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\direct3d\Direct3DRectangleBatcher.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\direct3d\Direct3DSpriteBatcher.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\framework\direct3d\DirectXManager.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\DynamicGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\DynamicGridGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\Font.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\GameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\GridGameObject.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\Line.cpp" />
+    <ClCompile Include="..\..\..\..\..\core\framework\LineBatcher.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\OverlapTester.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\Rectangle.cpp" />
     <ClCompile Include="..\..\..\..\..\core\framework\RectangleBatcher.cpp" />
