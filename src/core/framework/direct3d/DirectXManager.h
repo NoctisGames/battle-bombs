@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#ifndef __insectoiddefense__DirectXManager__
-#define __insectoiddefense__DirectXManager__
+#ifndef __gowengamedev__DirectXManager__
+#define __gowengamedev__DirectXManager__
 
 #define MAX_BATCH_SIZE 1024
 #define VERTICES_PER_RECTANGLE 4
@@ -80,4 +80,4 @@ private:
 	DirectXManager();
 };
 
-#endif /* defined(__insectoiddefense__DirectXManager__) */
+#endif /* defined(__gowengamedev__DirectXManager__) */

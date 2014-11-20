@@ -3,7 +3,7 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 2/1/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
 #ifndef __battle_bombs__Direct3DRenderer__
@@ -23,6 +23,8 @@ public:
 	virtual void beginFrame();
 
 	virtual void endFrame();
+
+	virtual void cleanUp();
 };
 
 #endif /* defined(__battle_bombs__Direct3DRenderer__) */

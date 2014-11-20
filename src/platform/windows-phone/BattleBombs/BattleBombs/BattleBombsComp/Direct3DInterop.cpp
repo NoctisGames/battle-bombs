@@ -130,6 +130,20 @@ namespace BattleBombsComp
 		m_winRtCallback = callback;
 	}
 
+	void Direct3DInterop::RenderResolution::set(Windows::Foundation::Size renderResolution)
+	{
+		if (renderResolution.Width != m_renderResolution.Width || renderResolution.Height != m_renderResolution.Height)
+		{
+			m_renderResolution = renderResolution;
+
+			if (m_gameScreen)
+			{
+				m_gameScreen->updateForRenderResolutionChange(m_renderResolution.Width, m_renderResolution.Height);
+				RecreateSynchronizedTexture();
+			}
+		}
+	}
+
 	// Event Handlers
 	void Direct3DInterop::OnPointerPressed(DrawingSurfaceManipulationHost^ sender, PointerEventArgs^ args)
 	{

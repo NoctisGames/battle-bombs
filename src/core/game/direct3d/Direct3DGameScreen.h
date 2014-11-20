@@ -3,7 +3,7 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
 #pragma once
@@ -20,6 +20,8 @@ public:
 	Direct3DGameScreen(const char *username, bool isOffline = false);
 
 	void load(float deviceScreenWidth, float deviceScreenHeight, int deviceScreenDpWidth, int deviceScreenDpHeight);
+
+	void updateForRenderResolutionChange(float width, float height);
 
 	void handleSound();
 
@@ -62,8 +64,6 @@ private:
 	std::unique_ptr<GameSound> m_fallingObjectSound;
 	std::unique_ptr<GameSound> m_crashingFireBallSound;
 	std::unique_ptr<GameSound> m_crashingIceBallSound;
-
-	D3D_FEATURE_LEVEL m_featureLevel;
 
 	float m_fGameScreenToDeviceScreenWidthRatio;
 	float m_fGameScreenToDeviceScreenHeightRatio;

@@ -3,7 +3,7 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 2/1/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
 #include "pch.h"
@@ -56,18 +56,18 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-ComPtr<ID3D11ShaderResourceView> m_mapShaderResourceView;
-ComPtr<ID3D11ShaderResourceView> m_gameShaderResourceView;
-ComPtr<ID3D11ShaderResourceView> m_interfaceShaderResourceView;
-ComPtr<ID3D11ShaderResourceView> m_interface2ShaderResourceView;
-ComPtr<ID3D11ShaderResourceView> m_charBlackShaderResourceView;
-ComPtr<ID3D11ShaderResourceView> m_charBlueShaderResourceView;
-ComPtr<ID3D11ShaderResourceView> m_charGreenShaderResourceView;
-ComPtr<ID3D11ShaderResourceView> m_charOrangeShaderResourceView;
-ComPtr<ID3D11ShaderResourceView> m_charPinkShaderResourceView;
-ComPtr<ID3D11ShaderResourceView> m_charRedShaderResourceView;
-ComPtr<ID3D11ShaderResourceView> m_charWhiteShaderResourceView;
-ComPtr<ID3D11ShaderResourceView> m_charYellowShaderResourceView;
+ID3D11ShaderResourceView *m_mapShaderResourceView;
+ID3D11ShaderResourceView *m_gameShaderResourceView;
+ID3D11ShaderResourceView *m_interfaceShaderResourceView;
+ID3D11ShaderResourceView *m_interface2ShaderResourceView;
+ID3D11ShaderResourceView *m_charBlackShaderResourceView;
+ID3D11ShaderResourceView *m_charBlueShaderResourceView;
+ID3D11ShaderResourceView *m_charGreenShaderResourceView;
+ID3D11ShaderResourceView *m_charOrangeShaderResourceView;
+ID3D11ShaderResourceView *m_charPinkShaderResourceView;
+ID3D11ShaderResourceView *m_charRedShaderResourceView;
+ID3D11ShaderResourceView *m_charWhiteShaderResourceView;
+ID3D11ShaderResourceView *m_charYellowShaderResourceView;
 
 Direct3DRenderer::Direct3DRenderer() : Renderer()
 {
@@ -87,20 +87,20 @@ Direct3DRenderer::Direct3DRenderer() : Renderer()
 	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\bot_red.dds", NULL, &m_charRedShaderResourceView, NULL);
 	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\bot_white.dds", NULL, &m_charWhiteShaderResourceView, NULL);
 	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\bot_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL);
-	
-	m_mapTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_mapShaderResourceView.Get()));
-	m_gameTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_gameShaderResourceView.Get()));
-	m_interfaceTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_interfaceShaderResourceView.Get()));
-	m_interfaceTexture2 = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_interface2ShaderResourceView.Get()));
 
-	m_charBlackTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charBlackShaderResourceView.Get()));
-	m_charBlueTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charBlueShaderResourceView.Get()));
-	m_charGreenTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charGreenShaderResourceView.Get()));
-	m_charOrangeTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charOrangeShaderResourceView.Get()));
-	m_charPinkTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charPinkShaderResourceView.Get()));
-	m_charRedTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charRedShaderResourceView.Get()));
-	m_charWhiteTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charWhiteShaderResourceView.Get()));
-	m_charYellowTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charYellowShaderResourceView.Get()));
+	m_mapTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_mapShaderResourceView));
+	m_gameTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_gameShaderResourceView));
+	m_interfaceTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_interfaceShaderResourceView));
+	m_interfaceTexture2 = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_interface2ShaderResourceView));
+
+	m_charBlackTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charBlackShaderResourceView));
+	m_charBlueTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charBlueShaderResourceView));
+	m_charGreenTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charGreenShaderResourceView));
+	m_charOrangeTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charOrangeShaderResourceView));
+	m_charPinkTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charPinkShaderResourceView));
+	m_charRedTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charRedShaderResourceView));
+	m_charWhiteTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charWhiteShaderResourceView));
+	m_charYellowTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_charYellowShaderResourceView));
 }
 
 void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
@@ -162,15 +162,15 @@ void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
 		CreateDDSTextureFromFile(DXManager->m_device, players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL);
 	}
 
-	m_mapTexture->texture = m_mapShaderResourceView.Get();
-	m_charBlackTexture->texture = m_charBlackShaderResourceView.Get();
-	m_charBlueTexture->texture = m_charBlueShaderResourceView.Get();
-	m_charGreenTexture->texture = m_charGreenShaderResourceView.Get();
-	m_charOrangeTexture->texture = m_charOrangeShaderResourceView.Get();
-	m_charPinkTexture->texture = m_charPinkShaderResourceView.Get();
-	m_charRedTexture->texture = m_charRedShaderResourceView.Get();
-	m_charWhiteTexture->texture = m_charWhiteShaderResourceView.Get();
-	m_charYellowTexture->texture = m_charYellowShaderResourceView.Get();
+	m_mapTexture->texture = m_mapShaderResourceView;
+	m_charBlackTexture->texture = m_charBlackShaderResourceView;
+	m_charBlueTexture->texture = m_charBlueShaderResourceView;
+	m_charGreenTexture->texture = m_charGreenShaderResourceView;
+	m_charOrangeTexture->texture = m_charOrangeShaderResourceView;
+	m_charPinkTexture->texture = m_charPinkShaderResourceView;
+	m_charRedTexture->texture = m_charRedShaderResourceView;
+	m_charWhiteTexture->texture = m_charWhiteShaderResourceView;
+	m_charYellowTexture->texture = m_charYellowShaderResourceView;
 
 	updatePlayerSpritesLoadedArray(players);
 }
@@ -193,4 +193,20 @@ void Direct3DRenderer::beginFrame()
 void Direct3DRenderer::endFrame()
 {
 	// Not Needed Yet
+}
+
+void Direct3DRenderer::cleanUp()
+{
+	m_mapShaderResourceView->Release();
+	m_gameShaderResourceView->Release();
+	m_interfaceShaderResourceView->Release();
+	m_interface2ShaderResourceView->Release();
+	m_charBlackShaderResourceView->Release();
+	m_charBlueShaderResourceView->Release();
+	m_charGreenShaderResourceView->Release();
+	m_charOrangeShaderResourceView->Release();
+	m_charPinkShaderResourceView->Release();
+	m_charRedShaderResourceView->Release();
+	m_charWhiteShaderResourceView->Release();
+	m_charYellowShaderResourceView->Release();
 }

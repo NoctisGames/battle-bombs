@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#ifndef __insectoiddefense__Direct3DSpriteBatcher__
-#define __insectoiddefense__Direct3DSpriteBatcher__
+#ifndef __gowengamedev__Direct3DSpriteBatcher__
+#define __gowengamedev__Direct3DSpriteBatcher__
 
 #include "SpriteBatcher.h"
 #include <d3d11_1.h>
@@ -37,4 +37,4 @@ private:
     void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
 };
 
-#endif /* defined(__insectoiddefense__Direct3DSpriteBatcher__) */
+#endif /* defined(__gowengamedev__Direct3DSpriteBatcher__) */

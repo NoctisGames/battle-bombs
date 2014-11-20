@@ -3,7 +3,7 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
 #include "pch.h"
@@ -100,6 +100,20 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	m_fallingObjectSound = std::unique_ptr<GameSound>(new GameSound("assets\\falling_object.wav"));
 	m_crashingFireBallSound = std::unique_ptr<GameSound>(new GameSound("assets\\crashing_fire_ball.wav"));
 	m_crashingIceBallSound = std::unique_ptr<GameSound>(new GameSound("assets\\crashing_ice_ball.wav"));
+}
+
+void Direct3DGameScreen::updateForRenderResolutionChange(float width, float height)
+{
+	m_iDeviceScreenWidth = width;
+	m_iDeviceScreenHeight = height;
+
+	ID3D11RenderTargetView* nullViews[] = { nullptr };
+	DXManager->m_deviceContext->OMSetRenderTargets(ARRAYSIZE(nullViews), nullViews, nullptr);
+	DXManager->m_renderTarget = nullptr;
+	DXManager->m_renderTargetView = nullptr;
+	DXManager->m_deviceContext->Flush();
+
+	DXManager->initWindowSizeDependentResources(width, height);
 }
 
 void Direct3DGameScreen::handleSound()
@@ -225,6 +239,8 @@ void Direct3DGameScreen::unload()
 	}
 
 	m_mediaPlayer->Shutdown();
+
+	m_renderer->cleanUp();
 
 	DXManager->cleanUp();
 }
