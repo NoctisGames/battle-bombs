@@ -69,7 +69,7 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	m_fGameScreenToDeviceScreenHeightRatio = deviceScreenHeight / SCREEN_HEIGHT;
 	m_fDipToPixelRatio = (float)deviceScreenWidth / (float)deviceScreenDpWidth;
 
-	DXManager->init(deviceScreenWidth, deviceScreenWidth);
+	DXManager->init(deviceScreenWidth, deviceScreenHeight);
 
 	m_renderer = std::unique_ptr<Direct3DRenderer>(new Direct3DRenderer());
 
