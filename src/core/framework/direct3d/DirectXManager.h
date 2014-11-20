@@ -15,7 +15,6 @@
 
 #define DXManager (DirectXManager::getInstance())
 
-#include <wrl.h>
 #include "Direct3DProgram.h"
 
 #include <vector>

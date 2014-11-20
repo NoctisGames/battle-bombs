@@ -52,7 +52,6 @@
 #include <sstream>
 
 using namespace DirectX;
-using namespace Microsoft::WRL;
 
 ID3D11ShaderResourceView *m_mapShaderResourceView;
 ID3D11ShaderResourceView *m_gameShaderResourceView;
