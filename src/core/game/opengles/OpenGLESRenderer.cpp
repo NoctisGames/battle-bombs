@@ -159,3 +159,8 @@ void OpenGLESRenderer::endFrame()
     
     glDisable(GL_TEXTURE_2D);
 }
+
+void OpenGLESRenderer::cleanUp()
+{
+    // TODO
+}

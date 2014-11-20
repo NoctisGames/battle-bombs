@@ -23,6 +23,8 @@ public:
     virtual void beginFrame();
     
     virtual void endFrame();
+    
+    virtual void cleanUp();
 };
 
 #endif /* defined(__battle_bombs__OpenGLESRenderer__) */
