@@ -80,7 +80,7 @@ void GameSession::initializeInsideBlocksAndMapBordersForMapType(int mapType)
     m_insideBlocks.clear();
     
     // BEGIN MAP BORDER FAR
-    m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_TOP, SCREEN_WIDTH / 2, SCREEN_HEIGHT_X2 - 1.45522388023028f, SCREEN_WIDTH, 2.91044776046056f)));
+    m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_TOP, SCREEN_WIDTH / 2, WORLD_HEIGHT - 1.45522388023028f, SCREEN_WIDTH, 2.91044776046056f)));
     m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_LEFT, 0.7388059701492f, 15.76119403157902f, 1.4776119402984f, 20.0597014947369f)));
     m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_RIGHT, 23.44029850746264f, 15.76119403157902f, 1.11940298507472f, 20.0597014947369f)));
     m_mapBorders.push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_BOTTOM_LEFT, 2.865671641791f, 3.58208955263162f, 5.731343283582f, 4.29850746315789f)));

@@ -27,7 +27,7 @@ IceBall::IceBall(int gridX, int gridY, int index, GameListener *gameListener, st
     m_fTargetY = m_position->getY();
     m_fTimeUntilAppearance = TIME_BETWEEN_ICE_BALLS * (float)index;
     
-    m_position->set(m_position->getX(), SCREEN_HEIGHT_X2 + GRID_CELL_HEIGHT);
+    m_position->set(m_position->getX(), WORLD_HEIGHT + GRID_CELL_HEIGHT);
     m_velocity->set(0, -8);
     m_acceleration->set(0, -12);
     
