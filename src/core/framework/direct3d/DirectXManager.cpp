@@ -74,8 +74,9 @@ void DirectXManager::prepareForSpriteRendering()
 	//	Disable GPU access to the vertex buffer data.
 	DXManager->m_deviceContext->Map(DXManager->m_sbVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
+	int numTextureVertices = DXManager->m_textureVertices.size();
 	//	Update the vertex buffer here.
-	memcpy(mappedResource.pData, &DXManager->m_textureVertices[0], sizeof(TEXTURE_VERTEX)* DXManager->m_textureVertices.size());
+	memcpy(mappedResource.pData, &DXManager->m_textureVertices[0], sizeof(TEXTURE_VERTEX)* numTextureVertices);
 
 	//	Reenable GPU access to the vertex buffer data.
 	DXManager->m_deviceContext->Unmap(DXManager->m_sbVertexBuffer, 0);
@@ -268,8 +269,9 @@ void DirectXManager::createInputLayoutForGeometryBatcher()
 
 void DirectXManager::createVertexBufferForSpriteBatcher()
 {
+	m_textureVertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
 	TEXTURE_VERTEX tv = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	for (int i = 0; i < MAX_BATCH_SIZE; i++)
+	for (int i = 0; i < MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE; i++)
 	{
 		m_textureVertices.push_back(tv);
 	}
@@ -292,8 +294,9 @@ void DirectXManager::createVertexBufferForSpriteBatcher()
 
 void DirectXManager::createVertexBufferForGeometryBatcher()
 {
+	m_colorVertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
 	COLOR_VERTEX cv = { 0, 0, 0, 0, 0, 0, 0 };
-	for (int i = 0; i < MAX_BATCH_SIZE; i++)
+	for (int i = 0; i < MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE; i++)
 	{
 		m_colorVertices.push_back(cv);
 	}
