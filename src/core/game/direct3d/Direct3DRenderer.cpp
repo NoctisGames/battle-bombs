@@ -48,8 +48,6 @@
 #include "Direct3DSpriteBatcher.h"
 #include "DirectXManager.h"
 
-#include <d3d11_1.h>
-
 #include <string>
 #include <sstream>
 

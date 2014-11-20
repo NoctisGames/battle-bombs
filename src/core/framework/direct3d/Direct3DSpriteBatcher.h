@@ -10,10 +10,7 @@
 #define __gowengamedev__Direct3DSpriteBatcher__
 
 #include "SpriteBatcher.h"
-#include <d3d11_1.h>
 #include <vector>
-
-using namespace Microsoft::WRL;
 
 class Direct3DSpriteBatcher : public SpriteBatcher
 {
