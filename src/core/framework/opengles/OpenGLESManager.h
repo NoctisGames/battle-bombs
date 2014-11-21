@@ -52,16 +52,21 @@ public:
     void addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a);
     void prepareForSpriteRendering();
     void prepareForGeometryRendering();
-    void finishRendering();
+    void finishSpriteRendering();
+    void finishGeometryRendering();
     
     void cleanUp();
     
 private:
+    bool m_useMapBufferApi;
+    
     void buildShaderPrograms();
     void generateIndices();
     void createVertexBufferForSpriteBatcher();
     void createVertexBufferForGeometryBatcher();
     void createMatrix();
+    
+    bool useMapBufferApi();
     
     OpenGLESManager();
 };

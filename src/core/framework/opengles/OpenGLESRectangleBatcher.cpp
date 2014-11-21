@@ -31,6 +31,8 @@ void OpenGLESRectangleBatcher::endBatch()
         OGLESManager->prepareForGeometryRendering();
         
         glDrawElements(m_isFill ? GL_TRIANGLES : GL_LINE_STRIP, m_iNumRectangles * INDICES_PER_RECTANGLE, GL_UNSIGNED_SHORT, &OGLESManager->m_indices[0]);
+        
+        OGLESManager->finishGeometryRendering();
     }
 }
 

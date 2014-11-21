@@ -76,5 +76,5 @@ void OpenGLESCircleBatcher::endBatch(int numPoints)
     
     glDrawArrays(GL_TRIANGLE_FAN, 0, numPoints);
     
-    OGLESManager->finishRendering();
+    OGLESManager->finishGeometryRendering();
 }

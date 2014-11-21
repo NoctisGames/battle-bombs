@@ -38,7 +38,7 @@ void OpenGLESSpriteBatcher::endBatchWithTexture(TextureWrapper &textureWrapper)
         
         glDrawElements(GL_TRIANGLES, m_iNumSprites * INDICES_PER_RECTANGLE, GL_UNSIGNED_SHORT, &OGLESManager->m_indices[0]);
         
-        OGLESManager->finishRendering();
+        OGLESManager->finishSpriteRendering();
         
         glBindTexture(GL_TEXTURE_2D, 0);
     }

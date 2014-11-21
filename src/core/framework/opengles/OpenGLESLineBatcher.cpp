@@ -34,7 +34,7 @@ void OpenGLESLineBatcher::endBatch()
         
         glDrawArrays(GL_LINES, 0, VERTICES_PER_LINE * m_iNumLines);
         
-        OGLESManager->finishRendering();
+        OGLESManager->finishGeometryRendering();
     }
 }
 
