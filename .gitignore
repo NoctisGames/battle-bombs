@@ -68,6 +68,7 @@ Release/
 dist/
 build/
 private/
+jdkinclude/
 Logs/
 !private/project.xml
 !private/project.properties
