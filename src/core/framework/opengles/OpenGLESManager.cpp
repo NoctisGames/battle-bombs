@@ -27,16 +27,13 @@ void OpenGLESManager::init(int width, int height)
     glViewport(0, 0, width, height);
     glScissor(0, 0, width, height);
     
-    m_useMapBufferApi = useMapBufferApi();
-    
     buildShaderPrograms();
     generateIndices();
     
-    if(m_useMapBufferApi)
-    {
-        createVertexBufferForSpriteBatcher();
-        createVertexBufferForGeometryBatcher();
-    }
+#ifdef TECHNE_GAMES_OPENGL_ANDROID
+    createVertexBufferForSpriteBatcher();
+    createVertexBufferForGeometryBatcher();
+#endif
     
     createMatrix();
 }
@@ -72,20 +69,17 @@ void OpenGLESManager::prepareForSpriteRendering()
     glUniformMatrix4fv(m_textureProgram.u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)m_viewProjectionMatrix);
     glUniform1i(m_textureProgram.u_texture_unit_location, 0);
     
-    if(m_useMapBufferApi)
-    {
-        glBindBuffer(GL_ARRAY_BUFFER, sb_vbo_object);
-        
-        GLvoid* vbo_buffer = glMapBufferOES(GL_ARRAY_BUFFER, GL_WRITE_ONLY_OES);
-        memcpy(vbo_buffer, &m_textureVertices[0], sizeof(GLfloat) * m_textureVertices.size());
-        glUnmapBufferOES(GL_ARRAY_BUFFER);
-    }
-    else
-    {
-        glGenBuffers(1, &sb_vbo_object);
-        glBindBuffer(GL_ARRAY_BUFFER, sb_vbo_object);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * m_textureVertices.size(), &m_textureVertices[0], GL_STATIC_DRAW);
-    }
+#ifdef TECHNE_GAMES_OPENGL_ANDROID
+    glBindBuffer(GL_ARRAY_BUFFER, sb_vbo_object);
+    
+    GLvoid* vbo_buffer = glMapBufferOES(GL_ARRAY_BUFFER, GL_WRITE_ONLY_OES);
+    memcpy(vbo_buffer, &m_textureVertices[0], sizeof(GLfloat) * m_textureVertices.size());
+    glUnmapBufferOES(GL_ARRAY_BUFFER);
+#elif defined TECHNE_GAMES_IOS
+    glGenBuffers(1, &sb_vbo_object);
+    glBindBuffer(GL_ARRAY_BUFFER, sb_vbo_object);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * m_textureVertices.size(), &m_textureVertices[0], GL_STATIC_DRAW);
+#endif
     
     glVertexAttribPointer(m_textureProgram.a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(0));
     glVertexAttribPointer(m_textureProgram.a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
@@ -102,20 +96,17 @@ void OpenGLESManager::prepareForGeometryRendering()
     
     glUniformMatrix4fv(m_colorProgram.u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)m_viewProjectionMatrix);
     
-    if(m_useMapBufferApi)
-    {
-        glBindBuffer(GL_ARRAY_BUFFER, gb_vbo_object);
-        
-        GLvoid* vbo_buffer = glMapBufferOES(GL_ARRAY_BUFFER, GL_WRITE_ONLY_OES);
-        memcpy(vbo_buffer, &m_colorVertices[0], sizeof(GLfloat) * m_colorVertices.size());
-        glUnmapBufferOES(GL_ARRAY_BUFFER);
-    }
-    else
-    {
-        glGenBuffers(1, &gb_vbo_object);
-        glBindBuffer(GL_ARRAY_BUFFER, gb_vbo_object);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * m_colorVertices.size(), &m_colorVertices[0], GL_STATIC_DRAW);
-    }
+#ifdef TECHNE_GAMES_OPENGL_ANDROID
+    glBindBuffer(GL_ARRAY_BUFFER, gb_vbo_object);
+    
+    GLvoid* vbo_buffer = glMapBufferOES(GL_ARRAY_BUFFER, GL_WRITE_ONLY_OES);
+    memcpy(vbo_buffer, &m_colorVertices[0], sizeof(GLfloat) * m_colorVertices.size());
+    glUnmapBufferOES(GL_ARRAY_BUFFER);
+#elif defined TECHNE_GAMES_IOS
+    glGenBuffers(1, &gb_vbo_object);
+    glBindBuffer(GL_ARRAY_BUFFER, gb_vbo_object);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * m_colorVertices.size(), &m_colorVertices[0], GL_STATIC_DRAW);
+#endif
     
     glVertexAttribPointer(m_colorProgram.a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(0));
     glVertexAttribPointer(m_colorProgram.a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
@@ -128,29 +119,26 @@ void OpenGLESManager::finishSpriteRendering()
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
-    if(!m_useMapBufferApi)
-    {
-        glDeleteBuffers(1, &sb_vbo_object);
-    }
+#ifdef TECHNE_GAMES_IOS
+    glDeleteBuffers(1, &sb_vbo_object);
+#endif
 }
 
 void OpenGLESManager::finishGeometryRendering()
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
-    if(!m_useMapBufferApi)
-    {
-        glDeleteBuffers(1, &gb_vbo_object);
-    }
+#ifdef TECHNE_GAMES_IOS
+    glDeleteBuffers(1, &gb_vbo_object);
+#endif
 }
 
 void OpenGLESManager::cleanUp()
 {
-    if(m_useMapBufferApi)
-    {
-        glDeleteBuffers(1, &sb_vbo_object);
-        glDeleteBuffers(1, &gb_vbo_object);
-    }
+#ifdef TECHNE_GAMES_OPENGL_ANDROID
+    glDeleteBuffers(1, &sb_vbo_object);
+    glDeleteBuffers(1, &gb_vbo_object);
+#endif
 }
 
 #pragma mark <Private>
@@ -177,6 +165,7 @@ void OpenGLESManager::generateIndices()
     }
 }
 
+#ifdef TECHNE_GAMES_OPENGL_ANDROID
 void OpenGLESManager::createVertexBufferForSpriteBatcher()
 {
     for(int i = 0; i < MAX_BATCH_SIZE; i++)
@@ -204,6 +193,7 @@ void OpenGLESManager::createVertexBufferForGeometryBatcher()
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
+#endif
 
 void OpenGLESManager::createMatrix()
 {
@@ -215,15 +205,6 @@ void OpenGLESManager::createMatrix()
     mat4x4_look_at(m_viewMatrix, eye, center, up);
     
     mat4x4_mul(m_viewProjectionMatrix, m_projectionMatrix, m_viewMatrix);
-}
-
-bool OpenGLESManager::useMapBufferApi()
-{
-#ifdef TECHNE_GAMES_OPENGL_ANDROID
-    return true;
-#elif defined TECHNE_GAMES_IOS
-    return false;
-#endif
 }
 
 OpenGLESManager::OpenGLESManager()

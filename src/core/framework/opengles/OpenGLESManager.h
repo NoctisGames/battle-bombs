@@ -58,15 +58,13 @@ public:
     void cleanUp();
     
 private:
-    bool m_useMapBufferApi;
-    
     void buildShaderPrograms();
     void generateIndices();
+#ifdef TECHNE_GAMES_OPENGL_ANDROID
     void createVertexBufferForSpriteBatcher();
     void createVertexBufferForGeometryBatcher();
+#endif
     void createMatrix();
-    
-    bool useMapBufferApi();
     
     OpenGLESManager();
 };
