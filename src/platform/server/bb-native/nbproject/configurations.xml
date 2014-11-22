@@ -154,7 +154,7 @@
           <incDir>
             <pElem>"../../../../../../../../../Program Files/Java/jdk1.7.0_51/include"</pElem>
             <pElem>../../../../../../../../../Program Files/Java/jdk1.7.0_51/include/win32</pElem>
-            <pElem>;../../../core/framework/</pElem>
+            <pElem>../../../core/framework/</pElem>
             <pElem>../../../core/game/</pElem>
             <pElem>../../../3rdparty</pElem>
           </incDir>
@@ -438,7 +438,7 @@
           <incDir>
             <pElem>"../../../../../../../../../Program Files/Java/jdk1.7.0_51/include"</pElem>
             <pElem>../../../../../../../../../Program Files/Java/jdk1.7.0_51/include/win32</pElem>
-            <pElem>;../../../core/framework/</pElem>
+            <pElem>../../../core/framework/</pElem>
             <pElem>../../../core/game/</pElem>
             <pElem>../../../3rdparty</pElem>
           </incDir>
