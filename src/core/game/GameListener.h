@@ -9,10 +9,6 @@
 #ifndef __battlebombs__GameListener__
 #define __battlebombs__GameListener__
 
-#ifdef TECHNE_GAMES_DIRECT_3D
-#define strdup _strdup
-#endif
-
 #include <vector>
 
 class PlayerDynamicGameObject;
