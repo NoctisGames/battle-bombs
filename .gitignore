@@ -33,8 +33,9 @@ libpng/
 rapidjson/
 !rapidjson/rapidjson_readme.txt
 
-# Newtonsoft.Json, Windows Phone Toolkit
+# Newtonsoft.Json, Windows Phone Toolkit, Coding4Fun.Toolkit
 packages/
+Toolkit.Content/
 
 # Eclipse
 bin/
