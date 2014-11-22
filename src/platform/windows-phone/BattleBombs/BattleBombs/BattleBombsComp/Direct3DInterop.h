@@ -76,7 +76,7 @@ namespace BattleBombsComp
 
 		void pushEvents();
 
-		void handleGameStateOne();
+		void handleScreenStateOfflineModeNextMap();
 
 		void handleDeathForPlayerIndex(int playerIndex);
 

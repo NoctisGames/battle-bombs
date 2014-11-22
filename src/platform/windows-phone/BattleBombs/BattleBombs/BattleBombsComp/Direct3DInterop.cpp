@@ -48,6 +48,7 @@
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
 #include "SpaceTile.h"
+#include "ScreenState.h"
 #include <string.h>
 #include <sstream>
 
@@ -194,9 +195,16 @@ namespace BattleBombsComp
 
 	HRESULT Direct3DInterop::GetTexture(_In_ const DrawingSurfaceSizeF* size, _Out_ IDrawingSurfaceSynchronizedTextureNative** synchronizedTexture, _Out_ DrawingSurfaceRectF* textureSubRectangle)
 	{
-		int gameState = m_gameScreen->getState();
-		if (gameState == 0)
+		static std::wstring toastMessage = L"You are now in Spectator Mode"; // I know this is stupid, but it works
+		
+		int screenState = m_gameScreen->getState();
+		switch (screenState)
 		{
+		case SCREEN_STATE_ENTERED_SPECTATOR_MODE:
+			m_winRtCallback->Invoke("DISPLAY_TOAST", ref new Platform::String(toastMessage.c_str()));
+
+			m_gameScreen->clearState();
+		case SCREEN_STATE_NORMAL:
 			for (std::vector<TouchEvent>::iterator itr = m_touchEvents.begin(); itr != m_touchEvents.end(); itr++)
 			{
 				if (m_touchEventsPool.size() < 50)
@@ -224,21 +232,18 @@ namespace BattleBombsComp
 					handleGameOver();
 				}
 			}
-		}
-		else if (gameState == 1)
-		{
-			if (m_isOffline)
-			{
-				handleGameStateOne();
-			}
-			else
-			{
-				m_winRtCallback->Invoke("EXIT", "NULL");
-			}
-		}
-		else if (gameState == 2)
-		{
+			break;
+		case SCREEN_STATE_CONNECTION_ERROR:
 			m_winRtCallback->Invoke("CONNECTION_ERROR", "NULL");
+			break;
+		case SCREEN_STATE_EXIT:
+			m_winRtCallback->Invoke("EXIT", "NULL");
+			break;
+		case SCREEN_STATE_OFFLINE_MODE_NEXT_MAP:
+			handleScreenStateOfflineModeNextMap();
+			break;
+		default:
+			break;
 		}
 
 		m_gameScreen->present();
@@ -369,7 +374,7 @@ namespace BattleBombsComp
 		}
 	}
 
-	void Direct3DInterop::handleGameStateOne()
+	void Direct3DInterop::handleScreenStateOfflineModeNextMap()
 	{
 		m_playersAlive[0] = true;
 		m_playersAlive[1] = true;
