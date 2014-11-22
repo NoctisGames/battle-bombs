@@ -41,24 +41,12 @@ public final class BbZoneAdaptor extends BaseZoneAdaptor
         {
             System.out.println(user.getName() + " passed an invalid authString: " + authString);
 
-            if (Globals.IS_BATTLE_BOMBS_BETA_CLOSED)
-            {
-                System.out.println("Battle Bombs Beta is closed");
+            System.out.println("Connection Error");
 
-                result.code = 2; // Not Successful
-                result.sendNotification = false;
-                result.sendResponse = true;
-                result.description = "The Battle Bombs Beta is closed. Please go to the app store to download the official Battle Bombs!";
-            }
-            else
-            {
-                System.out.println("Connection Error");
-
-                result.code = 1; // Not Successful
-                result.sendNotification = false;
-                result.sendResponse = true;
-                result.description = "A new version of Battle Bombs is available, please update before playing online.";
-            }
+            result.code = 1; // Not Successful
+            result.sendNotification = false;
+            result.sendResponse = true;
+            result.description = "A new version of Battle Bombs is available, please update before playing online.";
         }
     }
 }
