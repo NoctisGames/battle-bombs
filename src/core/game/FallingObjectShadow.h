@@ -37,6 +37,8 @@ public:
     
     bool isTargetOccupiedByBreakableBlock();
     
+    void handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath);
+    
 private:
     float m_fStateTime;
     Falling_Object_Shadow_State m_fallingObjectShadowState;

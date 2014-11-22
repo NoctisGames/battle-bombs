@@ -23,6 +23,8 @@ public:
     void onHitByIceBall();
 
     void onDestroy();
+    
+    void onHitByFireBall();
 
     bool hasPowerUp();
 
@@ -31,11 +33,14 @@ public:
     float getStateTime();
     
 	int getPowerUpFlag();
+    
+    bool wasHitByFireBall();
 
 private:
     Breakable_Block_State m_breakableBlockState;
     float m_fStateTime;
 	int m_powerUpFlag;
+    bool m_hitByFireBall;
 };
 
 #endif /* defined (__battlebombs__BreakableBlock__) */

@@ -73,6 +73,8 @@ bool GameSession::isPlayerAliveAtIndex(short playerIndex)
     return m_players.at(playerIndex).get()->getPlayerState() == Player_State::ALIVE;
 }
 
+#pragma mark <Protected>
+
 void GameSession::initializeInsideBlocksAndMapBordersForMapType(int mapType)
 {
     m_iMapType = mapType;
@@ -299,7 +301,14 @@ void GameSession::updateCommon(float deltaTime)
                 m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp((**itr).getGridX(), (**itr).getGridY(), (**itr).getPowerUpFlag())));
             }
             
-            PathFinder::getInstance().freeGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
+            if (!(**itr).wasHitByFireBall())
+            {
+                // Only free the cell for traversal if the breakable block wasn't destroyed by a fire ball
+                // This is necessary because in this case, a crater is in its place
+                PathFinder::getInstance().freeGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
+                
+                onBreakableBlockDestroyed(**itr);
+            }
 
             itr = m_breakableBlocks.erase(itr);
         }
@@ -334,6 +343,8 @@ void GameSession::updateCommon(float deltaTime)
         
         if ((**itr).isPickedUp())
         {
+            onPowerUpPickedUp(**itr);
+            
             itr = m_powerUps.erase(itr);
         }
         else
@@ -357,6 +368,8 @@ void GameSession::updateCommon(float deltaTime)
                 {
                     (*itr)->update(deltaTime, m_breakableBlocks);
                     
+                    bool continueIteration = true;
+                    
                     if ((*itr)->isDescending() && (*itr)->isTargetReached())
                     {
                         if((*itr)->getShadow().isTargetOccupiedByInsideBlock())
@@ -367,27 +380,22 @@ void GameSession::updateCommon(float deltaTime)
                         else if((*itr)->getShadow().isTargetOccupiedByBreakableBlock())
                         {
                             BreakableBlock *breakableBlock = (*itr)->getShadow().getTargetBreakableBlock();
-                            breakableBlock->onDestroy();
+                            breakableBlock->onHitByFireBall();
                         }
                         
                         m_craters.push_back(std::unique_ptr<Crater>(new Crater((*itr)->getGridX(), (*itr)->getGridY())));
-                        
-                        itr++;
                     }
-                    else if((*itr)->isExplosionCompleted())
+                    
+                    if((*itr)->isExplosionCompleted())
                     {
                         itr = m_fireBalls.erase(itr);
+                        continueIteration = false;
                     }
-                    else
+                    
+                    if (continueIteration)
                     {
                         itr++;
                     }
-                }
-                
-                for (std::vector < std::unique_ptr < Crater >> ::iterator itr = m_craters.begin(); itr != m_craters.end(); itr++)
-                {
-                    // This is necessary because as breakable block destroy animations are completed, freeGameGridCell will be called
-                    PathFinder::getInstance().occupyGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
                 }
                 break;
             case MAP_MOUNTAINS:
@@ -544,7 +552,80 @@ void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
     handleClientEventsArrayInDocument(d);
 }
 
-void GameSession::suddenDeath(rapidjson::Document &d)
+void GameSession::hardUpdate(rapidjson::Document &d)
+{
+    static const char *numDeletedBreakableBlocksKey = "numDeletedBreakableBlocks";
+    
+    if(d.HasMember(numDeletedBreakableBlocksKey))
+    {
+        static const char *deletedBreakableBlockXValuesKey = "deletedBreakableBlockXValues";
+        static const char *deletedBreakableBlockYValuesKey = "deletedBreakableBlockYValues";
+        
+        std::vector<int> deletedBreakableBlockXValues;
+        std::vector<int> deletedBreakableBlockYValues;
+        
+        handleIntArrayInDocument(d, deletedBreakableBlockXValuesKey, deletedBreakableBlockXValues, -1);
+        handleIntArrayInDocument(d, deletedBreakableBlockYValuesKey, deletedBreakableBlockYValues, -1);
+        
+        int numDeletedBreakableBlocks = d[numDeletedBreakableBlocksKey].GetInt();
+        for(int i = 0; i < numDeletedBreakableBlocks; i++)
+        {
+            for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end(); )
+            {
+                bool isMatch = (*itr)->getGridX() == deletedBreakableBlockXValues.at(i) && (*itr)->getGridY() == deletedBreakableBlockYValues.at(i);
+                if (isMatch && (**itr).getBreakableBlockState() == BB_NORMAL)
+                {
+                    if ((**itr).hasPowerUp())
+                    {
+                        m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp((**itr).getGridX(), (**itr).getGridY(), (**itr).getPowerUpFlag())));
+                    }
+                    
+                    PathFinder::getInstance().freeGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
+                    
+                    itr = m_breakableBlocks.erase(itr);
+                }
+                else
+                {
+                    itr++;
+                }
+            }
+        }
+    }
+    
+    static const char *numDeletedPowerUpsKey = "numDeletedPowerUps";
+    
+    if(d.HasMember(numDeletedPowerUpsKey))
+    {
+        static const char *deletedPowerUpsXValuesKey = "deletedPowerUpsXValues";
+        static const char *deletedPowerUpsYValuesKey = "deletedPowerUpsYValues";
+        
+        std::vector<int> deletedPowerUpsXValues;
+        std::vector<int> deletedPowerUpsYValues;
+        
+        handleIntArrayInDocument(d, deletedPowerUpsXValuesKey, deletedPowerUpsXValues, -1);
+        handleIntArrayInDocument(d, deletedPowerUpsYValuesKey, deletedPowerUpsYValues, -1);
+        
+        int numDeletedPowerUps = d[numDeletedPowerUpsKey].GetInt();
+        for(int i = 0; i < numDeletedPowerUps; i++)
+        {
+            for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end();)
+            {
+                bool isMatch = (*itr)->getGridX() == deletedPowerUpsXValues.at(i) && (*itr)->getGridY() == deletedPowerUpsYValues.at(i);
+                
+                if (isMatch)
+                {
+                    itr = m_powerUps.erase(itr);
+                }
+                else
+                {
+                    itr++;
+                }
+            }
+        }
+    }
+}
+
+void GameSession::suddenDeath()
 {
     m_isSuddenDeath = true;
     
@@ -791,6 +872,20 @@ void GameSession::handlePlayerEvent(int event)
         }
     }
 }
+
+#pragma mark <For ServerGameSession to override>
+
+void GameSession::onBreakableBlockDestroyed(BreakableBlock &breakableBlock)
+{
+    // Empty
+}
+
+void GameSession::onPowerUpPickedUp(PowerUp &powerUp)
+{
+    // Empty
+}
+
+#pragma mark <Private>
 
 void GameSession::layBombForPlayer(PlayerDynamicGameObject *player, int firePower)
 {

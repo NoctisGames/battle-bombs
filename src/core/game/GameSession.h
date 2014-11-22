@@ -83,7 +83,9 @@ protected:
 
     void clientUpdate(rapidjson::Document &d, bool isBeginGame);
     
-    virtual void suddenDeath(rapidjson::Document &d);
+    void hardUpdate(rapidjson::Document &d);
+    
+    virtual void suddenDeath();
 
     void handlePlayerDataUpdate(rapidjson::Document &d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame);
 
@@ -94,6 +96,10 @@ protected:
     void readCharArrayIntoIntArray(const char *charArray, std::vector<int> &intArray, int sentinelValue);
 
     void handlePlayerEvent(int event);
+    
+    // For ServerGameSession to override
+    virtual void onBreakableBlockDestroyed(BreakableBlock &breakableBlock);
+    virtual void onPowerUpPickedUp(PowerUp &powerUp);
 
 private:
     void layBombForPlayer(PlayerDynamicGameObject *player, int firePower);

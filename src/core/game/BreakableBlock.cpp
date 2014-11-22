@@ -18,6 +18,7 @@ BreakableBlock::BreakableBlock(int gridX, int gridY, int powerUpFlag) : GridGame
     m_breakableBlockState = BB_NORMAL;
     m_fStateTime = 0;
     m_powerUpFlag = powerUpFlag;
+    m_hitByFireBall = false;
 }
 
 void BreakableBlock::update(float deltaTime)
@@ -52,6 +53,14 @@ void BreakableBlock::onDestroy()
     m_breakableBlockState = EXPLODING;
 }
 
+void BreakableBlock::onHitByFireBall()
+{
+    onDestroy();
+    
+    m_powerUpFlag = POWER_UP_TYPE_NONE;
+    m_hitByFireBall = true;
+}
+
 bool BreakableBlock::hasPowerUp()
 {
     return m_powerUpFlag != POWER_UP_TYPE_NONE;
@@ -70,4 +79,9 @@ float BreakableBlock::getStateTime()
 int BreakableBlock::getPowerUpFlag()
 {
 	return m_powerUpFlag;
+}
+
+bool BreakableBlock::wasHitByFireBall()
+{
+    return m_hitByFireBall;
 }

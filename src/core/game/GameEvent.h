@@ -17,6 +17,7 @@
 #define CLIENT_UPDATE 1338
 #define SUDDEN_DEATH 1339
 #define GAME_OVER 1340
+#define HARD_UPDATE 1341
 
 // Map Type
 #define MAP_SPACE 0

@@ -103,3 +103,39 @@ FallingObjectShadow & IceBall::getShadow()
 {
     return *m_fallingObjectShadow;
 }
+
+void IceBall::handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath)
+{
+    float delta = timeSinceSuddenDeath - m_fTimeUntilAppearance;
+    
+    if(timeSinceSuddenDeath > (m_fTimeUntilAppearance + 1.5f))
+    {
+        m_isVisible = true;
+        
+        m_fallingObjectShadow->handleTimeSinceSuddenDeathModeBegan(delta);
+        
+        m_isDescending = true;
+        
+        m_fStateTime = delta - 1.5f;
+        
+        m_velocity->add(m_acceleration->getX() * m_fStateTime, m_acceleration->getY() * m_fStateTime);
+        m_position->add(m_velocity->getX() * m_fStateTime, m_velocity->getY() * m_fStateTime);
+        
+        if(m_position->getY() <= m_fTargetY)
+        {
+            m_isTargetReached = true;
+        }
+    }
+    else if(timeSinceSuddenDeath > m_fTimeUntilAppearance)
+    {
+        m_isVisible = true;
+        
+        m_fallingObjectShadow->handleTimeSinceSuddenDeathModeBegan(delta);
+        
+        m_fStateTime = delta;
+    }
+    else
+    {
+        m_fStateTime = timeSinceSuddenDeath;
+    }
+}

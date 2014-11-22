@@ -37,6 +37,8 @@ public:
     
     bool shouldPlayerStartFalling();
     
+    void handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath);
+    
 private:
     GameListener *m_gameListener;
     PlayerDynamicGameObject *m_fallingPlayer;

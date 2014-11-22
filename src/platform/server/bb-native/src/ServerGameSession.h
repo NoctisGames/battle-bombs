@@ -45,10 +45,16 @@ public:
     int getDeletedPowerUpGridY(int powerUpIndex);
     
     int popOldestEventId();
+    
+protected:
+    virtual void onBreakableBlockDestroyed(BreakableBlock &breakableBlock);
+    virtual void onPowerUpPickedUp(PowerUp &powerUp);
 
 private:
-    std::vector<std::unique_ptr<BreakableBlock >> m_deletedBreakableBlocks;
-    std::vector<std::unique_ptr<PowerUp >> m_deletedPowerUps;
+    std::vector<int> m_deletedBreakableBlockXValues;
+    std::vector<int> m_deletedBreakableBlockYValues;
+    std::vector<int> m_deletedPowerUpsXValues;
+    std::vector<int> m_deletedPowerUpsYValues;
     float m_fCountDownTimeLeft;
     
     virtual void updateRunning(float deltaTime);

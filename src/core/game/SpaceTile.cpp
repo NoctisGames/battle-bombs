@@ -155,3 +155,37 @@ bool SpaceTile::shouldPlayerStartFalling()
 {
     return m_shouldPlayerStartFalling;
 }
+
+void SpaceTile::handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath)
+{
+    float delta = timeSinceSuddenDeath - m_fTimeUntilDislodging;
+    
+    if(timeSinceSuddenDeath > (m_fTimeUntilDislodging + 0.8f))
+    {
+        m_spaceTileState = ST_FALLING;
+        m_fStateTime = 0;
+        
+        PathFinder::getInstance().occupyGameGridCell(m_gridX, m_gridY);
+        
+        float deltaSubAnimation = delta - 0.8f;
+        
+        m_velocity->add(m_acceleration->getX() * deltaSubAnimation, m_acceleration->getY() * deltaSubAnimation);
+        m_position->add(m_velocity->getX() * deltaSubAnimation, m_velocity->getY() * deltaSubAnimation);
+        
+        updateBounds();
+        
+        if(m_position->getY() < (m_fOrigY - 1))
+        {
+            m_shouldPlayerStartFalling = true;
+        }
+    }
+    else if(timeSinceSuddenDeath > m_fTimeUntilDislodging)
+    {
+        m_spaceTileState = ST_DISLODGING;
+        m_fStateTime = delta;
+    }
+    else
+    {
+        m_fStateTime = timeSinceSuddenDeath;
+    }
+}

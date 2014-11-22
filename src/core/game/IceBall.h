@@ -36,6 +36,8 @@ public:
     
     FallingObjectShadow & getShadow();
     
+    void handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath);
+    
 private:
     GameListener *m_gameListener;
     std::unique_ptr<FallingObjectShadow> m_fallingObjectShadow;

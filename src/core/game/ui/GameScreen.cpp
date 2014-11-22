@@ -634,49 +634,67 @@ void GameScreen::processServerMessages()
             if(d.HasMember(eventTypeKey))
             {
                 int eventType = d[eventTypeKey].GetInt();
-                
-                if (eventType == BEGIN_GAME)
+                switch (eventType)
                 {
-                    beginGame(d);
-                }
-                else if (eventType == CLIENT_UPDATE && (m_gameState == RUNNING || m_gameState == SPECTATING))
-                {
-                    clientUpdate(d, false);
-                }
-                else if(eventType == BEGIN_SPECTATE && m_gameState == WAITING_FOR_SERVER)
-                {
-                    beginSpectate(d);
-                }
-                else if(eventType == GAME_OVER && (m_gameState == RUNNING || m_gameState == SPECTATING))
-                {
-                    gameOver(d);
-                }
-                else if(eventType == SUDDEN_DEATH && (m_gameState == RUNNING || m_gameState == SPECTATING))
-                {
-                    suddenDeath(d);
-                }
-                else if(eventType == PRE_GAME_SERVER_UPDATE && m_gameState == WAITING_FOR_SERVER)
-                {
-                    m_waitingForServerInterface->handlePreGameServerUpdate(d);
-                }
-                else if(eventType == PRE_GAME)
-                {
-                    static const char *phaseKey = "phase";
-                    
-                    if(d.HasMember(phaseKey))
-                    {
-                        int phase = d[phaseKey].GetInt();
-                        m_waitingForServerInterface->setPreGamePhase(phase);
+                    case PRE_GAME:
+                        static const char *phaseKey = "phase";
                         
-                        if(phase == ROOM_JOINED_WAITING_FOR_SERVER)
+                        if(d.HasMember(phaseKey))
                         {
-                            m_gameState = WAITING_FOR_SERVER;
+                            int phase = d[phaseKey].GetInt();
+                            m_waitingForServerInterface->setPreGamePhase(phase);
+                            
+                            if(phase == ROOM_JOINED_WAITING_FOR_SERVER)
+                            {
+                                m_gameState = WAITING_FOR_SERVER;
+                            }
+                            else if (phase == CONNECTION_ERROR || phase ==  BATTLE_BOMBS_BETA_CLOSED)
+                            {
+                                m_gameState = CONNECTION_ERROR_WAITING_FOR_INPUT;
+                            }
                         }
-						else if (phase == CONNECTION_ERROR || phase ==  BATTLE_BOMBS_BETA_CLOSED)
+                        break;
+                    case PRE_GAME_SERVER_UPDATE:
+                        if(m_gameState == WAITING_FOR_SERVER)
                         {
-                            m_gameState = CONNECTION_ERROR_WAITING_FOR_INPUT;
+                            m_waitingForServerInterface->handlePreGameServerUpdate(d);
                         }
-                    }
+                        break;
+                    case BEGIN_SPECTATE:
+                        if(m_gameState == WAITING_FOR_SERVER)
+                        {
+                            beginSpectate(d);
+                        }
+                        break;
+                    case BEGIN_GAME:
+                        beginGame(d);
+                        break;
+                    case CLIENT_UPDATE:
+                        if(m_gameState == RUNNING || m_gameState == SPECTATING)
+                        {
+                            clientUpdate(d, false);
+                        }
+                        break;
+                    case SUDDEN_DEATH:
+                        if(m_gameState == RUNNING || m_gameState == SPECTATING)
+                        {
+                            suddenDeath(d);
+                        }
+                        break;
+                    case GAME_OVER:
+                        if(m_gameState == RUNNING || m_gameState == SPECTATING)
+                        {
+                            gameOver(d);
+                        }
+                        break;
+                    case HARD_UPDATE:
+                        if(m_gameState == RUNNING || m_gameState == SPECTATING)
+                        {
+                            
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -719,6 +737,49 @@ void GameScreen::beginSpectate(rapidjson::Document &d)
         m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
         
         Assets::getInstance()->setMusicId(m_iMapType + 2);
+        
+        if(!m_isSuddenDeath)
+        {
+            static const char *isSuddenDeathModeKey = "isSuddenDeathMode";
+            if(d.HasMember(isSuddenDeathModeKey))
+            {
+                bool isSuddenDeathMode = d[isSuddenDeathModeKey].GetBool();
+                if(isSuddenDeathMode)
+                {
+                    suddenDeath();
+                    
+                    static const char *timeSinceSuddenDeathModeBeganKey = "timeSinceSuddenDeathModeBegan";
+                    if(d.HasMember(timeSinceSuddenDeathModeBeganKey))
+                    {
+                        float timeSinceSuddenDeathModeBegan = d[timeSinceSuddenDeathModeBeganKey].GetDouble();
+                        switch (m_iMapType)
+                        {
+                            case MAP_SPACE:
+                                for (std::vector < std::unique_ptr < SpaceTile >> ::iterator itr = m_spaceTiles.begin(); itr != m_spaceTiles.end(); itr++)
+                                {
+                                    (*itr)->handleTimeSinceSuddenDeathModeBegan(timeSinceSuddenDeathModeBegan);
+                                }
+                                break;
+                            case MAP_GRASSLANDS:
+                                for (std::vector < std::unique_ptr < FireBall >> ::iterator itr = m_fireBalls.begin(); itr != m_fireBalls.end(); itr++)
+                                {
+                                    (*itr)->handleTimeSinceSuddenDeathModeBegan(timeSinceSuddenDeathModeBegan);
+                                }
+                                break;
+                            case MAP_MOUNTAINS:
+                                for (std::vector < std::unique_ptr < IceBall >> ::iterator itr = m_iceBalls.begin(); itr != m_iceBalls.end(); itr++)
+                                {
+                                    (*itr)->handleTimeSinceSuddenDeathModeBegan(timeSinceSuddenDeathModeBegan);
+                                }
+                                break;
+                            case MAP_BASE:
+                                // TODO
+                                break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -772,9 +833,9 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
     return false;
 }
 
-void GameScreen::suddenDeath(rapidjson::Document &d)
+void GameScreen::suddenDeath()
 {
-    GameSession::suddenDeath(d);
+    GameSession::suddenDeath();
     
     m_displayXMovingGameObject.release();
     m_displayXMovingGameObject = std::unique_ptr<DisplayXMovingGameObject>(new DisplayXMovingGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f, HURRY_UP));

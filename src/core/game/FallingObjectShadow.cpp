@@ -89,6 +89,11 @@ bool FallingObjectShadow::isTargetOccupiedByBreakableBlock()
     return m_isTargetBreakableBlock;
 }
 
+void FallingObjectShadow::handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath)
+{
+    m_fStateTime = timeSinceSuddenDeath;
+}
+
 #pragma mark <Private>
 
 bool FallingObjectShadow::isTargetInsideBlock(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks)

@@ -170,8 +170,10 @@ void ServerGameSession::init()
     m_iceBalls.clear();
     m_icePatches.clear();
     
-    m_deletedBreakableBlocks.clear();
-    m_deletedPowerUps.clear();
+    m_deletedBreakableBlockXValues.clear();
+    m_deletedBreakableBlockYValues.clear();
+    m_deletedPowerUpsXValues.clear();
+    m_deletedPowerUpsYValues.clear();
 
     srand((int) time(NULL));
 
@@ -274,37 +276,51 @@ int ServerGameSession::getBreakableBlockPowerUpFlag(int breakableBlockIndex)
 
 int ServerGameSession::getNumDeletedBreakableBlocks()
 {
-    return m_deletedBreakableBlocks.size();
+    return m_deletedBreakableBlockXValues.size();
 }
 
 int ServerGameSession::getDeletedBreakableBlockGridX(int breakableBlockIndex)
 {
-    return m_deletedBreakableBlocks.at(breakableBlockIndex).get()->getGridX();
+    return m_deletedBreakableBlockXValues.at(breakableBlockIndex).get()->getGridX();
 }
 
 int ServerGameSession::getDeletedBreakableBlockGridY(int breakableBlockIndex)
 {
-    return m_deletedBreakableBlocks.at(breakableBlockIndex).get()->getGridY();
+    return m_deletedBreakableBlockYValues.at(breakableBlockIndex).get()->getGridY();
 }
 
 int ServerGameSession::getNumDeletedPowerUps()
 {
-    return m_deletedPowerUps.size();
+    return m_deletedPowerUpsXValues.size();
 }
 
 int ServerGameSession::getDeletedPowerUpGridX(int powerUpIndex)
 {
-    return m_deletedPowerUps.at(powerUpIndex).get()->getGridX();
+    return m_deletedPowerUpsXValues.at(powerUpIndex).get()->getGridX();
 }
 
 int ServerGameSession::getDeletedPowerUpGridY(int powerUpIndex)
 {
-    return m_deletedPowerUps.at(powerUpIndex).get()->getGridY();
+    return m_deletedPowerUpsYValues.at(powerUpIndex).get()->getGridY();
 }
 
 int ServerGameSession::popOldestEventId()
 {
     return m_gameListener->popOldestEventId();
+}
+
+// Protected Methods
+
+void ServerGameSession::onBreakableBlockDestroyed(BreakableBlock &breakableBlock)
+{
+    m_deletedBreakableBlockXValues.push_back(breakableBlock.getGridX());
+    m_deletedBreakableBlockYValues.push_back(breakableBlock.getGridY());
+}
+
+void ServerGameSession::onPowerUpPickedUp(PowerUp &powerUp)
+{
+    m_deletedPowerUpsXValues.push_back(powerUp.getGridX());
+    m_deletedPowerUpsYValues.push_back(powerUp.getGridY());
 }
 
 // Private Methods

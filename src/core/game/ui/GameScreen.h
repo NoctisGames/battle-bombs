@@ -127,7 +127,7 @@ private:
     
     bool beginCommon(rapidjson::Document &d, bool isBeginGame);
     
-    virtual void suddenDeath(rapidjson::Document &d);
+    virtual void suddenDeath();
     
     void gameOver(rapidjson::Document &d);
     
