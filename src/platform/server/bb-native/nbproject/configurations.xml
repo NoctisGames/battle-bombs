@@ -44,6 +44,7 @@
       <itemPath>../../../core/game/PowerUp.h</itemPath>
       <itemPath>../../../core/game/PowerUpType.h</itemPath>
       <itemPath>../../../core/framework/Rectangle.h</itemPath>
+      <itemPath>../../../core/game/ResourceConstants.h</itemPath>
       <itemPath>src/ServerGameSession.h</itemPath>
       <itemPath>../../../core/game/SpaceTile.h</itemPath>
       <itemPath>../../../core/game/SpaceTileState.h</itemPath>
@@ -399,6 +400,11 @@
       </item>
       <item path="../../../core/game/PowerUpType.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/game/ResourceConstants.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../../../core/game/SpaceTile.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/game/SpaceTile.h" ex="false" tool="3" flavor2="0">
@@ -688,6 +694,11 @@
       <item path="../../../core/game/PowerUp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/PowerUpType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/ResourceConstants.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../../../core/game/SpaceTile.cpp" ex="false" tool="1" flavor2="0">
       </item>
