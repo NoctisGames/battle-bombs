@@ -36,4 +36,7 @@
     <!-- Google AdMob -->
     <string name="banner_ad_unit_id">ca-app-pub-6190265373070512/4730395983</string>
 
+    <!-- In Game Toasts -->
+    <string name="you_are_in_spectator_mode">You are now in Spectator Mode</string>
+
 </resources>

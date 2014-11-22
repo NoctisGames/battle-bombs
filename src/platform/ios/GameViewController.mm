@@ -17,6 +17,7 @@
 // C++
 #include "game.h"
 #include "GameEvent.h"
+#include "ScreenState.h"
 
 @interface GameViewController ()
 {
@@ -203,13 +204,13 @@ static NSString * const PHASE = @"phase";
 
 #pragma mark <Protected>
 
-- (void)handleGameState:(int)gameState
+- (void)handleScreenState:(int)screenState
 {
-    if(gameState == 1)
+    if(screenState == SCREEN_STATE_EXIT)
     {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    else if(gameState == 2)
+    else if(screenState == SCREEN_STATE_CONNECTION_ERROR)
     {
         MainViewController *mainViewController = (MainViewController *)self.presentingViewController;
         [self dismissViewControllerAnimated:YES completion:^

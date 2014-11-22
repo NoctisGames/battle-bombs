@@ -198,6 +198,7 @@
 		BBDE14B7195A2D7400A91FD7 /* char_red.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14B0195A2D7400A91FD7 /* char_red.png */; };
 		BBDE14B8195A2D7400A91FD7 /* char_white.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14B1195A2D7400A91FD7 /* char_white.png */; };
 		BBDE14B9195A2D7400A91FD7 /* char_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14B2195A2D7400A91FD7 /* char_yellow.png */; };
+		BBF8C9E61A20FAA10016DE7C /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = BBF8C9E51A20FAA10016DE7C /* UIView+Toast.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -543,6 +544,9 @@
 		BBDE14B0195A2D7400A91FD7 /* char_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_red.png; sourceTree = "<group>"; };
 		BBDE14B1195A2D7400A91FD7 /* char_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_white.png; sourceTree = "<group>"; };
 		BBDE14B2195A2D7400A91FD7 /* char_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_yellow.png; sourceTree = "<group>"; };
+		BBF8C9E31A20F5A50016DE7C /* ScreenState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenState.h; sourceTree = "<group>"; };
+		BBF8C9E41A20FAA10016DE7C /* UIView+Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Toast.h"; sourceTree = "<group>"; };
+		BBF8C9E51A20FAA10016DE7C /* UIView+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Toast.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -693,6 +697,8 @@
 				BB81B1B919BE197E00548837 /* TGJsonUtils.m */,
 				BB81B1B119BE15E700548837 /* TGProgressDialog.h */,
 				BB81B1B219BE15E700548837 /* TGProgressDialog.m */,
+				BBF8C9E41A20FAA10016DE7C /* UIView+Toast.h */,
+				BBF8C9E51A20FAA10016DE7C /* UIView+Toast.m */,
 			);
 			name = ios;
 			sourceTree = "<group>";
@@ -998,6 +1004,7 @@
 				BBA4C3F81A16CF2400AB3878 /* Renderer.cpp */,
 				BBA4C3F91A16CF2400AB3878 /* Renderer.h */,
 				BBA4C3BF1A16CE7300AB3878 /* ResourceConstants.h */,
+				BBF8C9E31A20F5A50016DE7C /* ScreenState.h */,
 				BBA4C3C01A16CE7300AB3878 /* SpaceTile.cpp */,
 				BBA4C3C11A16CE7300AB3878 /* SpaceTile.h */,
 				BBA4C3C21A16CE7300AB3878 /* SpaceTileState.h */,
@@ -1248,6 +1255,7 @@
 				BBA4C3D61A16CE7300AB3878 /* Explosion.cpp in Sources */,
 				BB12EE661A1D5B2C006D385B /* TextureRegion.cpp in Sources */,
 				BBA4C3D81A16CE7300AB3878 /* Fire.cpp in Sources */,
+				BBF8C9E61A20FAA10016DE7C /* UIView+Toast.m in Sources */,
 				0A8FBF80179E07320039BA29 /* pngpread.c in Sources */,
 				BBA4C3CF1A16CE7300AB3878 /* BotPlayerDynamicGameObject.cpp in Sources */,
 				BB12EE511A1D5B2C006D385B /* Line.cpp in Sources */,

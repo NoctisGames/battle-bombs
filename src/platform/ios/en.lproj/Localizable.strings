@@ -35,3 +35,6 @@
 
 // JSON Request Message
 "json_request_progress_message" = "One Moment...";
+
+// In Game Toasts
+"you_are_in_spectator_mode" = "You are now in Spectator Mode";

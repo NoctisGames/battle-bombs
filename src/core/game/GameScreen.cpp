@@ -51,6 +51,7 @@
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
 #include "SpaceTile.h"
+#include "ScreenState.h"
 
 GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 {
@@ -107,7 +108,7 @@ void GameScreen::init()
     m_icePatches.clear();
     
     m_gameState = m_isOffline ? WAITING_FOR_LOCAL_SETTINGS : WAITING_FOR_SERVER;
-    m_iScreenState = 0;
+    m_iScreenState = SCREEN_STATE_NORMAL;
     m_fTimeSinceLastClientEvent = 0;
     m_fTimeSinceLastServerUpdate = 0;
     m_fCountDownTimeLeft = 3;
@@ -145,7 +146,7 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
             
             if(m_fTimeSinceLastServerUpdate > 8)
             {
-                m_iScreenState = 2;
+                m_iScreenState = SCREEN_STATE_CONNECTION_ERROR;
             }
         }
     }
@@ -300,7 +301,7 @@ int GameScreen::getState()
 
 void GameScreen::clearState()
 {
-    m_iScreenState = 0;
+    m_iScreenState = SCREEN_STATE_NORMAL;
 }
 
 short GameScreen::getPlayerIndex()
@@ -349,7 +350,7 @@ void GameScreen::updateInputWaitingForLocalSettings(std::vector<TouchEvent> &tou
 {
     for (std::vector<TouchEvent>::iterator itr = touchEvents.begin(); itr != touchEvents.end(); itr++)
 	{
-        m_iScreenState = 1;
+        m_iScreenState = SCREEN_STATE_OFFLINE_MODE_NEXT_MAP;
 	}
 }
 
@@ -357,7 +358,7 @@ void GameScreen::updateInputConnectionErrorWaitingForInput(std::vector<TouchEven
 {
     for (std::vector<TouchEvent>::iterator itr = touchEvents.begin(); itr != touchEvents.end(); itr++)
 	{
-        m_iScreenState = 1;
+        m_iScreenState = SCREEN_STATE_EXIT;
 	}
 }
 
@@ -370,6 +371,7 @@ void GameScreen::updateRunning(float deltaTime)
         m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *m_player);
         
         m_gameState = SPECTATING;
+        m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
     }
     
     switch(m_iMapType)
@@ -383,6 +385,7 @@ void GameScreen::updateRunning(float deltaTime)
             {
                 m_gameListener->addLocalEventForPlayer(PLAYER_FALL, *m_player);
                 m_gameState = SPECTATING;
+                m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
             }
             break;
         case MAP_GRASSLANDS:
@@ -390,6 +393,7 @@ void GameScreen::updateRunning(float deltaTime)
             {
                 m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *m_player);
                 m_gameState = SPECTATING;
+                m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
             }
             break;
         case MAP_MOUNTAINS:
@@ -397,6 +401,7 @@ void GameScreen::updateRunning(float deltaTime)
             {
                 m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, *m_player);
                 m_gameState = SPECTATING;
+                m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
             }
             break;
     }
@@ -712,6 +717,7 @@ void GameScreen::beginSpectate(rapidjson::Document &d)
         spectateNextLivePlayer();
         
         m_gameState = SPECTATING;
+        m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
         
         Assets::getInstance()->setMusicId(m_iMapType + 2);
     }
