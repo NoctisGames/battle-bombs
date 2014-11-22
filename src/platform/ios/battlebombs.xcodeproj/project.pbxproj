@@ -538,7 +538,6 @@
 		BBF8CA221A2107F70016DE7C /* PowerUpBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerUpBarItem.h; sourceTree = "<group>"; };
 		BBF8CA231A2107F70016DE7C /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
 		BBF8CA241A2107F70016DE7C /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
-		BBF8CA251A2107F70016DE7C /* ResourceConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceConstants.h; sourceTree = "<group>"; };
 		BBF8CA261A2107F70016DE7C /* ScreenState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenState.h; sourceTree = "<group>"; };
 		BBF8CA271A2107F70016DE7C /* SpectatorControls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpectatorControls.cpp; sourceTree = "<group>"; };
 		BBF8CA281A2107F70016DE7C /* SpectatorControls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpectatorControls.h; sourceTree = "<group>"; };
@@ -547,6 +546,7 @@
 		BBF8CA2B1A2107F70016DE7C /* WaitingForLocalSettingsInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaitingForLocalSettingsInterface.h; sourceTree = "<group>"; };
 		BBF8CA2C1A2107F70016DE7C /* WaitingForServerInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaitingForServerInterface.cpp; sourceTree = "<group>"; };
 		BBF8CA2D1A2107F70016DE7C /* WaitingForServerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaitingForServerInterface.h; sourceTree = "<group>"; };
+		BBF8CA581A2113EC0016DE7C /* ResourceConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceConstants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -951,6 +951,7 @@
 				BBA4C3BA1A16CE7300AB3878 /* PowerUp.cpp */,
 				BBA4C3BB1A16CE7300AB3878 /* PowerUp.h */,
 				BBA4C3BE1A16CE7300AB3878 /* PowerUpType.h */,
+				BBF8CA581A2113EC0016DE7C /* ResourceConstants.h */,
 				BBA4C3C01A16CE7300AB3878 /* SpaceTile.cpp */,
 				BBA4C3C11A16CE7300AB3878 /* SpaceTile.h */,
 				BBA4C3C21A16CE7300AB3878 /* SpaceTileState.h */,
@@ -1078,7 +1079,6 @@
 				BBF8CA221A2107F70016DE7C /* PowerUpBarItem.h */,
 				BBF8CA231A2107F70016DE7C /* Renderer.cpp */,
 				BBF8CA241A2107F70016DE7C /* Renderer.h */,
-				BBF8CA251A2107F70016DE7C /* ResourceConstants.h */,
 				BBF8CA261A2107F70016DE7C /* ScreenState.h */,
 				BBF8CA271A2107F70016DE7C /* SpectatorControls.cpp */,
 				BBF8CA281A2107F70016DE7C /* SpectatorControls.h */,
