@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#include "pch.h"
 #include "TouchEvent.h"
 
 TouchEvent::TouchEvent(float x, float y, Touch_Type type)

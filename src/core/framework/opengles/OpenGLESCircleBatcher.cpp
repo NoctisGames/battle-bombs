@@ -9,7 +9,6 @@
 #define DEGREE_SPACING 6
 
 #include "OpenGLESCircleBatcher.h"
-#include "pch.h"
 #include "macros.h"
 #include "Circle.h"
 #include "Vector2D.h"

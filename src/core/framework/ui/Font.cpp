@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#include "pch.h"
 #include "Font.h"
 #include "TextureRegion.h"
 #include "SpriteBatcher.h"

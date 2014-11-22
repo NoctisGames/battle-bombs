@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#include "pch.h"
 #include "Renderer.h"
 #include "GameConstants.h"
 #include "ResourceConstants.h"

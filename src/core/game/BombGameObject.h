@@ -9,7 +9,6 @@
 #ifndef __battlebombs__BombGameObject__
 #define __battlebombs__BombGameObject__
 
-#include "pch.h"
 #include "DynamicGridGameObject.h"
 #include "GameConstants.h"
 

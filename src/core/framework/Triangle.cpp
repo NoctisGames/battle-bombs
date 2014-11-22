@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#include "pch.h"
 #include "Triangle.h"
 
 Triangle::Triangle(float x1, float y1, float x2, float y2, float x3, float y3)

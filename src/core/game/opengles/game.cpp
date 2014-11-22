@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#include "pch.h"
 #include "game.h"
 #include "OpenGLESGameScreen.h"
 #include "TouchEvent.h"

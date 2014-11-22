@@ -9,7 +9,6 @@
 #define VERTICES_PER_LINE 2
 
 #include "OpenGLESLineBatcher.h"
-#include "pch.h"
 #include "macros.h"
 #include "Line.h"
 #include "Vector2D.h"

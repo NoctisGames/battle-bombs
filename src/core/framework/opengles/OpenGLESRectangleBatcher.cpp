@@ -7,7 +7,6 @@
 //
 
 #include "OpenGLESRectangleBatcher.h"
-#include "pch.h"
 #include "macros.h"
 #include "Rectangle.h"
 #include "Vector2D.h"

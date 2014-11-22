@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#include "pch.h"
 #include "OpenGLESRenderer.h"
 #include "OpenGLESSpriteBatcher.h"
 #include "TextureRegion.h"

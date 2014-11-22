@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#include "pch.h"
 #include "TextureRegion.h"
 
 TextureRegion::TextureRegion(float x, float y, float regionWidth, float regionHeight, float textureWidth, float textureHeight)
