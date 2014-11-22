@@ -25,6 +25,7 @@
 #include "PathFinder.h"
 #include "MapSearchNode.h"
 #include "PowerUpType.h"
+#include "PowerUp.h"
 #include "Crater.h"
 #include "FireBall.h"
 #include "IceBall.h"
@@ -168,6 +169,9 @@ void ServerGameSession::init()
     m_fireBalls.clear();
     m_iceBalls.clear();
     m_icePatches.clear();
+    
+    m_deletedBreakableBlocks.clear();
+    m_deletedPowerUps.clear();
 
     srand((int) time(NULL));
 
@@ -253,19 +257,49 @@ int ServerGameSession::getNumBreakableBlocks()
     return m_breakableBlocks.size();
 }
 
-int ServerGameSession::getBreakableBlockGridX(short breakableBlockIndex)
+int ServerGameSession::getBreakableBlockGridX(int breakableBlockIndex)
 {
     return m_breakableBlocks.at(breakableBlockIndex).get()->getGridX();
 }
 
-int ServerGameSession::getBreakableBlockGridY(short breakableBlockIndex)
+int ServerGameSession::getBreakableBlockGridY(int breakableBlockIndex)
 {
     return m_breakableBlocks.at(breakableBlockIndex).get()->getGridY();
 }
 
-int ServerGameSession::getBreakableBlockPowerUpFlag(short breakableBlockIndex)
+int ServerGameSession::getBreakableBlockPowerUpFlag(int breakableBlockIndex)
 {
     return m_breakableBlocks.at(breakableBlockIndex).get()->getPowerUpFlag();
+}
+
+int ServerGameSession::getNumDeletedBreakableBlocks()
+{
+    return m_deletedBreakableBlocks.size();
+}
+
+int ServerGameSession::getDeletedBreakableBlockGridX(int breakableBlockIndex)
+{
+    return m_deletedBreakableBlocks.at(breakableBlockIndex).get()->getGridX();
+}
+
+int ServerGameSession::getDeletedBreakableBlockGridY(int breakableBlockIndex)
+{
+    return m_deletedBreakableBlocks.at(breakableBlockIndex).get()->getGridY();
+}
+
+int ServerGameSession::getNumDeletedPowerUps()
+{
+    return m_deletedPowerUps.size();
+}
+
+int ServerGameSession::getDeletedPowerUpGridX(int powerUpIndex)
+{
+    return m_deletedPowerUps.at(powerUpIndex).get()->getGridX();
+}
+
+int ServerGameSession::getDeletedPowerUpGridY(int powerUpIndex)
+{
+    return m_deletedPowerUps.at(powerUpIndex).get()->getGridY();
 }
 
 int ServerGameSession::popOldestEventId()

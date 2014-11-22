@@ -37,11 +37,23 @@ extern "C"
 
     JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1num_1breakable_1blocks(JNIEnv* env, jclass cls, jstring room_id);
 
-    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breakable_1block_1grid_1x(JNIEnv* env, jclass cls, jstring room_id, jshort breakable_block_index);
+    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breakable_1block_1grid_1x(JNIEnv* env, jclass cls, jstring room_id, jint breakable_block_index);
 
-    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breakable_1block_1grid_1y(JNIEnv* env, jclass cls, jstring room_id, jshort breakable_block_index);
+    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breakable_1block_1grid_1y(JNIEnv* env, jclass cls, jstring room_id, jint breakable_block_index);
 
-    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breakable_1block_1power_1up_1flag(JNIEnv* env, jclass cls, jstring room_id, jshort breakable_block_index);
+    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breakable_1block_1power_1up_1flag(JNIEnv* env, jclass cls, jstring room_id, jint breakable_block_index);
+    
+    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1num_1deleted_1breakable_1blocks(JNIEnv* env, jclass cls, jstring room_id);
+    
+    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1deleted_1breakable_1block_1grid_1x(JNIEnv* env, jclass cls, jstring room_id, jint breakable_block_index);
+    
+    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1deleted_1breakable_1block_1grid_1y(JNIEnv* env, jclass cls, jstring room_id, jint breakable_block_index);
+    
+    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1num_1deleted_1power_1ups(JNIEnv* env, jclass cls, jstring room_id);
+    
+    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1deleted_1power_1up_1grid_1x(JNIEnv* env, jclass cls, jstring room_id, jint power_up_index);
+    
+    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1deleted_1power_1up_1grid_1y(JNIEnv* env, jclass cls, jstring room_id, jint power_up_index);
 
     JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1oldest_1event_1id(JNIEnv* env, jclass cls, jstring room_id);
 };
@@ -227,7 +239,7 @@ JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1num_1b
     return 0;
 }
 
-JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breakable_1block_1grid_1x(JNIEnv* env, jclass cls, jstring room_id, jshort breakable_block_index)
+JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breakable_1block_1grid_1x(JNIEnv* env, jclass cls, jstring room_id, jint breakable_block_index)
 {
     UNUSED(env);
     UNUSED(cls);
@@ -241,7 +253,7 @@ JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breaka
     return 0;
 }
 
-JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breakable_1block_1grid_1y(JNIEnv* env, jclass cls, jstring room_id, jshort breakable_block_index)
+JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breakable_1block_1grid_1y(JNIEnv* env, jclass cls, jstring room_id, jint breakable_block_index)
 {
     UNUSED(env);
     UNUSED(cls);
@@ -255,7 +267,7 @@ JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breaka
     return 0;
 }
 
-JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breakable_1block_1power_1up_1flag(JNIEnv* env, jclass cls, jstring room_id, jshort breakable_block_index)
+JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breakable_1block_1power_1up_1flag(JNIEnv* env, jclass cls, jstring room_id, jint breakable_block_index)
 {
     UNUSED(env);
     UNUSED(cls);
@@ -266,6 +278,90 @@ JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1breaka
         return gameSession->getBreakableBlockPowerUpFlag(breakable_block_index);
     }
 
+    return 0;
+}
+
+JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1num_1deleted_1breakable_1blocks(JNIEnv* env, jclass cls, jstring room_id)
+{
+    UNUSED(env);
+    UNUSED(cls);
+    
+    ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
+    if (gameSession != nullptr)
+    {
+        return gameSession->getNumDeletedBreakableBlocks();
+    }
+    
+    return 0;
+}
+
+JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1deleted_1breakable_1block_1grid_1x(JNIEnv* env, jclass cls, jstring room_id, jint breakable_block_index)
+{
+    UNUSED(env);
+    UNUSED(cls);
+    
+    ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
+    if (gameSession != nullptr)
+    {
+        return gameSession->getDeletedBreakableBlockGridX();
+    }
+    
+    return 0;
+}
+
+JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1deleted_1breakable_1block_1grid_1y(JNIEnv* env, jclass cls, jstring room_id, jint breakable_block_index)
+{
+    UNUSED(env);
+    UNUSED(cls);
+    
+    ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
+    if (gameSession != nullptr)
+    {
+        return gameSession->getDeletedBreakableBlockGridY();
+    }
+    
+    return 0;
+}
+
+JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1num_1deleted_1power_1ups(JNIEnv* env, jclass cls, jstring room_id)
+{
+    UNUSED(env);
+    UNUSED(cls);
+    
+    ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
+    if (gameSession != nullptr)
+    {
+        return gameSession->getNumDeletedPowerUps();
+    }
+    
+    return 0;
+}
+
+JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1deleted_1power_1up_1grid_1x(JNIEnv* env, jclass cls, jstring room_id, jint power_up_index)
+{
+    UNUSED(env);
+    UNUSED(cls);
+    
+    ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
+    if (gameSession != nullptr)
+    {
+        return gameSession->getDeletedPowerUpGridX();
+    }
+    
+    return 0;
+}
+
+JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1deleted_1power_1up_1grid_1y(JNIEnv* env, jclass cls, jstring room_id, jint power_up_index)
+{
+    UNUSED(env);
+    UNUSED(cls);
+    
+    ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
+    if (gameSession != nullptr)
+    {
+        return gameSession->getDeletedPowerUpGridY();
+    }
+    
     return 0;
 }
 

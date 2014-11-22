@@ -656,6 +656,18 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static native int get_breakable_block_grid_y(String roomId, int breakable_block_index);
 
     private static native int get_breakable_block_power_up_flag(String roomId, int breakable_block_index);
+    
+    private static native int get_num_deleted_breakable_blocks(String roomId);
+    
+    private static native int get_deleted_breakable_block_grid_x(String roomId, int breakable_block_index);
+    
+    private static native int get_deleted_breakable_block_grid_y(String roomId, int breakable_block_index);
+    
+    private static native int get_num_deleted_power_ups(String roomId);
+    
+    private static native int get_deleted_power_up_grid_x(String roomId, int power_up_index);
+    
+    private static native int get_deleted_power_up_grid_y(String roomId, int power_up_index);
 
     private static native int get_oldest_event_id(String roomId);
 }

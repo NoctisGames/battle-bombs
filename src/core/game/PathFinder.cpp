@@ -423,7 +423,6 @@ void PathFinder::resetGameGrid()
         for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
         {
             _gameGrid[j][i] = 1;
-            _gameGridOverlay[j][i] = 1;
         }
     }
 }
@@ -484,27 +483,12 @@ void PathFinder::occupyGameGridCell(int gridX, int gridY)
     _gameGrid[gridX][gridY] = 9;
 }
 
-void PathFinder::freeGameGridOverlayCell(int gridX, int gridY)
-{
-    _gameGridOverlay[gridX][gridY] = 1;
-}
-
-void PathFinder::occupyGameGridOverlayCell(int gridX, int gridY)
-{
-    _gameGridOverlay[gridX][gridY] = 9;
-}
-
 int PathFinder::getGridCellCost(int x, int y)
 {
     if(x < 0 || x >= NUM_GRID_CELLS_PER_ROW || y < 0 || y >= GRID_CELL_NUM_ROWS)
 	{
 		return 9;
 	}
-    
-    if(_gameGridOverlay[x][y] > _gameGrid[x][y])
-    {
-        return _gameGridOverlay[x][y];
-    }
     
 	return _gameGrid[x][y];
 }

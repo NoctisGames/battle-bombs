@@ -44,7 +44,6 @@ public:
     static bool shouldPlayerPlantBomb(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, PlayerDynamicGameObject *player);
     
     int _gameGrid[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS];
-    int _gameGridOverlay[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]; // For Bombs, Explosions
     
     void resetGameGrid();
     
@@ -53,10 +52,6 @@ public:
     void freeGameGridCell(int gridX, int gridY);
     
     void occupyGameGridCell(int gridX, int gridY);
-    
-    void freeGameGridOverlayCell(int gridX, int gridY);
-    
-    void occupyGameGridOverlayCell(int gridX, int gridY);
     
     int getGridCellCost(int x, int y);
 
