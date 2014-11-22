@@ -9,11 +9,13 @@
 #ifndef Macros_H
 #define Macros_H
 
+#define GGD_M_PI 3.14159265358979323846
+
 #define UNUSED(x) (void)(x)
 
 #define BUFFER_OFFSET(i) ((void*)(i))
 
-#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0f * M_PI)
-#define RADIANS_TO_DEGREES(angle) ((angle) / M_PI * 180.0f)
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0f * GGD_M_PI)
+#define RADIANS_TO_DEGREES(angle) ((angle) / GGD_M_PI * 180.0f)
 
 #endif /* Macros_H */

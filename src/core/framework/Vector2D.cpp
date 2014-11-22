@@ -10,6 +10,8 @@
 #include "macros.h"
 #include "Vector2D.h"
 
+#include <math.h>
+
 Vector2D::Vector2D(const Vector2D &cSource)
 {
     m_fX = cSource.getX();

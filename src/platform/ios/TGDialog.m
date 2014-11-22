@@ -9,7 +9,7 @@
 #import "TGDialog.h"
 #import "TGDeviceUtil.h"
 
-#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0f * M_PI)
 
 @implementation TGDialog
 

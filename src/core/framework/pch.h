@@ -9,10 +9,7 @@
 #ifndef PCH_H
 #define PCH_H
 
-#define LOGGING_ON 1
-
 #define _USE_MATH_DEFINES
-#include <math.h>
 
 #ifdef TECHNE_GAMES_OPENGL_ES
 

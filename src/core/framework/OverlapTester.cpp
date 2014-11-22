@@ -14,8 +14,10 @@
 #include "Vector2D.h"
 #include "Triangle.h"
 #include "Line.h"
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 bool OverlapTester::doCirclesOverlap(const Circle &c1, const Circle &c2)
 {
