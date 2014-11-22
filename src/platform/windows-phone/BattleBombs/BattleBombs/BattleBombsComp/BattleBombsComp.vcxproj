@@ -69,9 +69,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;TECHNE_GAMES_WP;TECHNE_GAMES_DIRECT_3D;_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>..\..\..\..\..\core\framework\pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>$(WindowsSDK_MetadataPath);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <CompileAsWinRT>true</CompileAsWinRT>
       <AdditionalIncludeDirectories>..\..\..\..\..\core\framework;..\..\..\..\..\core\framework\ui;..\..\..\..\..\core\framework\direct3d;..\..\..\..\..\core\game;..\..\..\..\..\core\game\ui;..\..\..\..\..\core\game\direct3d;..\..\..\..\..\3rdparty;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -88,9 +87,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;TECHNE_GAMES_WP;TECHNE_GAMES_DIRECT_3D;_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>..\..\..\..\..\core\framework\pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>$(WindowsSDK_MetadataPath);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <CompileAsWinRT>true</CompileAsWinRT>
       <AdditionalIncludeDirectories>..\..\..\..\..\core\framework;..\..\..\..\..\core\framework\ui;..\..\..\..\..\core\framework\direct3d;..\..\..\..\..\core\game;..\..\..\..\..\core\game\ui;..\..\..\..\..\core\game\direct3d;..\..\..\..\..\3rdparty;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -107,9 +105,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;TECHNE_GAMES_WP;TECHNE_GAMES_DIRECT_3D;_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>..\..\..\..\..\core\framework\pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>$(WindowsSDK_MetadataPath);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <CompileAsWinRT>true</CompileAsWinRT>
       <AdditionalIncludeDirectories>..\..\..\..\..\core\framework;..\..\..\..\..\core\framework\ui;..\..\..\..\..\core\framework\direct3d;..\..\..\..\..\core\game;..\..\..\..\..\core\game\ui;..\..\..\..\..\core\game\direct3d;..\..\..\..\..\3rdparty;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -128,7 +125,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;TECHNE_GAMES_WP;TECHNE_GAMES_DIRECT_3D;_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>..\..\..\..\..\core\framework\pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>$(WindowsSDK_MetadataPath);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <CompileAsWinRT>true</CompileAsWinRT>
       <AdditionalIncludeDirectories>..\..\..\..\..\core\framework;..\..\..\..\..\core\framework\ui;..\..\..\..\..\core\framework\direct3d;..\..\..\..\..\core\game;..\..\..\..\..\core\game\ui;..\..\..\..\..\core\game\direct3d;..\..\..\..\..\3rdparty;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

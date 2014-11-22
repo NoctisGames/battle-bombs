@@ -12,6 +12,10 @@
 #include "PlayerDynamicGameObject.h"
 #include "GameEvent.h"
 
+#ifdef TECHNE_GAMES_DIRECT_3D
+#define strdup _strdup
+#endif
+
 GameListener::GameListener()
 {
     // No setup required

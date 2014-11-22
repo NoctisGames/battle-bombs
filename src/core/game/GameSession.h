@@ -9,10 +9,6 @@
 #ifndef GAME_SESSION_H
 #define GAME_SESSION_H
 
-#ifdef TECHNE_GAMES_DIRECT_3D
-#define strdup _strdup
-#endif
-
 #include <vector>
 #include <memory>
 

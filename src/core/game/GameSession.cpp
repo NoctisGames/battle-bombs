@@ -28,7 +28,12 @@
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
+
 #include <iostream>
+
+#ifdef TECHNE_GAMES_DIRECT_3D
+#define strdup _strdup
+#endif
 
 GameSession::GameSession()
 {

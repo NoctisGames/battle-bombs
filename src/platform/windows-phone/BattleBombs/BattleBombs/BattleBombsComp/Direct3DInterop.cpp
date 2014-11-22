@@ -172,7 +172,7 @@ namespace BattleBombsComp
 
 		if (m_isOffline)
 		{
-			handleGameStateOne();
+			handleScreenStateOfflineModeNextMap();
 		}
 
 		// Restart timer after renderer has finished initializing.
