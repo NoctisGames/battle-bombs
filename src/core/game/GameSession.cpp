@@ -13,7 +13,6 @@
 #include "TouchEvent.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
-#include "Assets.h"
 #include "OverlapTester.h"
 #include "MapBorder.h"
 #include "SpaceTile.h"

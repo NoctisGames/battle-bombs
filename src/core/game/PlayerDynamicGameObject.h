@@ -13,7 +13,6 @@
 #include "DynamicGridGameObject.h"
 #include "PlayerState.h"
 #include "PlayerActionState.h"
-#include "PowerUpType.h"
 
 #include <memory>
 #include <vector>
