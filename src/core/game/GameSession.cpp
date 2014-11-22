@@ -9,7 +9,6 @@
 #include "GameSession.h"
 #include "GameListener.h"
 #include "Vector2D.h"
-#include "TouchEvent.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
 #include "OverlapTester.h"
