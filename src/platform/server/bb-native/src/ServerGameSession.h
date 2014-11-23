@@ -11,9 +11,6 @@
 
 #include "GameSession.h"
 
-class GameListener;
-class BotPlayerDynamicGameObject;
-
 class ServerGameSession : public GameSession
 {
 public:
@@ -29,16 +26,37 @@ public:
 
     int getNumBreakableBlocks();
 
-    int getBreakableBlockGridX(short breakableBlockIndex);
+    int getBreakableBlockGridX(int breakableBlockIndex);
 
-    int getBreakableBlockGridY(short breakableBlockIndex);
+    int getBreakableBlockGridY(int breakableBlockIndex);
 
-    int getBreakableBlockPowerUpFlag(short breakableBlockIndex);
+    int getBreakableBlockPowerUpFlag(int breakableBlockIndex);
+    
+    int getNumDeletedBreakableBlocks();
+    
+    int getDeletedBreakableBlockGridX(int breakableBlockIndex);
+    
+    int getDeletedBreakableBlockGridY(int breakableBlockIndex);
+    
+    int getNumDeletedPowerUps();
+    
+    int getDeletedPowerUpGridX(int powerUpIndex);
+    
+    int getDeletedPowerUpGridY(int powerUpIndex);
+    
+    int getNumBreakableBlocksAtSpawnTime();
     
     int popOldestEventId();
+    
+protected:
+    virtual void onBreakableBlockDestroyed(BreakableBlock &breakableBlock);
+    virtual void onPowerUpPickedUp(PowerUp &powerUp);
 
 private:
-    std::vector<std::unique_ptr<BotPlayerDynamicGameObject >> m_bots;
+    std::vector<int> m_deletedBreakableBlockXValues;
+    std::vector<int> m_deletedBreakableBlockYValues;
+    std::vector<int> m_deletedPowerUpsXValues;
+    std::vector<int> m_deletedPowerUpsYValues;
     float m_fCountDownTimeLeft;
     
     virtual void updateRunning(float deltaTime);

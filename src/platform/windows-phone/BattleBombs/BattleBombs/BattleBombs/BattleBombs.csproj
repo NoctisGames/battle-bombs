@@ -352,6 +352,12 @@
     <Reference Include="AppWarpS2WP">
       <HintPath>..\..\..\..\..\3rdparty\AppWarp\AppWarpS2WP.dll</HintPath>
     </Reference>
+    <Reference Include="Coding4Fun.Toolkit">
+      <HintPath>..\..\packages\Coding4Fun.Toolkit.Controls.2.0.8\lib\windowsphone8\Coding4Fun.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Coding4Fun.Toolkit.Controls">
+      <HintPath>..\..\packages\Coding4Fun.Toolkit.Controls.2.0.8\lib\windowsphone8\Coding4Fun.Toolkit.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="GoogleAds">
       <HintPath>..\..\..\..\..\3rdparty\GoogleMobileAdsSdkWindowsPhone8-6.5.13\GoogleAds.dll</HintPath>
     </Reference>

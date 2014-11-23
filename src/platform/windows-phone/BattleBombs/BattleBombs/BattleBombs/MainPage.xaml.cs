@@ -73,7 +73,7 @@ namespace BattleBombs
             {
                 if (string.IsNullOrEmpty(e.Result))
                 {
-                    MessageBox.Show("Your device is unable to connect to Techne Games. Please check your connection and try again.");
+                    MessageBox.Show("Your device is unable to connect to Battle Bombs. Please check your connection and try again.");
                 }
                 else
                 {
@@ -82,7 +82,7 @@ namespace BattleBombs
                     {
                         if (serverStatusResponse.isDownForMaintenance)
                         {
-                            MessageBox.Show("Techne Games is down for maintenance, but will be back online soon.\nFeel free to enjoy the offline mode in the meantime.");
+                            MessageBox.Show("Battle Bombs is down for maintenance, but will be back online soon.\nFeel free to enjoy the offline mode in the meantime.");
                         }
                         else
                         {
@@ -97,7 +97,7 @@ namespace BattleBombs
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Your device is unable to connect to Techne Games. Please check your connection and try again: " + ex.ToString());
+                MessageBox.Show("Your device is unable to connect to Battle Bombs. Please check your connection and try again: " + ex.ToString());
             }
         }
 
@@ -145,7 +145,7 @@ namespace BattleBombs
 
             worker.RunWorkerCompleted += (s, e) => Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                MessageBox.Show("Your device is unable to connect to Techne Games. Please check your connection and try again.");
+                MessageBox.Show("Your device is unable to connect to Battle Bombs. Please check your connection and try again.");
             });
 
             worker.RunWorkerAsync();

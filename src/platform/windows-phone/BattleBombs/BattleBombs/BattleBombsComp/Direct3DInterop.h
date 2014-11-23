@@ -35,7 +35,15 @@ namespace BattleBombsComp
 
 		property Windows::Foundation::Size WindowBounds;
 		property Windows::Foundation::Size NativeResolution;
-		property Windows::Foundation::Size RenderResolution;
+		property Windows::Foundation::Size RenderResolution
+		{
+			Windows::Foundation::Size get()
+			{
+				return m_renderResolution;
+			}
+
+			void set(Windows::Foundation::Size renderResolution);
+		}
 
 	protected:
 		// Event Handlers
@@ -68,7 +76,7 @@ namespace BattleBombsComp
 
 		void pushEvents();
 
-		void handleGameStateOne();
+		void handleScreenStateOfflineModeNextMap();
 
 		void handleDeathForPlayerIndex(int playerIndex);
 

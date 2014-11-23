@@ -28,7 +28,7 @@
 
 #pragma mark <Protected>
 
-- (void)handleGameState:(int)gameState;
+- (void)handleScreenState:(int)screenState;
 
 - (void)pushEvents;
 

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.opengl.GLSurfaceView.Renderer;
 import android.os.SystemClock;
+import android.widget.Toast;
 
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
 import com.technegames.battlebombs.platform.PlatformFileUtils;
@@ -27,7 +28,7 @@ public final class RendererWrapper implements Renderer
     private static final String Y = "Y";
     private static final String DIRECTION = "Direction";
 
-    // Definitions from src/core/GameEvent.h
+    // Definitions from src/core/game/GameEvent.h
     private static final short CLIENT_UPDATE = 1338;
     private static final short SUDDEN_DEATH = 1339;
     private static final short GAME_OVER = 1340;
@@ -40,7 +41,7 @@ public final class RendererWrapper implements Renderer
     private static final int PLAYER_ABOUT_TO_FALL = 12;
     private static final int PLAYER_FREEZE = 14;
 
-    // Definitions from src/core/ResourceConstants.h
+    // Definitions from src/core/game/ResourceConstants.h
     private static final short MUSIC_STOP = 1;
     private static final short MUSIC_PLAY_MAP_SPACE = 2;
     private static final short MUSIC_PLAY_MAP_GRASSLANDS = 3;
@@ -69,6 +70,13 @@ public final class RendererWrapper implements Renderer
     private static final short SOUND_FALLING_OBJECT = 21;
     private static final short SOUND_CRASHING_FIRE_BALL = 22;
     private static final short SOUND_CRASHING_ICE_BALL = 23;
+
+    // Definitions from src/core/game/ScreenState.h
+    private static final short SCREEN_STATE_NORMAL = 0;
+    private static final short SCREEN_STATE_ENTERED_SPECTATOR_MODE = 1;
+    private static final short SCREEN_STATE_CONNECTION_ERROR = 2;
+    private static final short SCREEN_STATE_EXIT = 3;
+    private static final short SCREEN_STATE_OFFLINE_MODE_NEXT_MAP = 4;
 
     // #frames involved in average calc (suggested values 5-100)
     private static final float movAveragePeriod = 40;
@@ -170,7 +178,7 @@ public final class RendererWrapper implements Renderer
             _beginGameMessages[4] = String.format(Locale.US, "{\"breakableBlockPowerUpFlags\": \"4,0,5,0,0,6,0,2,0,3,3,0,2,3,3,2,0,5,0,3,0,0,5,5,3,0,0,4,2,2,0,0,0,0,2,3,0,0,0,3,0,3,0,0,0,0,0,2,1,0,1,2,0,0,2,4,0,0,0,0,5,0,0,3,0,2,5,0,4,3,5,0,0,0,0,0,0,6,2,0,3,1,0,3,3,0,0,0,0,0,6,0,0,0,5,1,2\", \"breakableBlockXValues\": \"6,4,6,9,7,9,11,0,1,2,3,7,11,14,0,4,8,12,14,0,1,2,3,5,6,8,10,11,14,2,4,6,8,12,2,5,6,8,9,10,11,12,2,4,10,2,4,6,10,2,6,9,10,11,2,4,6,8,12,0,1,2,3,5,6,7,8,10,12,13,2,4,8,10,12,1,2,3,5,6,7,8,11,12,13,14,4,6,8,10,12,3,4,5,7,8,10\", \"breakableBlockYValues\": \"0,1,1,1,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,7,7,7,7,7,7,7,7,8,8,8,9,9,9,9,10,10,10,10,10,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,13,13,13,13,13,14,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,16,16,16,16,16,16\", \"eventType\": 1337, \"mapType\": 1, \"numBreakableBlocks\": 97, \"numClientBots\": 7,\"numPlayers\": 1, \"numSecondsLeftForRound\": 180, \"playerIndex0\": \"%s\", \"playerIndex0Alive\": true, \"playerIndex0Direction\": 0, \"playerIndex0IsBot\": false, \"playerIndex0X\": 2.1492538452148438, \"playerIndex0Y\": 16.8358211517334, \"playerIndex1\": \"Tyler Bot\", \"playerIndex1Alive\": true, \"playerIndex1Direction\": 2, \"playerIndex1IsBot\": true, \"playerIndex1X\": 22.208955764770508, \"playerIndex1Y\": 12.537313461303711, \"playerIndex2\": \"Joe Bot\", \"playerIndex2Alive\": true, \"playerIndex2Direction\": 0, \"playerIndex2IsBot\": true, \"playerIndex2X\": 17.91044807434082, \"playerIndex2Y\": 2.507462739944458, \"playerIndex3\": \"Lily Bot\", \"playerIndex3Alive\": true, \"playerIndex3Direction\": 2, \"playerIndex3IsBot\": true, \"playerIndex3X\": 22.208955764770508, \"playerIndex3Y\": 25.432836532592773, \"playerIndex4\": \"Brandi Bot\", \"playerIndex4Alive\": true, \"playerIndex4Direction\": 1, \"playerIndex4IsBot\": true, \"playerIndex4X\": 2.1492538452148438, \"playerIndex4Y\": 25.432836532592773, \"playerIndex5\": \"Kathy Bot\", \"playerIndex5Alive\": true, \"playerIndex5Direction\": 3, \"playerIndex5IsBot\": true, \"playerIndex5X\": 6.447761058807373, \"playerIndex5Y\": 2.507462739944458, \"playerIndex6\": \"Dexter Bot\", \"playerIndex6Alive\": true, \"playerIndex6Direction\": 1, \"playerIndex6IsBot\": true, \"playerIndex6X\": 22.208955764770508, \"playerIndex6Y\": 16.8358211517334, \"playerIndex7\": \"Paul Bot\", \"playerIndex7Alive\": true, \"playerIndex7Direction\": 3, \"playerIndex7IsBot\": true, \"playerIndex7X\": 2.1492538452148438, \"playerIndex7Y\": 12.537313461303711}", this.username);
             _beginGameMessages[5] = String.format(Locale.US, "{\"breakableBlockPowerUpFlags\": \"0,0,0,2,2,4,0,3,1,5,4,0,0,0,0,6,6,0,3,0,0,2,1,4,0,0,3,1,3,0,1,1,3,5,0,0,0,1,2,0,1,6,3,0,5,0,0,0,0,0,1,0,0,3,3,3,1,6,0,0,0,0,4,4,2,0,0,0,0,0,0,0,0,0,0,1,0,6,3,3,0,3,3,0,1,6,2,0,0,3,5,0,0,0,2,1,2,1,1,3,0,5,1,0,5,0,3,0,0,0\", \"breakableBlockXValues\": \"6,8,4,5,6,7,9,5,7,0,3,4,5,7,9,10,11,12,13,14,0,4,6,8,10,12,14,1,4,5,6,9,11,12,13,14,2,4,6,8,10,3,4,6,7,8,9,11,4,6,10,12,2,4,6,8,10,2,3,4,6,7,8,9,10,11,12,4,6,8,10,12,0,3,4,5,6,7,9,10,11,12,13,14,0,2,4,6,10,12,14,1,2,3,7,8,10,12,13,14,2,5,6,12,3,4,5,10,11,12\", \"breakableBlockYValues\": \"0,0,1,1,1,1,1,2,2,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,6,6,6,6,6,7,7,7,7,7,7,7,8,8,8,8,9,9,9,9,9,10,10,10,10,10,10,10,10,10,10,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,15,15,15,15,16,16,16,16,16,16\", \"eventType\": 1337, \"mapType\": 2, \"numBreakableBlocks\": 110, \"numClientBots\": 7,\"numPlayers\": 1, \"numSecondsLeftForRound\": 180, \"playerIndex0\": \"%s\", \"playerIndex0Alive\": true, \"playerIndex0Direction\": 0, \"playerIndex0IsBot\": false, \"playerIndex0X\": 6.447761058807373, \"playerIndex0Y\": 2.507462739944458, \"playerIndex1\": \"Eric Bot\", \"playerIndex1Alive\": true, \"playerIndex1Direction\": 2, \"playerIndex1IsBot\": true, \"playerIndex1X\": 22.208955764770508, \"playerIndex1Y\": 25.432836532592773, \"playerIndex2\": \"Frank Bot\", \"playerIndex2Alive\": true, \"playerIndex2Direction\": 0, \"playerIndex2IsBot\": true, \"playerIndex2X\": 17.91044807434082, \"playerIndex2Y\": 2.507462739944458, \"playerIndex3\": \"James Bot\", \"playerIndex3Alive\": true, \"playerIndex3Direction\": 2, \"playerIndex3IsBot\": true, \"playerIndex3X\": 2.1492538452148438, \"playerIndex3Y\": 12.537313461303711, \"playerIndex4\": \"Ryan Bot\", \"playerIndex4Alive\": true, \"playerIndex4Direction\": 1, \"playerIndex4IsBot\": true, \"playerIndex4X\": 2.1492538452148438, \"playerIndex4Y\": 25.432836532592773, \"playerIndex5\": \"Roy Bot\", \"playerIndex5Alive\": true, \"playerIndex5Direction\": 3, \"playerIndex5IsBot\": true, \"playerIndex5X\": 22.208955764770508, \"playerIndex5Y\": 12.537313461303711, \"playerIndex6\": \"Alfred Bot\", \"playerIndex6Alive\": true, \"playerIndex6Direction\": 1, \"playerIndex6IsBot\": true, \"playerIndex6X\": 2.1492538452148438, \"playerIndex6Y\": 16.8358211517334, \"playerIndex7\": \"Ted Bot\", \"playerIndex7Alive\": true, \"playerIndex7Direction\": 3, \"playerIndex7IsBot\": true, \"playerIndex7X\": 22.208955764770508, \"playerIndex7Y\": 16.8358211517334}", this.username);
 
-            handleGameStateOne();
+            handleScreenStateOfflineModeNextMap();
         }
     }
 
@@ -200,10 +208,13 @@ public final class RendererWrapper implements Renderer
     @Override
     public void onDrawFrame(GL10 gl)
     {
-        int gameState = get_state();
-        switch (gameState)
+        int screenState = get_state();
+        switch (screenState)
         {
-            case 0:
+            case SCREEN_STATE_ENTERED_SPECTATOR_MODE:
+                displayToastOnUiThread(activity.getString(R.string.you_are_in_spectator_mode));
+                clear_state();
+            case SCREEN_STATE_NORMAL:
                 update(smoothedDeltaRealTime_ms / 1000);
                 pushEvents();
                 if (isOffline && _isGameOver)
@@ -217,19 +228,13 @@ public final class RendererWrapper implements Renderer
                     }
                 }
                 break;
-            case 1:
-                if (isOffline)
-                {
-                    handleGameStateOne();
-                }
-                else
-                {
-                    activity.finish();
-                }
-                break;
-            case 2:
+            case SCREEN_STATE_CONNECTION_ERROR:
                 activity.setResult(GameActivity.RESULT_CONNECTION_ERROR);
+            case SCREEN_STATE_EXIT:
                 activity.finish();
+                break;
+            case SCREEN_STATE_OFFLINE_MODE_NEXT_MAP:
+                handleScreenStateOfflineModeNextMap();
                 break;
             default:
                 break;
@@ -405,7 +410,7 @@ public final class RendererWrapper implements Renderer
         }
     }
 
-    private void handleGameStateOne()
+    private void handleScreenStateOfflineModeNextMap()
     {
         _playersAlive[0] = true;
         _playersAlive[1] = true;
@@ -603,6 +608,17 @@ public final class RendererWrapper implements Renderer
         bgm = audio.newMusic(fileName);
         bgm.setLooping(true);
         bgm.play();
+    }
+
+    private void displayToastOnUiThread(final String toast)
+    {
+        activity.runOnUiThread(new Runnable()
+        {
+            public void run()
+            {
+                Toast.makeText(activity, toast, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private static native void init(String username, boolean isOffline);

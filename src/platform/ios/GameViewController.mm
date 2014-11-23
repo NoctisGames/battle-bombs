@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Techne Games. All rights reserved.
 //
 
-#define APPWARP_APP_KEY         @"e4207af0-de78-496d-8"
+#define APPWARP_APP_KEY         @"475c20d0-07d6-46ad-a"
 #define APPWARP_SECRET_KEY      @"139f6094-4e04-4041-9"
-#define APPWARP_HOST_ADDRESS    @"191.234.54.124"
-#define APPWARP_AUTH_DATA       @"T3chn3G4m35_1.1.0"
+#define APPWARP_HOST_ADDRESS    @"23.99.132.2"
+#define APPWARP_AUTH_DATA       @"T3chn3G4m35_1.2.0"
 
 #import "GameViewController.h"
 #import "MainViewController.h"
@@ -17,6 +17,7 @@
 // C++
 #include "game.h"
 #include "GameEvent.h"
+#include "ScreenState.h"
 
 @interface GameViewController ()
 {
@@ -203,13 +204,13 @@ static NSString * const PHASE = @"phase";
 
 #pragma mark <Protected>
 
-- (void)handleGameState:(int)gameState
+- (void)handleScreenState:(int)screenState
 {
-    if(gameState == 1)
+    if(screenState == SCREEN_STATE_EXIT)
     {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    else if(gameState == 2)
+    else if(screenState == SCREEN_STATE_CONNECTION_ERROR)
     {
         MainViewController *mainViewController = (MainViewController *)self.presentingViewController;
         [self dismissViewControllerAnimated:YES completion:^

@@ -13,6 +13,7 @@
 // C++
 #include "game.h"
 #include "GameEvent.h"
+#include "ScreenState.h"
 
 @interface OfflineGameViewController ()
 {
@@ -44,14 +45,14 @@
     
     [_beginGameMessages addObject:[NSString stringWithFormat:@"{\"breakableBlockPowerUpFlags\": \"0,0,0,2,2,4,0,3,1,5,4,0,0,0,0,6,6,0,3,0,0,2,1,4,0,0,3,1,3,0,1,1,3,5,0,0,0,1,2,0,1,6,3,0,5,0,0,0,0,0,1,0,0,3,3,3,1,6,0,0,0,0,4,4,2,0,0,0,0,0,0,0,0,0,0,1,0,6,3,3,0,3,3,0,1,6,2,0,0,3,5,0,0,0,2,1,2,1,1,3,0,5,1,0,5,0,3,0,0,0\", \"breakableBlockXValues\": \"6,8,4,5,6,7,9,5,7,0,3,4,5,7,9,10,11,12,13,14,0,4,6,8,10,12,14,1,4,5,6,9,11,12,13,14,2,4,6,8,10,3,4,6,7,8,9,11,4,6,10,12,2,4,6,8,10,2,3,4,6,7,8,9,10,11,12,4,6,8,10,12,0,3,4,5,6,7,9,10,11,12,13,14,0,2,4,6,10,12,14,1,2,3,7,8,10,12,13,14,2,5,6,12,3,4,5,10,11,12\", \"breakableBlockYValues\": \"0,0,1,1,1,1,1,2,2,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,6,6,6,6,6,7,7,7,7,7,7,7,8,8,8,8,9,9,9,9,9,10,10,10,10,10,10,10,10,10,10,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,15,15,15,15,16,16,16,16,16,16\", \"eventType\": 1337, \"mapType\": 2, \"numBreakableBlocks\": 110, \"numClientBots\": 7,\"numPlayers\": 1, \"numSecondsLeftForRound\": 180, \"playerIndex0\": \"%@\", \"playerIndex0Alive\": true, \"playerIndex0Direction\": 0, \"playerIndex0IsBot\": false, \"playerIndex0X\": 6.447761058807373, \"playerIndex0Y\": 2.507462739944458, \"playerIndex1\": \"Eric Bot\", \"playerIndex1Alive\": true, \"playerIndex1Direction\": 2, \"playerIndex1IsBot\": true, \"playerIndex1X\": 22.208955764770508, \"playerIndex1Y\": 25.432836532592773, \"playerIndex2\": \"Frank Bot\", \"playerIndex2Alive\": true, \"playerIndex2Direction\": 0, \"playerIndex2IsBot\": true, \"playerIndex2X\": 17.91044807434082, \"playerIndex2Y\": 2.507462739944458, \"playerIndex3\": \"James Bot\", \"playerIndex3Alive\": true, \"playerIndex3Direction\": 2, \"playerIndex3IsBot\": true, \"playerIndex3X\": 2.1492538452148438, \"playerIndex3Y\": 12.537313461303711, \"playerIndex4\": \"Ryan Bot\", \"playerIndex4Alive\": true, \"playerIndex4Direction\": 1, \"playerIndex4IsBot\": true, \"playerIndex4X\": 2.1492538452148438, \"playerIndex4Y\": 25.432836532592773, \"playerIndex5\": \"Roy Bot\", \"playerIndex5Alive\": true, \"playerIndex5Direction\": 3, \"playerIndex5IsBot\": true, \"playerIndex5X\": 22.208955764770508, \"playerIndex5Y\": 12.537313461303711, \"playerIndex6\": \"Alfred Bot\", \"playerIndex6Alive\": true, \"playerIndex6Direction\": 1, \"playerIndex6IsBot\": true, \"playerIndex6X\": 2.1492538452148438, \"playerIndex6Y\": 16.8358211517334, \"playerIndex7\": \"Ted Bot\", \"playerIndex7Alive\": true, \"playerIndex7Direction\": 3, \"playerIndex7IsBot\": true, \"playerIndex7X\": 22.208955764770508, \"playerIndex7Y\": 16.8358211517334}", self.username]];
     
-    [self performSelector:@selector(handleGameStateOne) withObject:nil afterDelay:3];
+    [self performSelector:@selector(handleScreenStateOfflineModeNextMap) withObject:nil afterDelay:3];
 }
 
 #pragma mark <Protected>
 
-- (void)handleGameState:(int)gameState
+- (void)handleScreenState:(int)screenState
 {
-    if(gameState == 1)
+    if(screenState == SCREEN_STATE_OFFLINE_MODE_NEXT_MAP)
     {
         _playersAlive[0] = true;
         _playersAlive[1] = true;
@@ -195,9 +196,9 @@
     }
 }
 
-- (void)handleGameStateOne
+- (void)handleScreenStateOfflineModeNextMap
 {
-    [self handleGameState:1];
+    [self handleScreenState:SCREEN_STATE_OFFLINE_MODE_NEXT_MAP];
 }
 
 @end

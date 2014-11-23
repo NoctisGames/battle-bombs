@@ -4,47 +4,56 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>../../../core/BombGameObject.h</itemPath>
-      <itemPath>../../../core/BotPlayerDynamicGameObject.h</itemPath>
-      <itemPath>../../../core/BreakableBlock.h</itemPath>
-      <itemPath>../../../core/DynamicGameObject.h</itemPath>
-      <itemPath>../../../core/DynamicGridGameObject.h</itemPath>
-      <itemPath>../../../core/Explosion.h</itemPath>
-      <itemPath>../../../core/FallingObjectShadow.h</itemPath>
-      <itemPath>../../../core/FallingObjectShadowState.h</itemPath>
-      <itemPath>../../../core/Fire.h</itemPath>
-      <itemPath>../../../core/FireType.h</itemPath>
-      <itemPath>../../../core/GameConstants.h</itemPath>
-      <itemPath>../../../core/GameEvent.h</itemPath>
-      <itemPath>../../../core/GameListener.h</itemPath>
-      <itemPath>../../../core/GameObject.h</itemPath>
-      <itemPath>../../../core/GameSession.h</itemPath>
-      <itemPath>../../../core/GameState.h</itemPath>
-      <itemPath>../../../core/GridGameObject.h</itemPath>
-      <itemPath>../../../core/IceBall.h</itemPath>
-      <itemPath>../../../core/IcePatch.h</itemPath>
-      <itemPath>../../../core/InsideBlock.h</itemPath>
-      <itemPath>../../../core/Line.h</itemPath>
-      <itemPath>../../../core/MapBorder.h</itemPath>
-      <itemPath>../../../core/MapBorderType.h</itemPath>
-      <itemPath>../../../core/MapSearchNode.h</itemPath>
-      <itemPath>../../../core/OverlapTester.h</itemPath>
-      <itemPath>../../../core/PathFinder.h</itemPath>
-      <itemPath>../../../core/PlayerDynamicGameObject.h</itemPath>
-      <itemPath>../../../core/PlayerForceFieldState.h</itemPath>
-      <itemPath>../../../core/PlayerState.h</itemPath>
-      <itemPath>../../../core/PowerUp.h</itemPath>
-      <itemPath>../../../core/PowerUpType.h</itemPath>
-      <itemPath>../../../core/Rectangle.h</itemPath>
-      <itemPath>../../../core/Renderer.h</itemPath>
-      <itemPath>../../../core/ResourceConstants.h</itemPath>
+      <itemPath>../../../core/game/BombGameObject.h</itemPath>
+      <itemPath>../../../core/game/BotPlayerDynamicGameObject.h</itemPath>
+      <itemPath>../../../core/game/BreakableBlock.h</itemPath>
+      <itemPath>../../../core/game/BreakableBlockState.h</itemPath>
+      <itemPath>../../../core/framework/Circle.h</itemPath>
+      <itemPath>../../../core/framework/Color.h</itemPath>
+      <itemPath>../../../core/game/Crater.h</itemPath>
+      <itemPath>../../../core/framework/DynamicGameObject.h</itemPath>
+      <itemPath>../../../core/framework/DynamicGridGameObject.h</itemPath>
+      <itemPath>../../../core/game/Explosion.h</itemPath>
+      <itemPath>../../../core/game/FallingObjectShadow.h</itemPath>
+      <itemPath>../../../core/game/FallingObjectShadowState.h</itemPath>
+      <itemPath>../../../core/game/Fire.h</itemPath>
+      <itemPath>../../../core/game/FireBall.h</itemPath>
+      <itemPath>../../../core/game/FireType.h</itemPath>
+      <itemPath>../../../core/game/GameConstants.h</itemPath>
+      <itemPath>../../../core/game/GameEvent.h</itemPath>
+      <itemPath>../../../core/game/GameListener.h</itemPath>
+      <itemPath>../../../core/framework/GameObject.h</itemPath>
+      <itemPath>../../../core/game/GameSession.h</itemPath>
+      <itemPath>../../../core/game/GameState.h</itemPath>
+      <itemPath>../../../core/framework/GridGameObject.h</itemPath>
+      <itemPath>../../../core/game/IceBall.h</itemPath>
+      <itemPath>../../../core/game/IcePatch.h</itemPath>
+      <itemPath>../../../core/game/InsideBlock.h</itemPath>
+      <itemPath>../../../core/game/InsideBlockState.h</itemPath>
+      <itemPath>../../../core/framework/Line.h</itemPath>
+      <itemPath>../../../core/game/MapBorder.h</itemPath>
+      <itemPath>../../../core/game/MapBorderType.h</itemPath>
+      <itemPath>../../../core/game/MapSearchNode.h</itemPath>
+      <itemPath>../../../core/framework/Node.h</itemPath>
+      <itemPath>../../../core/framework/OverlapTester.h</itemPath>
+      <itemPath>../../../core/game/PathFinder.h</itemPath>
+      <itemPath>../../../core/game/PlayerActionState.h</itemPath>
+      <itemPath>../../../core/game/PlayerDynamicGameObject.h</itemPath>
+      <itemPath>../../../core/game/PlayerForceFieldState.h</itemPath>
+      <itemPath>../../../core/game/PlayerState.h</itemPath>
+      <itemPath>../../../core/game/PowerUp.h</itemPath>
+      <itemPath>../../../core/game/PowerUpType.h</itemPath>
+      <itemPath>../../../core/framework/Rectangle.h</itemPath>
+      <itemPath>../../../core/game/ResourceConstants.h</itemPath>
       <itemPath>src/ServerGameSession.h</itemPath>
-      <itemPath>../../../core/Triangle.h</itemPath>
-      <itemPath>../../../core/Vector2D.h</itemPath>
-      <itemPath>../../../core/fsa.h</itemPath>
-      <itemPath>../../../core/macros.h</itemPath>
-      <itemPath>../../../core/pch.h</itemPath>
-      <itemPath>../../../core/stlastar.h</itemPath>
+      <itemPath>../../../core/game/SpaceTile.h</itemPath>
+      <itemPath>../../../core/game/SpaceTileState.h</itemPath>
+      <itemPath>../../../core/framework/Triangle.h</itemPath>
+      <itemPath>../../../core/framework/Vector2D.h</itemPath>
+      <itemPath>../../../core/game/fsa.h</itemPath>
+      <itemPath>../../../core/framework/macros.h</itemPath>
+      <itemPath>../../../core/framework/pch.h</itemPath>
+      <itemPath>../../../core/game/stlastar.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -53,33 +62,103 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>../../../core/BombGameObject.cpp</itemPath>
-      <itemPath>../../../core/BotPlayerDynamicGameObject.cpp</itemPath>
-      <itemPath>../../../core/BreakableBlock.cpp</itemPath>
-      <itemPath>../../../core/DynamicGameObject.cpp</itemPath>
-      <itemPath>../../../core/DynamicGridGameObject.cpp</itemPath>
-      <itemPath>../../../core/Explosion.cpp</itemPath>
-      <itemPath>../../../core/FallingObjectShadow.cpp</itemPath>
-      <itemPath>../../../core/Fire.cpp</itemPath>
+      <itemPath>../../../core/game/BombGameObject.cpp</itemPath>
+      <itemPath>../../../core/game/BotPlayerDynamicGameObject.cpp</itemPath>
+      <itemPath>../../../core/game/BreakableBlock.cpp</itemPath>
+      <itemPath>../../../core/framework/Circle.cpp</itemPath>
+      <itemPath>../../../core/game/Crater.cpp</itemPath>
+      <itemPath>../../../core/framework/DynamicGameObject.cpp</itemPath>
+      <itemPath>../../../core/framework/DynamicGridGameObject.cpp</itemPath>
+      <itemPath>../../../core/game/Explosion.cpp</itemPath>
+      <itemPath>../../../core/game/FallingObjectShadow.cpp</itemPath>
+      <itemPath>../../../core/game/Fire.cpp</itemPath>
+      <itemPath>../../../core/game/FireBall.cpp</itemPath>
       <itemPath>src/GameListener.cpp</itemPath>
-      <itemPath>../../../core/GameObject.cpp</itemPath>
-      <itemPath>../../../core/GameSession.cpp</itemPath>
-      <itemPath>../../../core/GridGameObject.cpp</itemPath>
-      <itemPath>../../../core/IceBall.cpp</itemPath>
-      <itemPath>../../../core/IcePatch.cpp</itemPath>
-      <itemPath>../../../core/InsideBlock.cpp</itemPath>
-      <itemPath>../../../core/Line.cpp</itemPath>
-      <itemPath>../../../core/MapBorder.cpp</itemPath>
-      <itemPath>../../../core/MapSearchNode.cpp</itemPath>
-      <itemPath>../../../core/OverlapTester.cpp</itemPath>
-      <itemPath>../../../core/PathFinder.cpp</itemPath>
-      <itemPath>../../../core/PlayerDynamicGameObject.cpp</itemPath>
-      <itemPath>../../../core/PowerUp.cpp</itemPath>
-      <itemPath>../../../core/Rectangle.cpp</itemPath>
+      <itemPath>../../../core/framework/GameObject.cpp</itemPath>
+      <itemPath>../../../core/game/GameSession.cpp</itemPath>
+      <itemPath>../../../core/framework/GridGameObject.cpp</itemPath>
+      <itemPath>../../../core/game/IceBall.cpp</itemPath>
+      <itemPath>../../../core/game/IcePatch.cpp</itemPath>
+      <itemPath>../../../core/game/InsideBlock.cpp</itemPath>
+      <itemPath>../../../core/framework/Line.cpp</itemPath>
+      <itemPath>../../../core/game/MapBorder.cpp</itemPath>
+      <itemPath>../../../core/game/MapSearchNode.cpp</itemPath>
+      <itemPath>../../../core/framework/OverlapTester.cpp</itemPath>
+      <itemPath>../../../core/game/PathFinder.cpp</itemPath>
+      <itemPath>../../../core/game/PlayerDynamicGameObject.cpp</itemPath>
+      <itemPath>../../../core/game/PowerUp.cpp</itemPath>
+      <itemPath>../../../core/framework/Rectangle.cpp</itemPath>
       <itemPath>src/ServerGameSession.cpp</itemPath>
-      <itemPath>../../../core/Triangle.cpp</itemPath>
-      <itemPath>../../../core/Vector2D.cpp</itemPath>
+      <itemPath>../../../core/game/SpaceTile.cpp</itemPath>
+      <itemPath>../../../core/framework/Triangle.cpp</itemPath>
+      <itemPath>../../../core/framework/Vector2D.cpp</itemPath>
       <itemPath>src/bb_room_adaptor.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -118,9 +197,10 @@
           <standard>8</standard>
           <commandlineTool>g++</commandlineTool>
           <incDir>
-            <pElem>../../../../../../../../../Program Files/Java/jdk1.7.0_51/include</pElem>
-            <pElem>../../../../../../../../../Program Files/Java/jdk1.7.0_51/include/win32</pElem>
-            <pElem>../../../core</pElem>
+            <pElem>jdkinclude/</pElem>
+            <pElem>jdkinclude/win32/</pElem>
+            <pElem>../../../core/framework/</pElem>
+            <pElem>../../../core/game/</pElem>
             <pElem>../../../3rdparty</pElem>
           </incDir>
           <commandLine>-shared</commandLine>
@@ -132,180 +212,255 @@
           <output>dist/libBbNative.dll</output>
         </linkerTool>
       </compileType>
-      <item path="../../../core/BombGameObject.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/framework/Circle.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../../../core/BombGameObject.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/Circle.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/BotPlayerDynamicGameObject.cpp"
+      <item path="../../../core/framework/Color.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/framework/DynamicGameObject.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../../../core/BotPlayerDynamicGameObject.h"
+      <item path="../../../core/framework/DynamicGameObject.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../../core/BreakableBlock.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/BreakableBlock.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/Crater.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/Crater.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/DynamicGameObject.cpp"
+      <item path="../../../core/framework/DynamicGridGameObject.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../../../core/DynamicGameObject.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/DynamicGridGameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="../../../core/DynamicGridGameObject.cpp"
+      <item path="../../../core/framework/GameObject.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../../../core/DynamicGridGameObject.h"
+      <item path="../../../core/framework/GameObject.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../../core/Explosion.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/Explosion.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/FallingObjectShadow.cpp"
+      <item path="../../../core/framework/GridGameObject.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../../../core/FallingObjectShadow.h"
+      <item path="../../../core/framework/GridGameObject.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../../core/FallingObjectShadowState.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="../../../core/framework/Line.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../../../core/Fire.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/framework/Line.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/Fire.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/Node.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/FireBall.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/FireBall.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/FireType.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GameConstants.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GameEvent.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GameListener.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GameObject.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/GameObject.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GameSession.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/GameSession.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GameState.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GridGameObject.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/GridGameObject.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/IceBall.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/IceBall.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/IcePatch.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/IcePatch.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/InsideBlock.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/InsideBlock.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/Line.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/Line.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/MapBorder.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/MapBorder.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/MapBorderType.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/MapSearchNode.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/MapSearchNode.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/OverlapTester.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/OverlapTester.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/PathFinder.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/PathFinder.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/PlayerDynamicGameObject.cpp"
+      <item path="../../../core/framework/OverlapTester.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../../../core/PlayerDynamicGameObject.h"
+      <item path="../../../core/framework/OverlapTester.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../../core/PlayerForceFieldState.h"
+      <item path="../../../core/framework/Rectangle.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/framework/Rectangle.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../../core/PlayerState.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/Triangle.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="../../../core/PowerUp.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/framework/Triangle.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/PowerUp.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/Vector2D.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="../../../core/PowerUpType.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/Vector2D.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/Rectangle.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/framework/macros.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/Rectangle.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/pch.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/Renderer.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/BombGameObject.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="../../../core/ResourceConstants.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/BombGameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="../../../core/SpaceTile.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/game/BotPlayerDynamicGameObject.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="../../../core/SpaceTile.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/BotPlayerDynamicGameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="../../../core/SpaceTileState.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/BreakableBlock.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="../../../core/Triangle.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/game/BreakableBlock.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="../../../core/Triangle.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/BreakableBlockState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="../../../core/Vector2D.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/game/Crater.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../../../core/Vector2D.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/Crater.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/fsa.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/Explosion.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../../../core/macros.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/Explosion.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/pch.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/FallingObjectShadow.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="../../../core/stlastar.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/FallingObjectShadow.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/FallingObjectShadowState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/Fire.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/Fire.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/FireBall.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/FireBall.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/FireType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/GameConstants.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/GameEvent.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/GameListener.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/GameSession.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/GameSession.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/GameState.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/IceBall.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/IceBall.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/IcePatch.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/IcePatch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/InsideBlock.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/InsideBlock.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/InsideBlockState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/MapBorder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapBorder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapBorderType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapSearchNode.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/MapSearchNode.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/PathFinder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/PathFinder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/PlayerActionState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/PlayerDynamicGameObject.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/PlayerDynamicGameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/PlayerForceFieldState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/PlayerState.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/PowerUp.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/PowerUp.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/PowerUpType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/ResourceConstants.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/SpaceTile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/SpaceTile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/SpaceTileState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/fsa.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/stlastar.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/GameListener.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -331,9 +486,10 @@
           <architecture>2</architecture>
           <standard>8</standard>
           <incDir>
-            <pElem>../../../../../../../../../Program Files/Java/jdk1.7.0_51/include</pElem>
-            <pElem>../../../../../../../../../Program Files/Java/jdk1.7.0_51/include/win32</pElem>
-            <pElem>../../../core</pElem>
+            <pElem>jdkinclude/</pElem>
+            <pElem>jdkinclude/win32/</pElem>
+            <pElem>../../../core/framework/</pElem>
+            <pElem>../../../core/game/</pElem>
             <pElem>../../../3rdparty</pElem>
           </incDir>
           <commandLine>-shared</commandLine>
@@ -351,180 +507,255 @@
           <output>dist/libBpNative.dll</output>
         </linkerTool>
       </compileType>
-      <item path="../../../core/BombGameObject.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/framework/Circle.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../../../core/BombGameObject.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/Circle.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/BotPlayerDynamicGameObject.cpp"
+      <item path="../../../core/framework/Color.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/framework/DynamicGameObject.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../../../core/BotPlayerDynamicGameObject.h"
+      <item path="../../../core/framework/DynamicGameObject.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../../core/BreakableBlock.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/BreakableBlock.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/Crater.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/Crater.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/DynamicGameObject.cpp"
+      <item path="../../../core/framework/DynamicGridGameObject.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../../../core/DynamicGameObject.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/DynamicGridGameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="../../../core/DynamicGridGameObject.cpp"
+      <item path="../../../core/framework/GameObject.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../../../core/DynamicGridGameObject.h"
+      <item path="../../../core/framework/GameObject.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../../core/Explosion.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/Explosion.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/FallingObjectShadow.cpp"
+      <item path="../../../core/framework/GridGameObject.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../../../core/FallingObjectShadow.h"
+      <item path="../../../core/framework/GridGameObject.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../../core/FallingObjectShadowState.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="../../../core/framework/Line.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../../../core/Fire.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/framework/Line.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/Fire.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/Node.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/FireBall.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/FireBall.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/FireType.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GameConstants.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GameEvent.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GameListener.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GameObject.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/GameObject.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GameSession.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/GameSession.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GameState.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/GridGameObject.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/GridGameObject.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/IceBall.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/IceBall.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/IcePatch.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/IcePatch.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/InsideBlock.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/InsideBlock.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/Line.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/Line.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/MapBorder.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/MapBorder.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/MapBorderType.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/MapSearchNode.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/MapSearchNode.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/OverlapTester.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/OverlapTester.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/PathFinder.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../../core/PathFinder.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/PlayerDynamicGameObject.cpp"
+      <item path="../../../core/framework/OverlapTester.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../../../core/PlayerDynamicGameObject.h"
+      <item path="../../../core/framework/OverlapTester.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../../core/PlayerForceFieldState.h"
+      <item path="../../../core/framework/Rectangle.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/framework/Rectangle.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../../core/PlayerState.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/Triangle.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="../../../core/PowerUp.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/framework/Triangle.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/PowerUp.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/Vector2D.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="../../../core/PowerUpType.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/Vector2D.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/Rectangle.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/framework/macros.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/Rectangle.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/framework/pch.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/Renderer.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/BombGameObject.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="../../../core/ResourceConstants.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/BombGameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="../../../core/SpaceTile.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/game/BotPlayerDynamicGameObject.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="../../../core/SpaceTile.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/BotPlayerDynamicGameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="../../../core/SpaceTileState.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/BreakableBlock.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="../../../core/Triangle.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/game/BreakableBlock.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="../../../core/Triangle.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/BreakableBlockState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
-      <item path="../../../core/Vector2D.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../../../core/game/Crater.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../../../core/Vector2D.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/Crater.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/fsa.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/Explosion.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../../../core/macros.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/Explosion.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../../core/pch.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/FallingObjectShadow.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="../../../core/stlastar.h" ex="false" tool="3" flavor2="0">
+      <item path="../../../core/game/FallingObjectShadow.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/FallingObjectShadowState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/Fire.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/Fire.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/FireBall.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/FireBall.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/FireType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/GameConstants.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/GameEvent.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/GameListener.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/GameSession.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/GameSession.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/GameState.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/IceBall.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/IceBall.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/IcePatch.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/IcePatch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/InsideBlock.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/InsideBlock.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/InsideBlockState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/MapBorder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapBorder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapBorderType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapSearchNode.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/MapSearchNode.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/PathFinder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/PathFinder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/PlayerActionState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/PlayerDynamicGameObject.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/PlayerDynamicGameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/PlayerForceFieldState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/PlayerState.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/PowerUp.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/PowerUp.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/PowerUpType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/ResourceConstants.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/SpaceTile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/SpaceTile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/SpaceTileState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/fsa.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/stlastar.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/GameListener.cpp" ex="false" tool="1" flavor2="0">
       </item>

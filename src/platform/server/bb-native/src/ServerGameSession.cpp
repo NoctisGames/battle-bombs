@@ -9,10 +9,8 @@
 #include "pch.h"
 #include "ServerGameSession.h"
 #include "Vector2D.h"
-#include "TouchEvent.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
-#include "Assets.h"
 #include "OverlapTester.h"
 #include "GameEvent.h"
 #include "BombGameObject.h"
@@ -27,6 +25,7 @@
 #include "PathFinder.h"
 #include "MapSearchNode.h"
 #include "PowerUpType.h"
+#include "PowerUp.h"
 #include "Crater.h"
 #include "FireBall.h"
 #include "IceBall.h"
@@ -116,7 +115,7 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
             {
                 continue;
             }
-            
+
             // 66% chance there will be a breakable block at all
             if ((rand() % 100 + 1) < 67)
             {
@@ -145,7 +144,7 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
 
                 // If these two blocks don't get caught, the flag remains 0 and no powerup will be created
                 m_breakableBlocks.push_back(std::unique_ptr<BreakableBlock>(new BreakableBlock(j, i, flag)));
-                
+
                 m_iNumBreakableBlocksAtSpawnTime++;
             }
         }
@@ -171,10 +170,15 @@ void ServerGameSession::init()
     m_iceBalls.clear();
     m_icePatches.clear();
 
+    m_deletedBreakableBlockXValues.clear();
+    m_deletedBreakableBlockYValues.clear();
+    m_deletedPowerUpsXValues.clear();
+    m_deletedPowerUpsYValues.clear();
+
     srand((int) time(NULL));
 
     m_fCountDownTimeLeft = 4;
-    
+
     m_iNumBreakableBlocksAtSpawnTime = 0;
 }
 
@@ -223,7 +227,7 @@ void ServerGameSession::update(float deltaTime)
             }
             else if (eventType == SUDDEN_DEATH)
             {
-                suddenDeath(d);
+                suddenDeath();
             }
         }
     }
@@ -255,24 +259,73 @@ int ServerGameSession::getNumBreakableBlocks()
     return m_breakableBlocks.size();
 }
 
-int ServerGameSession::getBreakableBlockGridX(short breakableBlockIndex)
+int ServerGameSession::getBreakableBlockGridX(int breakableBlockIndex)
 {
     return m_breakableBlocks.at(breakableBlockIndex).get()->getGridX();
 }
 
-int ServerGameSession::getBreakableBlockGridY(short breakableBlockIndex)
+int ServerGameSession::getBreakableBlockGridY(int breakableBlockIndex)
 {
     return m_breakableBlocks.at(breakableBlockIndex).get()->getGridY();
 }
 
-int ServerGameSession::getBreakableBlockPowerUpFlag(short breakableBlockIndex)
+int ServerGameSession::getBreakableBlockPowerUpFlag(int breakableBlockIndex)
 {
     return m_breakableBlocks.at(breakableBlockIndex).get()->getPowerUpFlag();
+}
+
+int ServerGameSession::getNumDeletedBreakableBlocks()
+{
+    return m_deletedBreakableBlockXValues.size();
+}
+
+int ServerGameSession::getDeletedBreakableBlockGridX(int breakableBlockIndex)
+{
+    return m_deletedBreakableBlockXValues.at(breakableBlockIndex);
+}
+
+int ServerGameSession::getDeletedBreakableBlockGridY(int breakableBlockIndex)
+{
+    return m_deletedBreakableBlockYValues.at(breakableBlockIndex);
+}
+
+int ServerGameSession::getNumDeletedPowerUps()
+{
+    return m_deletedPowerUpsXValues.size();
+}
+
+int ServerGameSession::getDeletedPowerUpGridX(int powerUpIndex)
+{
+    return m_deletedPowerUpsXValues.at(powerUpIndex);
+}
+
+int ServerGameSession::getDeletedPowerUpGridY(int powerUpIndex)
+{
+    return m_deletedPowerUpsYValues.at(powerUpIndex);
+}
+
+int ServerGameSession::getNumBreakableBlocksAtSpawnTime()
+{
+    return m_iNumBreakableBlocksAtSpawnTime;
 }
 
 int ServerGameSession::popOldestEventId()
 {
     return m_gameListener->popOldestEventId();
+}
+
+// Protected Methods
+
+void ServerGameSession::onBreakableBlockDestroyed(BreakableBlock &breakableBlock)
+{
+    m_deletedBreakableBlockXValues.push_back(breakableBlock.getGridX());
+    m_deletedBreakableBlockYValues.push_back(breakableBlock.getGridY());
+}
+
+void ServerGameSession::onPowerUpPickedUp(PowerUp &powerUp)
+{
+    m_deletedPowerUpsXValues.push_back(powerUp.getGridX());
+    m_deletedPowerUpsYValues.push_back(powerUp.getGridY());
 }
 
 // Private Methods
@@ -324,7 +377,6 @@ void ServerGameSession::swap(int *a, int *b)
     *a = *b;
     *b = temp;
 }
-
 void ServerGameSession::randomize(int arr[][2], int n)
 {
     // Start from the last element and swap one by one. We don't

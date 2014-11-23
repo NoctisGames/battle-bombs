@@ -30,12 +30,21 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final String WINNING_PLAYER_INDEX = "winningPlayerIndex";
     private static final String TIME_TO_NEXT_ROUND = "timeToNextRound";
     private static final String MAP_TYPE = "mapType";
+    private static final String IS_SUDDEN_DEATH_MODE = "isSuddenDeathMode";
+    private static final String TIME_SINCE_SUDDEN_DEATH_MODE_BEGAN = "timeSinceSuddenDeathModeBegan";
     private static final String NUM_SECONDS_LEFT_FOR_ROUND = "numSecondsLeftForRound";
     private static final String EVENTS = "events";
     private static final String NUM_BREAKABLE_BLOCKS = "numBreakableBlocks";
     private static final String BREAKABLE_BLOCK_X_VALUES = "breakableBlockXValues";
     private static final String BREAKABLE_BLOCK_Y_VALUES = "breakableBlockYValues";
     private static final String BREAKABLE_BLOCK_POWER_UP_FLAGS = "breakableBlockPowerUpFlags";
+    private static final String NUM_DELETED_BREAKABLE_BLOCKS = "numDeletedBreakableBlocks";
+    private static final String DELETED_BREAKABLE_BLOCK_X_VALUES = "deletedBreakableBlockXValues";
+    private static final String DELETED_BREAKABLE_BLOCK_Y_VALUES = "deletedBreakableBlockYValues";
+    private static final String NUM_DELETED_POWER_UPS = "numDeletedPowerUps";
+    private static final String DELETED_POWER_UP_X_VALUES = "deletedPowerUpsXValues";
+    private static final String DELETED_POWER_UP_Y_VALUES = "deletedPowerUpsYValues";
+    private static final String NUM_BREAKABLE_BLOCKS_AT_SPAWN_TIME = "numBreakableBlocksAtSpawnTime";
     private static final int TIME_BETWEEN_ROUNDS = 20;
     private static final int PLATFORM_UNKNOWN = 0;
     private static final int NUM_MAPS = 3;
@@ -45,6 +54,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final short CLIENT_UPDATE = 1338;
     private static final short SUDDEN_DEATH = 1339;
     private static final short GAME_OVER = 1340;
+    private static final short HARD_UPDATE = 1341;
     private static final int PLAYER_DEATH = 11;
     private static final int PLAYER_EVENT_BASE = 100000000;
     private static final int PLAYER_EVENT_DIRECTION_BASE = 10000000;
@@ -71,6 +81,8 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
 
     private int _numSecondsLeftForRound;
     private float _stateTime;
+    private float _timeSinceLastHardUpdate;
+    private float _timeSinceSuddenDeathModeBegan;
     private float _oneOrLessPlayersAliveTimer;
     private float _countdownTime;
     private boolean _isGameRunning;
@@ -85,6 +97,8 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     {
         _room = room;
         _stateTime = 0;
+        _timeSinceLastHardUpdate = 0;
+        _timeSinceSuddenDeathModeBegan = 0;
         _oneOrLessPlayersAliveTimer = 0;
         _countdownTime = 0;
         _isGameRunning = false;
@@ -114,6 +128,8 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     if (!_isGameRunning)
                     {
                         _stateTime = 0;
+                        _timeSinceLastHardUpdate = 0;
+                        _timeSinceSuddenDeathModeBegan = 0;
                         _countdownTime = 0;
                         _oneOrLessPlayersAliveTimer = 0;
                     }
@@ -200,6 +216,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     }
 
                     short numAlive = 0;
+                    short numHumansAlive = 0;
                     short winningPlayerIndex = -1;
                     for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
                     {
@@ -207,6 +224,11 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                         {
                             winningPlayerIndex = playerIndex;
                             numAlive++;
+
+                            if (!is_player_bot(_room.getId(), playerIndex))
+                            {
+                                numHumansAlive++;
+                            }
                         }
                     }
 
@@ -232,7 +254,12 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                             }
                         }
 
-                        if (!_isSuddenDeathMode && _numSecondsLeftForRound <= 60)
+                        if (_isSuddenDeathMode)
+                        {
+                            _timeSinceSuddenDeathModeBegan += deltaTime;
+                        }
+
+                        if (!_isSuddenDeathMode && (_numSecondsLeftForRound <= 60 || numHumansAlive == 0))
                         {
                             try
                             {
@@ -278,6 +305,14 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                                 System.err.println(e.toString());
                             }
                         }
+
+                        _timeSinceLastHardUpdate += deltaTime;
+                        if (_timeSinceLastHardUpdate > 4)
+                        {
+                            _timeSinceLastHardUpdate = 0;
+
+                            sendHardUpdateToClients();
+                        }
                     }
                     else
                     {
@@ -308,111 +343,116 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 }
             }
         }
-        else if (_inRoomUserSessionDataMap.size() > 0)
+        else
         {
-            _stateTime += deltaTime;
-            _countdownTime += deltaTime;
-            if (_countdownTime > 1)
+            if (_inRoomUserSessionDataMap.size() > 0)
             {
-                _countdownTime -= 1;
-
-                try
+                _stateTime += deltaTime;
+                _countdownTime += deltaTime;
+                if (_countdownTime > 1)
                 {
-                    JSONObject tobeSent = new JSONObject();
-                    tobeSent.put(EVENT_TYPE, PRE_GAME_SERVER_UPDATE);
-                    tobeSent.put(TIME_TO_NEXT_ROUND, TIME_BETWEEN_ROUNDS - (int) _stateTime);
-                    tobeSent.put(NUM_PLAYERS, _inRoomUserSessionDataMap.size());
+                    _countdownTime -= 1;
+
+                    try
+                    {
+                        JSONObject tobeSent = new JSONObject();
+                        tobeSent.put(EVENT_TYPE, PRE_GAME_SERVER_UPDATE);
+                        tobeSent.put(TIME_TO_NEXT_ROUND, TIME_BETWEEN_ROUNDS - (int) _stateTime);
+                        tobeSent.put(NUM_PLAYERS, _inRoomUserSessionDataMap.size());
+                        for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
+                        {
+                            IUser user = (IUser) entry.getKey();
+                            UserSessionData userSessionData = (UserSessionData) entry.getValue();
+
+                            short playerIndex = userSessionData._playerIndex;
+
+                            tobeSent.put("playerIndex" + playerIndex, user.getName());
+                            tobeSent.put("playerIndex" + playerIndex + "Platform", userSessionData._platform);
+                        }
+                        System.out.println(PRE_GAME_TICK_LOG);
+
+                        updateRoomWithMessage(tobeSent.toString());
+                    }
+                    catch (JSONException e)
+                    {
+                        System.err.println(e.toString());
+                    }
+                }
+
+                if (_stateTime > TIME_BETWEEN_ROUNDS)
+                {
+                    // We are re-initialzing the list, starting from 0,
+                    // so that we don't end up with a game with only 2 players
+                    // that indexed at 3 and 7 or something weird like that.
+                    for (short i = 0; i < _playerSpotsOccupied.length; i++)
+                    {
+                        _playerSpotsOccupied[i] = false;
+                        _playerSpotsReceivedGameStateCommand[i] = false;
+                        _activePlayerNames[i] = "";
+                    }
+
+                    _inGameUserSessionDataMap.clear();
+
+                    short i = 0;
                     for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
                     {
                         IUser user = (IUser) entry.getKey();
                         UserSessionData userSessionData = (UserSessionData) entry.getValue();
 
-                        short playerIndex = userSessionData._playerIndex;
+                        userSessionData._playerIndex = i;
+                        _playerSpotsOccupied[i] = true;
+                        _playerSpotsReceivedGameStateCommand[i] = true;
+                        _activePlayerNames[i] = user.getName();
 
-                        tobeSent.put("playerIndex" + playerIndex, user.getName());
-                        tobeSent.put("playerIndex" + playerIndex + "Platform", userSessionData._platform);
+                        // Lock in users for this game session, more users can join the room,
+                        // but they won't be included in the game until the next round.
+                        _inGameUserSessionDataMap.put(user, userSessionData);
+
+                        i++;
                     }
-                    System.out.println(PRE_GAME_TICK_LOG);
 
-                    updateRoomWithMessage(tobeSent.toString());
-                }
-                catch (JSONException e)
-                {
-                    System.err.println(e.toString());
-                }
-            }
+                    init(_room.getId(), _inGameUserSessionDataMap.size(), mapType);
 
-            if (_stateTime > TIME_BETWEEN_ROUNDS)
-            {
-                // We are re-initialzing the list, starting from 0,
-                // so that we don't end up with a game with only 2 players
-                // that indexed at 3 and 7 or something weird like that.
-                for (short i = 0; i < _playerSpotsOccupied.length; i++)
-                {
-                    _playerSpotsOccupied[i] = false;
-                    _playerSpotsReceivedGameStateCommand[i] = false;
-                    _activePlayerNames[i] = "";
-                }
-
-                _inGameUserSessionDataMap.clear();
-
-                short i = 0;
-                for (Map.Entry entry : _inRoomUserSessionDataMap.entrySet())
-                {
-                    IUser user = (IUser) entry.getKey();
-                    UserSessionData userSessionData = (UserSessionData) entry.getValue();
-
-                    userSessionData._playerIndex = i;
-                    _playerSpotsOccupied[i] = true;
-                    _playerSpotsReceivedGameStateCommand[i] = true;
-                    _activePlayerNames[i] = user.getName();
-
-                    // Lock in users for this game session, more users can join the room,
-                    // but they won't be included in the game until the next round.
-                    _inGameUserSessionDataMap.put(user, userSessionData);
-
-                    i++;
-                }
-
-                init(_room.getId(), _inGameUserSessionDataMap.size(), mapType);
-
-                for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
-                {
-                    if (is_player_bot(_room.getId(), playerIndex))
+                    for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
                     {
-                        String botName;
-                        while (isBotNameAlreadyInUseForRound((botName = Globals.getRandomBotName())))
+                        if (is_player_bot(_room.getId(), playerIndex))
                         {
-                            // We wait until we get a unique name
-                        }
+                            String botName;
+                            while (isBotNameAlreadyInUseForRound((botName = Globals.getRandomBotName())))
+                            {
+                                // We wait until we get a unique name
+                            }
 
-                        _activePlayerNames[playerIndex] = botName;
+                            _activePlayerNames[playerIndex] = botName;
+                        }
+                    }
+
+                    _numSecondsLeftForRound = 180;
+
+                    String beginGameCommand = getGameStateCommand(BEGIN_GAME);
+                    if (beginGameCommand != null)
+                    {
+                        updateRoomWithMessage(beginGameCommand);
+
+                        _isGameRunning = true;
+                        _isGameCountingDown = true;
+                        _isSuddenDeathMode = false;
+                        _stateTime = 0;
+                        _timeSinceLastHardUpdate = 0;
+                        _timeSinceSuddenDeathModeBegan = 0;
+                        _oneOrLessPlayersAliveTimer = 0;
+                        _countdownTime = 0;
+
+                        System.out.println(GAME_BEGIN_LOG);
                     }
                 }
-
-                _numSecondsLeftForRound = 180;
-
-                String beginGameCommand = getGameStateCommand(BEGIN_GAME);
-                if (beginGameCommand != null)
-                {
-                    updateRoomWithMessage(beginGameCommand);
-
-                    _isGameRunning = true;
-                    _isGameCountingDown = true;
-                    _isSuddenDeathMode = false;
-                    _stateTime = 0;
-                    _oneOrLessPlayersAliveTimer = 0;
-                    _countdownTime = 0;
-
-                    System.out.println(GAME_BEGIN_LOG);
-                }
             }
-        }
-        else
-        {
-            _stateTime = 0;
-            _oneOrLessPlayersAliveTimer = 0;
-            _countdownTime = 0;
+            else
+            {
+                _stateTime = 0;
+                _oneOrLessPlayersAliveTimer = 0;
+                _countdownTime = 0;
+            }
         }
 
         // Moving average calc
@@ -452,6 +492,9 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             JSONObject tobeSent = new JSONObject();
             tobeSent.put(EVENT_TYPE, eventType);
             tobeSent.put(MAP_TYPE, mapType);
+            tobeSent.put(IS_SUDDEN_DEATH_MODE, _isSuddenDeathMode);
+            tobeSent.put(NUM_BREAKABLE_BLOCKS_AT_SPAWN_TIME, get_num_breakable_blocks_at_spawn_time(_room.getId()));
+            tobeSent.put(TIME_SINCE_SUDDEN_DEATH_MODE_BEGAN, _timeSinceSuddenDeathModeBegan);
             tobeSent.put(NUM_SECONDS_LEFT_FOR_ROUND, _numSecondsLeftForRound);
             tobeSent.put(NUM_PLAYERS, get_num_players(_room.getId()));
 
@@ -488,6 +531,12 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     breakableBlockYValuesStringBuilder.append(',');
                     breakableBlockPowerUpFlagsStringBuilder.append(',');
                 }
+                else
+                {
+                    breakableBlockXValuesStringBuilder.append(",-1");
+                    breakableBlockYValuesStringBuilder.append(",-1");
+                    breakableBlockPowerUpFlagsStringBuilder.append(",-1");
+                }
             }
 
             tobeSent.put(NUM_BREAKABLE_BLOCKS, numBreakableBlocks);
@@ -503,6 +552,69 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         }
 
         return null;
+    }
+
+    private void sendHardUpdateToClients()
+    {
+        try
+        {
+            JSONObject tobeSent = new JSONObject();
+            tobeSent.put(EVENT_TYPE, HARD_UPDATE);
+
+            int numDeletedBreakableBlocks = get_num_deleted_breakable_blocks(_room.getId());
+            final StringBuilder deletedBreakableBlockXValuesStringBuilder = new StringBuilder();
+            final StringBuilder deletedBreakableBlockYValuesStringBuilder = new StringBuilder();
+            for (short j = 0; j < numDeletedBreakableBlocks; j++)
+            {
+                deletedBreakableBlockXValuesStringBuilder.append(get_deleted_breakable_block_grid_x(_room.getId(), j));
+                deletedBreakableBlockYValuesStringBuilder.append(get_deleted_breakable_block_grid_y(_room.getId(), j));
+
+                if (j < numDeletedBreakableBlocks - 1)
+                {
+                    deletedBreakableBlockXValuesStringBuilder.append(',');
+                    deletedBreakableBlockYValuesStringBuilder.append(',');
+                }
+                else
+                {
+                    deletedBreakableBlockXValuesStringBuilder.append(",-1");
+                    deletedBreakableBlockYValuesStringBuilder.append(",-1");
+                }
+            }
+
+            tobeSent.put(NUM_DELETED_BREAKABLE_BLOCKS, numDeletedBreakableBlocks);
+            tobeSent.put(DELETED_BREAKABLE_BLOCK_X_VALUES, deletedBreakableBlockXValuesStringBuilder.toString());
+            tobeSent.put(DELETED_BREAKABLE_BLOCK_Y_VALUES, deletedBreakableBlockYValuesStringBuilder.toString());
+
+            int numDeletedPowerUps = get_num_deleted_power_ups(_room.getId());
+            final StringBuilder deletedPowerUpXValuesStringBuilder = new StringBuilder();
+            final StringBuilder deletedPowerUpYValuesStringBuilder = new StringBuilder();
+            for (short j = 0; j < numDeletedPowerUps; j++)
+            {
+                deletedPowerUpXValuesStringBuilder.append(get_deleted_power_up_grid_x(_room.getId(), j));
+                deletedPowerUpYValuesStringBuilder.append(get_deleted_power_up_grid_y(_room.getId(), j));
+
+                if (j < numDeletedPowerUps - 1)
+                {
+                    deletedPowerUpXValuesStringBuilder.append(',');
+                    deletedPowerUpYValuesStringBuilder.append(',');
+                }
+                else
+                {
+                    deletedPowerUpXValuesStringBuilder.append(",-1");
+                    deletedPowerUpYValuesStringBuilder.append(",-1");
+                }
+            }
+
+            tobeSent.put(NUM_DELETED_POWER_UPS, numDeletedPowerUps);
+            tobeSent.put(DELETED_POWER_UP_X_VALUES, deletedPowerUpXValuesStringBuilder.toString());
+            tobeSent.put(DELETED_POWER_UP_Y_VALUES, deletedPowerUpYValuesStringBuilder.toString());
+
+            _room.BroadcastChat(SERVER, tobeSent.toString());
+        }
+        catch (JSONException e)
+        {
+            System.err.println(e.toString());
+        }
     }
 
     private void appendBotData(JSONObject tobeSent) throws JSONException
@@ -610,23 +722,23 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         System.out.println("_inRoomUserSessionDataMap size: " + _inRoomUserSessionDataMap.size());
         System.out.println("_inGameUserSessionDataMap size: " + _inGameUserSessionDataMap.size());
         System.out.println("_playerSpotsOccupied: { "
-                + _playerSpotsOccupied[0] + ", "
-                + _playerSpotsOccupied[1] + ", "
-                + _playerSpotsOccupied[2] + ", "
-                + _playerSpotsOccupied[3] + ", "
-                + _playerSpotsOccupied[4] + ", "
-                + _playerSpotsOccupied[5] + ", "
-                + _playerSpotsOccupied[6] + ", "
-                + _playerSpotsOccupied[7] + " }");
+                           + _playerSpotsOccupied[0] + ", "
+                           + _playerSpotsOccupied[1] + ", "
+                           + _playerSpotsOccupied[2] + ", "
+                           + _playerSpotsOccupied[3] + ", "
+                           + _playerSpotsOccupied[4] + ", "
+                           + _playerSpotsOccupied[5] + ", "
+                           + _playerSpotsOccupied[6] + ", "
+                           + _playerSpotsOccupied[7] + " }");
         System.out.println("_playerSpotsReceivedBeginGameCommand: { "
-                + _playerSpotsReceivedGameStateCommand[0] + ", "
-                + _playerSpotsReceivedGameStateCommand[1] + ", "
-                + _playerSpotsReceivedGameStateCommand[2] + ", "
-                + _playerSpotsReceivedGameStateCommand[3] + ", "
-                + _playerSpotsReceivedGameStateCommand[4] + ", "
-                + _playerSpotsReceivedGameStateCommand[5] + ", "
-                + _playerSpotsReceivedGameStateCommand[6] + ", "
-                + _playerSpotsReceivedGameStateCommand[7] + " }");
+                           + _playerSpotsReceivedGameStateCommand[0] + ", "
+                           + _playerSpotsReceivedGameStateCommand[1] + ", "
+                           + _playerSpotsReceivedGameStateCommand[2] + ", "
+                           + _playerSpotsReceivedGameStateCommand[3] + ", "
+                           + _playerSpotsReceivedGameStateCommand[4] + ", "
+                           + _playerSpotsReceivedGameStateCommand[5] + ", "
+                           + _playerSpotsReceivedGameStateCommand[6] + ", "
+                           + _playerSpotsReceivedGameStateCommand[7] + " }");
     }
 
     private static native void start(String roomId);
@@ -656,6 +768,20 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static native int get_breakable_block_grid_y(String roomId, int breakable_block_index);
 
     private static native int get_breakable_block_power_up_flag(String roomId, int breakable_block_index);
+
+    private static native int get_num_deleted_breakable_blocks(String roomId);
+
+    private static native int get_deleted_breakable_block_grid_x(String roomId, int breakable_block_index);
+
+    private static native int get_deleted_breakable_block_grid_y(String roomId, int breakable_block_index);
+
+    private static native int get_num_deleted_power_ups(String roomId);
+
+    private static native int get_deleted_power_up_grid_x(String roomId, int power_up_index);
+
+    private static native int get_deleted_power_up_grid_y(String roomId, int power_up_index);
+
+    private static native int get_num_breakable_blocks_at_spawn_time(String roomId);
 
     private static native int get_oldest_event_id(String roomId);
 }

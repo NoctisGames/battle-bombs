@@ -10,10 +10,12 @@
 #import "Logger.h"
 #import "Music.h"
 #import "Sound.h"
+#import "UIView+Toast.h"
 
 // C++
 #include "game.h"
 #include "ResourceConstants.h"
+#include "ScreenState.h"
 
 // AdMob
 #import "GADBannerView.h"
@@ -177,20 +179,17 @@ static bool isRunningiOS8 = false;
 
 - (void)update
 {
-    int gameState = get_state();
-    switch (gameState)
+    int screenState = get_state();
+    switch (screenState)
     {
-        case 0:
+        case SCREEN_STATE_ENTERED_SPECTATOR_MODE:
+            [self performSelectorOnMainThread:@selector(showToastWithMessage:) withObject:NSLocalizedString(@"you_are_in_spectator_mode", nil) waitUntilDone:NO];
+            clear_state();
+        case SCREEN_STATE_NORMAL:
             update(self.timeSinceLastUpdate);
             [self pushEvents];
-            break;
-        case 1:
-            [self handleGameState:1];
-            break;
-        case 2:
-            [self handleGameState:2];
-            break;
         default:
+            [self handleScreenState:screenState];
             break;
     }
 }
@@ -206,7 +205,7 @@ static bool isRunningiOS8 = false;
 
 #pragma mark <Protected>
 
-- (void)handleGameState:(int)gameState
+- (void)handleScreenState:(int)screenState
 {
     // Override in subclass
 }
@@ -355,6 +354,13 @@ static bool isRunningiOS8 = false;
 - (bool)isOffline
 {
     return false;
+}
+
+#pragma mark <Private>
+
+- (void)showToastWithMessage:(NSString *)message
+{
+    [self.view makeToast:message];
 }
 
 @end

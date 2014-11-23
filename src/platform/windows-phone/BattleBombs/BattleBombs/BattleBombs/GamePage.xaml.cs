@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.IO.IsolatedStorage;
 using com.shephertz.app42.gaming.multiplayer.client;
 using com.shephertz.app42.gaming.multiplayer.client.events;
+using Coding4Fun.Toolkit.Controls;
 using BattleBombsComp;
 
 namespace BattleBombs
@@ -139,6 +140,18 @@ namespace BattleBombs
                 {
                     MainPage.isConnectionError = true;
                     NavigationService.GoBack();
+                });
+            }
+            else if (command.Equals("DISPLAY_TOAST"))
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    ToastPrompt toast = new ToastPrompt();
+                    toast.FontSize = 30;
+                    toast.Title = param;
+                    toast.TextOrientation = System.Windows.Controls.Orientation.Horizontal;
+
+                    toast.Show();
                 });
             }
         }

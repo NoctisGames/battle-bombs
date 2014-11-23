@@ -1,1 +1,1 @@
-../../../core/opengles/texture_shader.vsh
+../../../core/framework/opengles/texture_shader.vsh

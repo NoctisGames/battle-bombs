@@ -13,12 +13,12 @@
 
 // Down for Maintenance Dialog
 "down_for_maintenance_title" = "Down for Maintenance";
-"down_for_maintenance_message" = "Techne Games is down for maintenance, but will be back online soon.\nFeel free to enjoy the offline mode in the meantime.";
+"down_for_maintenance_message" = "Battle Bombs is down for maintenance, but will be back online soon.\nFeel free to enjoy the offline mode in the meantime.";
 "down_for_maintenance_cancel" = "OK";
 
 // Connection Error Dialog
 "connection_error_title" = "Connection Error";
-"connection_error_message" = "Your device is unable to connect to Techne Games. Please check your connection and try again.";
+"connection_error_message" = "Your device is unable to connect to Battle Bombs. Please check your connection and try again.";
 "connection_error_cancel" = "OK";
 
 // Enter Username Dialog
@@ -35,3 +35,6 @@
 
 // JSON Request Message
 "json_request_progress_message" = "One Moment...";
+
+// In Game Toasts
+"you_are_in_spectator_mode" = "You are now in Spectator Mode";

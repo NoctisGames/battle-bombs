@@ -1,1 +1,1 @@
-../../../core/opengles/texture_shader.fsh
+../../../core/framework/opengles/texture_shader.fsh
