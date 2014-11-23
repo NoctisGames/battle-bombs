@@ -413,7 +413,15 @@ void GameSession::updateCommon(float deltaTime)
                         else if((*itr)->getShadow().isTargetOccupiedByBreakableBlock())
                         {
                             BreakableBlock *breakableBlock = (*itr)->getShadow().getTargetBreakableBlock();
-                            breakableBlock->onHitByIceBall();
+                            for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end(); itr++)
+                            {
+                                if(breakableBlock == (*itr).get())
+                                {
+                                    // Test to see if breakable block still exists
+                                    breakableBlock->onHitByIceBall();
+                                    break;
+                                }
+                            }
                         }
                         else
                         {
