@@ -44,6 +44,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static final String NUM_DELETED_POWER_UPS = "numDeletedPowerUps";
     private static final String DELETED_POWER_UP_X_VALUES = "deletedPowerUpsXValues";
     private static final String DELETED_POWER_UP_Y_VALUES = "deletedPowerUpsYValues";
+    private static final String NUM_BREAKABLE_BLOCKS_AT_SPAWN_TIME = "numBreakableBlocksAtSpawnTime";
     private static final int TIME_BETWEEN_ROUNDS = 20;
     private static final int PLATFORM_UNKNOWN = 0;
     private static final int NUM_MAPS = 3;
@@ -607,6 +608,8 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             tobeSent.put(DELETED_POWER_UP_X_VALUES, deletedPowerUpXValuesStringBuilder.toString());
             tobeSent.put(DELETED_POWER_UP_Y_VALUES, deletedPowerUpYValuesStringBuilder.toString());
 
+            tobeSent.put(NUM_BREAKABLE_BLOCKS_AT_SPAWN_TIME, get_num_breakable_blocks_at_spawn_time(_room.getId()));
+
             _room.BroadcastChat(SERVER, tobeSent.toString());
         }
         catch (JSONException e)
@@ -778,6 +781,8 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     private static native int get_deleted_power_up_grid_x(String roomId, int power_up_index);
 
     private static native int get_deleted_power_up_grid_y(String roomId, int power_up_index);
+
+    private static native int get_num_breakable_blocks_at_spawn_time(String roomId);
 
     private static native int get_oldest_event_id(String roomId);
 }
