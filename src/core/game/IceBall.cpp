@@ -124,15 +124,16 @@ void IceBall::handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath)
         if(m_position->getY() <= m_fTargetY)
         {
             m_isTargetReached = true;
+            
+            m_position->setY(m_fTargetY);
         }
     }
     else if(timeSinceSuddenDeath > m_fTimeUntilAppearance)
     {
         m_isVisible = true;
+        m_fStateTime = 0;
         
         m_fallingObjectShadow->handleTimeSinceSuddenDeathModeBegan(delta);
-        
-        m_fStateTime = delta;
     }
     else
     {

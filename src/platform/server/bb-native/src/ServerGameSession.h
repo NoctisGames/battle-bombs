@@ -44,6 +44,8 @@ public:
     
     int getDeletedPowerUpGridY(int powerUpIndex);
     
+    int getNumBreakableBlocksAtSpawnTime();
+    
     int popOldestEventId();
     
 protected:

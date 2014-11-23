@@ -304,6 +304,11 @@ int ServerGameSession::getDeletedPowerUpGridY(int powerUpIndex)
     return m_deletedPowerUpsYValues.at(powerUpIndex);
 }
 
+int ServerGameSession::getNumBreakableBlocksAtSpawnTime()
+{
+    return m_iNumBreakableBlocksAtSpawnTime;
+}
+
 int ServerGameSession::popOldestEventId()
 {
     return m_gameListener->popOldestEventId();

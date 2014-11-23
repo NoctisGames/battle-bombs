@@ -54,6 +54,8 @@ extern "C"
     JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1deleted_1power_1up_1grid_1x(JNIEnv* env, jclass cls, jstring room_id, jint power_up_index);
     
     JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1deleted_1power_1up_1grid_1y(JNIEnv* env, jclass cls, jstring room_id, jint power_up_index);
+    
+    JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1num_1breakable_1blocks_1at_1spawn_1time(JNIEnv* env, jclass cls, jstring room_id);
 
     JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1oldest_1event_1id(JNIEnv* env, jclass cls, jstring room_id);
 };
@@ -360,6 +362,20 @@ JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1delete
     if (gameSession != nullptr)
     {
         return gameSession->getDeletedPowerUpGridY(power_up_index);
+    }
+    
+    return 0;
+}
+
+JNIEXPORT int JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_1num_1breakable_1blocks_1at_1spawn_1time(JNIEnv* env, jclass cls, jstring room_id)
+{
+    UNUSED(env);
+    UNUSED(cls);
+    
+    ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
+    if (gameSession != nullptr)
+    {
+        return gameSession->getNumBreakableBlocksAtSpawnTime();
     }
     
     return 0;

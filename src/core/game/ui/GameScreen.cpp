@@ -745,6 +745,9 @@ void GameScreen::beginSpectate(rapidjson::Document &d)
                 bool isSuddenDeathMode = d[isSuddenDeathModeKey].GetBool();
                 if(isSuddenDeathMode)
                 {
+                    static const char *numBreakableBlocksAtSpawnTimeKey = "numBreakableBlocksAtSpawnTime";
+                    m_iNumBreakableBlocksAtSpawnTime = d[numBreakableBlocksAtSpawnTimeKey].GetDouble();
+                    
                     suddenDeath();
                     
                     static const char *timeSinceSuddenDeathModeBeganKey = "timeSinceSuddenDeathModeBegan";
