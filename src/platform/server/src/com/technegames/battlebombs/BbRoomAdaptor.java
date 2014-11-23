@@ -493,6 +493,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             tobeSent.put(EVENT_TYPE, eventType);
             tobeSent.put(MAP_TYPE, mapType);
             tobeSent.put(IS_SUDDEN_DEATH_MODE, _isSuddenDeathMode);
+            tobeSent.put(NUM_BREAKABLE_BLOCKS_AT_SPAWN_TIME, get_num_breakable_blocks_at_spawn_time(_room.getId()));
             tobeSent.put(TIME_SINCE_SUDDEN_DEATH_MODE_BEGAN, _timeSinceSuddenDeathModeBegan);
             tobeSent.put(NUM_SECONDS_LEFT_FOR_ROUND, _numSecondsLeftForRound);
             tobeSent.put(NUM_PLAYERS, get_num_players(_room.getId()));
@@ -607,8 +608,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
             tobeSent.put(NUM_DELETED_POWER_UPS, numDeletedPowerUps);
             tobeSent.put(DELETED_POWER_UP_X_VALUES, deletedPowerUpXValuesStringBuilder.toString());
             tobeSent.put(DELETED_POWER_UP_Y_VALUES, deletedPowerUpYValuesStringBuilder.toString());
-
-            tobeSent.put(NUM_BREAKABLE_BLOCKS_AT_SPAWN_TIME, get_num_breakable_blocks_at_spawn_time(_room.getId()));
 
             _room.BroadcastChat(SERVER, tobeSent.toString());
         }
