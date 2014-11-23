@@ -630,6 +630,7 @@ void GameScreen::processServerMessages()
         if(d.IsObject())
         {
             static const char *eventTypeKey = "eventType";
+			static const char *phaseKey = "phase";
             
             if(d.HasMember(eventTypeKey))
             {
@@ -637,9 +638,7 @@ void GameScreen::processServerMessages()
                 switch (eventType)
                 {
                     case PRE_GAME:
-                        static const char *phaseKey = "phase";
-                        
-                        if(d.HasMember(phaseKey))
+						if(d.HasMember(phaseKey))
                         {
                             int phase = d[phaseKey].GetInt();
                             m_waitingForServerInterface->setPreGamePhase(phase);
