@@ -690,7 +690,7 @@ void GameScreen::processServerMessages()
                     case HARD_UPDATE:
                         if(m_gameState == RUNNING || m_gameState == SPECTATING)
                         {
-                            
+                            hardUpdate(d);
                         }
                         break;
                     default:
