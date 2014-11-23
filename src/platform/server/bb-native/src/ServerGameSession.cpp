@@ -115,7 +115,7 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
             {
                 continue;
             }
-            
+
             // 66% chance there will be a breakable block at all
             if ((rand() % 100 + 1) < 67)
             {
@@ -144,7 +144,7 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
 
                 // If these two blocks don't get caught, the flag remains 0 and no powerup will be created
                 m_breakableBlocks.push_back(std::unique_ptr<BreakableBlock>(new BreakableBlock(j, i, flag)));
-                
+
                 m_iNumBreakableBlocksAtSpawnTime++;
             }
         }
@@ -169,7 +169,7 @@ void ServerGameSession::init()
     m_fireBalls.clear();
     m_iceBalls.clear();
     m_icePatches.clear();
-    
+
     m_deletedBreakableBlockXValues.clear();
     m_deletedBreakableBlockYValues.clear();
     m_deletedPowerUpsXValues.clear();
@@ -178,7 +178,7 @@ void ServerGameSession::init()
     srand((int) time(NULL));
 
     m_fCountDownTimeLeft = 4;
-    
+
     m_iNumBreakableBlocksAtSpawnTime = 0;
 }
 
@@ -281,12 +281,12 @@ int ServerGameSession::getNumDeletedBreakableBlocks()
 
 int ServerGameSession::getDeletedBreakableBlockGridX(int breakableBlockIndex)
 {
-    return m_deletedBreakableBlockXValues.at(breakableBlockIndex).get()->getGridX();
+    return m_deletedBreakableBlockXValues.at(breakableBlockIndex);
 }
 
 int ServerGameSession::getDeletedBreakableBlockGridY(int breakableBlockIndex)
 {
-    return m_deletedBreakableBlockYValues.at(breakableBlockIndex).get()->getGridY();
+    return m_deletedBreakableBlockYValues.at(breakableBlockIndex);
 }
 
 int ServerGameSession::getNumDeletedPowerUps()
@@ -296,12 +296,12 @@ int ServerGameSession::getNumDeletedPowerUps()
 
 int ServerGameSession::getDeletedPowerUpGridX(int powerUpIndex)
 {
-    return m_deletedPowerUpsXValues.at(powerUpIndex).get()->getGridX();
+    return m_deletedPowerUpsXValues.at(powerUpIndex);
 }
 
 int ServerGameSession::getDeletedPowerUpGridY(int powerUpIndex)
 {
-    return m_deletedPowerUpsYValues.at(powerUpIndex).get()->getGridY();
+    return m_deletedPowerUpsYValues.at(powerUpIndex);
 }
 
 int ServerGameSession::popOldestEventId()
@@ -372,7 +372,6 @@ void ServerGameSession::swap(int *a, int *b)
     *a = *b;
     *b = temp;
 }
-
 void ServerGameSession::randomize(int arr[][2], int n)
 {
     // Start from the last element and swap one by one. We don't
