@@ -97,6 +97,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         _room = room;
         _stateTime = 0;
         _timeSinceLastHardUpdate = 0;
+        _timeSinceSuddenDeathModeBegan = 0;
         _oneOrLessPlayersAliveTimer = 0;
         _countdownTime = 0;
         _isGameRunning = false;
@@ -127,6 +128,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     {
                         _stateTime = 0;
                         _timeSinceLastHardUpdate = 0;
+                        _timeSinceSuddenDeathModeBegan = 0;
                         _countdownTime = 0;
                         _oneOrLessPlayersAliveTimer = 0;
                     }
@@ -435,6 +437,8 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                         _isGameCountingDown = true;
                         _isSuddenDeathMode = false;
                         _stateTime = 0;
+                        _timeSinceLastHardUpdate = 0;
+                        _timeSinceSuddenDeathModeBegan = 0;
                         _oneOrLessPlayersAliveTimer = 0;
                         _countdownTime = 0;
 
