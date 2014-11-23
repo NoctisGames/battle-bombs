@@ -213,6 +213,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     }
 
                     short numAlive = 0;
+                    short numHumansAlive = 0;
                     short winningPlayerIndex = -1;
                     for (short playerIndex = 0; playerIndex < get_num_players(_room.getId()); playerIndex++)
                     {
@@ -220,6 +221,11 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                         {
                             winningPlayerIndex = playerIndex;
                             numAlive++;
+
+                            if (!is_player_bot(_room.getId(), playerIndex))
+                            {
+                                numHumansAlive++;
+                            }
                         }
                     }
 
@@ -250,7 +256,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                             _timeSinceSuddenDeathModeBegan += deltaTime;
                         }
 
-                        if (!_isSuddenDeathMode && _numSecondsLeftForRound <= 60)
+                        if (!_isSuddenDeathMode && (_numSecondsLeftForRound <= 60 || numHumansAlive == 0))
                         {
                             try
                             {
