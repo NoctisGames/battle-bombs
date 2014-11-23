@@ -678,7 +678,7 @@ void GameScreen::processServerMessages()
                     case SUDDEN_DEATH:
                         if(m_gameState == RUNNING || m_gameState == SPECTATING)
                         {
-                            suddenDeath(d);
+                            suddenDeath();
                         }
                         break;
                     case GAME_OVER:
