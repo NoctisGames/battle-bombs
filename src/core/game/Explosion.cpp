@@ -19,7 +19,7 @@ Explosion::Explosion(short power, int gridX, int gridY, std::vector<std::unique_
 {
     m_fStateTime = 0;
     m_fTravelTime = 0;
-    m_fExplosionTime = power == 2 ? 0.4f + power * 0.1f + 0.1f : 0.4f + power * 0.1f;
+    m_fExplosionTime = power == 2 ? 0.2f + power * 0.05f + 0.05f : 0.2f + power * 0.05f;
     m_sPower = power;
     m_sPowerRemaining = power - 1;
     m_sFrames = 1;
@@ -56,7 +56,7 @@ void Explosion::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock 
     m_fStateTime += deltaTime;
     m_fTravelTime += deltaTime;
     
-    static const float TIME_TO_TRAVEL = 0.1f;
+    static const float TIME_TO_TRAVEL = 0.05f;
     if(m_fTravelTime > TIME_TO_TRAVEL)
     {
         m_sFrames++;
