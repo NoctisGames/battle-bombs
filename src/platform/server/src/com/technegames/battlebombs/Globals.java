@@ -8,7 +8,7 @@ import java.util.Random;
  */
 public final class Globals
 {
-    public static final String CURRENT_AUTH_DATA = "T3chn3G4m35_1.2.0";
+    public static final String CURRENT_AUTH_DATA = "GowenGameDev_1.3.0";
     public static final String[] BOT_NAMES =
     {
         "Tyler Bot",
