@@ -1448,7 +1448,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Stephen Gowen (8S5X8SQ245)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stephen Gowen (8S5X8SQ245)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty\"/**";
@@ -1474,7 +1474,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "Battle Bombs";
-				PROVISIONING_PROFILE = "60979554-3fa1-45c0-bdfd-204e069c1205";
+				PROVISIONING_PROFILE = "8efc8ec7-0fb5-43d1-b526-11336ed002f4";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
@@ -1488,7 +1488,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Stephen Gowen (83V22B9TY9)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Stephen Gowen (83V22B9TY9)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty\"/**";
