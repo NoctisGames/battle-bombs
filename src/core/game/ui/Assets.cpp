@@ -246,7 +246,7 @@ TextureRegion& Assets::getBreakableBlockTextureRegion(BreakableBlock &breakableB
 {
     if(breakableBlock.getBreakableBlockState() == BB_NORMAL)
     {
-        static TextureRegion textureRegion = TextureRegion(BREAKABLE_BLOCK_TEXTURE_REGION_X, BREAKABLE_BLOCK_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+        static TextureRegion textureRegion = TextureRegion(BREAKABLE_BLOCK_FRAME_1_TEXTURE_REGION_X, BREAKABLE_BLOCK_FRAME_1_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
         
         return textureRegion;
     }
