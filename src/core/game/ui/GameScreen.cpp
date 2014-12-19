@@ -545,12 +545,11 @@ void GameScreen::updateGameEnding(float deltaTime)
             Assets::getInstance()->setMusicId(MUSIC_STOP);
             
             init();
+            return;
         }
     }
-    else
-    {
-        updateSpectating(deltaTime / (m_fTimeSinceGameOver + 1));
-    }
+    
+    updateSpectating(deltaTime / (m_fTimeSinceGameOver + 1));
 }
 
 void GameScreen::updateForOffline(float deltaTime)

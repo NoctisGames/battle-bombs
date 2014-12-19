@@ -128,7 +128,7 @@ void SpaceTile::update(float deltaTime, bool isSuddenDeath, std::vector<std::uni
             
             updateBounds();
             
-            if(m_position->getY() < (m_fOrigY - 1))
+            if(m_position->getY() < (m_fOrigY - 0.5f))
             {
                 m_shouldPlayerStartFalling = true;
             }
@@ -174,7 +174,7 @@ void SpaceTile::handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath)
         
         updateBounds();
         
-        if(m_position->getY() < (m_fOrigY - 1))
+        if(m_position->getY() < (m_fOrigY - 0.5f))
         {
             m_shouldPlayerStartFalling = true;
         }
