@@ -46,7 +46,7 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
 {
     init();
 
-    initializeInsideBlocksAndMapBordersForMapType(mapType);
+    initializeMap(mapType);
 
     int playerStartingPositions[8][2] = {
         {PLAYER_1_GRID_X, PLAYER_1_GRID_Y},
@@ -116,8 +116,8 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
                 continue;
             }
 
-            // 66% chance there will be a breakable block at all
-            if ((rand() % 100 + 1) < 67)
+            // 80% chance there will be a breakable block at all
+            if ((rand() % 100 + 1) < 81)
             {
                 int flag = POWER_UP_TYPE_NONE;
 
@@ -334,7 +334,7 @@ void ServerGameSession::updateRunning(float deltaTime)
 
     m_sEventIds.clear();
 
-    updateCommon(deltaTime);
+    updateMap(deltaTime);
 }
 
 void ServerGameSession::clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame)

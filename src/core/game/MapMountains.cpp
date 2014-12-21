@@ -15,7 +15,6 @@
 #include "InsideBlock.h"
 #include "ResourceConstants.h"
 #include "IceBall.h"
-#include "MiniMapGridType.h"
 #include "BreakableBlock.h"
 #include "FallingObjectShadow.h"
 #include "PathFinder.h"
