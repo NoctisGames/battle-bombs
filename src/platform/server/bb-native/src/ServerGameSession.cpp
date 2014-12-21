@@ -156,8 +156,7 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
 
 void ServerGameSession::init()
 {
-    m_gameListener.release();
-    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
+    GameSession::init();
     
     m_deletedBreakableBlockXValues.clear();
     m_deletedBreakableBlockYValues.clear();
@@ -167,8 +166,6 @@ void ServerGameSession::init()
     srand((int) time(NULL));
 
     m_fCountDownTimeLeft = 4;
-
-    m_iNumBreakableBlocksAtSpawnTime = 0;
 }
 
 void ServerGameSession::handleServerUpdate(const char *message)

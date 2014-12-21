@@ -78,6 +78,8 @@ void GameScreen::handleServerUpdate(const char *message)
 
 void GameScreen::init()
 {
+    GameSession::init();
+    
 	m_touchPoint.release();
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
 	m_displayXMovingGameObject.release();
@@ -88,9 +90,6 @@ void GameScreen::init()
 	m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface());
 	m_interfaceOverlay.release();
 	m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
-    
-    m_gameListener.release();
-    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
     
     m_player = nullptr;
     m_sPlayerIndex = -1;

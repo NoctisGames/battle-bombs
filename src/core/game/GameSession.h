@@ -36,9 +36,9 @@ class GameSession
 public:
     GameSession();
 
-    virtual void init() = 0;
-
     virtual void handleServerUpdate(const char *message) = 0;
+    
+    virtual void init();
     
     // For ServerGameSession to override
     virtual void onBreakableBlockDestroyed(BreakableBlock &breakableBlock);

@@ -40,7 +40,7 @@ public:
 
 	virtual void handleServerUpdate(const char *message);
     
-    void init();
+    virtual void init();
 
 	void onResume();
 	

@@ -39,9 +39,31 @@
 
 GameSession::GameSession()
 {
+    init();
+}
+
+void GameSession::init()
+{
+    m_gameListener.release();
+    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
+    
     m_gameState = WAITING;
     m_iNumBreakableBlocksAtSpawnTime = 0;
     m_isSuddenDeath = false;
+    
+    m_breakableBlocks.clear();
+    m_players.clear();
+    m_bombs.clear();
+    m_explosions.clear();
+    m_powerUps.clear();
+    m_spaceTiles.clear();
+    m_craters.clear();
+    m_fireBalls.clear();
+    m_iceBalls.clear();
+    m_icePatches.clear();
+    m_mapBorders.clear();
+    m_insideBlocks.clear();
+    m_spaceTiles.clear();
 }
 
 #pragma mark <For ServerGameSession to override>
@@ -185,22 +207,6 @@ int GameSession::getNumBreakableBlocksAtSpawnTime()
 void GameSession::initializeMap(int mapType)
 {
     m_map = std::unique_ptr<Map>(MapFactory::getInstance().createMap(mapType));
-    
-    m_isSuddenDeath = false;
-    
-    m_breakableBlocks.clear();
-    m_players.clear();
-    m_bombs.clear();
-    m_explosions.clear();
-    m_powerUps.clear();
-    m_spaceTiles.clear();
-    m_craters.clear();
-    m_fireBalls.clear();
-    m_iceBalls.clear();
-    m_icePatches.clear();
-    m_mapBorders.clear();
-    m_insideBlocks.clear();
-    m_spaceTiles.clear();
     
     m_map->initializeMap(this);
 }
