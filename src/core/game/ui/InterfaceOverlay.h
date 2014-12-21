@@ -39,9 +39,9 @@ class InterfaceOverlay
 public:
 	InterfaceOverlay(GameListener *gameListener);
     
-    void initializeMiniMap(GameSession *gameSession, Map *map);
+    void initializeMiniMap(GameSession *gameSession);
     
-    void update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, GameSession *gameSession, Map *map, int playerIndex, Game_State gameState);
+    void update(float deltaTime, PlayerDynamicGameObject &player, GameSession *gameSession, int playerIndex, Game_State gameState);
     
     void handleTouchDownInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     
@@ -101,6 +101,8 @@ private:
     float m_fButtonsStateTime;
     float m_fCountdownStateTime;
     int m_iNumSecondsLeft;
+    
+    void updateMiniMap(int x, int y, int miniMapGridType);
 };
 
 #endif /* defined(__battlebombs__InterfaceOverlay__) */

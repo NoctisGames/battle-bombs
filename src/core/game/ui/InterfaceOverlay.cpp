@@ -28,6 +28,7 @@
 #include "SpectatorControls.h"
 #include "Map.h"
 #include "GameSession.h"
+#include "MapBorder.h"
 
 InterfaceOverlay::InterfaceOverlay(GameListener *gameListener)
 {
@@ -59,12 +60,68 @@ InterfaceOverlay::InterfaceOverlay(GameListener *gameListener)
     m_iNumSecondsLeft = 180;
 }
 
-void InterfaceOverlay::initializeMiniMap(GameSession *gameSession, Map *map)
+void InterfaceOverlay::initializeMiniMap(GameSession *gameSession)
 {
-    map->initializeMiniMap(gameSession, m_miniMap);
+    for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
+    {
+        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
+        {
+            updateMiniMap(j, i, MINI_MAP_FREE_SPACE);
+        }
+    }
+    
+    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = gameSession->getInsideBlocks().begin(); itr != gameSession->getInsideBlocks().end(); itr++)
+    {
+        int gridX = (*itr)->getGridX();
+        int gridY = (*itr)->getGridY();
+        updateMiniMap(gridX, gridY, MINI_MAP_INSIDE_BLOCK);
+    }
+    
+    for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = gameSession->getBreakableBlocks().begin(); itr != gameSession->getBreakableBlocks().end(); itr++)
+    {
+        int gridX = (*itr)->getGridX();
+        int gridY = (*itr)->getGridY();
+        updateMiniMap(gridX, gridY, MINI_MAP_BREAKABLE_BLOCK);
+    }
+    
+    for (std::vector < std::unique_ptr < MapBorder >> ::iterator itr = gameSession->getMapBorders().begin(); itr != gameSession->getMapBorders().end(); itr++)
+    {
+        switch ((*itr)->getType())
+        {
+            case BORDER_BOTTOM_LEFT:
+                updateMiniMap(0, 0, MINI_MAP_MAP_BORDER);
+                updateMiniMap(1, 0, MINI_MAP_MAP_BORDER);
+                updateMiniMap(2, 0, MINI_MAP_MAP_BORDER);
+                updateMiniMap(0, 1, MINI_MAP_MAP_BORDER);
+                updateMiniMap(1, 1, MINI_MAP_MAP_BORDER);
+                updateMiniMap(2, 1, MINI_MAP_MAP_BORDER);
+                updateMiniMap(0, 2, MINI_MAP_MAP_BORDER);
+                updateMiniMap(1, 2, MINI_MAP_MAP_BORDER);
+                updateMiniMap(2, 2, MINI_MAP_MAP_BORDER);
+                break;
+            case BORDER_BOTTOM_RIGHT:
+                updateMiniMap(NUM_GRID_CELLS_PER_ROW - 3, 0, MINI_MAP_MAP_BORDER);
+                updateMiniMap(NUM_GRID_CELLS_PER_ROW - 2, 0, MINI_MAP_MAP_BORDER);
+                updateMiniMap(NUM_GRID_CELLS_PER_ROW - 1, 0, MINI_MAP_MAP_BORDER);
+                updateMiniMap(NUM_GRID_CELLS_PER_ROW - 3, 1, MINI_MAP_MAP_BORDER);
+                updateMiniMap(NUM_GRID_CELLS_PER_ROW - 2, 1, MINI_MAP_MAP_BORDER);
+                updateMiniMap(NUM_GRID_CELLS_PER_ROW - 1, 1, MINI_MAP_MAP_BORDER);
+                updateMiniMap(NUM_GRID_CELLS_PER_ROW - 3, 2, MINI_MAP_MAP_BORDER);
+                updateMiniMap(NUM_GRID_CELLS_PER_ROW - 2, 2, MINI_MAP_MAP_BORDER);
+                updateMiniMap(NUM_GRID_CELLS_PER_ROW - 1, 2, MINI_MAP_MAP_BORDER);
+                break;
+            case MOUNTAINS_DOOR:
+                updateMiniMap(6, GRID_CELL_NUM_ROWS - 1, MINI_MAP_MAP_BORDER);
+                updateMiniMap(7, GRID_CELL_NUM_ROWS - 1, MINI_MAP_MAP_BORDER);
+                updateMiniMap(8, GRID_CELL_NUM_ROWS - 1, MINI_MAP_MAP_BORDER);
+                break;
+            default:
+                break;
+        }
+    }
 }
 
-void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, GameSession *gameSession, Map *map, int playerIndex, Game_State gameState)
+void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, GameSession *gameSession, int playerIndex, Game_State gameState)
 {
     // Update Timer
     
@@ -84,9 +141,9 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
         
         for (int i = 0; i < m_playerAvatars.size(); i++)
         {
-            m_playerAvatars.at(i)->setPlayerIndex(players.at(i)->getPlayerIndex());
-            m_playerAvatars.at(i)->setPlayerState(players.at(i)->getPlayerState());
-            m_playerAvatars.at(i)->setIsBot(players.at(i)->isBot());
+            m_playerAvatars.at(i)->setPlayerIndex(gameSession->getPlayers().at(i)->getPlayerIndex());
+            m_playerAvatars.at(i)->setPlayerState(gameSession->getPlayers().at(i)->getPlayerState());
+            m_playerAvatars.at(i)->setIsBot(gameSession->getPlayers().at(i)->isBot());
         }
         
         if(player.getMaxBombCount() > 1)
@@ -119,7 +176,7 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
             
             if(m_activeButton->getPowerUpType() == POWER_UP_TYPE_PUSH)
             {
-                for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+                for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = gameSession->getBombs().begin(); itr != gameSession->getBombs().end(); itr++)
                 {
                     if(player.isBombInFrontOfPlayer((**itr)))
                     {
@@ -141,42 +198,42 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
         else
         {
             m_bombButton->setIsPressed(false);
-            m_bombButton->setButtonState(player.isAbleToDropAdditionalBomb(players, bombs) ? ENABLED : DISABLED);
+            m_bombButton->setButtonState(player.isAbleToDropAdditionalBomb(gameSession->getPlayers(), gameSession->getBombs()) ? ENABLED : DISABLED);
         }
     }
     else if(gameState == SPECTATING)
     {
-        m_spectatingWho = std::string(players.at(playerIndex)->getUsername());
+        m_spectatingWho = std::string(gameSession->getPlayers().at(playerIndex)->getUsername());
     }
     
     // Update Mini Map
     
-    initializeMiniMap(gameSession, map);
+    initializeMiniMap(gameSession);
     
-    for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = explosions.begin(); itr != explosions.end(); itr++)
+    for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = gameSession->getExplosions().begin(); itr != gameSession->getExplosions().end(); itr++)
     {
         for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
         {
             int x = (*itr2)->getGridX();
             int y = (*itr2)->getGridY();
-            map->updateMiniMap(m_miniMap, x, y, MINI_MAP_FIRE);
+            updateMiniMap(x, y, MINI_MAP_FIRE);
         }
     }
     
-    for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+    for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = gameSession->getBombs().begin(); itr != gameSession->getBombs().end(); itr++)
     {
         int x = (*itr)->getGridX();
         int y = (*itr)->getGridY();
-        map->updateMiniMap(m_miniMap, x, y, MINI_MAP_BOMB);
+        updateMiniMap(x, y, MINI_MAP_BOMB);
     }
     
-    for (int i = 0; i < players.size(); i++)
+    for (int i = 0; i < gameSession->getPlayers().size(); i++)
     {
-        if(players.at(i)->getPlayerState() == ALIVE)
+        if(gameSession->getPlayers().at(i)->getPlayerState() == ALIVE)
         {
-            int x = players.at(i)->getGridX();
-            int y = players.at(i)->getGridY();
-            map->updateMiniMap(m_miniMap, x, y, MINI_MAP_PLAYER_ONE + i);
+            int x = gameSession->getPlayers().at(i)->getGridX();
+            int y = gameSession->getPlayers().at(i)->getGridY();
+            updateMiniMap(x, y, MINI_MAP_PLAYER_ONE + i);
         }
     }
 }
@@ -429,4 +486,14 @@ Color & InterfaceOverlay::getColorForMiniMapGridType(int miniMapGridType)
 std::string & InterfaceOverlay::getSpectatingUsername()
 {
     return m_spectatingWho;
+}
+
+#pragma mark <Private>
+
+void InterfaceOverlay::updateMiniMap(int x, int y, int miniMapGridType)
+{
+    if (x >= 0 && x < NUM_GRID_CELLS_PER_ROW && y >= 0 && y < GRID_CELL_NUM_ROWS)
+    {
+        m_miniMap[x][y] = miniMapGridType;
+    }
 }

@@ -25,7 +25,6 @@
 
 void Map::initializeMap(GameSession *gameSession)
 {
-    // BEGIN MAP BORDER FAR
     gameSession->getMapBorders().push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_TOP, SCREEN_WIDTH / 2, WORLD_HEIGHT - 1.45522388023028f, SCREEN_WIDTH, 2.91044776046056f)));
     gameSession->getMapBorders().push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_LEFT, 0.7388059701492f, 15.76119403157902f, 1.4776119402984f, 20.0597014947369f)));
     gameSession->getMapBorders().push_back(std::unique_ptr<MapBorder>(new MapBorder(BORDER_RIGHT, 23.44029850746264f, 15.76119403157902f, 1.11940298507472f, 20.0597014947369f)));
@@ -71,53 +70,6 @@ void Map::initializeGameGrid(GameSession *gameSession, int (&gameGrid)[NUM_GRID_
     gameGrid[NUM_GRID_CELLS_PER_ROW - 3][2] = 9;
     gameGrid[NUM_GRID_CELLS_PER_ROW - 2][2] = 9;
     gameGrid[NUM_GRID_CELLS_PER_ROW - 1][2] = 9;
-}
-
-void Map::initializeMiniMap(GameSession *gameSession, int (&miniMap)[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
-{
-    for (int i = 0; i < GRID_CELL_NUM_ROWS; i++)
-    {
-        for (int j = 0; j < NUM_GRID_CELLS_PER_ROW; j++)
-        {
-            updateMiniMap(miniMap, j, i, MINI_MAP_FREE_SPACE);
-        }
-    }
-    
-    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = gameSession->getInsideBlocks().begin(); itr != gameSession->getInsideBlocks().end(); itr++)
-    {
-        int gridX = (*itr)->getGridX();
-        int gridY = (*itr)->getGridY();
-        updateMiniMap(miniMap, gridX, gridY, MINI_MAP_INSIDE_BLOCK);
-    }
-    
-    for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = gameSession->getBreakableBlocks().begin(); itr != gameSession->getBreakableBlocks().end(); itr++)
-    {
-        int gridX = (*itr)->getGridX();
-        int gridY = (*itr)->getGridY();
-        updateMiniMap(miniMap, gridX, gridY, MINI_MAP_BREAKABLE_BLOCK);
-    }
-    
-    // For Map Borders
-    
-    updateMiniMap(miniMap, 0, 0, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, 1, 0, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, 2, 0, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, 0, 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, 1, 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, 2, 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, 0, 2, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, 1, 2, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, 2, 2, MINI_MAP_MAP_BORDER);
-    
-    updateMiniMap(miniMap, NUM_GRID_CELLS_PER_ROW - 3, 0, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, NUM_GRID_CELLS_PER_ROW - 2, 0, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, NUM_GRID_CELLS_PER_ROW - 1, 0, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, NUM_GRID_CELLS_PER_ROW - 3, 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, NUM_GRID_CELLS_PER_ROW - 2, 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, NUM_GRID_CELLS_PER_ROW - 1, 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, NUM_GRID_CELLS_PER_ROW - 3, 2, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, NUM_GRID_CELLS_PER_ROW - 2, 2, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, NUM_GRID_CELLS_PER_ROW - 1, 2, MINI_MAP_MAP_BORDER);
 }
 
 void Map::update(GameSession *gameSession, float deltaTime, bool isSuddenDeath)
@@ -211,14 +163,6 @@ void Map::update(GameSession *gameSession, float deltaTime, bool isSuddenDeath)
         {
             itr++;
         }
-    }
-}
-
-void Map::updateMiniMap(int (&miniMap)[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS], int x, int y, int miniMapGridType)
-{
-    if (x >= 0 && x < NUM_GRID_CELLS_PER_ROW && y >= 0 && y < GRID_CELL_NUM_ROWS)
-    {
-        miniMap[x][y] = miniMapGridType;
     }
 }
 

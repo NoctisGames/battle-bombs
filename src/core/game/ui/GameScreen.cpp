@@ -402,7 +402,7 @@ void GameScreen::updateRunning(float deltaTime)
     
     m_sEventIds.clear();
     
-    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, this, m_map.get(), m_sPlayerIndex, m_gameState);
+    m_interfaceOverlay->update(deltaTime, *m_player, this, m_sPlayerIndex, m_gameState);
     
     m_displayXMovingGameObject->update(deltaTime);
     
@@ -448,7 +448,7 @@ void GameScreen::updateSpectating(float deltaTime)
     
     m_sEventIds.clear();
     
-    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, this, m_map.get(), m_sPlayerIndex, m_gameState);
+    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, this, m_sPlayerIndex, m_gameState);
     
     m_displayXMovingGameObject->update(deltaTime);
     
@@ -685,7 +685,7 @@ void GameScreen::beginGame(rapidjson::Document &d)
                 (*itr)->setIsDisplayingName(true);
             }
 
-			m_interfaceOverlay->update(0, *m_player, m_players, m_bombs, m_explosions, this, m_map.get(), m_sPlayerIndex, m_gameState);
+			m_interfaceOverlay->update(0, *m_player, this, m_sPlayerIndex, m_gameState);
         }
     }
 }
@@ -771,7 +771,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         
         PathFinder::getInstance().resetGameGrid();
         PathFinder::getInstance().initializeGameGrid(this, m_map.get());
-        m_interfaceOverlay->initializeMiniMap(this, m_map.get());
+        m_interfaceOverlay->initializeMiniMap(this);
         
         return true;
     }

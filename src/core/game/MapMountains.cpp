@@ -100,15 +100,6 @@ void MapMountains::initializeGameGrid(GameSession *gameSession, int (&gameGrid)[
     gameGrid[8][GRID_CELL_NUM_ROWS - 1] = 9;
 }
 
-void MapMountains::initializeMiniMap(GameSession *gameSession, int (&miniMap)[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS])
-{
-    Map::initializeMiniMap(gameSession, miniMap);
-    
-    updateMiniMap(miniMap, 6, GRID_CELL_NUM_ROWS - 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, 7, GRID_CELL_NUM_ROWS - 1, MINI_MAP_MAP_BORDER);
-    updateMiniMap(miniMap, 8, GRID_CELL_NUM_ROWS - 1, MINI_MAP_MAP_BORDER);
-}
-
 void MapMountains::update(GameSession *gameSession, float deltaTime, bool isSuddenDeath)
 {
     Map::update(gameSession, deltaTime, isSuddenDeath);

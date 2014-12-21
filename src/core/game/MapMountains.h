@@ -26,8 +26,6 @@ public:
     
     virtual void initializeGameGrid(GameSession *gameSession, int (&gameGrid)[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]);
     
-    virtual void initializeMiniMap(GameSession *gameSession, int (&miniMap)[NUM_GRID_CELLS_PER_ROW][GRID_CELL_NUM_ROWS]);
-    
     virtual void update(GameSession *gameSession, float deltaTime, bool isSuddenDeath);
 };
 
