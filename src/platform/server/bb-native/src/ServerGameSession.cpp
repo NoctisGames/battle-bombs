@@ -151,7 +151,7 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
     }
 
     PathFinder::getInstance().resetGameGrid();
-    PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks, mapType);
+    PathFinder::getInstance().initializeGameGrid(this, m_map.get());
 }
 
 void ServerGameSession::init()
