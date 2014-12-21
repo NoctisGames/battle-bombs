@@ -448,7 +448,7 @@ void GameScreen::updateSpectating(float deltaTime)
     
     m_sEventIds.clear();
     
-    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, this, m_sPlayerIndex, m_gameState);
+    m_interfaceOverlay->update(deltaTime, *m_player, this, m_sPlayerIndex, m_gameState);
     
     m_displayXMovingGameObject->update(deltaTime);
     
