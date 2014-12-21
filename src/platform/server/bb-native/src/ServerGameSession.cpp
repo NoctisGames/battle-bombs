@@ -32,6 +32,7 @@
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
 #include "SpaceTile.h"
+#include "Map.h"
 
 //For RNG purposes
 #include <stdlib.h>
