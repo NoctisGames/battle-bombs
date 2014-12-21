@@ -156,6 +156,9 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
 
 void ServerGameSession::init()
 {
+    m_gameListener.release();
+    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
+    
     m_deletedBreakableBlockXValues.clear();
     m_deletedBreakableBlockYValues.clear();
     m_deletedPowerUpsXValues.clear();

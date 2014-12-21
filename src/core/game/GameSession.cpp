@@ -185,10 +185,8 @@ int GameSession::getNumBreakableBlocksAtSpawnTime()
 void GameSession::initializeMap(int mapType)
 {
     m_map = std::unique_ptr<Map>(MapFactory::getInstance().createMap(mapType));
-    m_isSuddenDeath = false;
     
-    m_gameListener.release();
-    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
+    m_isSuddenDeath = false;
     
     m_breakableBlocks.clear();
     m_players.clear();

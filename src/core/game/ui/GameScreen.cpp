@@ -89,6 +89,9 @@ void GameScreen::init()
 	m_interfaceOverlay.release();
 	m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
     
+    m_gameListener.release();
+    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
+    
     m_player = nullptr;
     m_sPlayerIndex = -1;
     
