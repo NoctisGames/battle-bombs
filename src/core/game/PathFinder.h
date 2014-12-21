@@ -19,6 +19,8 @@ class BombGameObject;
 class Explosion;
 class BreakableBlock;
 class PlayerDynamicGameObject;
+class Map;
+class GameSession;
 
 class PathFinder
 {
@@ -47,7 +49,7 @@ public:
     
     void resetGameGrid();
     
-    void initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType);
+    void initializeGameGrid(GameSession *gameSession, Map *map);
     
     void freeGameGridCell(int gridX, int gridY);
     

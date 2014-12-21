@@ -31,15 +31,17 @@ class InsideBlock;
 class BreakableBlock;
 class Rectangle;
 class SpectatorControls;
+class Map;
+class GameSession;
 
 class InterfaceOverlay
 {
 public:
 	InterfaceOverlay(GameListener *gameListener);
     
-    void initializeMiniMap(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType);
+    void initializeMiniMap(GameSession *gameSession, Map *map);
     
-    void update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType, int playerIndex, Game_State gameState);
+    void update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, GameSession *gameSession, Map *map, int playerIndex, Game_State gameState);
     
     void handleTouchDownInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     
@@ -99,8 +101,6 @@ private:
     float m_fButtonsStateTime;
     float m_fCountdownStateTime;
     int m_iNumSecondsLeft;
-    
-    void updateMiniMap(int x, int y, int miniMapGridType);
 };
 
 #endif /* defined(__battlebombs__InterfaceOverlay__) */

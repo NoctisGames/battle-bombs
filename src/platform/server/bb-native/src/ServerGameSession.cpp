@@ -156,20 +156,6 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
 
 void ServerGameSession::init()
 {
-    m_gameListener.release();
-    m_gameListener = std::unique_ptr<GameListener>(new GameListener());
-
-    m_breakableBlocks.clear();
-    m_players.clear();
-    m_bombs.clear();
-    m_explosions.clear();
-    m_powerUps.clear();
-    m_spaceTiles.clear();
-    m_craters.clear();
-    m_fireBalls.clear();
-    m_iceBalls.clear();
-    m_icePatches.clear();
-
     m_deletedBreakableBlockXValues.clear();
     m_deletedBreakableBlockYValues.clear();
     m_deletedPowerUpsXValues.clear();

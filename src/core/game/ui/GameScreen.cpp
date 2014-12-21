@@ -51,6 +51,7 @@
 #include "FallingObjectShadow.h"
 #include "SpaceTile.h"
 #include "ScreenState.h"
+#include "Map.h"
 
 GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 {
@@ -81,8 +82,6 @@ void GameScreen::init()
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
 	m_displayXMovingGameObject.release();
 	m_displayXMovingGameObject = std::unique_ptr<DisplayXMovingGameObject>(new DisplayXMovingGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f, BATTLE));
-	m_gameListener.release();
-	m_gameListener = std::unique_ptr<GameListener>(new GameListener());
 	m_waitingForServerInterface.release();
 	m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, 5.81492537375f, 10.38805970149248f, 11.2298507475f, m_username.get()));
 	m_waitingForLocalSettingsInterface.release();
@@ -93,18 +92,8 @@ void GameScreen::init()
     m_player = nullptr;
     m_sPlayerIndex = -1;
     
-    m_breakableBlocks.clear();
-    m_players.clear();
-    m_bombs.clear();
-    m_explosions.clear();
-    m_powerUps.clear();
     m_countDownNumbers.clear();
     m_displayGameOvers.clear();
-    m_spaceTiles.clear();
-    m_craters.clear();
-    m_fireBalls.clear();
-    m_iceBalls.clear();
-    m_icePatches.clear();
     
     m_gameState = m_isOffline ? WAITING_FOR_LOCAL_SETTINGS : WAITING_FOR_SERVER;
     m_iScreenState = SCREEN_STATE_NORMAL;
@@ -183,7 +172,7 @@ void GameScreen::update(float deltaTime, std::vector<TouchEvent> &touchEvents)
                     (*itr)->setIsDisplayingName(false);
                 }
                 
-                Assets::getInstance()->setMusicId(m_iMapType + 2);
+                Assets::getInstance()->setMusicId(m_map->getMusicId());
             }
             else if(m_fCountDownTimeLeft <= 1 && !m_hasDisplayed1)
             {
@@ -373,36 +362,13 @@ void GameScreen::updateRunning(float deltaTime)
         m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
     }
     
-    switch(m_iMapType)
+    if(m_isSuddenDeath)
     {
-        case MAP_SPACE:
-            if(m_player->isTrappedOnFallingSpaceTile(m_spaceTiles))
-            {
-                m_gameListener->addLocalEventForPlayer(PLAYER_ABOUT_TO_FALL, *m_player);
-            }
-            else if(m_player->isFallingDueToSpaceTile(m_spaceTiles))
-            {
-                m_gameListener->addLocalEventForPlayer(PLAYER_FALL, *m_player);
-                m_gameState = SPECTATING;
-                m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
-            }
-            break;
-        case MAP_GRASSLANDS:
-            if(m_player->isHitByFireBall(m_craters))
-            {
-                m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *m_player);
-                m_gameState = SPECTATING;
-                m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
-            }
-            break;
-        case MAP_MOUNTAINS:
-            if(m_player->isHitByIce(m_icePatches))
-            {
-                m_gameListener->addLocalEventForPlayer(PLAYER_FREEZE, *m_player);
-                m_gameState = SPECTATING;
-                m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
-            }
-            break;
+        if(m_map->updatePlayerForSuddenDeath(this, m_player))
+        {
+            m_gameState = SPECTATING;
+            m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
+        }
     }
     
     updateForOffline(deltaTime);
@@ -434,11 +400,11 @@ void GameScreen::updateRunning(float deltaTime)
     
     m_sEventIds.clear();
     
-    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
+    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, this, m_map.get(), m_sPlayerIndex, m_gameState);
     
     m_displayXMovingGameObject->update(deltaTime);
     
-    updateCommon(deltaTime);
+    updateMap(deltaTime);
 }
 
 void GameScreen::updateInputRunning(std::vector<TouchEvent> &touchEvents)
@@ -480,11 +446,11 @@ void GameScreen::updateSpectating(float deltaTime)
     
     m_sEventIds.clear();
     
-    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
+    m_interfaceOverlay->update(deltaTime, *m_player, m_players, m_bombs, m_explosions, this, m_map.get(), m_sPlayerIndex, m_gameState);
     
     m_displayXMovingGameObject->update(deltaTime);
     
-    updateCommon(deltaTime);
+    updateMap(deltaTime);
 }
 
 void GameScreen::updateInputSpectating(std::vector<TouchEvent> &touchEvents)
@@ -717,7 +683,7 @@ void GameScreen::beginGame(rapidjson::Document &d)
                 (*itr)->setIsDisplayingName(true);
             }
 
-			m_interfaceOverlay->update(0, *m_player, m_players, m_bombs, m_explosions, m_insideBlocks, m_breakableBlocks, m_iMapType, m_sPlayerIndex, m_gameState);
+			m_interfaceOverlay->update(0, *m_player, m_players, m_bombs, m_explosions, this, m_map.get(), m_sPlayerIndex, m_gameState);
         }
     }
 }
@@ -734,7 +700,7 @@ void GameScreen::beginSpectate(rapidjson::Document &d)
         m_gameState = SPECTATING;
         m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
         
-        Assets::getInstance()->setMusicId(m_iMapType + 2);
+        Assets::getInstance()->setMusicId(m_map->getMusicId());
         
         if(!m_isSuddenDeath)
         {
@@ -753,30 +719,7 @@ void GameScreen::beginSpectate(rapidjson::Document &d)
                     if(d.HasMember(timeSinceSuddenDeathModeBeganKey))
                     {
                         float timeSinceSuddenDeathModeBegan = d[timeSinceSuddenDeathModeBeganKey].GetDouble();
-                        switch (m_iMapType)
-                        {
-                            case MAP_SPACE:
-                                for (std::vector < std::unique_ptr < SpaceTile >> ::iterator itr = m_spaceTiles.begin(); itr != m_spaceTiles.end(); itr++)
-                                {
-                                    (*itr)->handleTimeSinceSuddenDeathModeBegan(timeSinceSuddenDeathModeBegan);
-                                }
-                                break;
-                            case MAP_GRASSLANDS:
-                                for (std::vector < std::unique_ptr < FireBall >> ::iterator itr = m_fireBalls.begin(); itr != m_fireBalls.end(); itr++)
-                                {
-                                    (*itr)->handleTimeSinceSuddenDeathModeBegan(timeSinceSuddenDeathModeBegan);
-                                }
-                                break;
-                            case MAP_MOUNTAINS:
-                                for (std::vector < std::unique_ptr < IceBall >> ::iterator itr = m_iceBalls.begin(); itr != m_iceBalls.end(); itr++)
-                                {
-                                    (*itr)->handleTimeSinceSuddenDeathModeBegan(timeSinceSuddenDeathModeBegan);
-                                }
-                                break;
-                            case MAP_BASE:
-                                // TODO
-                                break;
-                        }
+                        m_map->handleSpectatorModeSuddenDeath(this, timeSinceSuddenDeathModeBegan);
                     }
                 }
             }
@@ -815,7 +758,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         handleBreakableBlocksArrayInDocument(d);
         
         int mapType = d[mapTypeKey].GetInt();
-        initializeInsideBlocksAndMapBordersForMapType(mapType);
+        initializeMap(mapType);
         m_renderer->loadMapType(mapType, m_players);
         
         if(d.HasMember(numSecondsLeftForRoundKey))
@@ -825,8 +768,8 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         }
         
         PathFinder::getInstance().resetGameGrid();
-        PathFinder::getInstance().initializeGameGrid(m_insideBlocks, m_breakableBlocks, m_iMapType);
-        m_interfaceOverlay->initializeMiniMap(m_insideBlocks, m_breakableBlocks, m_iMapType);
+        PathFinder::getInstance().initializeGameGrid(this, m_map.get());
+        m_interfaceOverlay->initializeMiniMap(this, m_map.get());
         
         return true;
     }
