@@ -22,6 +22,8 @@ public:
     
     virtual void suddenDeath(GameSession *gameSession);
     
+    virtual void initializeMap(GameSession *gameSession);
+    
     virtual void update(GameSession *gameSession, float deltaTime, bool isSuddenDeath);
 };
 

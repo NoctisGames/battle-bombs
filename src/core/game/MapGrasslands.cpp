@@ -70,6 +70,22 @@ void MapGrasslands::suddenDeath(GameSession *gameSession)
     }
 }
 
+void MapGrasslands::initializeMap(GameSession *gameSession)
+{
+    Map::initializeMap(gameSession);
+    
+    addCommonInsideBlocks(gameSession->getInsideBlocks());
+    
+    // BEGIN TOP
+    for (int i = TOP_HALF_BOTTOM_GRID_Y + 1; i < GRID_CELL_NUM_ROWS; i += 2)
+    {
+        for (int j = 1; j < NUM_GRID_CELLS_PER_ROW; j += 2)
+        {
+            gameSession->getInsideBlocks().push_back(std::unique_ptr<InsideBlock>(new InsideBlock(j, i)));
+        }
+    }
+}
+
 void MapGrasslands::update(GameSession *gameSession, float deltaTime, bool isSuddenDeath)
 {
     Map::update(gameSession, deltaTime, isSuddenDeath);
