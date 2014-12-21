@@ -13,7 +13,6 @@
 #include "SpaceTile.h"
 #include "GameListener.h"
 #include "BreakableBlock.h"
-#include "MiniMapGridType.h"
 #include "BombGameObject.h"
 #include "PathFinder.h"
 #include "Explosion.h"
