@@ -31,9 +31,15 @@
       <itemPath>../../../core/game/InsideBlock.h</itemPath>
       <itemPath>../../../core/game/InsideBlockState.h</itemPath>
       <itemPath>../../../core/framework/Line.h</itemPath>
+      <itemPath>../../../core/game/Map.h</itemPath>
+      <itemPath>../../../core/game/MapBase.h</itemPath>
       <itemPath>../../../core/game/MapBorder.h</itemPath>
       <itemPath>../../../core/game/MapBorderType.h</itemPath>
+      <itemPath>../../../core/game/MapFactory.h</itemPath>
+      <itemPath>../../../core/game/MapGrasslands.h</itemPath>
+      <itemPath>../../../core/game/MapMountains.h</itemPath>
       <itemPath>../../../core/game/MapSearchNode.h</itemPath>
+      <itemPath>../../../core/game/MapSpace.h</itemPath>
       <itemPath>../../../core/framework/Node.h</itemPath>
       <itemPath>../../../core/framework/OverlapTester.h</itemPath>
       <itemPath>../../../core/game/PathFinder.h</itemPath>
@@ -81,8 +87,14 @@
       <itemPath>../../../core/game/IcePatch.cpp</itemPath>
       <itemPath>../../../core/game/InsideBlock.cpp</itemPath>
       <itemPath>../../../core/framework/Line.cpp</itemPath>
+      <itemPath>../../../core/game/Map.cpp</itemPath>
+      <itemPath>../../../core/game/MapBase.cpp</itemPath>
       <itemPath>../../../core/game/MapBorder.cpp</itemPath>
+      <itemPath>../../../core/game/MapFactory.cpp</itemPath>
+      <itemPath>../../../core/game/MapGrasslands.cpp</itemPath>
+      <itemPath>../../../core/game/MapMountains.cpp</itemPath>
       <itemPath>../../../core/game/MapSearchNode.cpp</itemPath>
+      <itemPath>../../../core/game/MapSpace.cpp</itemPath>
       <itemPath>../../../core/framework/OverlapTester.cpp</itemPath>
       <itemPath>../../../core/game/PathFinder.cpp</itemPath>
       <itemPath>../../../core/game/PlayerDynamicGameObject.cpp</itemPath>
@@ -399,11 +411,37 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../../../core/game/Map.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/Map.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapBase.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapBase.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/game/MapBorder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/game/MapBorder.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/MapBorderType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapFactory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapFactory.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapGrasslands.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/MapGrasslands.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapMountains.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/MapMountains.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/MapSearchNode.cpp"
             ex="false"
@@ -411,6 +449,10 @@
             flavor2="0">
       </item>
       <item path="../../../core/game/MapSearchNode.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapSpace.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapSpace.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/PathFinder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -694,11 +736,37 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../../../core/game/Map.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/Map.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapBase.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapBase.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/game/MapBorder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/game/MapBorder.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/MapBorderType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapFactory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapFactory.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapGrasslands.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/MapGrasslands.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapMountains.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/MapMountains.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/MapSearchNode.cpp"
             ex="false"
@@ -706,6 +774,10 @@
             flavor2="0">
       </item>
       <item path="../../../core/game/MapSearchNode.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapSpace.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/MapSpace.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/PathFinder.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -57,8 +57,14 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/1528379507/IceBall.o \
 	${OBJECTDIR}/_ext/1528379507/IcePatch.o \
 	${OBJECTDIR}/_ext/1528379507/InsideBlock.o \
+	${OBJECTDIR}/_ext/1528379507/Map.o \
+	${OBJECTDIR}/_ext/1528379507/MapBase.o \
 	${OBJECTDIR}/_ext/1528379507/MapBorder.o \
+	${OBJECTDIR}/_ext/1528379507/MapFactory.o \
+	${OBJECTDIR}/_ext/1528379507/MapGrasslands.o \
+	${OBJECTDIR}/_ext/1528379507/MapMountains.o \
 	${OBJECTDIR}/_ext/1528379507/MapSearchNode.o \
+	${OBJECTDIR}/_ext/1528379507/MapSpace.o \
 	${OBJECTDIR}/_ext/1528379507/PathFinder.o \
 	${OBJECTDIR}/_ext/1528379507/PlayerDynamicGameObject.o \
 	${OBJECTDIR}/_ext/1528379507/PowerUp.o \
@@ -202,15 +208,45 @@ ${OBJECTDIR}/_ext/1528379507/InsideBlock.o: ../../../core/game/InsideBlock.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/InsideBlock.o ../../../core/game/InsideBlock.cpp
 
+${OBJECTDIR}/_ext/1528379507/Map.o: ../../../core/game/Map.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/Map.o ../../../core/game/Map.cpp
+
+${OBJECTDIR}/_ext/1528379507/MapBase.o: ../../../core/game/MapBase.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapBase.o ../../../core/game/MapBase.cpp
+
 ${OBJECTDIR}/_ext/1528379507/MapBorder.o: ../../../core/game/MapBorder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapBorder.o ../../../core/game/MapBorder.cpp
 
+${OBJECTDIR}/_ext/1528379507/MapFactory.o: ../../../core/game/MapFactory.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapFactory.o ../../../core/game/MapFactory.cpp
+
+${OBJECTDIR}/_ext/1528379507/MapGrasslands.o: ../../../core/game/MapGrasslands.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapGrasslands.o ../../../core/game/MapGrasslands.cpp
+
+${OBJECTDIR}/_ext/1528379507/MapMountains.o: ../../../core/game/MapMountains.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapMountains.o ../../../core/game/MapMountains.cpp
+
 ${OBJECTDIR}/_ext/1528379507/MapSearchNode.o: ../../../core/game/MapSearchNode.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapSearchNode.o ../../../core/game/MapSearchNode.cpp
+
+${OBJECTDIR}/_ext/1528379507/MapSpace.o: ../../../core/game/MapSpace.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapSpace.o ../../../core/game/MapSpace.cpp
 
 ${OBJECTDIR}/_ext/1528379507/PathFinder.o: ../../../core/game/PathFinder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
