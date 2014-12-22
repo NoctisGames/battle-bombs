@@ -79,7 +79,7 @@
       <itemPath>../../../core/game/FallingObjectShadow.cpp</itemPath>
       <itemPath>../../../core/game/Fire.cpp</itemPath>
       <itemPath>../../../core/game/FireBall.cpp</itemPath>
-      <itemPath>src/GameListener.cpp</itemPath>
+      <itemPath>../../../core/game/GameListener.cpp</itemPath>
       <itemPath>../../../core/framework/GameObject.cpp</itemPath>
       <itemPath>../../../core/game/GameSession.cpp</itemPath>
       <itemPath>../../../core/framework/GridGameObject.cpp</itemPath>
@@ -386,6 +386,11 @@
       </item>
       <item path="../../../core/game/GameEvent.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/game/GameListener.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="../../../core/game/GameListener.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/GameSession.cpp" ex="false" tool="1" flavor2="0">
@@ -503,8 +508,6 @@
       <item path="../../../core/game/fsa.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/stlastar.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/GameListener.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ServerGameSession.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -711,6 +714,11 @@
       </item>
       <item path="../../../core/game/GameEvent.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/game/GameListener.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="../../../core/game/GameListener.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/GameSession.cpp" ex="false" tool="1" flavor2="0">
@@ -828,8 +836,6 @@
       <item path="../../../core/game/fsa.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/stlastar.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/GameListener.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ServerGameSession.cpp" ex="false" tool="1" flavor2="0">
       </item>

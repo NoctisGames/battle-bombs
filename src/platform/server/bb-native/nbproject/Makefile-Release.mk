@@ -53,6 +53,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/1528379507/FallingObjectShadow.o \
 	${OBJECTDIR}/_ext/1528379507/Fire.o \
 	${OBJECTDIR}/_ext/1528379507/FireBall.o \
+	${OBJECTDIR}/_ext/1528379507/GameListener.o \
 	${OBJECTDIR}/_ext/1528379507/GameSession.o \
 	${OBJECTDIR}/_ext/1528379507/IceBall.o \
 	${OBJECTDIR}/_ext/1528379507/IcePatch.o \
@@ -69,7 +70,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/1528379507/PlayerDynamicGameObject.o \
 	${OBJECTDIR}/_ext/1528379507/PowerUp.o \
 	${OBJECTDIR}/_ext/1528379507/SpaceTile.o \
-	${OBJECTDIR}/src/GameListener.o \
 	${OBJECTDIR}/src/ServerGameSession.o \
 	${OBJECTDIR}/src/bb_room_adaptor.o
 
@@ -188,6 +188,11 @@ ${OBJECTDIR}/_ext/1528379507/FireBall.o: ../../../core/game/FireBall.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/FireBall.o ../../../core/game/FireBall.cpp
 
+${OBJECTDIR}/_ext/1528379507/GameListener.o: ../../../core/game/GameListener.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/GameListener.o ../../../core/game/GameListener.cpp
+
 ${OBJECTDIR}/_ext/1528379507/GameSession.o: ../../../core/game/GameSession.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
@@ -267,11 +272,6 @@ ${OBJECTDIR}/_ext/1528379507/SpaceTile.o: ../../../core/game/SpaceTile.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/SpaceTile.o ../../../core/game/SpaceTile.cpp
-
-${OBJECTDIR}/src/GameListener.o: src/GameListener.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/GameListener.o src/GameListener.cpp
 
 ${OBJECTDIR}/src/ServerGameSession.o: src/ServerGameSession.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
