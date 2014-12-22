@@ -47,6 +47,7 @@
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
 #include "SpaceTile.h"
+#include "Map.h"
 
 using namespace BattleBombsComp;
 

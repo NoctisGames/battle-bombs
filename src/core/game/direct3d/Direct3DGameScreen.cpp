@@ -55,6 +55,7 @@
 #include "FallingObjectShadow.h"
 #include "SpaceTile.h"
 #include "DirectXManager.h"
+#include "Map.h"
 
 Direct3DGameScreen::Direct3DGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
 {
@@ -233,10 +234,7 @@ void Direct3DGameScreen::handleMusic()
 
 void Direct3DGameScreen::unload()
 {
-	if (m_gameState == RUNNING)
-	{
-		onPause();
-	}
+	onPause();
 
 	m_mediaPlayer->Shutdown();
 
