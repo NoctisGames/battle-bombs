@@ -41,7 +41,7 @@ public:
     
     void initializeMiniMap(GameSession *gameSession);
     
-    void update(float deltaTime, PlayerDynamicGameObject &player, GameSession *gameSession, int playerIndex, Game_State gameState);
+    void update(float deltaTime, PlayerDynamicGameObject &player, GameSession *gameSession, int playerIndex, GameState *gameState);
     
     void handleTouchDownInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     

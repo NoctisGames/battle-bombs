@@ -255,13 +255,17 @@ void Direct3DGameScreen::touchToWorld(TouchEvent &touchEvent)
 	m_touchPoint->set(touchEvent.getX() * m_fDipToPixelRatio / m_fGameScreenToDeviceScreenWidthRatio, SCREEN_HEIGHT - (touchEvent.getY() * m_fDipToPixelRatio / m_fGameScreenToDeviceScreenHeightRatio));
 }
 
-void Direct3DGameScreen::platformResume()
+void Direct3DGameScreen::onResume()
 {
+    GameScreen::onResume();
+    
 	Global::getSoundPlayerInstance()->Resume();
 }
 
-void Direct3DGameScreen::platformPause()
+void Direct3DGameScreen::onPause()
 {
+    GameScreen::onPause();
+    
 	Global::getSoundPlayerInstance()->Suspend();
 }
 

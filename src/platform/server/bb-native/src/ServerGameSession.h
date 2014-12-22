@@ -51,7 +51,7 @@ private:
     std::vector<int> m_deletedPowerUpsXValues;
     std::vector<int> m_deletedPowerUpsYValues;
     
-    virtual void updateRunning(float deltaTime);
+    void updateRunning(float deltaTime);
 
     virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame);
 };

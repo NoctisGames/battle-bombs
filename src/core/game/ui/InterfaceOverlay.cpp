@@ -121,7 +121,7 @@ void InterfaceOverlay::initializeMiniMap(GameSession *gameSession)
     }
 }
 
-void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, GameSession *gameSession, int playerIndex, Game_State gameState)
+void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, GameSession *gameSession, int playerIndex, GameState *gameState)
 {
     // Update Timer
     
@@ -134,7 +134,7 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
     
     // Update PowerUp Bar and Buttons if the player is still alive
     
-	if (gameState == RUNNING || gameState == COUNTING_DOWN)
+	if (gameState->shouldUpdateGameInterface())
     {
         m_fPowerUpBarItemsStateTime += deltaTime;
         m_fButtonsStateTime += deltaTime;
@@ -201,7 +201,7 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
             m_bombButton->setButtonState(player.isAbleToDropAdditionalBomb(gameSession->getPlayers(), gameSession->getBombs()) ? ENABLED : DISABLED);
         }
     }
-    else if(gameState == SPECTATING)
+    else if(gameState->shouldUpdateSpectatorInterface())
     {
         m_spectatingWho = std::string(gameSession->getPlayers().at(playerIndex)->getUsername());
     }

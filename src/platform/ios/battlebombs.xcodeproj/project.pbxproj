@@ -107,6 +107,20 @@
 		BB5C577619B9F27B00AD76E7 /* pu_speed.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB5C577019B9F27B00AD76E7 /* pu_speed.caf */; };
 		BB5C577819B9F2B500AD76E7 /* force_field_down.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB5C577719B9F2B500AD76E7 /* force_field_down.caf */; };
 		BB5C577B19B9F87700AD76E7 /* BaseGameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB5C577A19B9F87700AD76E7 /* BaseGameViewController.mm */; };
+		BB66FF671A48948B002B8224 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF651A48948B002B8224 /* GameState.cpp */; };
+		BB66FF6A1A4895F1002B8224 /* GameStateFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF681A4895F1002B8224 /* GameStateFactory.cpp */; };
+		BB66FF6D1A48A0D5002B8224 /* GameStateWaitingForConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF6B1A48A0D5002B8224 /* GameStateWaitingForConnection.cpp */; };
+		BB66FF701A48A141002B8224 /* GameStateConnectionErrorWaitingForInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF6E1A48A141002B8224 /* GameStateConnectionErrorWaitingForInput.cpp */; };
+		BB66FF731A48A1B8002B8224 /* GameStateWaitingForServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF711A48A1B8002B8224 /* GameStateWaitingForServer.cpp */; };
+		BB66FF761A48A200002B8224 /* GameStateWaitingForLocalSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF741A48A200002B8224 /* GameStateWaitingForLocalSettings.cpp */; };
+		BB66FF791A48A229002B8224 /* GameStateCountingDown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF771A48A229002B8224 /* GameStateCountingDown.cpp */; };
+		BB66FF7C1A48A257002B8224 /* GameStateSpectating.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF7A1A48A257002B8224 /* GameStateSpectating.cpp */; };
+		BB66FF7F1A48A275002B8224 /* GameStateRunning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF7D1A48A275002B8224 /* GameStateRunning.cpp */; };
+		BB66FF821A48A28E002B8224 /* GameStateEnding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF801A48A28E002B8224 /* GameStateEnding.cpp */; };
+		BB66FF851A48D461002B8224 /* GameStateCountingDownOffline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF831A48D461002B8224 /* GameStateCountingDownOffline.cpp */; };
+		BB66FF881A48D46B002B8224 /* GameStateSpectatingOffline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF861A48D46B002B8224 /* GameStateSpectatingOffline.cpp */; };
+		BB66FF8B1A48D47A002B8224 /* GameStateRunningOffline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF891A48D47A002B8224 /* GameStateRunningOffline.cpp */; };
+		BB66FF8E1A48D489002B8224 /* GameStateEndingOffline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB66FF8C1A48D489002B8224 /* GameStateEndingOffline.cpp */; };
 		BB68B02A192A82EF0065CE1D /* OfflineGameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB68B029192A82EF0065CE1D /* OfflineGameViewController.mm */; };
 		BB71029E196E079500C7BA2F /* map_base.png in Resources */ = {isa = PBXBuildFile; fileRef = BB71029A196E079500C7BA2F /* map_base.png */; };
 		BB71029F196E079500C7BA2F /* map_grasslands.png in Resources */ = {isa = PBXBuildFile; fileRef = BB71029B196E079500C7BA2F /* map_grasslands.png */; };
@@ -382,6 +396,34 @@
 		BB5C577719B9F2B500AD76E7 /* force_field_down.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = force_field_down.caf; sourceTree = "<group>"; };
 		BB5C577919B9F87700AD76E7 /* BaseGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseGameViewController.h; sourceTree = "<group>"; };
 		BB5C577A19B9F87700AD76E7 /* BaseGameViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BaseGameViewController.mm; sourceTree = "<group>"; };
+		BB66FF651A48948B002B8224 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameState.cpp; sourceTree = "<group>"; };
+		BB66FF661A48948B002B8224 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameState.h; sourceTree = "<group>"; };
+		BB66FF681A4895F1002B8224 /* GameStateFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateFactory.cpp; sourceTree = "<group>"; };
+		BB66FF691A4895F1002B8224 /* GameStateFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateFactory.h; sourceTree = "<group>"; };
+		BB66FF6B1A48A0D5002B8224 /* GameStateWaitingForConnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateWaitingForConnection.cpp; sourceTree = "<group>"; };
+		BB66FF6C1A48A0D5002B8224 /* GameStateWaitingForConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateWaitingForConnection.h; sourceTree = "<group>"; };
+		BB66FF6E1A48A141002B8224 /* GameStateConnectionErrorWaitingForInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateConnectionErrorWaitingForInput.cpp; sourceTree = "<group>"; };
+		BB66FF6F1A48A141002B8224 /* GameStateConnectionErrorWaitingForInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateConnectionErrorWaitingForInput.h; sourceTree = "<group>"; };
+		BB66FF711A48A1B8002B8224 /* GameStateWaitingForServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateWaitingForServer.cpp; sourceTree = "<group>"; };
+		BB66FF721A48A1B8002B8224 /* GameStateWaitingForServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateWaitingForServer.h; sourceTree = "<group>"; };
+		BB66FF741A48A200002B8224 /* GameStateWaitingForLocalSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateWaitingForLocalSettings.cpp; sourceTree = "<group>"; };
+		BB66FF751A48A200002B8224 /* GameStateWaitingForLocalSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateWaitingForLocalSettings.h; sourceTree = "<group>"; };
+		BB66FF771A48A229002B8224 /* GameStateCountingDown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateCountingDown.cpp; sourceTree = "<group>"; };
+		BB66FF781A48A229002B8224 /* GameStateCountingDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateCountingDown.h; sourceTree = "<group>"; };
+		BB66FF7A1A48A257002B8224 /* GameStateSpectating.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateSpectating.cpp; sourceTree = "<group>"; };
+		BB66FF7B1A48A257002B8224 /* GameStateSpectating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateSpectating.h; sourceTree = "<group>"; };
+		BB66FF7D1A48A275002B8224 /* GameStateRunning.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateRunning.cpp; sourceTree = "<group>"; };
+		BB66FF7E1A48A275002B8224 /* GameStateRunning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateRunning.h; sourceTree = "<group>"; };
+		BB66FF801A48A28E002B8224 /* GameStateEnding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateEnding.cpp; sourceTree = "<group>"; };
+		BB66FF811A48A28E002B8224 /* GameStateEnding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateEnding.h; sourceTree = "<group>"; };
+		BB66FF831A48D461002B8224 /* GameStateCountingDownOffline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateCountingDownOffline.cpp; sourceTree = "<group>"; };
+		BB66FF841A48D461002B8224 /* GameStateCountingDownOffline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateCountingDownOffline.h; sourceTree = "<group>"; };
+		BB66FF861A48D46B002B8224 /* GameStateSpectatingOffline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateSpectatingOffline.cpp; sourceTree = "<group>"; };
+		BB66FF871A48D46B002B8224 /* GameStateSpectatingOffline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateSpectatingOffline.h; sourceTree = "<group>"; };
+		BB66FF891A48D47A002B8224 /* GameStateRunningOffline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateRunningOffline.cpp; sourceTree = "<group>"; };
+		BB66FF8A1A48D47A002B8224 /* GameStateRunningOffline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateRunningOffline.h; sourceTree = "<group>"; };
+		BB66FF8C1A48D489002B8224 /* GameStateEndingOffline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateEndingOffline.cpp; sourceTree = "<group>"; };
+		BB66FF8D1A48D489002B8224 /* GameStateEndingOffline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateEndingOffline.h; sourceTree = "<group>"; };
 		BB68B028192A82EF0065CE1D /* OfflineGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineGameViewController.h; sourceTree = "<group>"; };
 		BB68B029192A82EF0065CE1D /* OfflineGameViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OfflineGameViewController.mm; sourceTree = "<group>"; };
 		BB71029A196E079500C7BA2F /* map_base.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_base.png; sourceTree = "<group>"; };
@@ -449,7 +491,6 @@
 		BBA4C3961A16CE7300AB3878 /* GameListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameListener.h; sourceTree = "<group>"; };
 		BBA4C3991A16CE7300AB3878 /* GameSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameSession.cpp; sourceTree = "<group>"; };
 		BBA4C39A1A16CE7300AB3878 /* GameSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSession.h; sourceTree = "<group>"; };
-		BBA4C39B1A16CE7300AB3878 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameState.h; sourceTree = "<group>"; };
 		BBA4C39C1A16CE7300AB3878 /* IceBall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IceBall.cpp; sourceTree = "<group>"; };
 		BBA4C39D1A16CE7300AB3878 /* IceBall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IceBall.h; sourceTree = "<group>"; };
 		BBA4C39E1A16CE7300AB3878 /* IcePatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IcePatch.cpp; sourceTree = "<group>"; };
@@ -945,7 +986,6 @@
 				BBA4C3961A16CE7300AB3878 /* GameListener.h */,
 				BBA4C3991A16CE7300AB3878 /* GameSession.cpp */,
 				BBA4C39A1A16CE7300AB3878 /* GameSession.h */,
-				BBA4C39B1A16CE7300AB3878 /* GameState.h */,
 				BBA4C39C1A16CE7300AB3878 /* IceBall.cpp */,
 				BBA4C39D1A16CE7300AB3878 /* IceBall.h */,
 				BBA4C39E1A16CE7300AB3878 /* IcePatch.cpp */,
@@ -1094,6 +1134,34 @@
 				BBF8CA131A2107F70016DE7C /* GameButton.h */,
 				BBF8CA141A2107F70016DE7C /* GameScreen.cpp */,
 				BBF8CA151A2107F70016DE7C /* GameScreen.h */,
+				BB66FF651A48948B002B8224 /* GameState.cpp */,
+				BB66FF661A48948B002B8224 /* GameState.h */,
+				BB66FF6E1A48A141002B8224 /* GameStateConnectionErrorWaitingForInput.cpp */,
+				BB66FF6F1A48A141002B8224 /* GameStateConnectionErrorWaitingForInput.h */,
+				BB66FF771A48A229002B8224 /* GameStateCountingDown.cpp */,
+				BB66FF781A48A229002B8224 /* GameStateCountingDown.h */,
+				BB66FF831A48D461002B8224 /* GameStateCountingDownOffline.cpp */,
+				BB66FF841A48D461002B8224 /* GameStateCountingDownOffline.h */,
+				BB66FF801A48A28E002B8224 /* GameStateEnding.cpp */,
+				BB66FF811A48A28E002B8224 /* GameStateEnding.h */,
+				BB66FF8C1A48D489002B8224 /* GameStateEndingOffline.cpp */,
+				BB66FF8D1A48D489002B8224 /* GameStateEndingOffline.h */,
+				BB66FF681A4895F1002B8224 /* GameStateFactory.cpp */,
+				BB66FF691A4895F1002B8224 /* GameStateFactory.h */,
+				BB66FF7D1A48A275002B8224 /* GameStateRunning.cpp */,
+				BB66FF7E1A48A275002B8224 /* GameStateRunning.h */,
+				BB66FF891A48D47A002B8224 /* GameStateRunningOffline.cpp */,
+				BB66FF8A1A48D47A002B8224 /* GameStateRunningOffline.h */,
+				BB66FF7A1A48A257002B8224 /* GameStateSpectating.cpp */,
+				BB66FF7B1A48A257002B8224 /* GameStateSpectating.h */,
+				BB66FF861A48D46B002B8224 /* GameStateSpectatingOffline.cpp */,
+				BB66FF871A48D46B002B8224 /* GameStateSpectatingOffline.h */,
+				BB66FF6B1A48A0D5002B8224 /* GameStateWaitingForConnection.cpp */,
+				BB66FF6C1A48A0D5002B8224 /* GameStateWaitingForConnection.h */,
+				BB66FF741A48A200002B8224 /* GameStateWaitingForLocalSettings.cpp */,
+				BB66FF751A48A200002B8224 /* GameStateWaitingForLocalSettings.h */,
+				BB66FF711A48A1B8002B8224 /* GameStateWaitingForServer.cpp */,
+				BB66FF721A48A1B8002B8224 /* GameStateWaitingForServer.h */,
 				BBF8CA161A2107F70016DE7C /* InterfaceOverlay.cpp */,
 				BBF8CA171A2107F70016DE7C /* InterfaceOverlay.h */,
 				BBF8CA181A2107F70016DE7C /* MiniMapGridType.h */,
@@ -1148,7 +1216,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0460;
-				ORGANIZATIONNAME = "Techne Games";
+				ORGANIZATIONNAME = "Gowen Game Dev";
 				TargetAttributes = {
 					0ADF1873178E2185005DA99E = {
 						DevelopmentTeam = 83V22B9TY9;
@@ -1271,6 +1339,7 @@
 				BBA4C3E41A16CE7300AB3878 /* PathFinder.cpp in Sources */,
 				BB12EE561A1D5B2C006D385B /* image.c in Sources */,
 				BBA4C3E01A16CE7300AB3878 /* InsideBlock.cpp in Sources */,
+				BB66FF8E1A48D489002B8224 /* GameStateEndingOffline.cpp in Sources */,
 				BB7305DB189C598D009F6DF4 /* Music.m in Sources */,
 				BBF8CA311A2107F70016DE7C /* CountDownNumberGameObject.cpp in Sources */,
 				BB7305DA189C598D009F6DF4 /* AppPrefs.m in Sources */,
@@ -1281,6 +1350,8 @@
 				0A8FBF8D179E07440039BA29 /* platform_asset_utils.m in Sources */,
 				0A8FBF8E179E07440039BA29 /* AppDelegate.m in Sources */,
 				0A8FBF8F179E07440039BA29 /* GameViewController.mm in Sources */,
+				BB66FF701A48A141002B8224 /* GameStateConnectionErrorWaitingForInput.cpp in Sources */,
+				BB66FF731A48A1B8002B8224 /* GameStateWaitingForServer.cpp in Sources */,
 				BBF8CA3B1A2107F70016DE7C /* PlayerRowPlatformAvatar.cpp in Sources */,
 				BBA4C3DD1A16CE7300AB3878 /* GameSession.cpp in Sources */,
 				BBF8C9F81A2107C50016DE7C /* Font.cpp in Sources */,
@@ -1292,6 +1363,7 @@
 				BB12EE691A1D5B2C006D385B /* Vector2D.cpp in Sources */,
 				0A8FBF7D179E07320039BA29 /* pngerror.c in Sources */,
 				0A8FBF7E179E07320039BA29 /* pngget.c in Sources */,
+				BB66FF6A1A4895F1002B8224 /* GameStateFactory.cpp in Sources */,
 				BB4790B41A473A13006A7B61 /* Map.cpp in Sources */,
 				BBF8CA2F1A2107F70016DE7C /* Assets.cpp in Sources */,
 				BB12EE581A1D5B2C006D385B /* OpenGLESLineBatcher.cpp in Sources */,
@@ -1300,6 +1372,7 @@
 				BB81B1B719BE163900548837 /* TGDialog.m in Sources */,
 				BBA4C3E61A16CE7300AB3878 /* PlayerDynamicGameObject.cpp in Sources */,
 				BB12EE591A1D5B2C006D385B /* OpenGLESManager.cpp in Sources */,
+				BB66FF7F1A48A275002B8224 /* GameStateRunning.cpp in Sources */,
 				BBA4C3EA1A16CE7300AB3878 /* PowerUp.cpp in Sources */,
 				BBF8C9FD1A2107C50016DE7C /* TouchEvent.cpp in Sources */,
 				BBA4C3D61A16CE7300AB3878 /* Explosion.cpp in Sources */,
@@ -1308,6 +1381,7 @@
 				BB4790B71A473D8C006A7B61 /* MapFactory.cpp in Sources */,
 				0A8FBF80179E07320039BA29 /* pngpread.c in Sources */,
 				BB4790BA1A4742F9006A7B61 /* MapSpace.cpp in Sources */,
+				BB66FF8B1A48D47A002B8224 /* GameStateRunningOffline.cpp in Sources */,
 				BBA4C3CF1A16CE7300AB3878 /* BotPlayerDynamicGameObject.cpp in Sources */,
 				BB12EE511A1D5B2C006D385B /* Line.cpp in Sources */,
 				0A8FBF81179E07320039BA29 /* pngread.c in Sources */,
@@ -1317,6 +1391,7 @@
 				BB12EE571A1D5B2C006D385B /* OpenGLESCircleBatcher.cpp in Sources */,
 				BBF8CA3E1A2107F70016DE7C /* SpectatorControls.cpp in Sources */,
 				BBA4C3D71A16CE7300AB3878 /* FallingObjectShadow.cpp in Sources */,
+				BB66FF791A48A229002B8224 /* GameStateCountingDown.cpp in Sources */,
 				BBA4C3D91A16CE7300AB3878 /* FireBall.cpp in Sources */,
 				0A8FBF82179E07320039BA29 /* pngrio.c in Sources */,
 				BBA4C3EC1A16CE7300AB3878 /* SpaceTile.cpp in Sources */,
@@ -1325,6 +1400,7 @@
 				BBA4C3E21A16CE7300AB3878 /* MapBorder.cpp in Sources */,
 				BB12EE4C1A1D5B2C006D385B /* DynamicGameObject.cpp in Sources */,
 				BBA4C4051A16D12E00AB3878 /* game.cpp in Sources */,
+				BB66FF851A48D461002B8224 /* GameStateCountingDownOffline.cpp in Sources */,
 				BB12EE501A1D5B2C006D385B /* GridGameObject.cpp in Sources */,
 				BBA4C3DE1A16CE7300AB3878 /* IceBall.cpp in Sources */,
 				BB81B1AA19BE147400548837 /* STHTTPRequest.m in Sources */,
@@ -1334,23 +1410,28 @@
 				BBF8CA3C1A2107F70016DE7C /* PowerUpBarItem.cpp in Sources */,
 				BB12EE4F1A1D5B2C006D385B /* GameObject.cpp in Sources */,
 				0A8FBF85179E07320039BA29 /* pngset.c in Sources */,
+				BB66FF6D1A48A0D5002B8224 /* GameStateWaitingForConnection.cpp in Sources */,
 				BB81B1B319BE15E700548837 /* TGApiManager.m in Sources */,
 				BBF8CA361A2107F70016DE7C /* GameScreen.cpp in Sources */,
 				BB12EE5E1A1D5B2C006D385B /* shader.c in Sources */,
 				BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */,
 				BB12EE5C1A1D5B2C006D385B /* OpenGLESSpriteBatcher.cpp in Sources */,
+				BB66FF881A48D46B002B8224 /* GameStateSpectatingOffline.cpp in Sources */,
+				BB66FF821A48A28E002B8224 /* GameStateEnding.cpp in Sources */,
 				BBA4C3DF1A16CE7300AB3878 /* IcePatch.cpp in Sources */,
 				BB81B1BA19BE197E00548837 /* TGJsonUtils.m in Sources */,
 				BBF8CA341A2107F70016DE7C /* DPadControl.cpp in Sources */,
 				BBF8CA331A2107F70016DE7C /* DisplayXMovingGameObject.cpp in Sources */,
 				0A8FBF86179E07320039BA29 /* pngtrans.c in Sources */,
 				BBF8C9F91A2107C50016DE7C /* LineBatcher.cpp in Sources */,
+				BB66FF671A48948B002B8224 /* GameState.cpp in Sources */,
 				BB12EE631A1D5B2C006D385B /* Rectangle.cpp in Sources */,
 				BBF8CA391A2107F70016DE7C /* PlayerRow.cpp in Sources */,
 				BBF8CA3D1A2107F70016DE7C /* Renderer.cpp in Sources */,
 				BBF8CA351A2107F70016DE7C /* GameButton.cpp in Sources */,
 				BBF8C9FB1A2107C50016DE7C /* SpriteBatcher.cpp in Sources */,
 				BB12EE5B1A1D5B2C006D385B /* OpenGLESRectangleBatcher.cpp in Sources */,
+				BB66FF7C1A48A257002B8224 /* GameStateSpectating.cpp in Sources */,
 				BBF8CA321A2107F70016DE7C /* DisplayGameOverGameObject.cpp in Sources */,
 				BB4790C31A4745B8006A7B61 /* MapBase.cpp in Sources */,
 				BBA4C4071A16D12E00AB3878 /* OpenGLESRenderer.cpp in Sources */,
@@ -1361,6 +1442,7 @@
 				BBA4C3CE1A16CE7300AB3878 /* BombGameObject.cpp in Sources */,
 				BB12EE5D1A1D5B2C006D385B /* platform_file_utils.c in Sources */,
 				BB12EE5A1A1D5B2C006D385B /* OpenGLESProgram.cpp in Sources */,
+				BB66FF761A48A200002B8224 /* GameStateWaitingForLocalSettings.cpp in Sources */,
 				BBF8CA401A2107F70016DE7C /* WaitingForServerInterface.cpp in Sources */,
 				BB9139C918BEFCC800E51FB5 /* MainViewController.m in Sources */,
 				BB12EE4D1A1D5B2C006D385B /* DynamicGridGameObject.cpp in Sources */,

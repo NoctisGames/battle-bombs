@@ -14,6 +14,7 @@
 #include "ActiveButton.h"
 
 class GameListener;
+class GameState;
 class TouchEvent;
 class Vector2D;
 class Rectangle;
@@ -32,29 +33,49 @@ public:
     
     virtual void touchToWorld(TouchEvent &touchEvent) = 0;
     
-    virtual void platformResume() = 0;
-    
-    virtual void platformPause() = 0;
-    
     virtual bool handleOnBackPressed() = 0;
     
     virtual void init();
     
     virtual void handleServerUpdate(const char *message);
 
-	void onResume();
+	virtual void onResume();
 	
-	void onPause();
+	virtual void onPause();
+    
+    void beginGameOffline(int mapType, int numHumanPlayers, int numSecondsLeftForRound);
+    
+    void beginGame(rapidjson::Document &d);
+    
+    void beginSpectate(rapidjson::Document &d);
     
 	void update(float deltaTime, std::vector<TouchEvent> &touchEvents);
     
     void present();
+    
+    void updateRunning(float deltaTime);
+    
+    void updateSpectating(float deltaTime);
+    
+    virtual void suddenDeath();
+    
+    void gameOver(rapidjson::Document &d);
+    
+    void spectateNextLivePlayer();
+    
+    void spectatePreviousLivePlayer();
 	
-	int getState();
+    // Getters and Setters
+    
+	int getScreenState();
+    
+    void setScreenState(int screenState);
     
     void clearState();
     
     short getPlayerIndex();
+    
+    void setPlayerIndex(short playerIndex);
     
     float getPlayerX();
     
@@ -67,66 +88,86 @@ public:
 	void resetTimeSinceLastClientEvent();
     
     int getNumSecondsLeft();
+    
+    void setGameState(GameState *gameState);
+    
+    Renderer * getRenderer();
+    
+    Vector2D * getTouchPoint();
+    
+    PlayerDynamicGameObject * getPlayer();
+    
+    std::vector<std::unique_ptr<CountDownNumberGameObject>> & getCountDownNumberGameObjects();
+    
+    DisplayXMovingGameObject * getDisplayXMovingGameObject();
+    
+    std::vector<std::unique_ptr<DisplayGameOverGameObject>> & getDisplayGameOverGameObjects();
+    
+    WaitingForServerInterface * getWaitingForServerInterface();
+    
+    WaitingForLocalSettingsInterface * getWaitingForLocalSettingsInterface();
+    
+    InterfaceOverlay * getInterfaceOverlay();
+    
+    float getTimeSinceLastClientEvent();
+    
+    void setTimeSinceLastClientEvent(float timeSinceLastClientEvent);
+    
+    float getTimeSinceLastServerUpdate();
+    
+    void setTimeSinceLastServerUpdate(float timeSinceLastServerUpdate);
+    
+    float getTimeSinceGameOver();
+    
+    void setTimeSinceGameOver(float timeSinceGameOver);
+    
+    float getBlackCoverTransitionAlpha();
+    
+    void setBlackCoverTransitionAlpha(float blackCoverTransitionAlpha);
+    
+    bool hasDisplayed2();
+    
+    void setHasDisplayed2(bool hasDisplayed2);
+    
+    bool hasDisplayed1();
+    
+    void setHasDisplayed1(bool hasDisplayed1);
 
 protected:
     std::unique_ptr<Renderer> m_renderer;
-    std::unique_ptr<char> m_username;
-    PlayerDynamicGameObject *m_player; // Set once we figure out which player index we are.
-    short m_sPlayerIndex;
 	std::unique_ptr<Vector2D> m_touchPoint;
-	float m_fTimeSinceLastClientEvent;
     int m_iDeviceScreenWidth;
 	int m_iDeviceScreenHeight;
-	int m_iScreenState;
 
 private:
+    std::unique_ptr<char> m_username;
+    PlayerDynamicGameObject *m_player; // Set once we figure out which player index we are.
+    std::unique_ptr<GameState> m_gameState;
     std::vector<std::unique_ptr<CountDownNumberGameObject>> m_countDownNumbers;
     std::unique_ptr<DisplayXMovingGameObject> m_displayXMovingGameObject;
     std::vector<std::unique_ptr<DisplayGameOverGameObject>> m_displayGameOvers;
     std::unique_ptr<WaitingForServerInterface> m_waitingForServerInterface;
     std::unique_ptr<WaitingForLocalSettingsInterface> m_waitingForLocalSettingsInterface;
     std::unique_ptr<InterfaceOverlay> m_interfaceOverlay;
+    float m_fTimeSinceLastClientEvent;
     float m_fTimeSinceLastServerUpdate;
-    bool m_isGameOver;
     float m_fTimeSinceGameOver;
     float m_fBlackCoverTransitionAlpha;
+    int m_iScreenState;
+    short m_sPlayerIndex;
     bool m_isOffline;
     bool m_hasDisplayed2;
     bool m_hasDisplayed1;
     
-    void updateInputWaitingForLocalSettings(std::vector<TouchEvent> &touchEvents);
+    void beginGame();
     
-    void updateInputConnectionErrorWaitingForInput(std::vector<TouchEvent> &touchEvents);
-    
-    virtual void updateRunning(float deltaTime);
-    
-    void updateInputRunning(std::vector<TouchEvent> &touchEvents);
-    
-    virtual void updateSpectating(float deltaTime);
-    
-    void updateInputSpectating(std::vector<TouchEvent> &touchEvents);
-    
-    void updateGameEnding(float deltaTime);
+    void beginSpectating();
     
     void updateForOffline(float deltaTime);
     
-    void spectateNextLivePlayer();
-    
-    void spectatePreviousLivePlayer();
-    
     // Server Stuff
     
-    void processServerMessages();
-    
-    void beginGame(rapidjson::Document &d);
-    
-    void beginSpectate(rapidjson::Document &d);
-    
     bool beginCommon(rapidjson::Document &d, bool isBeginGame);
-    
-    virtual void suddenDeath();
-    
-    void gameOver(rapidjson::Document &d);
     
     void handleBreakableBlocksArrayInDocument(rapidjson::Document &d);
     

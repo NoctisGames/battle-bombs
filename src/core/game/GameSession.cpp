@@ -8,6 +8,7 @@
 
 #include "GameSession.h"
 #include "GameListener.h"
+#include "GameState.h"
 #include "Map.h"
 #include "MapFactory.h"
 #include "Vector2D.h"
@@ -47,7 +48,6 @@ void GameSession::init()
     m_gameListener.release();
     m_gameListener = std::unique_ptr<GameListener>(new GameListener());
     
-    m_gameState = WAITING;
     m_iNumBreakableBlocksAtSpawnTime = 0;
     m_isSuddenDeath = false;
     
@@ -71,6 +71,13 @@ void GameSession::handleServerUpdate(const char *message)
     m_gameListener->addServerMessage(message);
 }
 
+void GameSession::suddenDeath()
+{
+    m_isSuddenDeath = true;
+    
+    m_map->suddenDeath(this);
+}
+
 #pragma mark <For ServerGameSession to override>
 
 void GameSession::onBreakableBlockDestroyed(BreakableBlock &breakableBlock)
@@ -81,6 +88,147 @@ void GameSession::onBreakableBlockDestroyed(BreakableBlock &breakableBlock)
 void GameSession::onPowerUpPickedUp(PowerUp &powerUp)
 {
     // Empty
+}
+
+void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
+{
+    static const char *playerIndex0Key = "playerIndex0";
+    static const char *playerIndex1Key = "playerIndex1";
+    static const char *playerIndex2Key = "playerIndex2";
+    static const char *playerIndex3Key = "playerIndex3";
+    static const char *playerIndex4Key = "playerIndex4";
+    static const char *playerIndex5Key = "playerIndex5";
+    static const char *playerIndex6Key = "playerIndex6";
+    static const char *playerIndex7Key = "playerIndex7";
+    
+    static const char *playerIndex0IsBotKey = "playerIndex0IsBot";
+    static const char *playerIndex1IsBotKey = "playerIndex1IsBot";
+    static const char *playerIndex2IsBotKey = "playerIndex2IsBot";
+    static const char *playerIndex3IsBotKey = "playerIndex3IsBot";
+    static const char *playerIndex4IsBotKey = "playerIndex4IsBot";
+    static const char *playerIndex5IsBotKey = "playerIndex5IsBot";
+    static const char *playerIndex6IsBotKey = "playerIndex6IsBot";
+    static const char *playerIndex7IsBotKey = "playerIndex7IsBot";
+    
+    static const char *playerIndex0XKey = "playerIndex0X";
+    static const char *playerIndex1XKey = "playerIndex1X";
+    static const char *playerIndex2XKey = "playerIndex2X";
+    static const char *playerIndex3XKey = "playerIndex3X";
+    static const char *playerIndex4XKey = "playerIndex4X";
+    static const char *playerIndex5XKey = "playerIndex5X";
+    static const char *playerIndex6XKey = "playerIndex6X";
+    static const char *playerIndex7XKey = "playerIndex7X";
+    
+    static const char *playerIndex0YKey = "playerIndex0Y";
+    static const char *playerIndex1YKey = "playerIndex1Y";
+    static const char *playerIndex2YKey = "playerIndex2Y";
+    static const char *playerIndex3YKey = "playerIndex3Y";
+    static const char *playerIndex4YKey = "playerIndex4Y";
+    static const char *playerIndex5YKey = "playerIndex5Y";
+    static const char *playerIndex6YKey = "playerIndex6Y";
+    static const char *playerIndex7YKey = "playerIndex7Y";
+    
+    static const char *playerIndex0DirectionKey = "playerIndex0Direction";
+    static const char *playerIndex1DirectionKey = "playerIndex1Direction";
+    static const char *playerIndex2DirectionKey = "playerIndex2Direction";
+    static const char *playerIndex3DirectionKey = "playerIndex3Direction";
+    static const char *playerIndex4DirectionKey = "playerIndex4Direction";
+    static const char *playerIndex5DirectionKey = "playerIndex5Direction";
+    static const char *playerIndex6DirectionKey = "playerIndex6Direction";
+    static const char *playerIndex7DirectionKey = "playerIndex7Direction";
+    
+    static const char *playerIndex0AliveKey = "playerIndex0Alive";
+    static const char *playerIndex1AliveKey = "playerIndex1Alive";
+    static const char *playerIndex2AliveKey = "playerIndex2Alive";
+    static const char *playerIndex3AliveKey = "playerIndex3Alive";
+    static const char *playerIndex4AliveKey = "playerIndex4Alive";
+    static const char *playerIndex5AliveKey = "playerIndex5Alive";
+    static const char *playerIndex6AliveKey = "playerIndex6Alive";
+    static const char *playerIndex7AliveKey = "playerIndex7Alive";
+    
+    clientUpdateForPlayerIndex(d, playerIndex0Key, playerIndex0IsBotKey, playerIndex0XKey, playerIndex0YKey, playerIndex0DirectionKey, playerIndex0AliveKey, 0, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex1Key, playerIndex1IsBotKey, playerIndex1XKey, playerIndex1YKey, playerIndex1DirectionKey, playerIndex1AliveKey, 1, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex2Key, playerIndex2IsBotKey, playerIndex2XKey, playerIndex2YKey, playerIndex2DirectionKey, playerIndex2AliveKey, 2, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex3Key, playerIndex3IsBotKey, playerIndex3XKey, playerIndex3YKey, playerIndex3DirectionKey, playerIndex3AliveKey, 3, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex4Key, playerIndex4IsBotKey, playerIndex4XKey, playerIndex4YKey, playerIndex4DirectionKey, playerIndex4AliveKey, 4, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex5Key, playerIndex5IsBotKey, playerIndex5XKey, playerIndex5YKey, playerIndex5DirectionKey, playerIndex5AliveKey, 5, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex6Key, playerIndex6IsBotKey, playerIndex6XKey, playerIndex6YKey, playerIndex6DirectionKey, playerIndex6AliveKey, 6, isBeginGame);
+    clientUpdateForPlayerIndex(d, playerIndex7Key, playerIndex7IsBotKey, playerIndex7XKey, playerIndex7YKey, playerIndex7DirectionKey, playerIndex7AliveKey, 7, isBeginGame);
+    
+    handleClientEventsArrayInDocument(d);
+}
+
+void GameSession::hardUpdate(rapidjson::Document &d)
+{
+    static const char *numDeletedBreakableBlocksKey = "numDeletedBreakableBlocks";
+    
+    if(d.HasMember(numDeletedBreakableBlocksKey))
+    {
+        static const char *deletedBreakableBlockXValuesKey = "deletedBreakableBlockXValues";
+        static const char *deletedBreakableBlockYValuesKey = "deletedBreakableBlockYValues";
+        
+        std::vector<int> deletedBreakableBlockXValues;
+        std::vector<int> deletedBreakableBlockYValues;
+        
+        handleIntArrayInDocument(d, deletedBreakableBlockXValuesKey, deletedBreakableBlockXValues, -1);
+        handleIntArrayInDocument(d, deletedBreakableBlockYValuesKey, deletedBreakableBlockYValues, -1);
+        
+        int numDeletedBreakableBlocks = d[numDeletedBreakableBlocksKey].GetInt();
+        for(int i = 0; i < numDeletedBreakableBlocks; i++)
+        {
+            for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end(); )
+            {
+                bool isMatch = (*itr)->getGridX() == deletedBreakableBlockXValues.at(i) && (*itr)->getGridY() == deletedBreakableBlockYValues.at(i);
+                if (isMatch && (**itr).getBreakableBlockState() == BB_NORMAL)
+                {
+                    if ((**itr).hasPowerUp())
+                    {
+                        m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp((**itr).getGridX(), (**itr).getGridY(), (**itr).getPowerUpFlag())));
+                    }
+                    
+                    PathFinder::getInstance().freeGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
+                    
+                    itr = m_breakableBlocks.erase(itr);
+                }
+                else
+                {
+                    itr++;
+                }
+            }
+        }
+    }
+    
+    static const char *numDeletedPowerUpsKey = "numDeletedPowerUps";
+    
+    if(d.HasMember(numDeletedPowerUpsKey))
+    {
+        static const char *deletedPowerUpsXValuesKey = "deletedPowerUpsXValues";
+        static const char *deletedPowerUpsYValuesKey = "deletedPowerUpsYValues";
+        
+        std::vector<int> deletedPowerUpsXValues;
+        std::vector<int> deletedPowerUpsYValues;
+        
+        handleIntArrayInDocument(d, deletedPowerUpsXValuesKey, deletedPowerUpsXValues, -1);
+        handleIntArrayInDocument(d, deletedPowerUpsYValuesKey, deletedPowerUpsYValues, -1);
+        
+        int numDeletedPowerUps = d[numDeletedPowerUpsKey].GetInt();
+        for(int i = 0; i < numDeletedPowerUps; i++)
+        {
+            for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end();)
+            {
+                bool isMatch = (*itr)->getGridX() == deletedPowerUpsXValues.at(i) && (*itr)->getGridY() == deletedPowerUpsYValues.at(i);
+                
+                if (isMatch)
+                {
+                    itr = m_powerUps.erase(itr);
+                }
+                else
+                {
+                    itr++;
+                }
+            }
+        }
+    }
 }
 
 int GameSession::getNumPlayers()
@@ -207,6 +355,21 @@ GameListener * GameSession::getGameListener()
     return m_gameListener.get();
 }
 
+Map * GameSession::getMap()
+{
+    return m_map.get();
+}
+
+float GameSession::getCountDownTimeLeft()
+{
+    return m_fCountDownTimeLeft;
+}
+
+void GameSession::setCountDownTimeLeft(float countDownTimeLeft)
+{
+    m_fCountDownTimeLeft = countDownTimeLeft;
+}
+
 int GameSession::getNumBreakableBlocksAtSpawnTime()
 {
     return m_iNumBreakableBlocksAtSpawnTime;
@@ -250,154 +413,6 @@ void GameSession::updateBots()
             }
         }
     }
-}
-
-void GameSession::clientUpdate(rapidjson::Document &d, bool isBeginGame)
-{
-    static const char *playerIndex0Key = "playerIndex0";
-    static const char *playerIndex1Key = "playerIndex1";
-    static const char *playerIndex2Key = "playerIndex2";
-    static const char *playerIndex3Key = "playerIndex3";
-    static const char *playerIndex4Key = "playerIndex4";
-    static const char *playerIndex5Key = "playerIndex5";
-    static const char *playerIndex6Key = "playerIndex6";
-    static const char *playerIndex7Key = "playerIndex7";
-    
-    static const char *playerIndex0IsBotKey = "playerIndex0IsBot";
-    static const char *playerIndex1IsBotKey = "playerIndex1IsBot";
-    static const char *playerIndex2IsBotKey = "playerIndex2IsBot";
-    static const char *playerIndex3IsBotKey = "playerIndex3IsBot";
-    static const char *playerIndex4IsBotKey = "playerIndex4IsBot";
-    static const char *playerIndex5IsBotKey = "playerIndex5IsBot";
-    static const char *playerIndex6IsBotKey = "playerIndex6IsBot";
-    static const char *playerIndex7IsBotKey = "playerIndex7IsBot";
-
-    static const char *playerIndex0XKey = "playerIndex0X";
-    static const char *playerIndex1XKey = "playerIndex1X";
-    static const char *playerIndex2XKey = "playerIndex2X";
-    static const char *playerIndex3XKey = "playerIndex3X";
-    static const char *playerIndex4XKey = "playerIndex4X";
-    static const char *playerIndex5XKey = "playerIndex5X";
-    static const char *playerIndex6XKey = "playerIndex6X";
-    static const char *playerIndex7XKey = "playerIndex7X";
-
-    static const char *playerIndex0YKey = "playerIndex0Y";
-    static const char *playerIndex1YKey = "playerIndex1Y";
-    static const char *playerIndex2YKey = "playerIndex2Y";
-    static const char *playerIndex3YKey = "playerIndex3Y";
-    static const char *playerIndex4YKey = "playerIndex4Y";
-    static const char *playerIndex5YKey = "playerIndex5Y";
-    static const char *playerIndex6YKey = "playerIndex6Y";
-    static const char *playerIndex7YKey = "playerIndex7Y";
-
-    static const char *playerIndex0DirectionKey = "playerIndex0Direction";
-    static const char *playerIndex1DirectionKey = "playerIndex1Direction";
-    static const char *playerIndex2DirectionKey = "playerIndex2Direction";
-    static const char *playerIndex3DirectionKey = "playerIndex3Direction";
-    static const char *playerIndex4DirectionKey = "playerIndex4Direction";
-    static const char *playerIndex5DirectionKey = "playerIndex5Direction";
-    static const char *playerIndex6DirectionKey = "playerIndex6Direction";
-    static const char *playerIndex7DirectionKey = "playerIndex7Direction";
-    
-    static const char *playerIndex0AliveKey = "playerIndex0Alive";
-    static const char *playerIndex1AliveKey = "playerIndex1Alive";
-    static const char *playerIndex2AliveKey = "playerIndex2Alive";
-    static const char *playerIndex3AliveKey = "playerIndex3Alive";
-    static const char *playerIndex4AliveKey = "playerIndex4Alive";
-    static const char *playerIndex5AliveKey = "playerIndex5Alive";
-    static const char *playerIndex6AliveKey = "playerIndex6Alive";
-    static const char *playerIndex7AliveKey = "playerIndex7Alive";
-
-    clientUpdateForPlayerIndex(d, playerIndex0Key, playerIndex0IsBotKey, playerIndex0XKey, playerIndex0YKey, playerIndex0DirectionKey, playerIndex0AliveKey, 0, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex1Key, playerIndex1IsBotKey, playerIndex1XKey, playerIndex1YKey, playerIndex1DirectionKey, playerIndex1AliveKey, 1, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex2Key, playerIndex2IsBotKey, playerIndex2XKey, playerIndex2YKey, playerIndex2DirectionKey, playerIndex2AliveKey, 2, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex3Key, playerIndex3IsBotKey, playerIndex3XKey, playerIndex3YKey, playerIndex3DirectionKey, playerIndex3AliveKey, 3, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex4Key, playerIndex4IsBotKey, playerIndex4XKey, playerIndex4YKey, playerIndex4DirectionKey, playerIndex4AliveKey, 4, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex5Key, playerIndex5IsBotKey, playerIndex5XKey, playerIndex5YKey, playerIndex5DirectionKey, playerIndex5AliveKey, 5, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex6Key, playerIndex6IsBotKey, playerIndex6XKey, playerIndex6YKey, playerIndex6DirectionKey, playerIndex6AliveKey, 6, isBeginGame);
-    clientUpdateForPlayerIndex(d, playerIndex7Key, playerIndex7IsBotKey, playerIndex7XKey, playerIndex7YKey, playerIndex7DirectionKey, playerIndex7AliveKey, 7, isBeginGame);
-    
-    handleClientEventsArrayInDocument(d);
-}
-
-void GameSession::hardUpdate(rapidjson::Document &d)
-{
-    static const char *numDeletedBreakableBlocksKey = "numDeletedBreakableBlocks";
-    
-    if(d.HasMember(numDeletedBreakableBlocksKey))
-    {
-        static const char *deletedBreakableBlockXValuesKey = "deletedBreakableBlockXValues";
-        static const char *deletedBreakableBlockYValuesKey = "deletedBreakableBlockYValues";
-        
-        std::vector<int> deletedBreakableBlockXValues;
-        std::vector<int> deletedBreakableBlockYValues;
-        
-        handleIntArrayInDocument(d, deletedBreakableBlockXValuesKey, deletedBreakableBlockXValues, -1);
-        handleIntArrayInDocument(d, deletedBreakableBlockYValuesKey, deletedBreakableBlockYValues, -1);
-        
-        int numDeletedBreakableBlocks = d[numDeletedBreakableBlocksKey].GetInt();
-        for(int i = 0; i < numDeletedBreakableBlocks; i++)
-        {
-            for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = m_breakableBlocks.begin(); itr != m_breakableBlocks.end(); )
-            {
-                bool isMatch = (*itr)->getGridX() == deletedBreakableBlockXValues.at(i) && (*itr)->getGridY() == deletedBreakableBlockYValues.at(i);
-                if (isMatch && (**itr).getBreakableBlockState() == BB_NORMAL)
-                {
-                    if ((**itr).hasPowerUp())
-                    {
-                        m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp((**itr).getGridX(), (**itr).getGridY(), (**itr).getPowerUpFlag())));
-                    }
-                    
-                    PathFinder::getInstance().freeGameGridCell((*itr)->getGridX(), (*itr)->getGridY());
-                    
-                    itr = m_breakableBlocks.erase(itr);
-                }
-                else
-                {
-                    itr++;
-                }
-            }
-        }
-    }
-    
-    static const char *numDeletedPowerUpsKey = "numDeletedPowerUps";
-    
-    if(d.HasMember(numDeletedPowerUpsKey))
-    {
-        static const char *deletedPowerUpsXValuesKey = "deletedPowerUpsXValues";
-        static const char *deletedPowerUpsYValuesKey = "deletedPowerUpsYValues";
-        
-        std::vector<int> deletedPowerUpsXValues;
-        std::vector<int> deletedPowerUpsYValues;
-        
-        handleIntArrayInDocument(d, deletedPowerUpsXValuesKey, deletedPowerUpsXValues, -1);
-        handleIntArrayInDocument(d, deletedPowerUpsYValuesKey, deletedPowerUpsYValues, -1);
-        
-        int numDeletedPowerUps = d[numDeletedPowerUpsKey].GetInt();
-        for(int i = 0; i < numDeletedPowerUps; i++)
-        {
-            for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = m_powerUps.begin(); itr != m_powerUps.end();)
-            {
-                bool isMatch = (*itr)->getGridX() == deletedPowerUpsXValues.at(i) && (*itr)->getGridY() == deletedPowerUpsYValues.at(i);
-                
-                if (isMatch)
-                {
-                    itr = m_powerUps.erase(itr);
-                }
-                else
-                {
-                    itr++;
-                }
-            }
-        }
-    }
-}
-
-void GameSession::suddenDeath()
-{
-    m_isSuddenDeath = true;
-    
-    m_map->suddenDeath(this);
 }
 
 void GameSession::handlePlayerDataUpdate(rapidjson::Document& d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame)

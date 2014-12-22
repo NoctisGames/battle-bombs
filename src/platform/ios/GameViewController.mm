@@ -77,12 +77,6 @@ static NSString * const PHASE = @"phase";
         
         [[WarpClient getInstance] joinRoomInRangeBetweenMinUsers:0 andMaxUsers:7 maxPrefered:YES];
     }
-    else if(event.result == 2)
-    {
-        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, BATTLE_BOMBS_BETA_CLOSED];
-        
-        on_chat_received([preGameUpdate UTF8String]);
-    }
     else
     {
         NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, CONNECTION_ERROR];

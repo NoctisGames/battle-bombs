@@ -24,6 +24,7 @@
 #define MAP_GRASSLANDS 1
 #define MAP_MOUNTAINS 2
 #define MAP_BASE 3
+#define NUM_MAPS 4
 
 // Pre Game Phases
 #define DEFAULT 0
@@ -31,7 +32,6 @@
 #define FINDING_ROOM_TO_JOIN 2
 #define ROOM_JOINED_WAITING_FOR_SERVER 3
 #define CONNECTION_ERROR 4
-#define BATTLE_BOMBS_BETA_CLOSED 5
 
 // Platform
 #define PLATFORM_UNKNOWN 0

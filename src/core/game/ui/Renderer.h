@@ -72,7 +72,7 @@ public:
     
     void calcScrollYForPlayer(PlayerDynamicGameObject &player);
     
-    void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface);
+    void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface, bool renderPlayersList, bool renderMessage);
     
     void renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
     

@@ -10,7 +10,6 @@
 #define __battlebombs__WaitingForServerInterface__
 
 #include "GameObject.h"
-#include "GameState.h"
 #include "rapidjson/document.h"
 #include <vector>
 
@@ -21,7 +20,7 @@ class WaitingForServerInterface : public GameObject
 public:
 	WaitingForServerInterface(float x, float y, float width, float height, char *username);
     
-    void update(float deltaTime, Game_State gameState);
+    void update(float deltaTime);
     
     void handlePreGameServerUpdate(rapidjson::Document &d);
     
@@ -37,18 +36,12 @@ public:
     
     bool renderTimeToNextRound();
     
-    bool renderPlayersList();
-    
-    bool renderMessage();
-    
 private:
     std::vector<std::unique_ptr<PlayerRow>> m_playerRows;
     char *m_username;
     float m_fTimeToNextRound;
     int m_iPreGamePhase;
     bool m_renderTimeToNextRound;
-    bool m_renderPlayersList;
-    bool m_renderMessage;
 };
 
 #endif /* defined(__battlebombs__WaitingForServerInterface__) */

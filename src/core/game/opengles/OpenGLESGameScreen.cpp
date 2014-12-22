@@ -93,16 +93,6 @@ void OpenGLESGameScreen::touchToWorld(TouchEvent &touchEvent)
 #endif
 }
 
-void OpenGLESGameScreen::platformResume()
-{
-    // Empty
-}
-
-void OpenGLESGameScreen::platformPause()
-{
-    // Empty
-}
-
 bool OpenGLESGameScreen::handleOnBackPressed()
 {
     return false;

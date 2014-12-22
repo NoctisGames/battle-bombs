@@ -26,10 +26,6 @@ public:
     
     virtual void touchToWorld(TouchEvent &touchEvent);
     
-    virtual void platformResume();
-    
-    virtual void platformPause();
-    
     virtual bool handleOnBackPressed();
 
 private:

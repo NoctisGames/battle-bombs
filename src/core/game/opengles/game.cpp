@@ -158,7 +158,7 @@ void reset_time_since_last_client_event()
 
 int get_state()
 {
-    return gameScreen->getState();
+    return gameScreen->getScreenState();
 }
 
 void clear_state()

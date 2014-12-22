@@ -81,9 +81,9 @@ void Renderer::calcScrollYForPlayer(PlayerDynamicGameObject &player)
 	}
 }
 
-void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface)
+void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface, bool renderPlayersList, bool renderMessage)
 {
-    if(waitingForServerInterface.renderPlayersList())
+    if(renderPlayersList)
     {
         m_spriteBatcher->beginBatch();
         renderGameObject(waitingForServerInterface, Assets::getWaitingForServerInterfaceTextureRegion());
@@ -116,7 +116,7 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
         m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture2);
     }
     
-    if(waitingForServerInterface.renderTimeToNextRound() || waitingForServerInterface.renderMessage())
+    if(waitingForServerInterface.renderTimeToNextRound() || renderMessage)
     {
         m_spriteBatcher->beginBatch();
         
@@ -131,7 +131,7 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
             m_font->renderText(*m_spriteBatcher, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 3, 2.0f, 1.36842105263158f, timerColor, true);
         }
         
-        if(waitingForServerInterface.renderMessage())
+        if(renderMessage)
         {
             static Color interfaceColor = Color(1, 1, 1, 1);
             interfaceColor.alpha -= 0.025f;
@@ -150,10 +150,6 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
                     break;
                 case CONNECTION_ERROR:
                     ss << "There was an error connecting to Battle Bombs...";
-                    fontSize = 0.42f;
-                    break;
-                case BATTLE_BOMBS_BETA_CLOSED:
-                    ss << "Get the non-Beta Battle Bombs on the app store!";
                     fontSize = 0.42f;
                     break;
                 case FINDING_ROOM_TO_JOIN:

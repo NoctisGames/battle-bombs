@@ -40,9 +40,15 @@ public:
     
     virtual void handleServerUpdate(const char *message);
     
+    virtual void suddenDeath();
+    
     // For ServerGameSession to override
     virtual void onBreakableBlockDestroyed(BreakableBlock &breakableBlock);
     virtual void onPowerUpPickedUp(PowerUp &powerUp);
+    
+    void clientUpdate(rapidjson::Document &d, bool isBeginGame);
+    
+    void hardUpdate(rapidjson::Document &d);
     
     int getNumPlayers();
     
@@ -86,6 +92,12 @@ public:
     
     GameListener * getGameListener();
     
+    Map * getMap();
+    
+    float getCountDownTimeLeft();
+    
+    void setCountDownTimeLeft(float countDownTimeLeft);
+    
     int getNumBreakableBlocksAtSpawnTime();
     
     void setNumBreakableBlocksAtSpawnTime(int numBreakableBlocksAtSpawnTime);
@@ -106,26 +118,17 @@ protected:
     std::vector<std::unique_ptr<IceBall >> m_iceBalls;
     std::vector<std::unique_ptr<IcePatch >> m_icePatches;
     std::vector<int> m_sEventIds;
-    Game_State m_gameState;
     float m_fCountDownTimeLeft;
     int m_iNumBreakableBlocksAtSpawnTime;
     bool m_isSuddenDeath;
 
-    virtual void updateRunning(float deltaTime) = 0;
-
-    virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame) = 0;
-    
     void initializeMap(int mapType);
     
     void updateMap(float deltaTime);
     
     void updateBots();
-
-    void clientUpdate(rapidjson::Document &d, bool isBeginGame);
     
-    void hardUpdate(rapidjson::Document &d);
-    
-    virtual void suddenDeath();
+    virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame) = 0;
 
     void handlePlayerDataUpdate(rapidjson::Document &d, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame);
 

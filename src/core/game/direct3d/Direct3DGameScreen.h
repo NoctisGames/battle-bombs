@@ -32,10 +32,10 @@ public:
 	ID3D11Texture2D* getTexture();
 
 	virtual void touchToWorld(TouchEvent &touchEvent);
-
-	virtual void platformResume();
-
-	virtual void platformPause();
+    
+    virtual void onResume();
+    
+    virtual void onPause();
 
 	virtual bool handleOnBackPressed();
 
