@@ -513,6 +513,7 @@ void GameScreen::updateGameEnding(float deltaTime)
             Assets::getInstance()->setMusicId(MUSIC_STOP);
             
             init();
+            
             return;
         }
     }
