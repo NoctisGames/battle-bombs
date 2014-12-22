@@ -24,7 +24,6 @@
       <itemPath>../../../core/game/GameListener.h</itemPath>
       <itemPath>../../../core/framework/GameObject.h</itemPath>
       <itemPath>../../../core/game/GameSession.h</itemPath>
-      <itemPath>../../../core/game/GameState.h</itemPath>
       <itemPath>../../../core/framework/GridGameObject.h</itemPath>
       <itemPath>../../../core/game/IceBall.h</itemPath>
       <itemPath>../../../core/game/IcePatch.h</itemPath>
@@ -105,6 +104,94 @@
       <itemPath>../../../core/framework/Triangle.cpp</itemPath>
       <itemPath>../../../core/framework/Vector2D.cpp</itemPath>
       <itemPath>src/bb_room_adaptor.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -396,8 +483,6 @@
       <item path="../../../core/game/GameSession.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/game/GameSession.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/game/GameState.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/IceBall.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -724,8 +809,6 @@
       <item path="../../../core/game/GameSession.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../../core/game/GameSession.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../../core/game/GameState.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/IceBall.cpp" ex="false" tool="1" flavor2="0">
       </item>

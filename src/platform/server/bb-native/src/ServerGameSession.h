@@ -50,6 +50,7 @@ private:
     std::vector<int> m_deletedBreakableBlockYValues;
     std::vector<int> m_deletedPowerUpsXValues;
     std::vector<int> m_deletedPowerUpsYValues;
+    int m_gameState;
     
     void updateRunning(float deltaTime);
 

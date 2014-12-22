@@ -8,7 +8,6 @@
 
 #include "GameSession.h"
 #include "GameListener.h"
-#include "GameState.h"
 #include "Map.h"
 #include "MapFactory.h"
 #include "Vector2D.h"

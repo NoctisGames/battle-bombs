@@ -33,6 +33,7 @@
 #include "FallingObjectShadow.h"
 #include "SpaceTile.h"
 #include "Map.h"
+#include "GameConstants.h"
 
 ServerGameSession::ServerGameSession()
 {
@@ -80,7 +81,7 @@ void ServerGameSession::update(float deltaTime)
             }
             else if (eventType == BEGIN_GAME)
             {
-                m_gameState = COUNTING_DOWN;
+                m_gameState = GAME_STATE_COUNTING_DOWN;
             }
             else if (eventType == GAME_OVER)
             {
@@ -97,7 +98,7 @@ void ServerGameSession::update(float deltaTime)
                         m_players.at(winningPlayerIndex).get()->onWin();
                     }
                     
-                    m_gameState = GAME_ENDING;
+                    m_gameState = GAME_STATE_ENDING;
                 }
             }
             else if (eventType == SUDDEN_DEATH)
@@ -109,11 +110,11 @@ void ServerGameSession::update(float deltaTime)
 
     switch (m_gameState)
     {
-        case COUNTING_DOWN:
+        case GAME_STATE_COUNTING_DOWN:
             m_fCountDownTimeLeft -= deltaTime;
             if (m_fCountDownTimeLeft < 0)
             {
-                m_gameState = RUNNING;
+                m_gameState = GAME_STATE_RUNNING;
 
                 for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
                 {
@@ -121,8 +122,8 @@ void ServerGameSession::update(float deltaTime)
                 }
             }
             break;
-        case RUNNING:
-        case GAME_ENDING:
+        case GAME_STATE_RUNNING:
+        case GAME_STATE_ENDING:
             updateRunning(deltaTime);
             break;
         default:

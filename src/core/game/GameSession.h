@@ -14,8 +14,6 @@
 
 #include "rapidjson/document.h"
 
-#include "GameState.h"
-
 class GameListener;
 class Map;
 class MapBorder;
