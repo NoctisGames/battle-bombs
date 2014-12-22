@@ -66,6 +66,11 @@ void GameSession::init()
     m_spaceTiles.clear();
 }
 
+void GameSession::handleServerUpdate(const char *message)
+{
+    m_gameListener->addServerMessage(message);
+}
+
 #pragma mark <For ServerGameSession to override>
 
 void GameSession::onBreakableBlockDestroyed(BreakableBlock &breakableBlock)
@@ -106,6 +111,11 @@ int GameSession::getPlayerDirectionAtIndex(short playerIndex)
 bool GameSession::isPlayerAliveAtIndex(short playerIndex)
 {
     return m_players.at(playerIndex).get()->getPlayerState() == Player_State::ALIVE;
+}
+
+int GameSession::popOldestEventId()
+{
+    return m_gameListener->popOldestEventId();
 }
 
 void GameSession::readCharArrayIntoIntArray(const char *charArray, std::vector<int> &intArray, int sentinelValue)
@@ -200,6 +210,11 @@ GameListener * GameSession::getGameListener()
 int GameSession::getNumBreakableBlocksAtSpawnTime()
 {
     return m_iNumBreakableBlocksAtSpawnTime;
+}
+
+void GameSession::setNumBreakableBlocksAtSpawnTime(int numBreakableBlocksAtSpawnTime)
+{
+    m_iNumBreakableBlocksAtSpawnTime = numBreakableBlocksAtSpawnTime;
 }
 
 #pragma mark <Protected>

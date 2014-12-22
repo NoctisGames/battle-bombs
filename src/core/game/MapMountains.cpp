@@ -150,3 +150,14 @@ void MapMountains::update(GameSession *gameSession, float deltaTime, bool isSudd
         }
     }
 }
+
+bool MapMountains::isValidLocationForBreakableBlock(GameSession *gameSession, int j, int i)
+{
+    // The Mountain map has a special DOOR border type
+    if (i == GRID_CELL_NUM_ROWS - 1 && j >= 6 && j <= 8)
+    {
+        return false;
+    }
+    
+    return Map::isValidLocationForBreakableBlock(gameSession, i, j);
+}

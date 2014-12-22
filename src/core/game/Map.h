@@ -35,8 +35,22 @@ public:
     
     virtual void update(GameSession *gameSession, float deltaTime, bool isSuddenDeath);
     
+    virtual bool isValidLocationForBreakableBlock(GameSession *gameSession, int j, int i);
+    
+    // Called by the Server or the Client in Offline Mode
+    void populateMapWithPlayersAndBreakableBlocks(GameSession *gameSession, int numHumanPlayers);
+    
 protected:
     void addCommonInsideBlocks(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);
+    
+private:
+    bool isLocationOccupiedByPlayer(GameSession *gameSession, int gridX, int gridY);
+    
+    // A utility function to swap to integers
+    void swap(int *a, int *b);
+    
+    // A function to generate a random permutation of arr[]
+    void randomize(int arr[][2], int n);
 };
 
 #endif /* defined(__battlebombs__Map__) */

@@ -35,10 +35,10 @@ class GameSession
 {
 public:
     GameSession();
-
-    virtual void handleServerUpdate(const char *message) = 0;
     
     virtual void init();
+    
+    virtual void handleServerUpdate(const char *message);
     
     // For ServerGameSession to override
     virtual void onBreakableBlockDestroyed(BreakableBlock &breakableBlock);
@@ -55,6 +55,8 @@ public:
     int getPlayerDirectionAtIndex(short playerIndex);
 
     bool isPlayerAliveAtIndex(short playerIndex);
+    
+    int popOldestEventId();
     
     void readCharArrayIntoIntArray(const char *charArray, std::vector<int> &intArray, int sentinelValue);
     
@@ -85,6 +87,8 @@ public:
     GameListener * getGameListener();
     
     int getNumBreakableBlocksAtSpawnTime();
+    
+    void setNumBreakableBlocksAtSpawnTime(int numBreakableBlocksAtSpawnTime);
 
 protected:
     std::unique_ptr<GameListener> m_gameListener;
@@ -103,6 +107,7 @@ protected:
     std::vector<std::unique_ptr<IcePatch >> m_icePatches;
     std::vector<int> m_sEventIds;
     Game_State m_gameState;
+    float m_fCountDownTimeLeft;
     int m_iNumBreakableBlocksAtSpawnTime;
     bool m_isSuddenDeath;
 

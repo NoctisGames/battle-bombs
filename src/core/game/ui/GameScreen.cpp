@@ -71,7 +71,7 @@ GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
 
 void GameScreen::handleServerUpdate(const char *message)
 {
-    m_gameListener->addServerMessage(message);
+    GameSession::handleServerUpdate(message);
     
     m_fTimeSinceLastServerUpdate = 0;
 }
@@ -312,11 +312,6 @@ float GameScreen::getPlayerY()
 int GameScreen::getPlayerDirection()
 {
     return getPlayerDirectionAtIndex(m_sPlayerIndex);
-}
-
-int GameScreen::popOldestEventId()
-{
-    return m_gameListener->popOldestEventId();
 }
 
 bool GameScreen::isTimeToSendKeepAlive()

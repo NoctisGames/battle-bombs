@@ -37,10 +37,10 @@ public:
     virtual void platformPause() = 0;
     
     virtual bool handleOnBackPressed() = 0;
-
-	virtual void handleServerUpdate(const char *message);
     
     virtual void init();
+    
+    virtual void handleServerUpdate(const char *message);
 
 	void onResume();
 	
@@ -61,8 +61,6 @@ public:
     float getPlayerY();
     
     int getPlayerDirection();
-    
-    int popOldestEventId();
     
     bool isTimeToSendKeepAlive();
 
@@ -88,7 +86,6 @@ private:
     std::unique_ptr<WaitingForServerInterface> m_waitingForServerInterface;
     std::unique_ptr<WaitingForLocalSettingsInterface> m_waitingForLocalSettingsInterface;
     std::unique_ptr<InterfaceOverlay> m_interfaceOverlay;
-    float m_fCountDownTimeLeft;
     float m_fTimeSinceLastServerUpdate;
     bool m_isGameOver;
     float m_fTimeSinceGameOver;
