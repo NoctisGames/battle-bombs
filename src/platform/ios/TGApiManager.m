@@ -3,7 +3,7 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/8/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
 #define SERVER_STATUS_URL @"https://s3.amazonaws.com/battlebombs/bb_1.3.0.json"

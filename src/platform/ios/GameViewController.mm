@@ -3,7 +3,7 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
 #define APPWARP_APP_KEY         @"e4207af0-de78-496d-8"

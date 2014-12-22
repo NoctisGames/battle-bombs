@@ -3,7 +3,7 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 12/21/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
 #include "MapBase.h"
@@ -39,16 +39,7 @@ void MapBase::initializeMap(GameSession *gameSession)
 {
     Map::initializeMap(gameSession);
     
-    addCommonInsideBlocks(gameSession->getInsideBlocks());
-    
-    // BEGIN TOP
-    for (int i = TOP_HALF_BOTTOM_GRID_Y + 1; i < GRID_CELL_NUM_ROWS; i += 2)
-    {
-        for (int j = 1; j < NUM_GRID_CELLS_PER_ROW; j += 2)
-        {
-            gameSession->getInsideBlocks().push_back(std::unique_ptr<InsideBlock>(new InsideBlock(j, i)));
-        }
-    }
+    gameSession->getInsideBlocks().push_back(std::unique_ptr<InsideBlock>(new InsideBlock(0, 0)));
 }
 
 void MapBase::update(GameSession *gameSession, float deltaTime, bool isSuddenDeath)

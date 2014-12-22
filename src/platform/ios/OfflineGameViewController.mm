@@ -3,7 +3,7 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 5/19/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
 #define NUM_OFFLINE_MAPS 6
