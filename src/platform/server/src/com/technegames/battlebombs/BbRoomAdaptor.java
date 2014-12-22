@@ -317,7 +317,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     else
                     {
                         _oneOrLessPlayersAliveTimer += deltaTime;
-                        if (_oneOrLessPlayersAliveTimer > 2)
+                        if (_oneOrLessPlayersAliveTimer > 0.5f)
                         {
                             endGame();
 
