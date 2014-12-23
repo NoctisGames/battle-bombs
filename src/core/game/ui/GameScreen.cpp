@@ -77,10 +77,15 @@ void GameScreen::init()
 {
     GameSession::init();
     
+    m_touchPoint.release();
     m_touchPoint = std::unique_ptr<Vector2D>(new Vector2D());
+    m_displayXMovingGameObject.release();
     m_displayXMovingGameObject = std::unique_ptr<DisplayXMovingGameObject>(new DisplayXMovingGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f, BATTLE));
+    m_waitingForServerInterface.release();
     m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, 5.81492537375f, 10.38805970149248f, 11.2298507475f, m_username.get()));
+    m_waitingForLocalSettingsInterface.release();
     m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface());
+    m_interfaceOverlay.release();
     m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
     
     m_player = nullptr;
@@ -89,6 +94,7 @@ void GameScreen::init()
     m_countDownNumbers.clear();
     m_displayGameOvers.clear();
     
+    m_gameState.release();
     m_gameState = std::unique_ptr<GameState>(GameStateFactory::getInstance().createGameState(m_isOffline ? GAME_STATE_WAITING_FOR_LOCAL_SETTINGS : GAME_STATE_WAITING_FOR_SERVER, m_isOffline));
     
     m_iScreenState = SCREEN_STATE_NORMAL;

@@ -10,6 +10,7 @@
 #include "Vector2D.h"
 #include "Rectangle.h"
 #include "GameConstants.h"
+#include <math.h>
 
 static float targetWidth = GRID_CELL_WIDTH * 3.25f;
 static float targetHeight = GRID_CELL_HEIGHT * 2.5f;
@@ -33,17 +34,24 @@ void CountDownNumberGameObject::update(float deltaTime)
     {
         m_remove = true;
     }
-    else if(m_fStateTime > 0.9f)
-    {
-        m_fAngle -= deltaTime * 180;
-    }
-    else if(m_fStateTime > 0.7f)
-    {
-        m_fAngle += deltaTime * 180;
-    }
     else if(m_fStateTime > 0.6f)
     {
-        m_fAngle -= deltaTime * 180;
+        m_fAngle = 0;
+        
+        float delta = m_fStateTime - 0.6f;
+        m_fAngle -= fminf(delta, 0.1f) * 180;
+        
+        if(delta > 0.1f)
+        {
+            delta = m_fStateTime - 0.7f;
+            m_fAngle += fminf(delta, 0.2f) * 180;
+            
+            if(delta > 0.2f)
+            {
+                delta = m_fStateTime - 0.9f;
+                m_fAngle -= fminf(delta, 0.1f) * 180;
+            }
+        }
     }
     
     if(m_fStateTime > 0.4f)
