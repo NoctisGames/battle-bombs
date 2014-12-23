@@ -455,6 +455,7 @@ int GameScreen::getNumSecondsLeft()
 
 void GameScreen::setGameState(GameState *gameState)
 {
+    m_gameState.release();
     m_gameState = std::unique_ptr<GameState>(gameState);
 }
 
