@@ -114,6 +114,8 @@ public final class RendererWrapper implements Renderer
     private final Sound fallingObjectSound;
     private final Sound crashingFireBallSound;
     private final Sound crashingIceBallSound;
+    
+    private final boolean _isOffline;
 
     private Music bgm;
 
@@ -152,6 +154,7 @@ public final class RendererWrapper implements Renderer
         this.fallingObjectSound = audio.newSound("falling_object.ogg");
         this.crashingFireBallSound = audio.newSound("crashing_fire_ball.ogg");
         this.crashingIceBallSound = audio.newSound("crashing_ice_ball.ogg");
+        _isOffline = isOffline;
 
         this.isInitialized = false;
 
@@ -192,7 +195,10 @@ public final class RendererWrapper implements Renderer
                 clear_state();
             case SCREEN_STATE_NORMAL:
                 update(smoothedDeltaRealTime_ms / 1000);
-                pushEvents();
+                if (!_isOffline)
+                {
+                    pushEvents();
+                }
                 break;
             case SCREEN_STATE_CONNECTION_ERROR:
                 activity.setResult(GameActivity.RESULT_CONNECTION_ERROR);
