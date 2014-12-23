@@ -70,7 +70,7 @@ GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
     
     init();
     
-    m_gameState = std::unique_ptr<GameState>(GameStateFactory::getInstance().createGameState(m_isOffline ? GAME_STATE_WAITING_FOR_LOCAL_SETTINGS : GAME_STATE_WAITING_FOR_CONNECTION, isOffline));
+    setGameState(GameStateFactory::getInstance().createGameState(m_isOffline ? GAME_STATE_WAITING_FOR_LOCAL_SETTINGS : GAME_STATE_WAITING_FOR_CONNECTION, m_isOffline));
 }
 
 void GameScreen::init()
@@ -94,8 +94,7 @@ void GameScreen::init()
     m_countDownNumbers.clear();
     m_displayGameOvers.clear();
     
-    m_gameState.release();
-    m_gameState = std::unique_ptr<GameState>(GameStateFactory::getInstance().createGameState(m_isOffline ? GAME_STATE_WAITING_FOR_LOCAL_SETTINGS : GAME_STATE_WAITING_FOR_SERVER, m_isOffline));
+    setGameState(GameStateFactory::getInstance().createGameState(m_isOffline ? GAME_STATE_WAITING_FOR_LOCAL_SETTINGS : GAME_STATE_WAITING_FOR_SERVER, m_isOffline));
     
     m_iScreenState = SCREEN_STATE_NORMAL;
     m_fTimeSinceLastClientEvent = 0;
@@ -338,7 +337,7 @@ void GameScreen::gameOver(rapidjson::Document &d)
     }
     
     m_isGameOver = true;
-    m_gameState = std::unique_ptr<GameState>(GameStateFactory::getInstance().createGameState(GAME_STATE_ENDING, m_isOffline));
+    setGameState(GameStateFactory::getInstance().createGameState(GAME_STATE_ENDING, m_isOffline));
 }
 
 void GameScreen::spectateNextLivePlayer()
@@ -572,7 +571,7 @@ void GameScreen::beginGame()
     {
         m_player = m_players.at(m_sPlayerIndex).get();
         
-        m_gameState = std::unique_ptr<GameState>(GameStateFactory::getInstance().createGameState(GAME_STATE_COUNTING_DOWN, m_isOffline));
+        setGameState(GameStateFactory::getInstance().createGameState(GAME_STATE_COUNTING_DOWN, m_isOffline));
         
         m_gameListener->playSound(SOUND_COUNT_DOWN_3);
         m_countDownNumbers.push_back(std::unique_ptr<CountDownNumberGameObject>(new CountDownNumberGameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 2, SCREEN_WIDTH * 2 * 0.76923076923077f, DISPLAY_3)));
@@ -588,7 +587,7 @@ void GameScreen::beginGame()
 
 void GameScreen::beginSpectating()
 {
-    m_gameState = std::unique_ptr<GameState>(GameStateFactory::getInstance().createGameState(GAME_STATE_SPECTATING, m_isOffline));
+    setGameState(GameStateFactory::getInstance().createGameState(GAME_STATE_SPECTATING, m_isOffline));
     m_iScreenState = SCREEN_STATE_ENTERED_SPECTATOR_MODE;
 }
 
