@@ -34,28 +34,14 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
 
 	m_username = std::unique_ptr<char>(new char[1]);
 
-    m_lastBombDropped = nullptr;
-    m_fStateTime = 0;
-    m_iSpeed = 3;
-    m_firePower = 1;
-    m_iDirection = direction;
-	m_activePowerUp = POWER_UP_TYPE_NONE;
-
-    m_iMaxBombCount = 1;
-    m_iCurrentBombCount = 0;
-    setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_OFF);
-
     m_sPlayerIndex = playerIndex;
-
+    m_iDirection = direction;
     m_gameListener = gameListener;
-
-    m_playerState = ALIVE;
-    m_playerActionState = IDLE;
     m_isClientPlayer = false;
     m_isBot = false;
-    m_isDisplayingName = false;
     m_fDisplayingPointerStateTime = 0;
-    m_isDisplayingPointer = false;
+    
+    reset();
 }
 
 void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
