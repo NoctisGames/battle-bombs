@@ -11,6 +11,9 @@
 #include "Rectangle.h"
 #include "GameConstants.h"
 #include <math.h>
+#ifdef TECHNE_GAMES_DIRECT_3D
+#define fminf(x, y) ((x) < (y) ? (x) : (y))
+#endif
 
 static float targetWidth = GRID_CELL_WIDTH * 3.25f;
 static float targetHeight = GRID_CELL_HEIGHT * 2.5f;
