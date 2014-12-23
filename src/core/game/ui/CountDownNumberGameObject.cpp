@@ -45,7 +45,8 @@ void CountDownNumberGameObject::update(float deltaTime)
     {
         m_fAngle -= deltaTime * 180;
     }
-    else if(m_fStateTime > 0.4f)
+    
+    if(m_fStateTime > 0.4f)
     {
         m_fWidth = targetWidth;
         m_fHeight = targetHeight;

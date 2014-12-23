@@ -100,6 +100,8 @@ void GameScreen::init()
     
     m_hasDisplayed2 = false;
     m_hasDisplayed1 = false;
+    
+    m_isGameOver = false;
 }
 
 void GameScreen::handleServerUpdate(const char *message)
@@ -329,6 +331,7 @@ void GameScreen::gameOver(rapidjson::Document &d)
         }
     }
     
+    m_isGameOver = true;
     m_gameState = std::unique_ptr<GameState>(GameStateFactory::getInstance().createGameState(GAME_STATE_ENDING, m_isOffline));
 }
 
@@ -599,33 +602,39 @@ void GameScreen::updateForOffline(float deltaTime)
             }
         }
         
-        if(numAlive <= 1)
+        if(!m_isGameOver)
         {
-            bool hasWinner = numAlive == 1;
-            
-            rapidjson::Document d;
-            std::stringstream ss;
-            ss << "{\"eventType\": " << GAME_OVER << ", \"hasWinner\": " << hasWinner << ", \"winningPlayerIndex\": " << winningPlayerIndex << "}";
-            std::string gameOverMessage = ss.str();
-            
-            d.Parse<0>(gameOverMessage.c_str());
-            
-            gameOver(d);
+            if(numAlive <= 1)
+            {
+                bool hasWinner = numAlive == 1;
+                
+                rapidjson::Document d;
+                std::stringstream ss;
+                ss << "{\"eventType\": " << GAME_OVER << ", \"hasWinner\": " << (hasWinner ? "true" : "false") << ", \"winningPlayerIndex\": " << winningPlayerIndex << "}";
+                std::string gameOverMessage = ss.str();
+                
+                d.Parse<0>(gameOverMessage.c_str());
+                
+                gameOver(d);
+            }
+            else if(getNumSecondsLeft() <= 0)
+            {
+                rapidjson::Document d;
+                std::stringstream ss;
+                ss << "{\"eventType\": " << GAME_OVER << ", \"hasWinner\": false, \"winningPlayerIndex\": " << -1 << "}";
+                std::string gameOverMessage = ss.str();
+                
+                d.Parse<0>(gameOverMessage.c_str());
+                
+                gameOver(d);
+            }
         }
-        else if(getNumSecondsLeft() <= 0)
+        else if(!m_isSuddenDeath)
         {
-            rapidjson::Document d;
-            std::stringstream ss;
-            ss << "{\"eventType\": " << GAME_OVER << ", \"hasWinner\": " << false << ", \"winningPlayerIndex\": " << -1 << "}";
-            std::string gameOverMessage = ss.str();
-            
-            d.Parse<0>(gameOverMessage.c_str());
-            
-            gameOver(d);
-        }
-        else if(!m_isSuddenDeath && getNumSecondsLeft() <= 60)
-        {
-            suddenDeath();
+            if(getNumSecondsLeft() <= 60)
+            {
+                suddenDeath();
+            }
         }
     }
 }

@@ -159,5 +159,5 @@ bool MapMountains::isValidLocationForBreakableBlock(GameSession *gameSession, in
         return false;
     }
     
-    return Map::isValidLocationForBreakableBlock(gameSession, i, j);
+    return Map::isValidLocationForBreakableBlock(gameSession, j, i);
 }

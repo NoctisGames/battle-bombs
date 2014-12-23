@@ -158,6 +158,7 @@ private:
     bool m_isOffline;
     bool m_hasDisplayed2;
     bool m_hasDisplayed1;
+    bool m_isGameOver;
     
     void beginGame();
     
