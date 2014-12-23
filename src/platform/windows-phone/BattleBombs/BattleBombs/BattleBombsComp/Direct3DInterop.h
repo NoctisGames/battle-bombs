@@ -66,6 +66,7 @@ namespace BattleBombsComp
 		std::vector<TouchEvent> m_touchEvents;
 		std::vector<TouchEvent> m_touchEventsPool;
 		std::vector<TouchEvent> m_touchEventsBuffer;
+		bool m_isOffline;
 
 		void pushEvents();
 

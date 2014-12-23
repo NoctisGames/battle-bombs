@@ -92,6 +92,7 @@ namespace BattleBombsComp
 		const char *usernameCharArray = fooA.c_str();
 
 		m_gameScreen = std::unique_ptr<Direct3DGameScreen>(new Direct3DGameScreen(usernameCharArray, isOffline));
+		m_isOffline = isOffline;
 
 		ComPtr<Direct3DContentProvider> provider = Make<Direct3DContentProvider>(this);
 		return reinterpret_cast<IDrawingSurfaceContentProvider^>(provider.Get());
@@ -208,7 +209,10 @@ namespace BattleBombsComp
 			m_timer->Update();
 			m_gameScreen->update(m_timer->Delta, m_touchEvents);
 
-			pushEvents();
+			if (!m_isOffline)
+			{
+				pushEvents();
+			}
 			break;
 		case SCREEN_STATE_CONNECTION_ERROR:
 			m_winRtCallback->Invoke("CONNECTION_ERROR", "NULL");
