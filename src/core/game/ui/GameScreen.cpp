@@ -635,7 +635,8 @@ void GameScreen::updateForOffline(float deltaTime)
                 gameOver(d);
             }
         }
-        else if(!m_isSuddenDeath)
+        
+        if(!m_isSuddenDeath)
         {
             if(getNumSecondsLeft() <= 60)
             {
