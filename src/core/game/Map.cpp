@@ -254,21 +254,37 @@ void Map::populateMapWithPlayersAndBreakableBlocks(GameSession *gameSession, int
                     // This will be used to determine which type of powerups will appear
                     int flagRange = (rand() % 100 + 1);
                     
-                    if (flagRange <= 55)
+                    if (flagRange <= 50)
                     {
                         flag = rand() % POWER_UP_TYPE_SPEED + 1;
                     }
-                    else if (flagRange > 55 && flagRange <= 60)
+                    else if (flagRange > 50 && flagRange <= 55)
                     {
                         flag = POWER_UP_TYPE_FORCE_FIELD;
                     }
-                    else if (flagRange > 60 && flagRange <= 65)
+                    else if (flagRange > 55 && flagRange <= 60)
                     {
                         flag = POWER_UP_TYPE_PUSH;
                     }
-                    else if (flagRange > 65 && flagRange <= 70)
+                    else if (flagRange > 60 && flagRange <= 65)
                     {
                         flag = POWER_UP_TYPE_SHIELD;
+                    }
+                    else if (flagRange > 65 && flagRange <= 70)
+                    {
+                        flag = POWER_UP_TYPE_MEGA_FIRE;
+                    }
+                    else if (flagRange > 70 && flagRange <= 75)
+                    {
+                        flag = POWER_UP_TYPE_REMOTE_BOMB;
+                    }
+                    else if (flagRange > 75 && flagRange <= 80)
+                    {
+                        flag = POWER_UP_TYPE_LAND_MINE;
+                    }
+                    else if (flagRange > 80 && flagRange <= 85)
+                    {
+                        flag = POWER_UP_TYPE_CURSE;
                     }
                     
                     // If these two blocks don't get caught, the flag remains 0 and no powerup will be created

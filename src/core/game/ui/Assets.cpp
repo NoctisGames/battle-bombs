@@ -1730,34 +1730,110 @@ TextureRegion& Assets::getPowerUpTextureRegion(PowerUp &powerUp)
         powerUpShieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_8_TEXTURE_REGION_X, POWER_UP_SHIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
     }
     
-    static float cycleTime = 0.80f;
-    static std::vector<float> frames;
-    if (frames.size() == 0)
+    static std::vector<TextureRegion> powerUpRemoteBombTextureRegions;
+    if (powerUpRemoteBombTextureRegions.size() == 0)
     {
-        frames.push_back(0.1f);
-        frames.push_back(0.1f);
-        frames.push_back(0.1f);
-        frames.push_back(0.1f);
-        frames.push_back(0.1f);
-        frames.push_back(0.1f);
-        frames.push_back(0.1f);
-        frames.push_back(0.1f);
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_2_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_3_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_4_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_5_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_6_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_7_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_8_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static std::vector<TextureRegion> powerUpLandMineTextureRegions;
+    if (powerUpLandMineTextureRegions.size() == 0)
+    {
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_2_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_3_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_4_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_5_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_6_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_7_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_8_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static std::vector<TextureRegion> powerUpCurseTextureRegions;
+    if (powerUpCurseTextureRegions.size() == 0)
+    {
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_2_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_3_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_4_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_5_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_6_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_7_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_8_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static float normalCycleTime = 0.80f;
+    static std::vector<float> normalFrames;
+    if (normalFrames.size() == 0)
+    {
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+    }
+    
+    static std::vector<TextureRegion> powerUpMegaFireTextureRegions;
+    if (powerUpMegaFireTextureRegions.size() == 0)
+    {
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_1_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_2_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_3_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_4_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_5_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_6_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_7_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_8_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_9_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static float megaFireCycleTime = 0.90f;
+    static std::vector<float> megaFireFrames;
+    if (megaFireFrames.size() == 0)
+    {
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
     }
 
     switch (powerUp.getType())
     {
         case POWER_UP_TYPE_BOMB:
-            return powerUpBombTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
+            return powerUpBombTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
         case POWER_UP_TYPE_FIRE:
-            return powerUpFireTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
+            return powerUpFireTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
         case POWER_UP_TYPE_FORCE_FIELD:
-            return powerUpForceFieldTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
+            return powerUpForceFieldTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
         case POWER_UP_TYPE_SPEED:
-            return powerUpSpeedTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
+            return powerUpSpeedTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
         case POWER_UP_TYPE_PUSH:
-            return powerUpPushTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
+            return powerUpPushTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
         case POWER_UP_TYPE_SHIELD:
-            return powerUpShieldTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
+            return powerUpShieldTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_REMOTE_BOMB:
+            return powerUpRemoteBombTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_LAND_MINE:
+            return powerUpLandMineTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_CURSE:
+            return powerUpCurseTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_MEGA_FIRE:
+            return powerUpMegaFireTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), megaFireCycleTime, megaFireFrames));
         default:
             break;
     }

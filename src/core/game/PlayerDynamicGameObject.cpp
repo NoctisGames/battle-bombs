@@ -416,6 +416,18 @@ void PlayerDynamicGameObject::handlePowerUps(std::vector<std::unique_ptr<PowerUp
                 case POWER_UP_TYPE_SHIELD:
                     m_gameListener->addLocalEventForPlayer(PLAYER_PU_SHIELD, *this);
                     break;
+                case POWER_UP_TYPE_MEGA_FIRE:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_MEGA_FIRE, *this);
+                    break;
+                case POWER_UP_TYPE_REMOTE_BOMB:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_REMOTE_BOMB, *this);
+                    break;
+                case POWER_UP_TYPE_LAND_MINE:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_LAND_MINE, *this);
+                    break;
+                case POWER_UP_TYPE_CURSE:
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PU_CURSE, *this);
+                    break;
             }
             
             break;
@@ -577,6 +589,18 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
         case POWER_UP_TYPE_SHIELD:
             m_activePowerUp = POWER_UP_TYPE_SHIELD;
             break;
+        case POWER_UP_TYPE_MEGA_FIRE:
+            m_firePower = 10;
+            break;
+        case POWER_UP_TYPE_REMOTE_BOMB:
+            // TODO, change bomb type
+            break;
+        case POWER_UP_TYPE_LAND_MINE:
+            m_activePowerUp = POWER_UP_TYPE_LAND_MINE;
+            break;
+        case POWER_UP_TYPE_CURSE:
+            // TODO, begin 8 frame curse animation for say... 3.2 seconds (4 loops)
+            break;
     }
     
     if(m_isClientPlayer)
@@ -590,10 +614,7 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
                 m_gameListener->playSound(SOUND_PU_FIRE);
                 break;
             case POWER_UP_TYPE_FORCE_FIELD:
-                if(m_iPlayerForceFieldState != PLAYER_FORCE_FIELD_STATE_ON)
-                {
-                    m_gameListener->playSound(SOUND_PU_FORCE_FIELD);
-                }
+                m_gameListener->playSound(SOUND_PU_FORCE_FIELD);
                 break;
             case POWER_UP_TYPE_SPEED:
                 m_gameListener->playSound(SOUND_PU_SPEED);
@@ -603,6 +624,18 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
                 break;
             case POWER_UP_TYPE_SHIELD:
                 m_gameListener->playSound(SOUND_PU_SHIELD);
+                break;
+            case POWER_UP_TYPE_MEGA_FIRE:
+                m_gameListener->playSound(SOUND_PU_FIRE);
+                break;
+            case POWER_UP_TYPE_REMOTE_BOMB:
+                m_gameListener->playSound(SOUND_PU_FIRE);
+                break;
+            case POWER_UP_TYPE_LAND_MINE:
+                m_gameListener->playSound(SOUND_PU_FIRE);
+                break;
+            case POWER_UP_TYPE_CURSE:
+                m_gameListener->playSound(SOUND_PU_FIRE);
                 break;
         }
     }

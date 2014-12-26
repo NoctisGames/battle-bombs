@@ -569,6 +569,18 @@ void GameSession::handlePlayerEvent(int event)
         case PLAYER_PU_SHIELD:
             m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_SHIELD);
             break;
+        case PLAYER_PU_MEGA_FIRE:
+            m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_MEGA_FIRE);
+            break;
+        case PLAYER_PU_REMOTE_BOMB:
+            m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_REMOTE_BOMB);
+            break;
+        case PLAYER_PU_LAND_MINE:
+            m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_LAND_MINE);
+            break;
+        case PLAYER_PU_CURSE:
+            m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_CURSE);
+            break;
         default:
             break;
     }
