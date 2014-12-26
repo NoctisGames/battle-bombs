@@ -2,7 +2,7 @@
 //  PowerUp.h
 //  battlebombs
 //
-//  Created by Mikel Adkins on 5/10/2014.
+//  Created by Stephen Gowen on 5/10/2014.
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
