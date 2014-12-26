@@ -540,7 +540,10 @@ void GameSession::handlePlayerEvent(int event)
             m_players.at(playerIndex).get()->onForceFieldHit();
             break;
         case PLAYER_DEATH:
-            m_players.at(playerIndex).get()->onDeath();
+            handleDeathForPlayer(m_players.at(playerIndex).get());
+            break;
+        case PLAYER_HIT_BY_FIRE_BALL:
+            m_players.at(playerIndex).get()->onHitByFireBall();
             break;
         case PLAYER_ABOUT_TO_FALL:
             m_players.at(playerIndex).get()->onTrappedOnFallingSpaceTile(m_spaceTiles);
@@ -602,6 +605,75 @@ void GameSession::handlePlayerEvent(int event)
 }
 
 #pragma mark <Private>
+
+void GameSession::handleDeathForPlayer(PlayerDynamicGameObject *player)
+{
+    int bombPowerUpsEarned = player->getMaxBombCount() - 1;
+    int firePowerUpsEarned = player->getFirePower() - 1;
+    int speedPowerUpsEarned = player->getSpeed() - 3;
+    
+    for(int x = player->getGridX() - 1; x <= player->getGridX() + 1; x++)
+    {
+        if(PathFinder::getInstance().getGridCellCost(x, player->getGridY()) != 9)
+        {
+            if(bombPowerUpsEarned > 0)
+            {
+                m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp(x, player->getGridY(), POWER_UP_TYPE_BOMB)));
+                bombPowerUpsEarned--;
+            }
+            else if(firePowerUpsEarned > 0)
+            {
+                m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp(x, player->getGridY(), POWER_UP_TYPE_FIRE)));
+                firePowerUpsEarned--;
+            }
+            else if(speedPowerUpsEarned > 0)
+            {
+                m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp(x, player->getGridY(), POWER_UP_TYPE_SPEED)));
+                speedPowerUpsEarned--;
+            }
+        }
+    }
+    
+    if(PathFinder::getInstance().getGridCellCost(player->getGridX(), player->getGridY() + 1) != 9)
+    {
+        if(bombPowerUpsEarned > 0)
+        {
+            m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp(player->getGridX(), player->getGridY() + 1, POWER_UP_TYPE_BOMB)));
+            bombPowerUpsEarned--;
+        }
+        else if(firePowerUpsEarned > 0)
+        {
+            m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp(player->getGridX(), player->getGridY() + 1, POWER_UP_TYPE_FIRE)));
+            firePowerUpsEarned--;
+        }
+        else if(speedPowerUpsEarned > 0)
+        {
+            m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp(player->getGridX(), player->getGridY() + 1, POWER_UP_TYPE_SPEED)));
+            speedPowerUpsEarned--;
+        }
+    }
+    
+    if(PathFinder::getInstance().getGridCellCost(player->getGridX(), player->getGridY() - 1) != 9)
+    {
+        if(bombPowerUpsEarned > 0)
+        {
+            m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp(player->getGridX(), player->getGridY() - 1, POWER_UP_TYPE_BOMB)));
+            bombPowerUpsEarned--;
+        }
+        else if(firePowerUpsEarned > 0)
+        {
+            m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp(player->getGridX(), player->getGridY() - 1, POWER_UP_TYPE_FIRE)));
+            firePowerUpsEarned--;
+        }
+        else if(speedPowerUpsEarned > 0)
+        {
+            m_powerUps.push_back(std::unique_ptr<PowerUp>(new PowerUp(player->getGridX(), player->getGridY() - 1, POWER_UP_TYPE_SPEED)));
+            speedPowerUpsEarned--;
+        }
+    }
+    
+    player->onDeath();
+}
 
 void GameSession::layBombForPlayer(PlayerDynamicGameObject *player, int firePower)
 {

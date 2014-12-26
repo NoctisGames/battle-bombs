@@ -24,7 +24,7 @@ bool MapGrasslands::updatePlayerForSuddenDeath(GameSession *gameSession, PlayerD
 {
     if(player->isHitByFireBall(gameSession->getCraters()))
     {
-        gameSession->getGameListener()->addLocalEventForPlayer(PLAYER_DEATH, *player);
+        gameSession->getGameListener()->addLocalEventForPlayer(PLAYER_HIT_BY_FIRE_BALL, *player);
         
         return true;
     }

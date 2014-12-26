@@ -83,6 +83,8 @@ public:
 
     void onTrappedOnFallingSpaceTile(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles);
     
+    void onHitByFireBall();
+    
     void onFall();
     
     void onFreeze();

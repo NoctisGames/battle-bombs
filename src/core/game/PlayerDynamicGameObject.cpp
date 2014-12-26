@@ -477,6 +477,15 @@ void PlayerDynamicGameObject::onTrappedOnFallingSpaceTile(std::vector<std::uniqu
     }
 }
 
+void PlayerDynamicGameObject::onHitByFireBall()
+{
+    reset();
+    
+    m_playerState = DYING;
+    
+    m_gameListener->playSound(SOUND_DEATH);
+}
+
 void PlayerDynamicGameObject::onFall()
 {
     reset();
