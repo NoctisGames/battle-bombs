@@ -131,6 +131,21 @@ void ServerGameSession::update(float deltaTime)
     }
 }
 
+int ServerGameSession::getNumPlayers()
+{
+    return (int) m_players.size();
+}
+
+bool ServerGameSession::isPlayerBotAtIndex(short playerIndex)
+{
+    return m_players.at(playerIndex).get()->isBot();
+}
+
+bool ServerGameSession::isPlayerAliveAtIndex(short playerIndex)
+{
+    return m_players.at(playerIndex).get()->getPlayerState() == Player_State::ALIVE;
+}
+
 int ServerGameSession::getNumBreakableBlocks()
 {
     return m_breakableBlocks.size();

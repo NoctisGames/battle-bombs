@@ -21,6 +21,12 @@ public:
     virtual void init();
 
     void update(float deltaTime);
+    
+    int getNumPlayers();
+    
+    bool isPlayerBotAtIndex(short playerIndex);
+    
+    bool isPlayerAliveAtIndex(short playerIndex);
 
     int getNumBreakableBlocks();
 

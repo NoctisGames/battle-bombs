@@ -145,10 +145,6 @@ void GameScreen::beginGameOffline(int mapType, int numHumanPlayers, int numSecon
     m_sPlayerIndex = 0;
     m_players.at(0)->setClientPlayer(true);
     m_players.at(0)->setUsername(m_username.get());
-    for (int i = 1; i < m_players.size(); i++)
-    {
-        m_players.at(i)->setUsername("Bot");
-    }
     
     beginGame();
 }

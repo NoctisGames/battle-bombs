@@ -230,16 +230,6 @@ void GameSession::hardUpdate(rapidjson::Document &d)
     }
 }
 
-int GameSession::getNumPlayers()
-{
-    return (int) m_players.size();
-}
-
-bool GameSession::isPlayerBotAtIndex(short playerIndex)
-{
-    return m_players.at(playerIndex).get()->isBot();
-}
-
 float GameSession::getPlayerXAtIndex(short playerIndex)
 {
     return m_players.at(playerIndex).get()->getPosition().getX();
@@ -253,11 +243,6 @@ float GameSession::getPlayerYAtIndex(short playerIndex)
 int GameSession::getPlayerDirectionAtIndex(short playerIndex)
 {
     return m_players.at(playerIndex).get()->getDirection();
-}
-
-bool GameSession::isPlayerAliveAtIndex(short playerIndex)
-{
-    return m_players.at(playerIndex).get()->getPlayerState() == Player_State::ALIVE;
 }
 
 int GameSession::popOldestEventId()

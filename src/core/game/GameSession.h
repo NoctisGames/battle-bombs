@@ -47,18 +47,12 @@ public:
     void clientUpdate(rapidjson::Document &d, bool isBeginGame);
     
     void hardUpdate(rapidjson::Document &d);
-    
-    int getNumPlayers();
-    
-    bool isPlayerBotAtIndex(short playerIndex);
 
     float getPlayerXAtIndex(short playerIndex);
 
     float getPlayerYAtIndex(short playerIndex);
 
     int getPlayerDirectionAtIndex(short playerIndex);
-
-    bool isPlayerAliveAtIndex(short playerIndex);
     
     int popOldestEventId();
     
