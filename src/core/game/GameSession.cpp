@@ -63,7 +63,7 @@ void GameSession::init()
     m_mapBorders.clear();
     m_insideBlocks.clear();
     m_spaceTiles.clear();
-    botNames.clear();
+    m_botNames.clear();
 }
 
 void GameSession::handleServerUpdate(const char *message)

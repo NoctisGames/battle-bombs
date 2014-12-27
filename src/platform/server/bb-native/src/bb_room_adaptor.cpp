@@ -128,7 +128,7 @@ JNIEXPORT jbyteArray JNICALL Java_com_technegames_battlebombs_BbRoomAdaptor_get_
     ServerGameSession *gameSession = getGameSessionForRoomId(env, room_id);
     if (gameSession != nullptr)
     {
-        std::string message = "Bot";
+        std::string message(gameSession->getPlayerNameAtIndex(player_index));
 
         int byteCount = message.length();
         const jbyte* pNativeMessage = reinterpret_cast<const jbyte*> (message.c_str());
