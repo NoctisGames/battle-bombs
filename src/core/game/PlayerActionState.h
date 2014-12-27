@@ -13,6 +13,7 @@ typedef enum
 {
     IDLE,
     WINNING,
+    CURSED,
     PLACING_BOMB,
     PUSHING_BOMB,
     RAISING_SHIELD,

@@ -95,6 +95,14 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
                 m_fStateTime = 0;
             }
         }
+        else if(m_playerActionState == CURSED)
+        {
+            if(m_fStateTime > 3.20f)
+            {
+                m_playerActionState = IDLE;
+                m_fStateTime = 0;
+            }
+        }
         
         float deltaX = m_velocity->getX() * deltaTime;
         float deltaY = m_velocity->getY() * deltaTime;
@@ -518,9 +526,9 @@ void PlayerDynamicGameObject::onDeath()
 
 void PlayerDynamicGameObject::onWin()
 {
-    m_fStateTime = 0;
     m_velocity->set(0, 0);
     m_playerActionState = WINNING;
+    m_fStateTime = 0;
 }
 
 bool PlayerDynamicGameObject::isAbleToDropAdditionalBomb(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
@@ -608,7 +616,8 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
             m_activePowerUp = POWER_UP_TYPE_LAND_MINE;
             break;
         case POWER_UP_TYPE_CURSE:
-            // TODO, begin 8 frame curse animation for say... 3.2 seconds (4 loops)
+            m_playerActionState = CURSED;
+            m_fStateTime = 0;
             break;
     }
     

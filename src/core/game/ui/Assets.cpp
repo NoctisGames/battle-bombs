@@ -660,6 +660,37 @@ TextureRegion& Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
                 }
             }
         }
+        else if(player.getPlayerActionState() == CURSED)
+        {
+            static std::vector<TextureRegion> playerCursedTextureRegions;
+            if (playerCursedTextureRegions.size() == 0)
+            {
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_1_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_2_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_3_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_4_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_5_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_6_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_7_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_8_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+            }
+            
+            static float cycleTime = 0.8f;
+            static std::vector<float> playerFrames;
+            if (playerFrames.size() == 0)
+            {
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+            }
+            
+            return playerCursedTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+        }
         else if(player.getPlayerActionState() == PLACING_BOMB)
         {
             static std::vector<TextureRegion> playerPlacingBombRightTextureRegions;
