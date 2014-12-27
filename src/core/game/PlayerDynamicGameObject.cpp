@@ -635,16 +635,16 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
                 m_gameListener->playSound(SOUND_PU_SHIELD);
                 break;
             case POWER_UP_TYPE_MEGA_FIRE:
-                m_gameListener->playSound(SOUND_PU_FIRE);
+                m_gameListener->playSound(SOUND_PU_MEGA_FIRE);
                 break;
             case POWER_UP_TYPE_REMOTE_BOMB:
-                m_gameListener->playSound(SOUND_PU_FIRE);
+                m_gameListener->playSound(SOUND_PU_REMOTE_BOMB);
                 break;
             case POWER_UP_TYPE_LAND_MINE:
-                m_gameListener->playSound(SOUND_PU_FIRE);
+                m_gameListener->playSound(SOUND_PU_LAND_MINE);
                 break;
             case POWER_UP_TYPE_CURSE:
-                m_gameListener->playSound(SOUND_PU_FIRE);
+                m_gameListener->playSound(SOUND_PU_CURSE);
                 break;
         }
     }

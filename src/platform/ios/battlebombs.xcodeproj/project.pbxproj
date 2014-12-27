@@ -141,6 +141,10 @@
 		BB81B1BA19BE197E00548837 /* TGJsonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B919BE197E00548837 /* TGJsonUtils.m */; };
 		BB81B1BD19BE1A1800548837 /* TGDeviceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1BC19BE1A1800548837 /* TGDeviceUtil.m */; };
 		BB82640B18C288F200A24A7C /* AppWarp_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		BB8B5BC41A4F110500AE25A7 /* pu_curse.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB8B5BC01A4F110500AE25A7 /* pu_curse.caf */; };
+		BB8B5BC51A4F110500AE25A7 /* pu_landmine.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB8B5BC11A4F110500AE25A7 /* pu_landmine.caf */; };
+		BB8B5BC61A4F110500AE25A7 /* pu_mega_fire.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB8B5BC21A4F110500AE25A7 /* pu_mega_fire.caf */; };
+		BB8B5BC71A4F110500AE25A7 /* pu_remote_bomb.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB8B5BC31A4F110500AE25A7 /* pu_remote_bomb.caf */; };
 		BB8FF7C619AE3FE4005D0701 /* interface_2.png in Resources */ = {isa = PBXBuildFile; fileRef = BB8FF7C519AE3FE4005D0701 /* interface_2.png */; };
 		BB9139C918BEFCC800E51FB5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9139C818BEFCC800E51FB5 /* MainViewController.m */; };
 		BB91730919E42DBA00BA7FD4 /* hurry.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB91730819E42DBA00BA7FD4 /* hurry.caf */; };
@@ -453,6 +457,10 @@
 		BB81B1BB19BE1A1800548837 /* TGDeviceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGDeviceUtil.h; sourceTree = "<group>"; };
 		BB81B1BC19BE1A1800548837 /* TGDeviceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGDeviceUtil.m; sourceTree = "<group>"; };
 		BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppWarp_iOS_SDK.framework; path = ../../3rdparty/AppWarp/AppWarp_iOS_SDK.framework; sourceTree = "<group>"; };
+		BB8B5BC01A4F110500AE25A7 /* pu_curse.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = pu_curse.caf; sourceTree = "<group>"; };
+		BB8B5BC11A4F110500AE25A7 /* pu_landmine.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = pu_landmine.caf; sourceTree = "<group>"; };
+		BB8B5BC21A4F110500AE25A7 /* pu_mega_fire.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = pu_mega_fire.caf; sourceTree = "<group>"; };
+		BB8B5BC31A4F110500AE25A7 /* pu_remote_bomb.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = pu_remote_bomb.caf; sourceTree = "<group>"; };
 		BB8FF7C519AE3FE4005D0701 /* interface_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = interface_2.png; sourceTree = "<group>"; };
 		BB9139C718BEFCC800E51FB5 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		BB9139C818BEFCC800E51FB5 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
@@ -868,9 +876,13 @@
 				BB91730819E42DBA00BA7FD4 /* hurry.caf */,
 				BB5C576B19B9F27B00AD76E7 /* plant_bomb.caf */,
 				BB5C576C19B9F27B00AD76E7 /* pu_bomb.caf */,
+				BB8B5BC01A4F110500AE25A7 /* pu_curse.caf */,
 				BB5C576D19B9F27B00AD76E7 /* pu_fire.caf */,
 				BB5C576E19B9F27B00AD76E7 /* pu_force_field.caf */,
+				BB8B5BC11A4F110500AE25A7 /* pu_landmine.caf */,
+				BB8B5BC21A4F110500AE25A7 /* pu_mega_fire.caf */,
 				BB5C576F19B9F27B00AD76E7 /* pu_push.caf */,
+				BB8B5BC31A4F110500AE25A7 /* pu_remote_bomb.caf */,
 				BBC4862E19ED7637001CC8A2 /* pu_shield.caf */,
 				BB5C577019B9F27B00AD76E7 /* pu_speed.caf */,
 				BBC4862F19ED7637001CC8A2 /* shield_raise.caf */,
@@ -1254,6 +1266,7 @@
 				BB5C577319B9F27B00AD76E7 /* pu_fire.caf in Resources */,
 				BB5C577619B9F27B00AD76E7 /* pu_speed.caf in Resources */,
 				BB81B1AE19BE15B500548837 /* Progress_Dialog_Landscape.xib in Resources */,
+				BB8B5BC71A4F110500AE25A7 /* pu_remote_bomb.caf in Resources */,
 				0ADF1886178E2185005DA99E /* InfoPlist.strings in Resources */,
 				BBDE14B8195A2D7400A91FD7 /* char_white.png in Resources */,
 				BB12EE611A1D5B2C006D385B /* texture_shader.vsh in Resources */,
@@ -1278,12 +1291,15 @@
 				BB4F3105197C1DCD00270703 /* quick_match_normal.png in Resources */,
 				BB16D96D191987B80034BE67 /* explosion.caf in Resources */,
 				BBDE14B9195A2D7400A91FD7 /* char_yellow.png in Resources */,
+				BB8B5BC61A4F110500AE25A7 /* pu_mega_fire.caf in Resources */,
 				BB07506319C248520028515E /* countdown_3.caf in Resources */,
 				BB12EE541A1D5B2C006D385B /* color_shader.fsh in Resources */,
 				BB4F3104197C1DCD00270703 /* quick_match_highlighted.png in Resources */,
 				BB7102A1196E079500C7BA2F /* map_space.png in Resources */,
+				BB8B5BC51A4F110500AE25A7 /* pu_landmine.caf in Resources */,
 				BBDE14B3195A2D7400A91FD7 /* char_black.png in Resources */,
 				BB5C577219B9F27B00AD76E7 /* pu_bomb.caf in Resources */,
+				BB8B5BC41A4F110500AE25A7 /* pu_curse.caf in Resources */,
 				BB065FAF19D4D62900B3BE12 /* README.txt in Resources */,
 				BBA6492219B5FED100023E5A /* Images.xcassets in Resources */,
 				BBC4863319ED7637001CC8A2 /* falling_object.caf in Resources */,

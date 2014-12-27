@@ -56,17 +56,21 @@ public final class RendererWrapper implements Renderer
     private static final short SOUND_PU_FORCE_FIELD = 10;
     private static final short SOUND_PU_PUSH = 11;
     private static final short SOUND_PU_SHIELD = 12;
-    private static final short SOUND_FORCE_FIELD_DOWN = 13;
-    private static final short SOUND_DEATH = 14;
-    private static final short SOUND_HURRY = 15;
-    private static final short SOUND_GAME_SET = 16;
-    private static final short SOUND_DRAW = 17;
-    private static final short SOUND_RAISE_SHIELD = 18;
-    private static final short SOUND_DISLODGING_SPACE_TILE = 19;
-    private static final short SOUND_FALLING_SPACE_TILE = 20;
-    private static final short SOUND_FALLING_OBJECT = 21;
-    private static final short SOUND_CRASHING_FIRE_BALL = 22;
-    private static final short SOUND_CRASHING_ICE_BALL = 23;
+    private static final short SOUND_PU_MEGA_FIRE = 13;
+    private static final short SOUND_PU_REMOTE_BOMB = 14;
+    private static final short SOUND_PU_LAND_MINE = 15;
+    private static final short SOUND_PU_CURSE = 16;
+    private static final short SOUND_FORCE_FIELD_DOWN = 17;
+    private static final short SOUND_DEATH = 18;
+    private static final short SOUND_HURRY = 19;
+    private static final short SOUND_GAME_SET = 20;
+    private static final short SOUND_DRAW = 21;
+    private static final short SOUND_RAISE_SHIELD = 22;
+    private static final short SOUND_DISLODGING_SPACE_TILE = 23;
+    private static final short SOUND_FALLING_SPACE_TILE = 24;
+    private static final short SOUND_FALLING_OBJECT = 25;
+    private static final short SOUND_CRASHING_FIRE_BALL = 26;
+    private static final short SOUND_CRASHING_ICE_BALL = 27;
 
     // Definitions from src/core/game/ScreenState.h
     private static final short SCREEN_STATE_NORMAL = 0;
@@ -86,77 +90,85 @@ public final class RendererWrapper implements Renderer
         System.loadLibrary("game");
     }
 
-    private final Activity activity;
-    private final int deviceScreenWidth;
-    private final int deviceScreenHeight;
-    private final String username;
-    private final Audio audio;
-    private final Sound countDown3Sound;
-    private final Sound countDown2Sound;
-    private final Sound countDown1Sound;
-    private final Sound battleSound;
-    private final Sound plantBombSound;
-    private final Sound explosionSound;
-    private final Sound powerUpBombSound;
-    private final Sound powerUpFireSound;
-    private final Sound powerUpSpeedSound;
-    private final Sound powerUpForceFieldSound;
-    private final Sound powerUpPushSound;
-    private final Sound powerUpShieldSound;
-    private final Sound forceFieldDownSound;
-    private final Sound deathSound;
-    private final Sound hurrySound;
-    private final Sound gameSetSound;
-    private final Sound drawSound;
-    private final Sound raiseShieldSound;
-    private final Sound dislodgingSpaceTileSound;
-    private final Sound fallingSpaceTileSound;
-    private final Sound fallingObjectSound;
-    private final Sound crashingFireBallSound;
-    private final Sound crashingIceBallSound;
-    
+    private final Activity _activity;
+    private final int _deviceScreenWidth;
+    private final int _deviceScreenHeight;
+    private final String _username;
+    private final Audio _audio;
+    private final Sound _countDown3Sound;
+    private final Sound _countDown2Sound;
+    private final Sound _countDown1Sound;
+    private final Sound _battleSound;
+    private final Sound _plantBombSound;
+    private final Sound _explosionSound;
+    private final Sound _powerUpBombSound;
+    private final Sound _powerUpFireSound;
+    private final Sound _powerUpSpeedSound;
+    private final Sound _powerUpForceFieldSound;
+    private final Sound _powerUpPushSound;
+    private final Sound _powerUpShieldSound;
+    private final Sound _powerUpMegaFireSound;
+    private final Sound _powerUpRemoteBombSound;
+    private final Sound _powerUpLandmineSound;
+    private final Sound _powerUpCurseSound;
+    private final Sound _forceFieldDownSound;
+    private final Sound _deathSound;
+    private final Sound _hurrySound;
+    private final Sound _gameSetSound;
+    private final Sound _drawSound;
+    private final Sound _raiseShieldSound;
+    private final Sound _dislodgingSpaceTileSound;
+    private final Sound _fallingSpaceTileSound;
+    private final Sound _fallingObjectSound;
+    private final Sound _crashingFireBallSound;
+    private final Sound _crashingIceBallSound;
+
     private final boolean _isOffline;
 
-    private Music bgm;
+    private Music _bgm;
 
-    private float smoothedDeltaRealTime_ms = 17.5f;
-    private float movAverageDeltaTime_ms = smoothedDeltaRealTime_ms;
-    private long lastRealTimeMeasurement_ms;
-    private boolean isInitialized;
+    private float _smoothedDeltaRealTime_ms = 17.5f;
+    private float _movAverageDeltaTime_ms = _smoothedDeltaRealTime_ms;
+    private long _lastRealTimeMeasurement_ms;
+    private boolean _isInitialized;
 
     public RendererWrapper(Activity activity, int deviceScreenWidth, int deviceScreenHeight, String username, boolean isOffline)
     {
-        this.activity = activity;
-        this.deviceScreenWidth = deviceScreenWidth;
-        this.deviceScreenHeight = deviceScreenHeight;
-        this.username = username;
-        this.audio = new Audio(activity.getAssets());
-        this.countDown3Sound = audio.newSound("countdown_3.ogg");
-        this.countDown2Sound = audio.newSound("countdown_2.ogg");
-        this.countDown1Sound = audio.newSound("countdown_1.ogg");
-        this.battleSound = audio.newSound("battle.ogg");
-        this.plantBombSound = audio.newSound("plant_bomb.ogg");
-        this.explosionSound = audio.newSound("explosion.ogg");
-        this.powerUpBombSound = audio.newSound("pu_bomb.ogg");
-        this.powerUpFireSound = audio.newSound("pu_fire.ogg");
-        this.powerUpSpeedSound = audio.newSound("pu_speed.ogg");
-        this.powerUpForceFieldSound = audio.newSound("pu_force_field.ogg");
-        this.powerUpPushSound = audio.newSound("pu_push.ogg");
-        this.powerUpShieldSound = audio.newSound("pu_shield.ogg");
-        this.forceFieldDownSound = audio.newSound("force_field_down.ogg");
-        this.deathSound = audio.newSound("death.ogg");
-        this.hurrySound = audio.newSound("hurry.ogg");
-        this.gameSetSound = audio.newSound("game_set.ogg");
-        this.drawSound = audio.newSound("draw.ogg");
-        this.raiseShieldSound = audio.newSound("shield_raise.ogg");
-        this.dislodgingSpaceTileSound = audio.newSound("dislodging_space_tile.ogg");
-        this.fallingSpaceTileSound = audio.newSound("falling_space_tile.ogg");
-        this.fallingObjectSound = audio.newSound("falling_object.ogg");
-        this.crashingFireBallSound = audio.newSound("crashing_fire_ball.ogg");
-        this.crashingIceBallSound = audio.newSound("crashing_ice_ball.ogg");
+        _activity = activity;
+        _deviceScreenWidth = deviceScreenWidth;
+        _deviceScreenHeight = deviceScreenHeight;
+        _username = username;
+        _audio = new Audio(activity.getAssets());
+        _countDown3Sound = _audio.newSound("countdown_3.ogg");
+        _countDown2Sound = _audio.newSound("countdown_2.ogg");
+        _countDown1Sound = _audio.newSound("countdown_1.ogg");
+        _battleSound = _audio.newSound("battle.ogg");
+        _plantBombSound = _audio.newSound("plant_bomb.ogg");
+        _explosionSound = _audio.newSound("explosion.ogg");
+        _powerUpBombSound = _audio.newSound("pu_bomb.ogg");
+        _powerUpFireSound = _audio.newSound("pu_fire.ogg");
+        _powerUpSpeedSound = _audio.newSound("pu_speed.ogg");
+        _powerUpForceFieldSound = _audio.newSound("pu_force_field.ogg");
+        _powerUpPushSound = _audio.newSound("pu_push.ogg");
+        _powerUpShieldSound = _audio.newSound("pu_shield.ogg");
+        _powerUpMegaFireSound = _audio.newSound("pu_mega_fire.ogg");
+        _powerUpRemoteBombSound = _audio.newSound("pu_remote_bomb.ogg");
+        _powerUpLandmineSound = _audio.newSound("pu_landmine.ogg");
+        _powerUpCurseSound = _audio.newSound("pu_curse.ogg");
+        _forceFieldDownSound = _audio.newSound("force_field_down.ogg");
+        _deathSound = _audio.newSound("death.ogg");
+        _hurrySound = _audio.newSound("hurry.ogg");
+        _gameSetSound = _audio.newSound("game_set.ogg");
+        _drawSound = _audio.newSound("draw.ogg");
+        _raiseShieldSound = _audio.newSound("shield_raise.ogg");
+        _dislodgingSpaceTileSound = _audio.newSound("dislodging_space_tile.ogg");
+        _fallingSpaceTileSound = _audio.newSound("falling_space_tile.ogg");
+        _fallingObjectSound = _audio.newSound("falling_object.ogg");
+        _crashingFireBallSound = _audio.newSound("crashing_fire_ball.ogg");
+        _crashingIceBallSound = _audio.newSound("crashing_ice_ball.ogg");
         _isOffline = isOffline;
 
-        this.isInitialized = false;
+        _isInitialized = false;
 
         init(username, isOffline);
     }
@@ -166,13 +178,13 @@ public final class RendererWrapper implements Renderer
     {
         logger.debug("GL Surface created!");
 
-        if (!isInitialized)
+        if (!_isInitialized)
         {
-            PlatformFileUtils.init_asset_manager(activity.getAssets());
-            isInitialized = true;
+            PlatformFileUtils.init_asset_manager(_activity.getAssets());
+            _isInitialized = true;
         }
 
-        on_surface_created(deviceScreenWidth, deviceScreenHeight);
+        on_surface_created(_deviceScreenWidth, _deviceScreenHeight);
     }
 
     @Override
@@ -191,19 +203,19 @@ public final class RendererWrapper implements Renderer
         switch (screenState)
         {
             case SCREEN_STATE_ENTERED_SPECTATOR_MODE:
-                displayToastOnUiThread(activity.getString(R.string.you_are_in_spectator_mode));
+                displayToastOnUiThread(_activity.getString(R.string.you_are_in_spectator_mode));
                 clear_state();
             case SCREEN_STATE_NORMAL:
-                update(smoothedDeltaRealTime_ms / 1000);
+                update(_smoothedDeltaRealTime_ms / 1000);
                 if (!_isOffline)
                 {
                     pushEvents();
                 }
                 break;
             case SCREEN_STATE_CONNECTION_ERROR:
-                activity.setResult(GameActivity.RESULT_CONNECTION_ERROR);
+                _activity.setResult(GameActivity.RESULT_CONNECTION_ERROR);
             case SCREEN_STATE_EXIT:
-                activity.finish();
+                _activity.finish();
                 break;
             default:
                 break;
@@ -216,22 +228,22 @@ public final class RendererWrapper implements Renderer
         // Moving average calc
         long currTimePick_ms = SystemClock.uptimeMillis();
         float realTimeElapsed_ms;
-        if (lastRealTimeMeasurement_ms > 0)
+        if (_lastRealTimeMeasurement_ms > 0)
         {
-            realTimeElapsed_ms = (currTimePick_ms - lastRealTimeMeasurement_ms);
+            realTimeElapsed_ms = (currTimePick_ms - _lastRealTimeMeasurement_ms);
         }
         else
         {
-            realTimeElapsed_ms = smoothedDeltaRealTime_ms; // just the first
-                                                           // time
+            realTimeElapsed_ms = _smoothedDeltaRealTime_ms; // just the first
+                                                            // time
         }
 
-        movAverageDeltaTime_ms = (realTimeElapsed_ms + movAverageDeltaTime_ms * (movAveragePeriod - 1)) / movAveragePeriod;
+        _movAverageDeltaTime_ms = (realTimeElapsed_ms + _movAverageDeltaTime_ms * (movAveragePeriod - 1)) / movAveragePeriod;
 
         // Calc a better aproximation for smooth stepTime
-        smoothedDeltaRealTime_ms = smoothedDeltaRealTime_ms + (movAverageDeltaTime_ms - smoothedDeltaRealTime_ms) * smoothFactor;
+        _smoothedDeltaRealTime_ms = _smoothedDeltaRealTime_ms + (_movAverageDeltaTime_ms - _smoothedDeltaRealTime_ms) * smoothFactor;
 
-        lastRealTimeMeasurement_ms = currTimePick_ms;
+        _lastRealTimeMeasurement_ms = currTimePick_ms;
     }
 
     public void onResume()
@@ -241,9 +253,9 @@ public final class RendererWrapper implements Renderer
 
     public void onPause()
     {
-        if (bgm != null)
+        if (_bgm != null)
         {
-            bgm.stop();
+            _bgm.stop();
         }
 
         on_pause();
@@ -325,73 +337,85 @@ public final class RendererWrapper implements Renderer
             switch (soundId)
             {
                 case SOUND_COUNT_DOWN_3:
-                    countDown3Sound.play(1);
+                    _countDown3Sound.play(1);
                     break;
                 case SOUND_COUNT_DOWN_2:
-                    countDown2Sound.play(1);
+                    _countDown2Sound.play(1);
                     break;
                 case SOUND_COUNT_DOWN_1:
-                    countDown1Sound.play(1);
+                    _countDown1Sound.play(1);
                     break;
                 case SOUND_BATTLE:
-                    battleSound.play(1);
+                    _battleSound.play(1);
                     break;
                 case SOUND_PLANT_BOMB:
-                    plantBombSound.play(1);
+                    _plantBombSound.play(1);
                     break;
                 case SOUND_EXPLOSION:
-                    explosionSound.play(1);
+                    _explosionSound.play(1);
                     break;
                 case SOUND_PU_BOMB:
-                    powerUpBombSound.play(1);
+                    _powerUpBombSound.play(1);
                     break;
                 case SOUND_PU_FIRE:
-                    powerUpFireSound.play(1);
+                    _powerUpFireSound.play(1);
                     break;
                 case SOUND_PU_SPEED:
-                    powerUpSpeedSound.play(1);
+                    _powerUpSpeedSound.play(1);
                     break;
                 case SOUND_PU_FORCE_FIELD:
-                    powerUpForceFieldSound.play(1);
+                    _powerUpForceFieldSound.play(1);
                     break;
                 case SOUND_PU_PUSH:
-                    powerUpPushSound.play(1);
+                    _powerUpPushSound.play(1);
                     break;
                 case SOUND_PU_SHIELD:
-                    powerUpShieldSound.play(1);
+                    _powerUpShieldSound.play(1);
+                    break;
+                case SOUND_PU_MEGA_FIRE:
+                    _powerUpMegaFireSound.play(1);
+                    break;
+                case SOUND_PU_REMOTE_BOMB:
+                    _powerUpRemoteBombSound.play(1);
+                    break;
+                case SOUND_PU_LAND_MINE:
+                    _powerUpLandmineSound.play(1);
+                    break;
+                case SOUND_PU_CURSE:
+                    _powerUpCurseSound.play(1);
                     break;
                 case SOUND_FORCE_FIELD_DOWN:
-                    forceFieldDownSound.play(1);
+                    _forceFieldDownSound.play(1);
                     break;
                 case SOUND_DEATH:
-                    deathSound.play(1);
+                    _deathSound.play(1);
                     break;
                 case SOUND_HURRY:
-                    hurrySound.play(1);
+                    _hurrySound.play(1);
                     break;
                 case SOUND_GAME_SET:
-                    gameSetSound.play(1);
+                    _gameSetSound.play(1);
                     break;
                 case SOUND_DRAW:
-                    drawSound.play(1);
+                    _drawSound.play(1);
                     break;
                 case SOUND_RAISE_SHIELD:
-                    raiseShieldSound.play(1);
+                    _raiseShieldSound.play(1);
                     break;
                 case SOUND_DISLODGING_SPACE_TILE:
-                    dislodgingSpaceTileSound.play(1);
+                    _dislodgingSpaceTileSound.play(1);
                     break;
                 case SOUND_FALLING_SPACE_TILE:
-                    fallingSpaceTileSound.play(1);
+                    _fallingSpaceTileSound.play(1);
                     break;
                 case SOUND_FALLING_OBJECT:
-                    fallingObjectSound.play(1);
+                    _fallingObjectSound.play(1);
                     break;
                 case SOUND_CRASHING_FIRE_BALL:
-                    crashingFireBallSound.play(1);
+                    _crashingFireBallSound.play(1);
                     break;
                 case SOUND_CRASHING_ICE_BALL:
-                    crashingIceBallSound.play(1);
+                    _crashingIceBallSound.play(1);
                     break;
                 default:
                     continue;
@@ -405,9 +429,9 @@ public final class RendererWrapper implements Renderer
         switch (musicId)
         {
             case MUSIC_STOP:
-                if (bgm != null)
+                if (_bgm != null)
                 {
-                    bgm.stop();
+                    _bgm.stop();
                 }
                 break;
             case MUSIC_PLAY_MAP_SPACE:
@@ -429,24 +453,24 @@ public final class RendererWrapper implements Renderer
 
     private void loadAndPlayMusic(String fileName)
     {
-        if (bgm != null && bgm.isPlaying())
+        if (_bgm != null && _bgm.isPlaying())
         {
-            bgm.dispose();
-            bgm = null;
+            _bgm.dispose();
+            _bgm = null;
         }
 
-        bgm = audio.newMusic(fileName);
-        bgm.setLooping(true);
-        bgm.play();
+        _bgm = _audio.newMusic(fileName);
+        _bgm.setLooping(true);
+        _bgm.play();
     }
 
     private void displayToastOnUiThread(final String toast)
     {
-        activity.runOnUiThread(new Runnable()
+        _activity.runOnUiThread(new Runnable()
         {
             public void run()
             {
-                Toast.makeText(activity, toast, Toast.LENGTH_SHORT).show();
+                Toast.makeText(_activity, toast, Toast.LENGTH_SHORT).show();
             }
         });
     }

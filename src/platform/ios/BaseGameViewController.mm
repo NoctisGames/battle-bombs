@@ -40,6 +40,10 @@
 @property (strong, nonatomic) Sound *powerUpForceFieldSound;
 @property (strong, nonatomic) Sound *powerUpPushSound;
 @property (strong, nonatomic) Sound *powerUpShieldSound;
+@property (strong, nonatomic) Sound *powerUpMegaFireSound;
+@property (strong, nonatomic) Sound *powerUpRemoteBombSound;
+@property (strong, nonatomic) Sound *powerUpLandmineSound;
+@property (strong, nonatomic) Sound *powerUpCurseSound;
 @property (strong, nonatomic) Sound *forceFieldDownSound;
 @property (strong, nonatomic) Sound *deathSound;
 @property (strong, nonatomic) Sound *hurrySound;
@@ -96,6 +100,10 @@ static bool isRunningiOS8 = false;
     self.powerUpForceFieldSound = [[Sound alloc] initWithSoundNamed:@"pu_force_field.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.powerUpPushSound = [[Sound alloc] initWithSoundNamed:@"pu_push.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.powerUpShieldSound = [[Sound alloc] initWithSoundNamed:@"pu_shield.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpMegaFireSound = [[Sound alloc] initWithSoundNamed:@"pu_mega_fire.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpRemoteBombSound = [[Sound alloc] initWithSoundNamed:@"pu_remote_bomb.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpLandmineSound = [[Sound alloc] initWithSoundNamed:@"pu_landmine.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpCurseSound = [[Sound alloc] initWithSoundNamed:@"pu_curse.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.forceFieldDownSound = [[Sound alloc] initWithSoundNamed:@"force_field_down.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.hurrySound = [[Sound alloc] initWithSoundNamed:@"hurry.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
@@ -257,6 +265,18 @@ static bool isRunningiOS8 = false;
                 break;
             case SOUND_PU_SHIELD:
                 [self.powerUpShieldSound play];
+                break;
+            case SOUND_PU_MEGA_FIRE:
+                [self.powerUpMegaFireSound play];
+                break;
+            case SOUND_PU_REMOTE_BOMB:
+                [self.powerUpRemoteBombSound play];
+                break;
+            case SOUND_PU_LAND_MINE:
+                [self.powerUpLandmineSound play];
+                break;
+            case SOUND_PU_CURSE:
+                [self.powerUpCurseSound play];
                 break;
             case SOUND_FORCE_FIELD_DOWN:
                 [self.forceFieldDownSound play];
