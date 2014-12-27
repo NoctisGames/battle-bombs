@@ -706,19 +706,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         logRoom();
     }
 
-    private boolean isBotNameAlreadyInUseForRound(String botName)
-    {
-        for (String name : _activePlayerNames)
-        {
-            if (name.equals(botName))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     private void logRoom()
     {
         System.out.println("_inRoomUserSessionDataMap size: " + _inRoomUserSessionDataMap.size());
