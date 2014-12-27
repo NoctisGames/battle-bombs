@@ -4,6 +4,7 @@ import com.shephertz.app42.server.idomain.BaseRoomAdaptor;
 import com.shephertz.app42.server.idomain.HandlingResult;
 import com.shephertz.app42.server.idomain.IRoom;
 import com.shephertz.app42.server.idomain.IUser;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONException;
@@ -422,12 +423,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                     {
                         if (is_player_bot(_room.getId(), playerIndex))
                         {
-                            String botName;
-                            while (isBotNameAlreadyInUseForRound((botName = Globals.getRandomBotName())))
-                            {
-                                // We wait until we get a unique name
-                            }
-
+                            String botName = new String(get_player_name_bytes(_room.getId(), playerIndex), Charset.forName("UTF-8"));
                             _activePlayerNames[playerIndex] = botName;
                         }
                     }
@@ -747,9 +743,27 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                 + _playerSpotsReceivedGameStateCommand[7] + " }");
     }
 
+    private final class UserSessionData
+    {
+        public final String _username;
+        public long _timeSinceLastChat;
+        public short _playerIndex;
+        public int _platform;
+
+        public UserSessionData(String username, long timeSinceLastChat, short playerIndex, int platform)
+        {
+            _username = username;
+            _timeSinceLastChat = timeSinceLastChat;
+            _playerIndex = playerIndex;
+            _platform = platform;
+        }
+    }
+
     private static native void start(String roomId);
 
     private static native void init(String roomId, int numHumanPlayers, int mapType);
+
+    private static native byte[] get_player_name_bytes(String roomId, short playerIndex);
 
     private static native void handle_server_update(String roomId, String message);
 

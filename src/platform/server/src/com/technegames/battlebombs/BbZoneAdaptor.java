@@ -12,6 +12,8 @@ import com.shephertz.app42.server.idomain.IZone;
  */
 public final class BbZoneAdaptor extends BaseZoneAdaptor
 {
+    private static final String CURRENT_AUTH_DATA = "GowenGameDev_1.3.0";
+
     private final IZone _zone;
 
     public BbZoneAdaptor(IZone zone)
@@ -33,7 +35,7 @@ public final class BbZoneAdaptor extends BaseZoneAdaptor
     {
         System.out.println("UserRequest " + user.getName());
 
-        if (authString.equals(Globals.CURRENT_AUTH_DATA))
+        if (authString.equals(CURRENT_AUTH_DATA))
         {
             System.out.println("UserRequest " + user.getName() + " is valid");
         }

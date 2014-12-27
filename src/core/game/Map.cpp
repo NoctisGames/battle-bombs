@@ -24,6 +24,7 @@
 #include "Fire.h"
 
 #include <vector>
+#include <algorithm>
 
 //For RNG purposes
 #include <stdlib.h>
