@@ -136,6 +136,11 @@ int ServerGameSession::getNumPlayers()
     return (int) m_players.size();
 }
 
+const char * ServerGameSession::getPlayerNameAtIndex(short playerIndex)
+{
+    return m_botNames.at(playerIndex);
+}
+
 bool ServerGameSession::isPlayerBotAtIndex(short playerIndex)
 {
     return m_players.at(playerIndex).get()->isBot();

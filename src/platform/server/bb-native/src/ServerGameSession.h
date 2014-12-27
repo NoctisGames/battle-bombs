@@ -24,6 +24,8 @@ public:
     
     int getNumPlayers();
     
+    const char * getPlayerNameAtIndex(short playerIndex);
+    
     bool isPlayerBotAtIndex(short playerIndex);
     
     bool isPlayerAliveAtIndex(short playerIndex);

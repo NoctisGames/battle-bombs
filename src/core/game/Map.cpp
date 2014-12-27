@@ -240,79 +240,75 @@ void Map::populateMapWithPlayersAndBreakableBlocks(GameSession *gameSession, int
                                                                                  new PlayerDynamicGameObject(7, playerStartingPositions[7][0], playerStartingPositions[7][1], gameSession->getGameListener(), DIRECTION_DOWN) :
                                                                                  new BotPlayerDynamicGameObject(7, playerStartingPositions[7][0], playerStartingPositions[7][1], gameSession->getGameListener(), DIRECTION_DOWN)));
     
-    static std::vector<const char *> botNames;
-    if(botNames.size() == 0)
-    {
-        botNames.push_back("Tyler Bot");
-        botNames.push_back("Stephen Bot");
-        botNames.push_back("Kathy Bot");
-        botNames.push_back("Mikel Bot");
-        botNames.push_back("Dan Bot");
-        botNames.push_back("Matt Bot");
-        botNames.push_back("Jay Bot");
-        botNames.push_back("Bradlee Bot");
-        botNames.push_back("Adam Bot");
-        botNames.push_back("Mary Bot");
-        botNames.push_back("Andre Bot");
-        botNames.push_back("Bill Bot");
-        botNames.push_back("Mike Bot");
-        botNames.push_back("Jason Bot");
-        botNames.push_back("Kurt Bot");
-        botNames.push_back("Travis Bot");
-        botNames.push_back("Joe Bot");
-        botNames.push_back("James Bot");
-        botNames.push_back("Heather Bot");
-        botNames.push_back("Glen Bot");
-        botNames.push_back("Don Bot");
-        botNames.push_back("Paul Bot");
-        botNames.push_back("Morgan Bot");
-        botNames.push_back("Sean Bot");
-        botNames.push_back("Dave Bot");
-        botNames.push_back("Pier Bot");
-        botNames.push_back("Roy Bot");
-        botNames.push_back("Aaron Bot");
-        botNames.push_back("Frank Bot");
-        botNames.push_back("Peter Bot");
-        botNames.push_back("Jeff Bot");
-        botNames.push_back("Ryan Bot");
-        botNames.push_back("Todd Bot");
-        botNames.push_back("Wesley Bot");
-        botNames.push_back("Ted Bot");
-        botNames.push_back("Barney Bot");
-        botNames.push_back("Robin Bot");
-        botNames.push_back("Lily Bot");
-        botNames.push_back("Marshall Bot");
-        botNames.push_back("Kyle Bot");
-        botNames.push_back("Kenny Bot");
-        botNames.push_back("Eric Bot");
-        botNames.push_back("Stan Bot");
-        botNames.push_back("Randy Bot");
-        botNames.push_back("Norman Bot");
-        botNames.push_back("Norma Bot");
-        botNames.push_back("Dylan Bot");
-        botNames.push_back("Dexter Bot");
-        botNames.push_back("Debra Bot");
-        botNames.push_back("Sam Bot");
-        botNames.push_back("Dean Bot");
-        botNames.push_back("Bobby Bot");
-        botNames.push_back("Ruby Bot");
-        botNames.push_back("Brandi Bot");
-        botNames.push_back("Mariel Bot");
-        botNames.push_back("Bruce Bot");
-        botNames.push_back("Dick Bot");
-        botNames.push_back("Alfred Bot");
-        botNames.push_back("Dante Bot");
-    }
+    gameSession->getBotNames().push_back("Tyler Bot");
+    gameSession->getBotNames().push_back("Stephen Bot");
+    gameSession->getBotNames().push_back("Kathy Bot");
+    gameSession->getBotNames().push_back("Mikel Bot");
+    gameSession->getBotNames().push_back("Dan Bot");
+    gameSession->getBotNames().push_back("Matt Bot");
+    gameSession->getBotNames().push_back("Jay Bot");
+    gameSession->getBotNames().push_back("Bradlee Bot");
+    gameSession->getBotNames().push_back("Adam Bot");
+    gameSession->getBotNames().push_back("Mary Bot");
+    gameSession->getBotNames().push_back("Andre Bot");
+    gameSession->getBotNames().push_back("Bill Bot");
+    gameSession->getBotNames().push_back("Mike Bot");
+    gameSession->getBotNames().push_back("Jason Bot");
+    gameSession->getBotNames().push_back("Kurt Bot");
+    gameSession->getBotNames().push_back("Travis Bot");
+    gameSession->getBotNames().push_back("Joe Bot");
+    gameSession->getBotNames().push_back("James Bot");
+    gameSession->getBotNames().push_back("Heather Bot");
+    gameSession->getBotNames().push_back("Glen Bot");
+    gameSession->getBotNames().push_back("Don Bot");
+    gameSession->getBotNames().push_back("Paul Bot");
+    gameSession->getBotNames().push_back("Morgan Bot");
+    gameSession->getBotNames().push_back("Sean Bot");
+    gameSession->getBotNames().push_back("Dave Bot");
+    gameSession->getBotNames().push_back("Pier Bot");
+    gameSession->getBotNames().push_back("Roy Bot");
+    gameSession->getBotNames().push_back("Aaron Bot");
+    gameSession->getBotNames().push_back("Frank Bot");
+    gameSession->getBotNames().push_back("Peter Bot");
+    gameSession->getBotNames().push_back("Jeff Bot");
+    gameSession->getBotNames().push_back("Ryan Bot");
+    gameSession->getBotNames().push_back("Todd Bot");
+    gameSession->getBotNames().push_back("Wesley Bot");
+    gameSession->getBotNames().push_back("Ted Bot");
+    gameSession->getBotNames().push_back("Barney Bot");
+    gameSession->getBotNames().push_back("Robin Bot");
+    gameSession->getBotNames().push_back("Lily Bot");
+    gameSession->getBotNames().push_back("Marshall Bot");
+    gameSession->getBotNames().push_back("Kyle Bot");
+    gameSession->getBotNames().push_back("Kenny Bot");
+    gameSession->getBotNames().push_back("Eric Bot");
+    gameSession->getBotNames().push_back("Stan Bot");
+    gameSession->getBotNames().push_back("Randy Bot");
+    gameSession->getBotNames().push_back("Norman Bot");
+    gameSession->getBotNames().push_back("Norma Bot");
+    gameSession->getBotNames().push_back("Dylan Bot");
+    gameSession->getBotNames().push_back("Dexter Bot");
+    gameSession->getBotNames().push_back("Debra Bot");
+    gameSession->getBotNames().push_back("Sam Bot");
+    gameSession->getBotNames().push_back("Dean Bot");
+    gameSession->getBotNames().push_back("Bobby Bot");
+    gameSession->getBotNames().push_back("Ruby Bot");
+    gameSession->getBotNames().push_back("Brandi Bot");
+    gameSession->getBotNames().push_back("Mariel Bot");
+    gameSession->getBotNames().push_back("Bruce Bot");
+    gameSession->getBotNames().push_back("Dick Bot");
+    gameSession->getBotNames().push_back("Alfred Bot");
+    gameSession->getBotNames().push_back("Dante Bot");
     
     std::vector<int> chosenBotNameIndices;
     for (short playerIndex = numHumanPlayers; playerIndex < gameSession->getPlayers().size(); playerIndex++)
     {
         while (true)
         {
-            int botNameIndex = rand() % botNames.size();
+            int botNameIndex = rand() % gameSession->getBotNames().size();
             if(std::find(chosenBotNameIndices.begin(), chosenBotNameIndices.end(), botNameIndex) == chosenBotNameIndices.end())
             {
-                gameSession->getPlayers().at(playerIndex)->setUsername(botNames.at(botNameIndex));
+                gameSession->getPlayers().at(playerIndex)->setUsername(gameSession->getBotNames().at(botNameIndex));
                 break;
             }
         }

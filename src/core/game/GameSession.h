@@ -82,6 +82,8 @@ public:
     
     std::vector<std::unique_ptr<Explosion>> & getExplosions();
     
+    std::vector<const char *> & getBotNames();
+    
     GameListener * getGameListener();
     
     Map * getMap();
@@ -109,6 +111,7 @@ protected:
     std::vector<std::unique_ptr<FireBall >> m_fireBalls;
     std::vector<std::unique_ptr<IceBall >> m_iceBalls;
     std::vector<std::unique_ptr<IcePatch >> m_icePatches;
+    std::vector<const char *> m_botNames;
     std::vector<int> m_sEventIds;
     float m_fCountDownTimeLeft;
     int m_iNumBreakableBlocksAtSpawnTime;

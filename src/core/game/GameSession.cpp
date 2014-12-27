@@ -63,6 +63,7 @@ void GameSession::init()
     m_mapBorders.clear();
     m_insideBlocks.clear();
     m_spaceTiles.clear();
+    botNames.clear();
 }
 
 void GameSession::handleServerUpdate(const char *message)
@@ -332,6 +333,11 @@ std::vector<std::unique_ptr<PowerUp>> & GameSession::getPowerUps()
 std::vector<std::unique_ptr<Explosion>> & GameSession::getExplosions()
 {
     return m_explosions;
+}
+
+std::vector<const char *> & GameSession::getBotNames()
+{
+    return m_botNames;
 }
 
 GameListener * GameSession::getGameListener()
