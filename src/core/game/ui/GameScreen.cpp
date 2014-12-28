@@ -71,6 +71,11 @@ GameScreen::GameScreen(const char *username, bool isOffline) : GameSession()
     
     m_isOffline = isOffline;
     
+    if(m_isOffline)
+    {
+        m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 8.25f, GRID_CELL_HEIGHT * 6.25f));
+    }
+    
     init();
     
     setGameState(GameStateFactory::getInstance().createGameState(m_isOffline ? GAME_STATE_WAITING_FOR_LOCAL_SETTINGS : GAME_STATE_WAITING_FOR_CONNECTION, m_isOffline));
@@ -86,10 +91,10 @@ void GameScreen::init()
     m_displayXMovingGameObject = std::unique_ptr<DisplayXMovingGameObject>(new DisplayXMovingGameObject(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 14, GRID_CELL_HEIGHT * 1.75f, BATTLE));
     m_waitingForServerInterface.release();
     m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, 5.81492537375f, 10.38805970149248f, 11.2298507475f, m_username.get()));
-    m_waitingForLocalSettingsInterface.release();
-    m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 8.25f, GRID_CELL_HEIGHT * 6.25f));
     m_interfaceOverlay.release();
     m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
+    
+    m_waitingForLocalSettingsInterface->reset();
     
     m_player = nullptr;
     m_sPlayerIndex = -1;

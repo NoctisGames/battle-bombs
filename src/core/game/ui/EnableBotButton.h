@@ -15,21 +15,22 @@
 class EnableBotButton : public GameObject
 {
 public:
-    EnableBotButton(Button_State buttonState, bool isFurthestRightActive, bool isFurthestLeftInactive, float x, float y, float width, float height);
+    EnableBotButton(Button_State buttonState, int index, bool isFurthestRightActive, float x, float y, float width, float height);
     
     void toggle();
     
-    void setButtonState(Button_State buttonState);
+    int getChosenBotFlag();
     
     Button_State getButtonState();
+    
+    int getIndex();
     
     int getDifficulty();
     
 private:
     Button_State m_buttonState;
+    int m_iIndex;
     int m_iDifficulty;
-    bool m_isFurthestRightActive;
-    bool m_isFurthestLeftInactive;
 };
 
 #endif /* defined(__battlebombs__EnableBotButton__) */

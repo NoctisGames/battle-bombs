@@ -49,6 +49,8 @@
 #include "FallingObjectShadow.h"
 #include "WaitingForLocalSettingsInterface.h"
 #include "StartButton.h"
+#include "EnableBotButton.h"
+#include "EnablePowerUpButton.h"
 
 #include <sstream>
 
@@ -179,8 +181,29 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
 void Renderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
 {
     m_spriteBatcher->beginBatch();
+    
     renderGameObject(waitingForLocalSettingsInterface, Assets::getLocalSettingsInterfaceTextureRegion(waitingForLocalSettingsInterface));
+    
+    static Color enabledColor = Color(1, 1, 1, 1);
+    static Color disabledColor = Color(1, 1, 1, 0.25f);
+    
+    for (std::vector<std::unique_ptr<EnableBotButton>>::iterator itr = waitingForLocalSettingsInterface.getEnableBotButtons().begin(); itr != waitingForLocalSettingsInterface.getEnableBotButtons().end(); itr++)
+    {
+        m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY(), (*itr)->getWidth(), (*itr)->getHeight(), (*itr)->getAngle(), (*itr)->getButtonState() == ENABLED ? enabledColor : disabledColor, Assets::getEnableBotButtonTextureRegion((**itr)));
+        
+        if((*itr)->getButtonState() == ENABLED)
+        {
+            m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY() - (*itr)->getHeight() * 3 / 4, (*itr)->getWidth(), (*itr)->getHeight() / 4, (*itr)->getAngle(), Assets::getBotDifficultyTextTextureRegion((**itr)));
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<EnablePowerUpButton>>::iterator itr = waitingForLocalSettingsInterface.getEnablePowerUpButtons().begin(); itr != waitingForLocalSettingsInterface.getEnablePowerUpButtons().end(); itr++)
+    {
+        m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY(), (*itr)->getWidth(), (*itr)->getHeight(), (*itr)->getAngle(), (*itr)->getButtonState() == ENABLED ? enabledColor : disabledColor, Assets::getEnablePowerUpButtonTextureRegion((**itr)));
+    }
+    
     renderGameObject(waitingForLocalSettingsInterface.getStartButton(), Assets::getStartButtonTextureRegion(waitingForLocalSettingsInterface.getStartButton()));
+    
     m_spriteBatcher->endBatchWithTexture(*m_offlineInterfaceTexture);
 }
 

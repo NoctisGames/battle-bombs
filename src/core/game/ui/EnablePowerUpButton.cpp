@@ -9,11 +9,14 @@
 #include "EnablePowerUpButton.h"
 #include "Rectangle.h"
 #include "Vector2D.h"
+#include "ChosenPowerUpFlags.h"
 
-EnablePowerUpButton::EnablePowerUpButton(int powerUpType, float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
+#include <vector>
+
+EnablePowerUpButton::EnablePowerUpButton(int chosenPowerUpFlag, float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
 {
     m_buttonState = ENABLED;
-    m_powerUpType = powerUpType;
+    m_iChosenPowerUpFlag = chosenPowerUpFlag;
 }
 
 void EnablePowerUpButton::toggle()
@@ -28,22 +31,12 @@ void EnablePowerUpButton::toggle()
     }
 }
 
-void EnablePowerUpButton::setButtonState(Button_State buttonState)
+int EnablePowerUpButton::getChosenPowerUpFlag()
 {
-    m_buttonState = buttonState;
+    return m_iChosenPowerUpFlag;
 }
 
 Button_State EnablePowerUpButton::getButtonState()
 {
     return m_buttonState;
-}
-
-void EnablePowerUpButton::setPowerUpType(int powerUpType)
-{
-    m_powerUpType = powerUpType;
-}
-
-int EnablePowerUpButton::getPowerUpType()
-{
-    return m_powerUpType;
 }

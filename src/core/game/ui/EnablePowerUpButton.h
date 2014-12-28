@@ -15,21 +15,17 @@
 class EnablePowerUpButton : public GameObject
 {
 public:
-    EnablePowerUpButton(int powerUpType, float x, float y, float width, float height);
+    EnablePowerUpButton(int chosenPowerUpFlag, float x, float y, float width, float height);
     
     void toggle();
     
-    void setButtonState(Button_State buttonState);
+    int getChosenPowerUpFlag();
     
     Button_State getButtonState();
     
-    void setPowerUpType(int powerUpType);
-    
-    int getPowerUpType();
-    
 private:
     Button_State m_buttonState;
-    int m_powerUpType;
+    int m_iChosenPowerUpFlag;
 };
 
 #endif /* defined(__battlebombs__EnablePowerUpButton__) */

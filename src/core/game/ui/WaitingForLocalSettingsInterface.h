@@ -28,6 +28,8 @@ public:
     
     void updateInput(GameScreen *gameScreen, std::vector<TouchEvent> &touchEvents);
     
+    void reset();
+    
     StartButton & getStartButton();
     
     std::vector<std::unique_ptr<EnableBotButton>> & getEnableBotButtons();

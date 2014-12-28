@@ -9,8 +9,8 @@
 #ifndef battlebombs_BotDifficulty_h
 #define battlebombs_BotDifficulty_h
 
-#define BOT_DIFFICULTY_EASY 1
-#define BOT_DIFFICULTY_NORMAL 2
-#define BOT_DIFFICULTY_HARD 3
+#define BOT_DIFFICULTY_EASY 0
+#define BOT_DIFFICULTY_NORMAL 1
+#define BOT_DIFFICULTY_HARD 2
 
 #endif

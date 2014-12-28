@@ -42,6 +42,8 @@ class CountDownNumberGameObject;
 class DisplayGameOverGameObject;
 class DisplayXMovingGameObject;
 class WaitingForLocalSettingsInterface;
+class EnableBotButton;
+class EnablePowerUpButton;
 class StartButton;
 
 class Assets
@@ -116,6 +118,12 @@ public:
     static TextureRegion& getDisplayGameOverTextureRegion(DisplayGameOverGameObject &displayGameOverGameObject);
     
     static TextureRegion& getLocalSettingsInterfaceTextureRegion(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
+    
+    static TextureRegion& getEnableBotButtonTextureRegion(EnableBotButton &enableBotButton);
+    
+    static TextureRegion& getBotDifficultyTextTextureRegion(EnableBotButton &enableBotButton);
+    
+    static TextureRegion& getEnablePowerUpButtonTextureRegion(EnablePowerUpButton &enablePowerUpButton);
     
     static TextureRegion& getStartButtonTextureRegion(StartButton &startButton);
     
