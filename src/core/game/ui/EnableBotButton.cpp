@@ -8,6 +8,8 @@
 
 #include "EnableBotButton.h"
 #include "BotDifficulty.h"
+#include "Rectangle.h"
+#include "Vector2D.h"
 
 EnableBotButton::EnableBotButton(Button_State buttonState, bool isFurthestRight, float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
 {

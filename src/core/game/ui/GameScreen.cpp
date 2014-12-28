@@ -55,6 +55,8 @@
 #include "GameState.h"
 #include "GameStateFactory.h"
 #include "StartButton.h"
+#include "EnableBotButton.h"
+#include "EnablePowerUpButton.h"
 
 #include <sstream>
 

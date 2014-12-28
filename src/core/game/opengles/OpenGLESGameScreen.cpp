@@ -54,6 +54,8 @@
 #include "OpenGLESManager.h"
 #include "Map.h"
 #include "StartButton.h"
+#include "EnableBotButton.h"
+#include "EnablePowerUpButton.h"
 
 OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline, bool isRunningIOS8) : GameScreen(username, isOffline)
 {

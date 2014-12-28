@@ -7,6 +7,8 @@
 //
 
 #include "EnablePowerUpButton.h"
+#include "Rectangle.h"
+#include "Vector2D.h"
 
 EnablePowerUpButton::EnablePowerUpButton(int powerUpType, float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
 {
