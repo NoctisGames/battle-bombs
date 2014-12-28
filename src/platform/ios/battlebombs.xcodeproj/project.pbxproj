@@ -78,6 +78,10 @@
 		BB12EE691A1D5B2C006D385B /* Vector2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB12EE3C1A1D5B2C006D385B /* Vector2D.cpp */; };
 		BB16D96C191987B80034BE67 /* death.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB16D969191987B80034BE67 /* death.caf */; };
 		BB16D96D191987B80034BE67 /* explosion.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB16D96A191987B80034BE67 /* explosion.caf */; };
+		BB395A3A1A509CDC004C0858 /* RegeneratingDoor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB395A381A509CDC004C0858 /* RegeneratingDoor.cpp */; };
+		BB395A3D1A509E21004C0858 /* Landmine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB395A3B1A509E21004C0858 /* Landmine.cpp */; };
+		BB395A401A509E91004C0858 /* BaseTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB395A3E1A509E91004C0858 /* BaseTile.cpp */; };
+		BB395A431A50A4C3004C0858 /* RemoteBomb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB395A411A50A4C3004C0858 /* RemoteBomb.cpp */; };
 		BB39D6E5196ED81400BC895B /* bot_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39D6E4196ED81400BC895B /* bot_blue.png */; };
 		BB39D6E7196EFABD00BC895B /* map_space.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB39D6E6196EFABD00BC895B /* map_space.aifc */; };
 		BB39D6EA196F01CC00BC895B /* map_base.aifc in Resources */ = {isa = PBXBuildFile; fileRef = BB39D6E8196F01CC00BC895B /* map_base.aifc */; };
@@ -360,6 +364,14 @@
 		BB12EE3D1A1D5B2C006D385B /* Vector2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector2D.h; sourceTree = "<group>"; };
 		BB16D969191987B80034BE67 /* death.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = death.caf; sourceTree = "<group>"; };
 		BB16D96A191987B80034BE67 /* explosion.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = explosion.caf; sourceTree = "<group>"; };
+		BB395A381A509CDC004C0858 /* RegeneratingDoor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RegeneratingDoor.cpp; sourceTree = "<group>"; };
+		BB395A391A509CDC004C0858 /* RegeneratingDoor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegeneratingDoor.h; sourceTree = "<group>"; };
+		BB395A3B1A509E21004C0858 /* Landmine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Landmine.cpp; sourceTree = "<group>"; };
+		BB395A3C1A509E21004C0858 /* Landmine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Landmine.h; sourceTree = "<group>"; };
+		BB395A3E1A509E91004C0858 /* BaseTile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseTile.cpp; sourceTree = "<group>"; };
+		BB395A3F1A509E91004C0858 /* BaseTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTile.h; sourceTree = "<group>"; };
+		BB395A411A50A4C3004C0858 /* RemoteBomb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RemoteBomb.cpp; sourceTree = "<group>"; };
+		BB395A421A50A4C3004C0858 /* RemoteBomb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteBomb.h; sourceTree = "<group>"; };
 		BB39D6E4196ED81400BC895B /* bot_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bot_blue.png; sourceTree = "<group>"; };
 		BB39D6E6196EFABD00BC895B /* map_space.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = map_space.aifc; sourceTree = "<group>"; };
 		BB39D6E8196F01CC00BC895B /* map_base.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = map_base.aifc; sourceTree = "<group>"; };
@@ -988,6 +1000,8 @@
 		BBA4C3691A16CE7300AB3878 /* game */ = {
 			isa = PBXGroup;
 			children = (
+				BB395A3E1A509E91004C0858 /* BaseTile.cpp */,
+				BB395A3F1A509E91004C0858 /* BaseTile.h */,
 				BBA4C3701A16CE7300AB3878 /* BombGameObject.cpp */,
 				BBA4C3711A16CE7300AB3878 /* BombGameObject.h */,
 				BB8B5BD81A4F64E600AE25A7 /* BotDifficulty.h */,
@@ -1024,6 +1038,8 @@
 				BBA4C3A01A16CE7300AB3878 /* InsideBlock.cpp */,
 				BBA4C3A11A16CE7300AB3878 /* InsideBlock.h */,
 				BBA4C3A21A16CE7300AB3878 /* InsideBlockState.h */,
+				BB395A3B1A509E21004C0858 /* Landmine.cpp */,
+				BB395A3C1A509E21004C0858 /* Landmine.h */,
 				BB4790B21A473A13006A7B61 /* Map.cpp */,
 				BB4790B31A473A13006A7B61 /* Map.h */,
 				BB4790C11A4745B8006A7B61 /* MapBase.cpp */,
@@ -1052,6 +1068,10 @@
 				BBA4C3BA1A16CE7300AB3878 /* PowerUp.cpp */,
 				BBA4C3BB1A16CE7300AB3878 /* PowerUp.h */,
 				BBA4C3BE1A16CE7300AB3878 /* PowerUpType.h */,
+				BB395A381A509CDC004C0858 /* RegeneratingDoor.cpp */,
+				BB395A391A509CDC004C0858 /* RegeneratingDoor.h */,
+				BB395A411A50A4C3004C0858 /* RemoteBomb.cpp */,
+				BB395A421A50A4C3004C0858 /* RemoteBomb.h */,
 				BBF8CA581A2113EC0016DE7C /* ResourceConstants.h */,
 				BBA4C3C01A16CE7300AB3878 /* SpaceTile.cpp */,
 				BBA4C3C11A16CE7300AB3878 /* SpaceTile.h */,
@@ -1376,6 +1396,8 @@
 				BBA4C3D21A16CE7300AB3878 /* Crater.cpp in Sources */,
 				BB12EE3E1A1D5B2C006D385B /* Circle.cpp in Sources */,
 				BB12EE5F1A1D5B2C006D385B /* texture.c in Sources */,
+				BB395A401A509E91004C0858 /* BaseTile.cpp in Sources */,
+				BB395A3D1A509E21004C0858 /* Landmine.cpp in Sources */,
 				BBA4C3DB1A16CE7300AB3878 /* GameListener.cpp in Sources */,
 				BB12EE681A1D5B2C006D385B /* Triangle.cpp in Sources */,
 				BBF8CA3A1A2107F70016DE7C /* PlayerRowAvatar.cpp in Sources */,
@@ -1399,6 +1421,7 @@
 				BBA4C3DD1A16CE7300AB3878 /* GameSession.cpp in Sources */,
 				BBF8C9F81A2107C50016DE7C /* Font.cpp in Sources */,
 				0A8FBF90179E07440039BA29 /* main.m in Sources */,
+				BB395A431A50A4C3004C0858 /* RemoteBomb.cpp in Sources */,
 				0A8FBF7C179E07320039BA29 /* png.c in Sources */,
 				BBA4C3D01A16CE7300AB3878 /* BreakableBlock.cpp in Sources */,
 				BBA4C4061A16D12E00AB3878 /* OpenGLESGameScreen.cpp in Sources */,
@@ -1436,6 +1459,7 @@
 				BBF8CA3E1A2107F70016DE7C /* SpectatorControls.cpp in Sources */,
 				BBA4C3D71A16CE7300AB3878 /* FallingObjectShadow.cpp in Sources */,
 				BB66FF791A48A229002B8224 /* GameStateCountingDown.cpp in Sources */,
+				BB395A3A1A509CDC004C0858 /* RegeneratingDoor.cpp in Sources */,
 				BBA4C3D91A16CE7300AB3878 /* FireBall.cpp in Sources */,
 				0A8FBF82179E07320039BA29 /* pngrio.c in Sources */,
 				BBA4C3EC1A16CE7300AB3878 /* SpaceTile.cpp in Sources */,

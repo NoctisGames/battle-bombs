@@ -26,7 +26,6 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
     m_isExploding = false;
     m_isDestroyed = false;
 	m_isPushed = false;
-	m_isPickedUp = false;
 	m_isRebounding = false;
 
 	m_gridBounds = std::unique_ptr<Rectangle>(new Rectangle(getPosition().getX() - GRID_CELL_WIDTH * 3 / 10, getPosition().getY() - GRID_CELL_HEIGHT * 3 / 10, GRID_CELL_WIDTH * 3 / 5, GRID_CELL_HEIGHT * 3 / 5));
@@ -49,48 +48,7 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
             m_fSizeScalar = -m_fSizeScalar;
         }
         
-        if(m_isPushed)
-        {
-            m_velocity->add(m_acceleration->getX() * deltaTime, m_acceleration->getY() * deltaTime);
-            
-            switch(m_iPushedDirection)
-            {
-                case DIRECTION_RIGHT:
-                    if(m_velocity->getX() < 0)
-                    {
-                        m_isPushed = false;
-                    }
-                    break;
-                case DIRECTION_UP:
-                    if(m_velocity->getY() < 0)
-                    {
-                        m_isPushed = false;
-                    }
-                    break;
-                case DIRECTION_LEFT:
-                    if(m_velocity->getX() > 0)
-                    {
-                        m_isPushed = false;
-                    }
-                    break;
-                case DIRECTION_DOWN:
-                    if(m_velocity->getY() > 0)
-                    {
-                        m_isPushed = false;
-                    }
-                    break;
-            }
-            
-            m_position->add(m_velocity->getX() * deltaTime, m_velocity->getY() * deltaTime);
-            
-            if (isCollision(mapBorders, insideBlocks, breakableBlocks, players, bombs))
-            {
-                m_isPushed = false;
-            }
-            
-            updateBounds();
-            updateGrid();
-        }
+        updateForPush(deltaTime, mapBorders, insideBlocks, breakableBlocks, players, bombs);
         
         if (m_fStateTime > 3)
         {
@@ -160,11 +118,6 @@ void BombGameObject::pushed(int direction)
     }
 }
 
-void BombGameObject::onPickedUp()
-{
-	m_isPickedUp = true;
-}
-
 short BombGameObject::getPower()
 {
     return m_sPower;
@@ -183,7 +136,53 @@ Rectangle & BombGameObject::getBoundsForGridLogic()
 	return *m_gridBounds;
 }
 
-#pragma mark <Private>
+#pragma mark <Protected>
+
+void BombGameObject::updateForPush(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+{
+    if(m_isPushed)
+    {
+        m_velocity->add(m_acceleration->getX() * deltaTime, m_acceleration->getY() * deltaTime);
+        
+        switch(m_iPushedDirection)
+        {
+            case DIRECTION_RIGHT:
+                if(m_velocity->getX() < 0)
+                {
+                    m_isPushed = false;
+                }
+                break;
+            case DIRECTION_UP:
+                if(m_velocity->getY() < 0)
+                {
+                    m_isPushed = false;
+                }
+                break;
+            case DIRECTION_LEFT:
+                if(m_velocity->getX() > 0)
+                {
+                    m_isPushed = false;
+                }
+                break;
+            case DIRECTION_DOWN:
+                if(m_velocity->getY() > 0)
+                {
+                    m_isPushed = false;
+                }
+                break;
+        }
+        
+        m_position->add(m_velocity->getX() * deltaTime, m_velocity->getY() * deltaTime);
+        
+        if (isCollision(mapBorders, insideBlocks, breakableBlocks, players, bombs))
+        {
+            m_isPushed = false;
+        }
+        
+        updateBounds();
+        updateGrid();
+    }
+}
 
 bool BombGameObject::isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
