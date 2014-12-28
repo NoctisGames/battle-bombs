@@ -52,6 +52,8 @@ private:
     int m_iChosenBotFlags;
     int m_iChosenPowerUpFlags;
     bool m_isStartingGame;
+    
+    void startGame();
 };
 
 #endif /* defined(__battlebombs__WaitingForLocalSettingsInterface__) */

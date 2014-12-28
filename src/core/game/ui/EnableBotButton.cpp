@@ -11,21 +11,31 @@
 #include "Rectangle.h"
 #include "Vector2D.h"
 
-EnableBotButton::EnableBotButton(Button_State buttonState, bool isFurthestRight, float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
+EnableBotButton::EnableBotButton(Button_State buttonState, bool isFurthestRightActive, bool isFurthestLeftInactive, float x, float y, float width, float height) : GameObject(x, y, width, height, 0)
 {
     m_buttonState = buttonState;
     m_iDifficulty = BOT_DIFFICULTY_NORMAL;
-    m_isFurthestRight = isFurthestRight;
+    m_isFurthestRightActive = isFurthestRightActive;
+    m_isFurthestLeftInactive = isFurthestLeftInactive;
 }
 
 void EnableBotButton::toggle()
 {
+    if(m_isFurthestLeftInactive)
+    {
+        m_buttonState = ENABLED;
+        m_isFurthestRightActive = true;
+        m_isFurthestLeftInactive = false;
+        
+        return;
+    }
+    
     m_iDifficulty++;
     if(m_iDifficulty > BOT_DIFFICULTY_HARD)
     {
         m_iDifficulty = BOT_DIFFICULTY_EASY;
         
-        if(m_isFurthestRight)
+        if(m_isFurthestRightActive)
         {
             m_buttonState = DISABLED;
         }
@@ -45,14 +55,4 @@ Button_State EnableBotButton::getButtonState()
 int EnableBotButton::getDifficulty()
 {
     return m_iDifficulty;
-}
-
-void EnableBotButton::setIsFurthestRight(bool isFurthestRight)
-{
-    m_isFurthestRight = isFurthestRight;
-}
-
-bool EnableBotButton::isFurthestRight()
-{
-    return m_isFurthestRight;
 }
