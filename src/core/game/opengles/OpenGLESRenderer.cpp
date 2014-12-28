@@ -51,8 +51,9 @@ OpenGLESRenderer::OpenGLESRenderer(int width, int height) : Renderer()
     m_spriteBatcher = std::unique_ptr<OpenGLESSpriteBatcher>(new OpenGLESSpriteBatcher());
     m_rectangleBatcher = std::unique_ptr<OpenGLESRectangleBatcher>(new OpenGLESRectangleBatcher(true));
     
-    m_mapTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("map_space.png")));
     m_gameTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("game.png")));
+    m_mapTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("map_space.png")));
+    m_offlineInterfaceTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("offline_interface.png")));
     m_interfaceTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("interface.png")));
     m_interfaceTexture2 = std::unique_ptr<TextureWrapper>(new TextureWrapper(load_png_asset_into_texture("interface_2.png")));
     
@@ -87,49 +88,49 @@ void OpenGLESRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
             break;
     }
     
-    if((players.at(0)->isBot() && player_sprites_loaded[0]) || (!players.at(0)->isBot() && !player_sprites_loaded[0]))
+    if(players.size() > 0 && ((players.at(0)->isBot() && player_sprites_loaded[0]) || (!players.at(0)->isBot() && !player_sprites_loaded[0])))
     {
         glDeleteTextures(1, &m_charBlackTexture->texture);
         m_charBlackTexture->texture = load_png_asset_into_texture(players.at(0)->isBot() ? "bot_black.png" : "char_black.png");
     }
     
-    if((players.at(1)->isBot() && player_sprites_loaded[1]) || (!players.at(1)->isBot() && !player_sprites_loaded[1]))
+    if(players.size() > 1 && ((players.at(1)->isBot() && player_sprites_loaded[1]) || (!players.at(1)->isBot() && !player_sprites_loaded[1])))
     {
         glDeleteTextures(1, &m_charBlueTexture->texture);
         m_charBlueTexture->texture = load_png_asset_into_texture(players.at(1)->isBot() ? "bot_blue.png" : "char_blue.png");
     }
     
-    if((players.at(2)->isBot() && player_sprites_loaded[2]) || (!players.at(2)->isBot() && !player_sprites_loaded[2]))
+    if(players.size() > 2 && ((players.at(2)->isBot() && player_sprites_loaded[2]) || (!players.at(2)->isBot() && !player_sprites_loaded[2])))
     {
         glDeleteTextures(1, &m_charGreenTexture->texture);
         m_charGreenTexture->texture = load_png_asset_into_texture(players.at(2)->isBot() ? "bot_green.png" : "char_green.png");
     }
     
-    if((players.at(3)->isBot() && player_sprites_loaded[3]) || (!players.at(3)->isBot() && !player_sprites_loaded[3]))
+    if(players.size() > 3 && ((players.at(3)->isBot() && player_sprites_loaded[3]) || (!players.at(3)->isBot() && !player_sprites_loaded[3])))
     {
         glDeleteTextures(1, &m_charOrangeTexture->texture);
         m_charOrangeTexture->texture = load_png_asset_into_texture(players.at(3)->isBot() ? "bot_orange.png" : "char_orange.png");
     }
     
-    if((players.at(4)->isBot() && player_sprites_loaded[4]) || (!players.at(4)->isBot() && !player_sprites_loaded[4]))
+    if(players.size() > 4 && ((players.at(4)->isBot() && player_sprites_loaded[4]) || (!players.at(4)->isBot() && !player_sprites_loaded[4])))
     {
         glDeleteTextures(1, &m_charPinkTexture->texture);
         m_charPinkTexture->texture = load_png_asset_into_texture(players.at(4)->isBot() ? "bot_pink.png" : "char_pink.png");
     }
     
-    if((players.at(5)->isBot() && player_sprites_loaded[5]) || (!players.at(5)->isBot() && !player_sprites_loaded[5]))
+    if(players.size() > 5 && ((players.at(5)->isBot() && player_sprites_loaded[5]) || (!players.at(5)->isBot() && !player_sprites_loaded[5])))
     {
         glDeleteTextures(1, &m_charRedTexture->texture);
         m_charRedTexture->texture = load_png_asset_into_texture(players.at(5)->isBot() ? "bot_red.png" : "char_red.png");
     }
     
-    if((players.at(6)->isBot() && player_sprites_loaded[6]) || (!players.at(6)->isBot() && !player_sprites_loaded[6]))
+    if(players.size() > 6 && ((players.at(6)->isBot() && player_sprites_loaded[6]) || (!players.at(6)->isBot() && !player_sprites_loaded[6])))
     {
         glDeleteTextures(1, &m_charWhiteTexture->texture);
         m_charWhiteTexture->texture = load_png_asset_into_texture(players.at(6)->isBot() ? "bot_white.png" : "char_white.png");
     }
     
-    if((players.at(7)->isBot() && player_sprites_loaded[7]) || (!players.at(7)->isBot() && !player_sprites_loaded[7]))
+    if(players.size() > 7 && ((players.at(7)->isBot() && player_sprites_loaded[7]) || (!players.at(7)->isBot() && !player_sprites_loaded[7])))
     {
         glDeleteTextures(1, &m_charYellowTexture->texture);
         m_charYellowTexture->texture = load_png_asset_into_texture(players.at(7)->isBot() ? "bot_yellow.png" : "char_yellow.png");

@@ -41,7 +41,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 {
 	PlayerDynamicGameObject::update(deltaTime, mapBorders, spaceTiles, insideBlocks, breakableBlocks, craters, powerUps, explosions, players, bombs);
 
-    if (m_playerState == ALIVE && m_playerActionState != WINNING)
+    if (m_playerState == ALIVE && m_playerActionState != WINNING && m_playerActionState != CURSED)
 	{
         if (PathFinder::getInstance().isLocationOccupiedByBombOrExplosionPath(bombs, explosions, m_gridX, m_gridY, m_fWaitTime > 0))
         {

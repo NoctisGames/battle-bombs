@@ -13,17 +13,7 @@
 #include "ScreenState.h"
 #include "TouchEvent.h"
 #include "GameEvent.h"
-
-//For RNG purposes
-#include <stdlib.h>
-#include <time.h>
-
-void GameStateWaitingForLocalSettings::update(GameScreen *gameScreen, float deltaTime)
-{
-    GameState::update(gameScreen, deltaTime);
-    
-    gameScreen->getWaitingForLocalSettingsInterface()->update(deltaTime);
-}
+#include "WaitingForLocalSettingsInterface.h"
 
 void GameStateWaitingForLocalSettings::processServerMessage(GameScreen *gameScreen, rapidjson::Document &d, int eventType)
 {
@@ -32,13 +22,15 @@ void GameStateWaitingForLocalSettings::processServerMessage(GameScreen *gameScre
 
 void GameStateWaitingForLocalSettings::updateInput(GameScreen *gameScreen, std::vector<TouchEvent> &touchEvents)
 {
-    if(touchEvents.size() > 0)
+    gameScreen->getWaitingForLocalSettingsInterface()->updateInput(gameScreen, touchEvents);
+    
+    if(gameScreen->getWaitingForLocalSettingsInterface()->isStartingGame())
     {
-        srand((int) time(NULL));
+        int map = gameScreen->getWaitingForLocalSettingsInterface()->getChosenMapType();
+        int chosenBotFlags = gameScreen->getWaitingForLocalSettingsInterface()->getChosenBotFlags();
+        int chosenPowerUpFlags = gameScreen->getWaitingForLocalSettingsInterface()->getChosenPowerUpFlags();
         
-        int map = (rand() % NUM_MAPS);
-        
-        gameScreen->beginGameOffline(map, 1, 180);
+        gameScreen->beginGameOffline(map, 1, 180, chosenBotFlags, chosenPowerUpFlags);
     }
 }
 

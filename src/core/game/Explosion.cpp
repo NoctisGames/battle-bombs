@@ -57,10 +57,10 @@ void Explosion::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock 
     m_fTravelTime += deltaTime;
     
     static const float TIME_TO_TRAVEL = 0.05f;
-    if(m_fTravelTime > TIME_TO_TRAVEL)
+    while(m_fTravelTime > TIME_TO_TRAVEL)
     {
         m_sFrames++;
-        m_fTravelTime = 0;
+        m_fTravelTime -= TIME_TO_TRAVEL;
         
         for (std::vector<std::unique_ptr<Fire>>::iterator itr = m_fireParts.begin(); itr != m_fireParts.end(); )
         {

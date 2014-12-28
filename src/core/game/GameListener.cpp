@@ -26,7 +26,7 @@ GameListener::GameListener()
 
 void GameListener::addLocalEventForPlayer(int eventId, PlayerDynamicGameObject &player)
 {
-    if(eventId == PLAYER_PLANT_BOMB)
+    if(eventId == PLAYER_PLANT_BOMB || eventId == PLAYER_PLANT_REMOTE_BOMB)
     {
         eventId += PLAYER_EVENT_MOD_BASE * (player.getFirePower() - 1);
     }

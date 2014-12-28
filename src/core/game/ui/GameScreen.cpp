@@ -54,6 +54,7 @@
 #include "Map.h"
 #include "GameState.h"
 #include "GameStateFactory.h"
+#include "StartButton.h"
 
 #include <sstream>
 
@@ -84,7 +85,7 @@ void GameScreen::init()
     m_waitingForServerInterface.release();
     m_waitingForServerInterface = std::unique_ptr<WaitingForServerInterface>(new WaitingForServerInterface(SCREEN_WIDTH / 2, 5.81492537375f, 10.38805970149248f, 11.2298507475f, m_username.get()));
     m_waitingForLocalSettingsInterface.release();
-    m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface());
+    m_waitingForLocalSettingsInterface = std::unique_ptr<WaitingForLocalSettingsInterface>(new WaitingForLocalSettingsInterface(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GRID_CELL_WIDTH * 8.25f, GRID_CELL_HEIGHT * 6.25f));
     m_interfaceOverlay.release();
     m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
     
@@ -126,17 +127,18 @@ void GameScreen::onPause()
     Assets::getInstance()->setMusicId(MUSIC_STOP);
 }
 
-void GameScreen::beginGameOffline(int mapType, int numHumanPlayers, int numSecondsLeftForRound)
+void GameScreen::beginGameOffline(int mapType, int numHumanPlayers, int numSecondsLeftForRound, int chosenBotFlags, int chosenPowerUpFlags)
 {
     init();
     
     initializeMap(mapType);
     
-    m_map->populateMapWithPlayersAndBreakableBlocks(this, numHumanPlayers);
+    m_map->populateMapWithPlayersAndBreakableBlocks(this, numHumanPlayers, chosenBotFlags, chosenPowerUpFlags);
     
     m_renderer->loadMapType(mapType, m_players);
     
     m_interfaceOverlay->initializeMiniMap(this);
+    m_interfaceOverlay->initializePlayerAvatars((int)m_players.size());
     m_interfaceOverlay->setNumSecondsLeft(numSecondsLeftForRound);
     
     PathFinder::getInstance().resetGameGrid();
@@ -687,6 +689,7 @@ bool GameScreen::beginCommon(rapidjson::Document &d, bool isBeginGame)
         PathFinder::getInstance().resetGameGrid();
         PathFinder::getInstance().initializeGameGrid(this, m_map.get());
         m_interfaceOverlay->initializeMiniMap(this);
+        m_interfaceOverlay->initializePlayerAvatars((int)m_players.size());
         
         return true;
     }

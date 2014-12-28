@@ -43,7 +43,7 @@ public:
 	
 	virtual void onPause();
     
-    void beginGameOffline(int mapType, int numHumanPlayers, int numSecondsLeftForRound);
+    void beginGameOffline(int mapType, int numHumanPlayers, int numSecondsLeftForRound, int chosenBotFlags, int chosenPowerUpFlags);
     
     void beginGame(rapidjson::Document &d);
     

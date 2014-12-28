@@ -22,6 +22,9 @@
 #include "Rectangle.h"
 #include "Vector2D.h"
 #include "Fire.h"
+#include "FlagUtil.h"
+#include "ChosenPowerUpFlags.h"
+#include "ChosenBotFlags.h"
 
 #include <vector>
 #include <algorithm>
@@ -190,7 +193,7 @@ bool Map::isValidLocationForBreakableBlock(GameSession *gameSession, int j, int 
     return true;
 }
 
-void Map::populateMapWithPlayersAndBreakableBlocks(GameSession *gameSession, int numHumanPlayers)
+void Map::populateMapWithPlayersAndBreakableBlocks(GameSession *gameSession, int numHumanPlayers, int chosenBotFlags, int chosenPowerUpFlags)
 {
     srand((int) time(NULL));
     
@@ -209,37 +212,77 @@ void Map::populateMapWithPlayersAndBreakableBlocks(GameSession *gameSession, int
     int n = sizeof (playerStartingPositions) / sizeof (playerStartingPositions[0]);
     randomize(playerStartingPositions, n);
     
-    gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 1 ?
-                                                                                 new PlayerDynamicGameObject(0, playerStartingPositions[0][0], playerStartingPositions[0][1], gameSession->getGameListener(), DIRECTION_RIGHT) :
-                                                                                 new BotPlayerDynamicGameObject(0, playerStartingPositions[0][0], playerStartingPositions[0][1], gameSession->getGameListener(), DIRECTION_RIGHT)));
+    if(numHumanPlayers >= 1)
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(0, playerStartingPositions[0][0], playerStartingPositions[0][1], gameSession->getGameListener(), DIRECTION_RIGHT)));
+    }
+    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_1_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_1_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_1_HARD))
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(0, playerStartingPositions[0][0], playerStartingPositions[0][1], gameSession->getGameListener(), DIRECTION_RIGHT)));
+    }
     
-    gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 2 ?
-                                                                                 new PlayerDynamicGameObject(1, playerStartingPositions[1][0], playerStartingPositions[1][1], gameSession->getGameListener(), DIRECTION_LEFT) :
-                                                                                 new BotPlayerDynamicGameObject(1, playerStartingPositions[1][0], playerStartingPositions[1][1], gameSession->getGameListener(), DIRECTION_LEFT)));
+    if(numHumanPlayers >= 2)
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(1, playerStartingPositions[1][0], playerStartingPositions[1][1], gameSession->getGameListener(), DIRECTION_LEFT)));
+    }
+    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_2_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_2_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_2_HARD))
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(1, playerStartingPositions[1][0], playerStartingPositions[1][1], gameSession->getGameListener(), DIRECTION_LEFT)));
+    }
     
-    gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 3 ?
-                                                                                 new PlayerDynamicGameObject(2, playerStartingPositions[2][0], playerStartingPositions[2][1], gameSession->getGameListener(), DIRECTION_RIGHT) :
-                                                                                 new BotPlayerDynamicGameObject(2, playerStartingPositions[2][0], playerStartingPositions[2][1], gameSession->getGameListener(), DIRECTION_RIGHT)));
+    if(numHumanPlayers >= 3)
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(2, playerStartingPositions[2][0], playerStartingPositions[2][1], gameSession->getGameListener(), DIRECTION_RIGHT)));
+    }
+    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_3_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_3_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_3_HARD))
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(2, playerStartingPositions[2][0], playerStartingPositions[2][1], gameSession->getGameListener(), DIRECTION_RIGHT)));
+    }
     
-    gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 4 ?
-                                                                                 new PlayerDynamicGameObject(3, playerStartingPositions[3][0], playerStartingPositions[3][1], gameSession->getGameListener(), DIRECTION_LEFT) :
-                                                                                 new BotPlayerDynamicGameObject(3, playerStartingPositions[3][0], playerStartingPositions[3][1], gameSession->getGameListener(), DIRECTION_LEFT)));
+    if(numHumanPlayers >= 4)
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(3, playerStartingPositions[3][0], playerStartingPositions[3][1], gameSession->getGameListener(), DIRECTION_LEFT)));
+    }
+    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_4_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_4_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_4_HARD))
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(3, playerStartingPositions[3][0], playerStartingPositions[3][1], gameSession->getGameListener(), DIRECTION_LEFT)));
+    }
     
-    gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 5 ?
-                                                                                 new PlayerDynamicGameObject(4, playerStartingPositions[4][0], playerStartingPositions[4][1], gameSession->getGameListener(), DIRECTION_UP) :
-                                                                                 new BotPlayerDynamicGameObject(4, playerStartingPositions[4][0], playerStartingPositions[4][1], gameSession->getGameListener(), DIRECTION_UP)));
+    if(numHumanPlayers >= 5)
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(4, playerStartingPositions[4][0], playerStartingPositions[4][1], gameSession->getGameListener(), DIRECTION_UP)));
+    }
+    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_5_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_5_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_5_HARD))
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(4, playerStartingPositions[4][0], playerStartingPositions[4][1], gameSession->getGameListener(), DIRECTION_UP)));
+    }
     
-    gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 6 ?
-                                                                                 new PlayerDynamicGameObject(5, playerStartingPositions[5][0], playerStartingPositions[5][1], gameSession->getGameListener(), DIRECTION_DOWN) :
-                                                                                 new BotPlayerDynamicGameObject(5, playerStartingPositions[5][0], playerStartingPositions[5][1], gameSession->getGameListener(), DIRECTION_DOWN)));
+    if(numHumanPlayers >= 6)
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(5, playerStartingPositions[5][0], playerStartingPositions[5][1], gameSession->getGameListener(), DIRECTION_DOWN)));
+    }
+    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_6_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_6_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_6_HARD))
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(5, playerStartingPositions[5][0], playerStartingPositions[5][1], gameSession->getGameListener(), DIRECTION_DOWN)));
+    }
     
-    gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 7 ?
-                                                                                 new PlayerDynamicGameObject(6, playerStartingPositions[6][0], playerStartingPositions[6][1], gameSession->getGameListener(), DIRECTION_UP) :
-                                                                                 new BotPlayerDynamicGameObject(6, playerStartingPositions[6][0], playerStartingPositions[6][1], gameSession->getGameListener(), DIRECTION_UP)));
+    if(numHumanPlayers >= 7)
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(6, playerStartingPositions[6][0], playerStartingPositions[6][1], gameSession->getGameListener(), DIRECTION_UP)));
+    }
+    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_7_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_7_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_7_HARD))
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(6, playerStartingPositions[6][0], playerStartingPositions[6][1], gameSession->getGameListener(), DIRECTION_UP)));
+    }
     
-    gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(numHumanPlayers >= 8 ?
-                                                                                 new PlayerDynamicGameObject(7, playerStartingPositions[7][0], playerStartingPositions[7][1], gameSession->getGameListener(), DIRECTION_DOWN) :
-                                                                                 new BotPlayerDynamicGameObject(7, playerStartingPositions[7][0], playerStartingPositions[7][1], gameSession->getGameListener(), DIRECTION_DOWN)));
+    if(numHumanPlayers >= 8)
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(7, playerStartingPositions[7][0], playerStartingPositions[7][1], gameSession->getGameListener(), DIRECTION_DOWN)));
+    }
+    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_8_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_8_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_8_HARD))
+    {
+        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(7, playerStartingPositions[7][0], playerStartingPositions[7][1], gameSession->getGameListener(), DIRECTION_DOWN)));
+    }
     
     gameSession->getBotNames().push_back("Tyler Bot");
     gameSession->getBotNames().push_back("Stephen Bot");
@@ -327,41 +370,96 @@ void Map::populateMapWithPlayersAndBreakableBlocks(GameSession *gameSession, int
                 {
                     int flag = POWER_UP_TYPE_NONE;
                     
-                    // Generate a random number from 1 - 100
-                    // This will be used to determine which type of powerups will appear
-                    int flagRange = (rand() % 100 + 1);
-                    
-                    if (flagRange <= 50)
+                    while (true)
                     {
-                        flag = rand() % POWER_UP_TYPE_SPEED + 1;
-                    }
-                    else if (flagRange > 50 && flagRange <= 55)
-                    {
-                        flag = POWER_UP_TYPE_FORCE_FIELD;
-                    }
-                    else if (flagRange > 55 && flagRange <= 60)
-                    {
-                        flag = POWER_UP_TYPE_PUSH;
-                    }
-                    else if (flagRange > 60 && flagRange <= 65)
-                    {
-                        flag = POWER_UP_TYPE_SHIELD;
-                    }
-                    else if (flagRange > 65 && flagRange <= 70)
-                    {
-                        flag = POWER_UP_TYPE_MEGA_FIRE;
-                    }
-                    else if (flagRange > 70 && flagRange <= 75)
-                    {
-                        flag = POWER_UP_TYPE_REMOTE_BOMB;
-                    }
-                    else if (flagRange > 75 && flagRange <= 80)
-                    {
-                        flag = POWER_UP_TYPE_LAND_MINE;
-                    }
-                    else if (flagRange > 80 && flagRange <= 85)
-                    {
-                        flag = POWER_UP_TYPE_CURSE;
+                        // Generate a random number from 1 - 100
+                        // This will be used to determine which type of powerups will appear
+                        int flagRange = (rand() % 100 + 1);
+                        
+                        if (flagRange > 0 && flagRange <= 18)
+                        {
+                            if(FlagUtil::isFlagSet(chosenPowerUpFlags, PU_BOMB_CHOSEN))
+                            {
+                                flag = POWER_UP_TYPE_BOMB;
+                                break;
+                            }
+                        }
+                        else if (flagRange > 18 && flagRange <= 35)
+                        {
+                            if(FlagUtil::isFlagSet(chosenPowerUpFlags, PU_FIRE_CHOSEN))
+                            {
+                                flag = POWER_UP_TYPE_FIRE;
+                                break;
+                            }
+                        }
+                        else if (flagRange > 35 && flagRange <= 50)
+                        {
+                            if(FlagUtil::isFlagSet(chosenPowerUpFlags, PU_SPEED_CHOSEN))
+                            {
+                                flag = POWER_UP_TYPE_SPEED;
+                                break;
+                            }
+                        }
+                        else if (flagRange > 50 && flagRange <= 55)
+                        {
+                            if(FlagUtil::isFlagSet(chosenPowerUpFlags, PU_FORCE_FIELD_CHOSEN))
+                            {
+                                flag = POWER_UP_TYPE_FORCE_FIELD;
+                                break;
+                            }
+                        }
+                        else if (flagRange > 55 && flagRange <= 60)
+                        {
+                            if(FlagUtil::isFlagSet(chosenPowerUpFlags, PU_PUSH_CHOSEN))
+                            {
+                                flag = POWER_UP_TYPE_PUSH;
+                                break;
+                            }
+                        }
+                        else if (flagRange > 60 && flagRange <= 65)
+                        {
+                            if(FlagUtil::isFlagSet(chosenPowerUpFlags, PU_SHIELD_CHOSEN))
+                            {
+                                flag = POWER_UP_TYPE_SHIELD;
+                                break;
+                            }
+                        }
+                        else if (flagRange > 65 && flagRange <= 70)
+                        {
+                            if(FlagUtil::isFlagSet(chosenPowerUpFlags, PU_FIRE_CHOSEN))
+                            {
+                                flag = POWER_UP_TYPE_MEGA_FIRE;
+                                break;
+                            }
+                        }
+                        else if (flagRange > 70 && flagRange <= 75)
+                        {
+                            if(FlagUtil::isFlagSet(chosenPowerUpFlags, PU_REMOTE_BOMB_CHOSEN))
+                            {
+                                flag = POWER_UP_TYPE_REMOTE_BOMB;
+                                break;
+                            }
+                        }
+                        else if (flagRange > 75 && flagRange <= 80)
+                        {
+                            if(FlagUtil::isFlagSet(chosenPowerUpFlags, PU_LAND_MINE_CHOSEN))
+                            {
+                                flag = POWER_UP_TYPE_LAND_MINE;
+                                break;
+                            }
+                        }
+                        else if (flagRange > 80 && flagRange <= 85)
+                        {
+                            if(FlagUtil::isFlagSet(chosenPowerUpFlags, PU_CURSE_CHOSEN))
+                            {
+                                flag = POWER_UP_TYPE_CURSE;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                     
                     // If these two blocks don't get caught, the flag remains 0 and no powerup will be created

@@ -32,15 +32,6 @@
 
 InterfaceOverlay::InterfaceOverlay(GameListener *gameListener)
 {
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  9.1880597025f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  8.5074626875f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  7.8268656725f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  7.1462686575f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 9.1880597025f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 8.5074626875f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 7.8268656725f, 1.43283582089544f, 1.36119403f)));
-    m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 7.1462686575f, 1.43283582089544f, 1.36119403f)));
-    
     m_dPad = std::unique_ptr<DPadControl>(new DPadControl(2.95522388059704f, 3.0626865675f, 5.91044776119408f, 6.125373135f));
     
     m_powerUpBarItems.push_back(std::unique_ptr<PowerUpBarItem>(new PowerUpBarItem(8.95522388059692f, 0.85074626875f, 1.43283582089544f, 1.36119403f)));
@@ -118,6 +109,49 @@ void InterfaceOverlay::initializeMiniMap(GameSession *gameSession)
             default:
                 break;
         }
+    }
+}
+
+void InterfaceOverlay::initializePlayerAvatars(int numPlayers)
+{
+    if(numPlayers >= 1)
+    {
+        m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  9.1880597025f, 1.43283582089544f, 1.36119403f)));
+    }
+    
+    if(numPlayers >= 2)
+    {
+        m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  8.5074626875f, 1.43283582089544f, 1.36119403f)));
+    }
+    
+    if(numPlayers >= 3)
+    {
+        m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  7.8268656725f, 1.43283582089544f, 1.36119403f)));
+    }
+    
+    if(numPlayers >= 4)
+    {
+        m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(0.5373134328357f,  7.1462686575f, 1.43283582089544f, 1.36119403f)));
+    }
+    
+    if(numPlayers >= 5)
+    {
+        m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 9.1880597025f, 1.43283582089544f, 1.36119403f)));
+    }
+    
+    if(numPlayers >= 6)
+    {
+        m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 8.5074626875f, 1.43283582089544f, 1.36119403f)));
+    }
+    
+    if(numPlayers >= 7)
+    {
+        m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 7.8268656725f, 1.43283582089544f, 1.36119403f)));
+    }
+    
+    if(numPlayers >= 8)
+    {
+        m_playerAvatars.push_back(std::unique_ptr<PlayerAvatar>(new PlayerAvatar(1.25373134328342f, 7.1462686575f, 1.43283582089544f, 1.36119403f)));
     }
 }
 
@@ -240,6 +274,11 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
 
 void InterfaceOverlay::handleTouchDownInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
+    if(player.getPlayerActionState() == CURSED)
+    {
+        return;
+    }
+    
 	if (OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()))
 	{
 		if (player.isAbleToDropAdditionalBomb(players, bombs))
@@ -280,6 +319,11 @@ void InterfaceOverlay::handleTouchDownInputRunning(Vector2D &touchPoint, PlayerD
 
 void InterfaceOverlay::handleTouchDraggedInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player)
 {
+    if(player.getPlayerActionState() == CURSED)
+    {
+        return;
+    }
+    
 	if (!OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()) && !OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
 	{
 		int directionInput = m_dPad->getDirectionForTouchPoint(touchPoint);
@@ -293,11 +337,12 @@ void InterfaceOverlay::handleTouchDraggedInputRunning(Vector2D &touchPoint, Play
 
 void InterfaceOverlay::handleTouchUpInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player)
 {
-    if (OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()))
+    if(player.getPlayerActionState() == CURSED)
     {
-        // Do Nothing
+        return;
     }
-    else if (OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
+    
+    if (OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
     {
         switch (player.getActivePowerUp())
         {

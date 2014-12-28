@@ -14,8 +14,6 @@
 class GameStateWaitingForLocalSettings : public GameState
 {
 public:
-    virtual void update(GameScreen *gameScreen, float deltaTime);
-    
     virtual void processServerMessage(GameScreen *gameScreen, rapidjson::Document &d, int eventType);
     
     virtual void updateInput(GameScreen *gameScreen, std::vector<TouchEvent> &touchEvents);

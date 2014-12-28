@@ -38,7 +38,7 @@ public:
     virtual bool isValidLocationForBreakableBlock(GameSession *gameSession, int j, int i);
     
     // Called by the Server or the Client in Offline Mode
-    void populateMapWithPlayersAndBreakableBlocks(GameSession *gameSession, int numHumanPlayers);
+    void populateMapWithPlayersAndBreakableBlocks(GameSession *gameSession, int numHumanPlayers, int chosenBotFlags, int chosenPowerUpFlags);
     
 protected:
     void addCommonInsideBlocks(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);

@@ -145,6 +145,10 @@
 		BB8B5BC51A4F110500AE25A7 /* pu_landmine.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB8B5BC11A4F110500AE25A7 /* pu_landmine.caf */; };
 		BB8B5BC61A4F110500AE25A7 /* pu_mega_fire.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB8B5BC21A4F110500AE25A7 /* pu_mega_fire.caf */; };
 		BB8B5BC71A4F110500AE25A7 /* pu_remote_bomb.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB8B5BC31A4F110500AE25A7 /* pu_remote_bomb.caf */; };
+		BB8B5BC91A4F229D00AE25A7 /* offline_interface.png in Resources */ = {isa = PBXBuildFile; fileRef = BB8B5BC81A4F229D00AE25A7 /* offline_interface.png */; };
+		BB8B5BD11A4F3B5300AE25A7 /* StartButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8B5BCF1A4F3B5300AE25A7 /* StartButton.cpp */; };
+		BB8B5BD41A4F645200AE25A7 /* EnablePowerUpButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8B5BD21A4F645200AE25A7 /* EnablePowerUpButton.cpp */; };
+		BB8B5BD71A4F646200AE25A7 /* EnableBotButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8B5BD51A4F646200AE25A7 /* EnableBotButton.cpp */; };
 		BB8FF7C619AE3FE4005D0701 /* interface_2.png in Resources */ = {isa = PBXBuildFile; fileRef = BB8FF7C519AE3FE4005D0701 /* interface_2.png */; };
 		BB9139C918BEFCC800E51FB5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9139C818BEFCC800E51FB5 /* MainViewController.m */; };
 		BB91730919E42DBA00BA7FD4 /* hurry.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB91730819E42DBA00BA7FD4 /* hurry.caf */; };
@@ -461,6 +465,17 @@
 		BB8B5BC11A4F110500AE25A7 /* pu_landmine.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = pu_landmine.caf; sourceTree = "<group>"; };
 		BB8B5BC21A4F110500AE25A7 /* pu_mega_fire.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = pu_mega_fire.caf; sourceTree = "<group>"; };
 		BB8B5BC31A4F110500AE25A7 /* pu_remote_bomb.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = pu_remote_bomb.caf; sourceTree = "<group>"; };
+		BB8B5BC81A4F229D00AE25A7 /* offline_interface.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = offline_interface.png; sourceTree = "<group>"; };
+		BB8B5BCB1A4F293500AE25A7 /* FlagUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlagUtil.h; sourceTree = "<group>"; };
+		BB8B5BCD1A4F2A3D00AE25A7 /* ChosenBotFlags.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChosenBotFlags.h; sourceTree = "<group>"; };
+		BB8B5BCE1A4F2A4F00AE25A7 /* ChosenPowerUpFlags.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChosenPowerUpFlags.h; sourceTree = "<group>"; };
+		BB8B5BCF1A4F3B5300AE25A7 /* StartButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StartButton.cpp; sourceTree = "<group>"; };
+		BB8B5BD01A4F3B5300AE25A7 /* StartButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartButton.h; sourceTree = "<group>"; };
+		BB8B5BD21A4F645200AE25A7 /* EnablePowerUpButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnablePowerUpButton.cpp; sourceTree = "<group>"; };
+		BB8B5BD31A4F645200AE25A7 /* EnablePowerUpButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnablePowerUpButton.h; sourceTree = "<group>"; };
+		BB8B5BD51A4F646200AE25A7 /* EnableBotButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnableBotButton.cpp; sourceTree = "<group>"; };
+		BB8B5BD61A4F646200AE25A7 /* EnableBotButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnableBotButton.h; sourceTree = "<group>"; };
+		BB8B5BD81A4F64E600AE25A7 /* BotDifficulty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BotDifficulty.h; sourceTree = "<group>"; };
 		BB8FF7C519AE3FE4005D0701 /* interface_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = interface_2.png; sourceTree = "<group>"; };
 		BB9139C718BEFCC800E51FB5 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		BB9139C818BEFCC800E51FB5 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
@@ -904,7 +919,6 @@
 		BB12EDE11A1D5B2C006D385B /* framework */ = {
 			isa = PBXGroup;
 			children = (
-				BBF8C9E71A2107C50016DE7C /* ui */,
 				BB12EDE21A1D5B2C006D385B /* Circle.cpp */,
 				BB12EDE31A1D5B2C006D385B /* Circle.h */,
 				BB12EDE61A1D5B2C006D385B /* Color.h */,
@@ -912,6 +926,7 @@
 				BB12EE001A1D5B2C006D385B /* DynamicGameObject.h */,
 				BB12EE011A1D5B2C006D385B /* DynamicGridGameObject.cpp */,
 				BB12EE021A1D5B2C006D385B /* DynamicGridGameObject.h */,
+				BB8B5BCB1A4F293500AE25A7 /* FlagUtil.h */,
 				BB12EE051A1D5B2C006D385B /* GameObject.cpp */,
 				BB12EE061A1D5B2C006D385B /* GameObject.h */,
 				BB12EE071A1D5B2C006D385B /* GridGameObject.cpp */,
@@ -928,6 +943,7 @@
 				BB12EE301A1D5B2C006D385B /* Rectangle.h */,
 				BB12EE3A1A1D5B2C006D385B /* Triangle.cpp */,
 				BB12EE3B1A1D5B2C006D385B /* Triangle.h */,
+				BBF8C9E71A2107C50016DE7C /* ui */,
 				BB12EE3C1A1D5B2C006D385B /* Vector2D.cpp */,
 				BB12EE3D1A1D5B2C006D385B /* Vector2D.h */,
 			);
@@ -974,11 +990,14 @@
 			children = (
 				BBA4C3701A16CE7300AB3878 /* BombGameObject.cpp */,
 				BBA4C3711A16CE7300AB3878 /* BombGameObject.h */,
+				BB8B5BD81A4F64E600AE25A7 /* BotDifficulty.h */,
 				BBA4C3721A16CE7300AB3878 /* BotPlayerDynamicGameObject.cpp */,
 				BBA4C3731A16CE7300AB3878 /* BotPlayerDynamicGameObject.h */,
 				BBA4C3741A16CE7300AB3878 /* BreakableBlock.cpp */,
 				BBA4C3751A16CE7300AB3878 /* BreakableBlock.h */,
 				BBA4C3761A16CE7300AB3878 /* BreakableBlockState.h */,
+				BB8B5BCD1A4F2A3D00AE25A7 /* ChosenBotFlags.h */,
+				BB8B5BCE1A4F2A4F00AE25A7 /* ChosenPowerUpFlags.h */,
 				BBA4C37B1A16CE7300AB3878 /* Crater.cpp */,
 				BBA4C37C1A16CE7300AB3878 /* Crater.h */,
 				BBA4C3861A16CE7300AB3878 /* Explosion.cpp */,
@@ -1086,6 +1105,7 @@
 				BB71029B196E079500C7BA2F /* map_grasslands.png */,
 				BB71029C196E079500C7BA2F /* map_mountains.png */,
 				BB71029D196E079500C7BA2F /* map_space.png */,
+				BB8B5BC81A4F229D00AE25A7 /* offline_interface.png */,
 				BB07506719C248A90028515E /* music */,
 				BB4F30FB197C1DCD00270703 /* offline_match_highlighted.png */,
 				BB4F30FC197C1DCD00270703 /* offline_match_normal.png */,
@@ -1142,6 +1162,10 @@
 				BBF8CA0F1A2107F70016DE7C /* DPadControl.cpp */,
 				BBF8CA101A2107F70016DE7C /* DPadControl.h */,
 				BBF8CA111A2107F70016DE7C /* DPadControlState.h */,
+				BB8B5BD51A4F646200AE25A7 /* EnableBotButton.cpp */,
+				BB8B5BD61A4F646200AE25A7 /* EnableBotButton.h */,
+				BB8B5BD21A4F645200AE25A7 /* EnablePowerUpButton.cpp */,
+				BB8B5BD31A4F645200AE25A7 /* EnablePowerUpButton.h */,
 				BBF8CA121A2107F70016DE7C /* GameButton.cpp */,
 				BBF8CA131A2107F70016DE7C /* GameButton.h */,
 				BBF8CA141A2107F70016DE7C /* GameScreen.cpp */,
@@ -1193,6 +1217,8 @@
 				BBF8CA271A2107F70016DE7C /* SpectatorControls.cpp */,
 				BBF8CA281A2107F70016DE7C /* SpectatorControls.h */,
 				BBF8CA291A2107F70016DE7C /* SpectatorControlState.h */,
+				BB8B5BCF1A4F3B5300AE25A7 /* StartButton.cpp */,
+				BB8B5BD01A4F3B5300AE25A7 /* StartButton.h */,
 				BBF8CA2A1A2107F70016DE7C /* WaitingForLocalSettingsInterface.cpp */,
 				BBF8CA2B1A2107F70016DE7C /* WaitingForLocalSettingsInterface.h */,
 				BBF8CA2C1A2107F70016DE7C /* WaitingForServerInterface.cpp */,
@@ -1258,6 +1284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB5C577419B9F27B00AD76E7 /* pu_force_field.caf in Resources */,
+				BB8B5BC91A4F229D00AE25A7 /* offline_interface.png in Resources */,
 				BB5C577819B9F2B500AD76E7 /* force_field_down.caf in Resources */,
 				BBDE14B5195A2D7400A91FD7 /* char_orange.png in Resources */,
 				BBA0A3FF196F549C00737A74 /* bot_orange.png in Resources */,
@@ -1380,6 +1407,7 @@
 				0A8FBF7D179E07320039BA29 /* pngerror.c in Sources */,
 				0A8FBF7E179E07320039BA29 /* pngget.c in Sources */,
 				BB66FF6A1A4895F1002B8224 /* GameStateFactory.cpp in Sources */,
+				BB8B5BD71A4F646200AE25A7 /* EnableBotButton.cpp in Sources */,
 				BB4790B41A473A13006A7B61 /* Map.cpp in Sources */,
 				BBF8CA2F1A2107F70016DE7C /* Assets.cpp in Sources */,
 				BB12EE581A1D5B2C006D385B /* OpenGLESLineBatcher.cpp in Sources */,
@@ -1440,6 +1468,7 @@
 				BBF8CA331A2107F70016DE7C /* DisplayXMovingGameObject.cpp in Sources */,
 				0A8FBF86179E07320039BA29 /* pngtrans.c in Sources */,
 				BBF8C9F91A2107C50016DE7C /* LineBatcher.cpp in Sources */,
+				BB8B5BD11A4F3B5300AE25A7 /* StartButton.cpp in Sources */,
 				BB66FF671A48948B002B8224 /* GameState.cpp in Sources */,
 				BB12EE631A1D5B2C006D385B /* Rectangle.cpp in Sources */,
 				BBF8CA391A2107F70016DE7C /* PlayerRow.cpp in Sources */,
@@ -1447,6 +1476,7 @@
 				BBF8CA351A2107F70016DE7C /* GameButton.cpp in Sources */,
 				BBF8C9FB1A2107C50016DE7C /* SpriteBatcher.cpp in Sources */,
 				BB12EE5B1A1D5B2C006D385B /* OpenGLESRectangleBatcher.cpp in Sources */,
+				BB8B5BD41A4F645200AE25A7 /* EnablePowerUpButton.cpp in Sources */,
 				BB66FF7C1A48A257002B8224 /* GameStateSpectating.cpp in Sources */,
 				BBF8CA321A2107F70016DE7C /* DisplayGameOverGameObject.cpp in Sources */,
 				BB4790C31A4745B8006A7B61 /* MapBase.cpp in Sources */,

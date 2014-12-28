@@ -47,6 +47,9 @@
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
+#include "WaitingForLocalSettingsInterface.h"
+#include "StartButton.h"
+
 #include <sstream>
 
 Renderer::Renderer()
@@ -175,22 +178,10 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
 
 void Renderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
 {
-    static Color interfaceColor = Color(1, 1, 1, 1);
-    interfaceColor.alpha -= 0.025f;
-    if(interfaceColor.alpha < 0.2f)
-    {
-        interfaceColor.alpha = 1;
-    }
-    
     m_spriteBatcher->beginBatch();
-    
-    std::stringstream ss;
-    ss << "Tap anywhere to play again!";
-    std::string waitingText = ss.str();
-    
-    m_font->renderText(*m_spriteBatcher, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
-    
-    m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture);
+    renderGameObject(waitingForLocalSettingsInterface, Assets::getLocalSettingsInterfaceTextureRegion(waitingForLocalSettingsInterface));
+    renderGameObject(waitingForLocalSettingsInterface.getStartButton(), Assets::getStartButtonTextureRegion(waitingForLocalSettingsInterface.getStartButton()));
+    m_spriteBatcher->endBatchWithTexture(*m_offlineInterfaceTexture);
 }
 
 void Renderer::renderWorldBackground()
@@ -661,12 +652,12 @@ void Renderer::renderGameObjectWithRespectToPlayer(GameObject &go, TextureRegion
 
 void Renderer::updatePlayerSpritesLoadedArray(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
-    player_sprites_loaded[0] = !players.at(0)->isBot();
-    player_sprites_loaded[1] = !players.at(1)->isBot();
-    player_sprites_loaded[2] = !players.at(2)->isBot();
-    player_sprites_loaded[3] = !players.at(3)->isBot();
-    player_sprites_loaded[4] = !players.at(4)->isBot();
-    player_sprites_loaded[5] = !players.at(5)->isBot();
-    player_sprites_loaded[6] = !players.at(6)->isBot();
-    player_sprites_loaded[7] = !players.at(7)->isBot();
+    player_sprites_loaded[0] = players.size() > 0 && !players.at(0)->isBot();
+    player_sprites_loaded[1] = players.size() > 1 && !players.at(1)->isBot();
+    player_sprites_loaded[2] = players.size() > 2 && !players.at(2)->isBot();
+    player_sprites_loaded[3] = players.size() > 3 && !players.at(3)->isBot();
+    player_sprites_loaded[4] = players.size() > 4 && !players.at(4)->isBot();
+    player_sprites_loaded[5] = players.size() > 5 && !players.at(5)->isBot();
+    player_sprites_loaded[6] = players.size() > 6 && !players.at(6)->isBot();
+    player_sprites_loaded[7] = players.size() > 7 && !players.at(7)->isBot();
 }

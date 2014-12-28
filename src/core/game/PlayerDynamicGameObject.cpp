@@ -616,6 +616,7 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
             m_activePowerUp = POWER_UP_TYPE_LAND_MINE;
             break;
         case POWER_UP_TYPE_CURSE:
+            m_gameListener->addLocalEventForPlayer(PLAYER_MOVE_STOP, *this);
             m_playerActionState = CURSED;
             m_fStateTime = 0;
             break;

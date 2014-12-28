@@ -37,6 +37,9 @@
 #include "DisplayGameOverGameObject.h"
 #include "DisplayXMovingGameObject.h"
 #include "GameEvent.h"
+#include "WaitingForLocalSettingsInterface.h"
+#include "StartButton.h"
+
 #include <list>
 
 // For logging error conditions
@@ -1633,6 +1636,44 @@ TextureRegion& Assets::getActiveButtonTextureRegion(ActiveButton &activeButton, 
             return TR_BUTTON_SHIELD_DISABLED_TEXTURE_REGION;
         }
     }
+    else if(activeButton.getPowerUpType() == POWER_UP_TYPE_LAND_MINE)
+    {
+        static TextureRegion TR_BUTTON_LM_ENABLED_TEXTURE_REGION = TextureRegion(BUTTON_LAND_MINE_DISABLED_TEXTURE_REGION_X, BUTTON_LAND_MINE_ENABLED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+        static TextureRegion TR_BUTTON_LM_HIGHLIGHTED_TEXTURE_REGION = TextureRegion(BUTTON_LAND_MINE_HIGHLIGHTED_TEXTURE_REGION_X, BUTTON_LAND_MINE_HIGHLIGHTED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+        static TextureRegion TR_BUTTON_LM_PRESSED_TEXTURE_REGION = TextureRegion(BUTTON_LAND_MINE_PRESSED_TEXTURE_REGION_X, BUTTON_LAND_MINE_PRESSED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+        static TextureRegion TR_BUTTON_LM_DISABLED_TEXTURE_REGION = TextureRegion(BUTTON_LAND_MINE_DISABLED_TEXTURE_REGION_X, BUTTON_LAND_MINE_DISABLED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+        
+        if (activeButton.getButtonState() == ENABLED)
+        {
+            if(activeButton.isPressed())
+            {
+                return TR_BUTTON_LM_PRESSED_TEXTURE_REGION;
+            }
+            else
+            {
+                static std::vector<TextureRegion> activeButtonEnabledTextureRegions;
+                if (activeButtonEnabledTextureRegions.size() == 0)
+                {
+                    activeButtonEnabledTextureRegions.push_back(TR_BUTTON_LM_ENABLED_TEXTURE_REGION);
+                    activeButtonEnabledTextureRegions.push_back(TR_BUTTON_LM_HIGHLIGHTED_TEXTURE_REGION);
+                }
+                
+                static float cycleTime = 1.00f;
+                static std::vector<float> frames;
+                if (frames.size() == 0)
+                {
+                    frames.push_back(0.7f);
+                    frames.push_back(0.3f);
+                }
+                
+                return activeButtonEnabledTextureRegions.at(getKeyFrameNumber(buttonsStateTime, cycleTime, frames));
+            }
+        }
+        else
+        {
+            return TR_BUTTON_LM_DISABLED_TEXTURE_REGION;
+        }
+    }
     
     // Default, but should never get this far...
     std::cout << "getActiveButtonTextureRegion else condition reached!" << std::endl;
@@ -1875,6 +1916,55 @@ TextureRegion& Assets::getPowerUpTextureRegion(PowerUp &powerUp)
     static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
     
     return defaultTextureRegion;
+}
+
+TextureRegion& Assets::getLocalSettingsInterfaceTextureRegion(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
+{
+    static TextureRegion TR_LOCAL_SETTINGS_WITH_MAP_SPACE = TextureRegion(INTERFACE_OFFLINE_MENU_SPACE_TEXTURE_REGION_X, INTERFACE_OFFLINE_MENU_SPACE_TEXTURE_REGION_Y, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_WIDTH, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_LOCAL_SETTINGS_WITH_MAP_GRASSLANDS = TextureRegion(INTERFACE_OFFLINE_MENU_GRASSLANDS_TEXTURE_REGION_X, INTERFACE_OFFLINE_MENU_GRASSLANDS_TEXTURE_REGION_Y, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_WIDTH, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_LOCAL_SETTINGS_WITH_MAP_MOUNTAINS = TextureRegion(INTERFACE_OFFLINE_MENU_MOUNTAINS_TEXTURE_REGION_X, INTERFACE_OFFLINE_MENU_MOUNTAINS_TEXTURE_REGION_Y, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_WIDTH, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_LOCAL_SETTINGS_WITH_MAP_BASE = TextureRegion(INTERFACE_OFFLINE_MENU_BASE_TEXTURE_REGION_X, INTERFACE_OFFLINE_MENU_BASE_TEXTURE_REGION_Y, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_WIDTH, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    
+    int mapType = waitingForLocalSettingsInterface.getChosenMapType();
+    switch (mapType)
+    {
+        case MAP_SPACE:
+            return TR_LOCAL_SETTINGS_WITH_MAP_SPACE;
+        case MAP_GRASSLANDS:
+            return TR_LOCAL_SETTINGS_WITH_MAP_GRASSLANDS;
+        case MAP_MOUNTAINS:
+            return TR_LOCAL_SETTINGS_WITH_MAP_MOUNTAINS;
+        case MAP_BASE:
+            return TR_LOCAL_SETTINGS_WITH_MAP_BASE;
+        default:
+            break;
+    }
+    
+    // Default, but should never get this far...
+    std::cout << "getLocalSettingsInterfaceTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    
+    return defaultTextureRegion;
+}
+
+TextureRegion& Assets::getStartButtonTextureRegion(StartButton &startButton)
+{
+    static TextureRegion TR_ENABLED = TextureRegion(START_BUTTON_NORMAL_TEXTURE_REGION_X, START_BUTTON_NORMAL_TEXTURE_REGION_Y, START_BUTTON_TEXTURE_REGION_WIDTH, START_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_HIGHLIGHTED = TextureRegion(START_BUTTON_HIGHLIGHTED_TEXTURE_REGION_X, START_BUTTON_HIGHLIGHTED_TEXTURE_REGION_Y, START_BUTTON_TEXTURE_REGION_WIDTH, START_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_PRESSED = TextureRegion(START_BUTTON_PRESSED_TEXTURE_REGION_X, START_BUTTON_PRESSED_TEXTURE_REGION_Y, START_BUTTON_TEXTURE_REGION_WIDTH, START_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    
+    Button_State buttonState = startButton.getButtonState();
+    switch (buttonState)
+    {
+        case ENABLED:
+            return TR_ENABLED;
+        case HIGHLIGHTED:
+            return TR_HIGHLIGHTED;
+        case PRESSED:
+        default:
+            return TR_PRESSED;
+    }
 }
 
 void Assets::setMusicId(short musicId)

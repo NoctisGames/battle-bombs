@@ -41,6 +41,8 @@ class PlayerRowPlatformAvatar;
 class CountDownNumberGameObject;
 class DisplayGameOverGameObject;
 class DisplayXMovingGameObject;
+class WaitingForLocalSettingsInterface;
+class StartButton;
 
 class Assets
 {
@@ -112,6 +114,10 @@ public:
     static TextureRegion& getDisplayXMovingTextureRegion(DisplayXMovingGameObject &displayXMovingGameObject);
     
     static TextureRegion& getDisplayGameOverTextureRegion(DisplayGameOverGameObject &displayGameOverGameObject);
+    
+    static TextureRegion& getLocalSettingsInterfaceTextureRegion(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
+    
+    static TextureRegion& getStartButtonTextureRegion(StartButton &startButton);
     
     void setMusicId(short musicId);
     
