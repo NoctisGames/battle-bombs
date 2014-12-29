@@ -130,7 +130,7 @@ void FireBall::handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath)
 {
     float delta = timeSinceSuddenDeath - m_fTimeUntilAppearance;
     
-    if(timeSinceSuddenDeath > (m_fTimeUntilAppearance + 1.5f))
+    if(delta > 1.5f)
     {
         m_isVisible = true;
         
@@ -152,7 +152,7 @@ void FireBall::handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath)
             m_position->setY(m_fTargetY);
         }
     }
-    else if(timeSinceSuddenDeath > m_fTimeUntilAppearance)
+    else if(delta > 0)
     {
         m_isVisible = true;
         m_fStateTime = 0;

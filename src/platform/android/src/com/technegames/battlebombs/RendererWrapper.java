@@ -71,6 +71,8 @@ public final class RendererWrapper implements Renderer
     private static final short SOUND_FALLING_OBJECT = 25;
     private static final short SOUND_CRASHING_FIRE_BALL = 26;
     private static final short SOUND_CRASHING_ICE_BALL = 27;
+    private static final short SOUND_MINI_EXPLOSION = 28;
+    private static final short SOUND_BASE_TILE_TRIGGER = 29;
 
     // Definitions from src/core/game/ScreenState.h
     private static final short SCREEN_STATE_NORMAL = 0;
@@ -98,6 +100,8 @@ public final class RendererWrapper implements Renderer
     private final Sound _countDown3Sound;
     private final Sound _countDown2Sound;
     private final Sound _countDown1Sound;
+    private final Sound _baseTileTriggerSound;
+    private final Sound _miniExplosionSound;
     private final Sound _battleSound;
     private final Sound _plantBombSound;
     private final Sound _explosionSound;
@@ -142,6 +146,8 @@ public final class RendererWrapper implements Renderer
         _countDown3Sound = _audio.newSound("countdown_3.ogg");
         _countDown2Sound = _audio.newSound("countdown_2.ogg");
         _countDown1Sound = _audio.newSound("countdown_1.ogg");
+        _baseTileTriggerSound = _audio.newSound("base_tile_trigger.ogg");
+        _miniExplosionSound = _audio.newSound("mini_explosion.ogg");
         _battleSound = _audio.newSound("battle.ogg");
         _plantBombSound = _audio.newSound("plant_bomb.ogg");
         _explosionSound = _audio.newSound("explosion.ogg");
@@ -416,6 +422,12 @@ public final class RendererWrapper implements Renderer
                     break;
                 case SOUND_CRASHING_ICE_BALL:
                     _crashingIceBallSound.play(1);
+                    break;
+                case SOUND_MINI_EXPLOSION:
+                    _miniExplosionSound.play(1);
+                    break;
+                case SOUND_BASE_TILE_TRIGGER:
+                    _baseTileTriggerSound.play(1);
                     break;
                 default:
                     continue;

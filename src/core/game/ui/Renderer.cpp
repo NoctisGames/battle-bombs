@@ -51,6 +51,8 @@
 #include "StartButton.h"
 #include "EnableBotButton.h"
 #include "EnablePowerUpButton.h"
+#include "BaseTile.h"
+#include "RegeneratingDoor.h"
 
 #include <sstream>
 
@@ -202,7 +204,10 @@ void Renderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInt
         m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY(), (*itr)->getWidth(), (*itr)->getHeight(), (*itr)->getAngle(), (*itr)->getButtonState() == ENABLED ? enabledColor : disabledColor, Assets::getEnablePowerUpButtonTextureRegion((**itr)));
     }
     
-    renderGameObject(waitingForLocalSettingsInterface.getStartButton(), Assets::getStartButtonTextureRegion(waitingForLocalSettingsInterface.getStartButton()));
+    if(waitingForLocalSettingsInterface.getStartButton().getButtonState() != DISABLED)
+    {
+        renderGameObject(waitingForLocalSettingsInterface.getStartButton(), Assets::getStartButtonTextureRegion(waitingForLocalSettingsInterface.getStartButton()));
+    }
     
     m_spriteBatcher->endBatchWithTexture(*m_offlineInterfaceTexture);
 }
@@ -245,7 +250,7 @@ void Renderer::renderCraters(std::vector<std::unique_ptr<Crater>> &craters)
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
 }
 
-void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
+void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<PowerUp>> &powerUps)
 {
     m_spriteBatcher->beginBatch();
     for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersFar.begin(); itr != mapBordersFar.end(); itr++)
@@ -269,6 +274,14 @@ void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &ma
         if((*itr)->getBreakableBlockState() != DESTROYED)
         {
             renderGameObjectWithRespectToPlayer((**itr), Assets::getBreakableBlockTextureRegion((**itr)));
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<RegeneratingDoor>>::iterator itr = doors.begin(); itr != doors.end(); itr++)
+    {
+        if(!(*itr)->isDestroyed())
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getRegeneratingDoorTextureRegion((**itr)));
         }
     }
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
@@ -313,6 +326,19 @@ void Renderer::renderSuddenDeathMountainsIcePatches(std::vector<std::unique_ptr<
     for (std::vector<std::unique_ptr<IcePatch>>::iterator itr = icePatches.begin(); itr != icePatches.end(); itr++)
     {
         renderGameObjectWithRespectToPlayer((**itr), Assets::getIcePatchTextureRegion((**itr)));
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
+void Renderer::renderSuddenDeathBaseTiles(std::vector<std::unique_ptr<BaseTile>> &baseTiles)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<BaseTile>>::iterator itr = baseTiles.begin(); itr != baseTiles.end(); itr++)
+    {
+        if((*itr)->getState() != BT_NORMAL)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getBaseTileTextureRegion((**itr)));
+        }
     }
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
 }

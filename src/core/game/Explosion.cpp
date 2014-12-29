@@ -12,10 +12,11 @@
 #include "Rectangle.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
+#include "RegeneratingDoor.h"
 #include "PlayerDynamicGameObject.h"
 #include "Fire.h"
 
-Explosion::Explosion(short power, int gridX, int gridY, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, float width, float height) : GridGameObject(gridX, gridY, width, height, 0)
+Explosion::Explosion(short power, int gridX, int gridY, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, float width, float height) : GridGameObject(gridX, gridY, width, height, 0)
 {
     m_fStateTime = 0;
     m_fTravelTime = 0;
@@ -41,7 +42,7 @@ Explosion::Explosion(short power, int gridX, int gridY, std::vector<std::unique_
     m_iLeftGridX = gridX - 1;
     m_iDownGridY = gridY - 1;
     
-    runBlockLogic(insideBlocks, breakableBlocks, players);
+    runBlockLogic(insideBlocks, breakableBlocks, doors, players);
     
     m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingRight ? HEAD_PART_1 : EDGE_FROM_CORE_PART_1, m_iRightGridX, gridY, DIRECTION_RIGHT)));
     m_fireParts.push_back(std::unique_ptr<Fire>(new Fire(m_travelingUp ? HEAD_PART_1 : EDGE_FROM_CORE_PART_1, gridX, m_iUpGridY, DIRECTION_UP)));
@@ -51,7 +52,7 @@ Explosion::Explosion(short power, int gridX, int gridY, std::vector<std::unique_
     runPostBlockLogic();
 }
 
-void Explosion::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
+void Explosion::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
     m_fStateTime += deltaTime;
     m_fTravelTime += deltaTime;
@@ -88,7 +89,7 @@ void Explosion::update(float deltaTime, std::vector<std::unique_ptr<InsideBlock 
             bool canExpandLeft = m_travelingLeft;
             bool canExpandDown = m_travelingDown;
             
-            runBlockLogic(insideBlocks, breakableBlocks, players);
+            runBlockLogic(insideBlocks, breakableBlocks, doors, players);
             
             Fire_Type travelingFireType = m_sFrames == 4 ? Fire_Type::HEAD_PART_4_POW_2 : Fire_Type::HEAD_PART_5_POW_2;
             Fire_Type blockingFireType = m_sFrames == 4 ? Fire_Type::EDGE_FROM_FAT_NECK : Fire_Type::EDGE_FROM_THIN_NECK;
@@ -156,11 +157,38 @@ bool Explosion::isComplete()
 
 // Private
 
-void Explosion::runBlockLogic(std::vector<std::unique_ptr<InsideBlock> > &insideBlocks, std::vector<std::unique_ptr<BreakableBlock> > &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
+void Explosion::runBlockLogic(std::vector<std::unique_ptr<InsideBlock> > &insideBlocks, std::vector<std::unique_ptr<BreakableBlock> > &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
     {
         if((*itr)->getBreakableBlockState() == Breakable_Block_State::BB_NORMAL)
+        {
+            if(m_travelingRight && (*itr)->getGridX() == m_iRightGridX && (*itr)->getGridY() == m_gridY)
+            {
+                (*itr)->onDestroy();
+                m_destroyedBlockRight = true;
+            }
+            else if(m_travelingUp && (*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_iUpGridY)
+            {
+                (*itr)->onDestroy();
+                m_destroyedBlockUp = true;
+            }
+            else if(m_travelingLeft && (*itr)->getGridX() == m_iLeftGridX && (*itr)->getGridY() == m_gridY)
+            {
+                (*itr)->onDestroy();
+                m_destroyedBlockLeft = true;
+            }
+            else if(m_travelingDown && (*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_iDownGridY)
+            {
+                (*itr)->onDestroy();
+                m_destroyedBlockDown = true;
+            }
+        }
+    }
+    
+    for (std::vector < std::unique_ptr < RegeneratingDoor >> ::iterator itr = doors.begin(); itr != doors.end(); itr++)
+    {
+        if(!(*itr)->isDestroyed())
         {
             if(m_travelingRight && (*itr)->getGridX() == m_iRightGridX && (*itr)->getGridY() == m_gridY)
             {

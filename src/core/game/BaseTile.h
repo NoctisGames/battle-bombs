@@ -10,6 +10,7 @@
 #define __battlebombs__BaseTile__
 
 #include "GridGameObject.h"
+#include "BaseTileState.h"
 
 #include <vector>
 #include <memory>
@@ -17,25 +18,28 @@
 class GameListener;
 class PlayerDynamicGameObject;
 class BombGameObject;
-class InsideBlock;
 class BreakableBlock;
 class PowerUp;
+class RegeneratingDoor;
 
 class BaseTile : public GridGameObject
 {
 public:
     BaseTile(int gridX, int gridY, int index, GameListener *gameListener);
     
-    void update(float deltaTime, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject>> &bombs, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
+    void update(float deltaTime, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject>> &bombs, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<PowerUp>> &powerUps);
     
     float getStateTime();
+    
+    Base_Tile_State getState();
     
     void handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath);
     
 private:
     GameListener *m_gameListener;
+    Base_Tile_State m_state;
     float m_fStateTime;
-    float m_fTimeUntilDislodging;
+    float m_fTimeUntilActivation;
 };
 
 #endif /* defined(__battlebombs__BaseTile__) */

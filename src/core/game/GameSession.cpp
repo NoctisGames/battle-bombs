@@ -30,6 +30,8 @@
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
+#include "RegeneratingDoor.h"
+#include "BaseTile.h"
 
 #include <iostream>
 
@@ -64,6 +66,8 @@ void GameSession::init()
     m_insideBlocks.clear();
     m_spaceTiles.clear();
     m_botNames.clear();
+    m_regeneratingDoors.clear();
+    m_baseTiles.clear();
 }
 
 void GameSession::handleServerUpdate(const char *message)
@@ -333,6 +337,16 @@ std::vector<std::unique_ptr<PowerUp>> & GameSession::getPowerUps()
 std::vector<std::unique_ptr<Explosion>> & GameSession::getExplosions()
 {
     return m_explosions;
+}
+
+std::vector<std::unique_ptr<RegeneratingDoor>> & GameSession::getRegeneratingDoors()
+{
+    return m_regeneratingDoors;
+}
+
+std::vector<std::unique_ptr<BaseTile>> & GameSession::getBaseTiles()
+{
+    return m_baseTiles;
 }
 
 std::vector<const char *> & GameSession::getBotNames()

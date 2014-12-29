@@ -9,6 +9,17 @@
 #ifndef __battlebombs__Landmine__
 #define __battlebombs__Landmine__
 
-#include <stdio.h>
+#include "GridGameObject.h"
+
+class Landmine : public GridGameObject
+{
+public:
+    Landmine(int gridX, int gridY);
+    
+    void update(float deltaTime);
+    
+private:
+    float m_fStateTime;
+};
 
 #endif /* defined(__battlebombs__Landmine__) */

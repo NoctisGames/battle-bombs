@@ -204,6 +204,8 @@
 		BBDE14B7195A2D7400A91FD7 /* char_red.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14B0195A2D7400A91FD7 /* char_red.png */; };
 		BBDE14B8195A2D7400A91FD7 /* char_white.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14B1195A2D7400A91FD7 /* char_white.png */; };
 		BBDE14B9195A2D7400A91FD7 /* char_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14B2195A2D7400A91FD7 /* char_yellow.png */; };
+		BBE3BC2A1A50AE3E00EABD6B /* base_tile_trigger.caf in Resources */ = {isa = PBXBuildFile; fileRef = BBE3BC271A50AE3E00EABD6B /* base_tile_trigger.caf */; };
+		BBE3BC2B1A50AE3E00EABD6B /* mini_explosion.caf in Resources */ = {isa = PBXBuildFile; fileRef = BBE3BC281A50AE3E00EABD6B /* mini_explosion.caf */; };
 		BBF8C9E61A20FAA10016DE7C /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = BBF8C9E51A20FAA10016DE7C /* UIView+Toast.m */; };
 		BBF8C9F71A2107C50016DE7C /* CircleBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF8C9E81A2107C50016DE7C /* CircleBatcher.cpp */; };
 		BBF8C9F81A2107C50016DE7C /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF8C9EA1A2107C50016DE7C /* Font.cpp */; };
@@ -577,6 +579,10 @@
 		BBDE14B0195A2D7400A91FD7 /* char_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_red.png; sourceTree = "<group>"; };
 		BBDE14B1195A2D7400A91FD7 /* char_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_white.png; sourceTree = "<group>"; };
 		BBDE14B2195A2D7400A91FD7 /* char_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = char_yellow.png; sourceTree = "<group>"; };
+		BBE3BC271A50AE3E00EABD6B /* base_tile_trigger.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = base_tile_trigger.caf; sourceTree = "<group>"; };
+		BBE3BC281A50AE3E00EABD6B /* mini_explosion.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = mini_explosion.caf; sourceTree = "<group>"; };
+		BBE3BC2D1A50B13100EABD6B /* BaseTileState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseTileState.h; sourceTree = "<group>"; };
+		BBE3BC2E1A50C20000EABD6B /* RemoteBombState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteBombState.h; sourceTree = "<group>"; };
 		BBF8C9E41A20FAA10016DE7C /* UIView+Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Toast.h"; sourceTree = "<group>"; };
 		BBF8C9E51A20FAA10016DE7C /* UIView+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Toast.m"; sourceTree = "<group>"; };
 		BBF8C9E81A2107C50016DE7C /* CircleBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleBatcher.cpp; sourceTree = "<group>"; };
@@ -886,6 +892,7 @@
 		BB07506619C248950028515E /* sounds */ = {
 			isa = PBXGroup;
 			children = (
+				BBE3BC271A50AE3E00EABD6B /* base_tile_trigger.caf */,
 				BB07505A19C248520028515E /* battle.caf */,
 				BB07505B19C248520028515E /* countdown_1.caf */,
 				BB07505C19C248520028515E /* countdown_2.caf */,
@@ -901,6 +908,7 @@
 				BB5C577719B9F2B500AD76E7 /* force_field_down.caf */,
 				BB07505F19C248520028515E /* game_set.caf */,
 				BB91730819E42DBA00BA7FD4 /* hurry.caf */,
+				BBE3BC281A50AE3E00EABD6B /* mini_explosion.caf */,
 				BB5C576B19B9F27B00AD76E7 /* plant_bomb.caf */,
 				BB5C576C19B9F27B00AD76E7 /* pu_bomb.caf */,
 				BB8B5BC01A4F110500AE25A7 /* pu_curse.caf */,
@@ -1002,6 +1010,7 @@
 			children = (
 				BB395A3E1A509E91004C0858 /* BaseTile.cpp */,
 				BB395A3F1A509E91004C0858 /* BaseTile.h */,
+				BBE3BC2D1A50B13100EABD6B /* BaseTileState.h */,
 				BBA4C3701A16CE7300AB3878 /* BombGameObject.cpp */,
 				BBA4C3711A16CE7300AB3878 /* BombGameObject.h */,
 				BB8B5BD81A4F64E600AE25A7 /* BotDifficulty.h */,
@@ -1072,6 +1081,7 @@
 				BB395A391A509CDC004C0858 /* RegeneratingDoor.h */,
 				BB395A411A50A4C3004C0858 /* RemoteBomb.cpp */,
 				BB395A421A50A4C3004C0858 /* RemoteBomb.h */,
+				BBE3BC2E1A50C20000EABD6B /* RemoteBombState.h */,
 				BBF8CA581A2113EC0016DE7C /* ResourceConstants.h */,
 				BBA4C3C01A16CE7300AB3878 /* SpaceTile.cpp */,
 				BBA4C3C11A16CE7300AB3878 /* SpaceTile.h */,
@@ -1348,6 +1358,7 @@
 				BB5C577219B9F27B00AD76E7 /* pu_bomb.caf in Resources */,
 				BB8B5BC41A4F110500AE25A7 /* pu_curse.caf in Resources */,
 				BB065FAF19D4D62900B3BE12 /* README.txt in Resources */,
+				BBE3BC2A1A50AE3E00EABD6B /* base_tile_trigger.caf in Resources */,
 				BBA6492219B5FED100023E5A /* Images.xcassets in Resources */,
 				BBC4863319ED7637001CC8A2 /* falling_object.caf in Resources */,
 				BB065FAD19D4D62900B3BE12 /* GoogleMobileAdsSdkiOS-6.12.0_readme.txt in Resources */,
@@ -1355,6 +1366,7 @@
 				BBC4863619ED7637001CC8A2 /* shield_raise.caf in Resources */,
 				BB4F3101197C1DCD00270703 /* offline_match_highlighted.png in Resources */,
 				BB4F3102197C1DCD00270703 /* offline_match_normal.png in Resources */,
+				BBE3BC2B1A50AE3E00EABD6B /* mini_explosion.caf in Resources */,
 				BB5C577519B9F27B00AD76E7 /* pu_push.caf in Resources */,
 				BB74E80718C2541F007C223E /* Localizable.strings in Resources */,
 				BB7102A0196E079500C7BA2F /* map_mountains.png in Resources */,

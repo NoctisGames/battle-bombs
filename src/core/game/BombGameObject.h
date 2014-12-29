@@ -20,13 +20,14 @@ class Explosion;
 class MapBorder;
 class InsideBlock;
 class BreakableBlock;
+class RegeneratingDoor;
 
 class BombGameObject : public DynamicGridGameObject
 {
 public:
     BombGameObject(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY, float width = GRID_CELL_WIDTH * 8 / 5, float height = GRID_CELL_HEIGHT * 8 / 5);
     
-    virtual void update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
+    virtual void update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     
     float getStateTime();
     

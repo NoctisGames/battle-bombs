@@ -45,6 +45,8 @@ class WaitingForLocalSettingsInterface;
 class EnableBotButton;
 class EnablePowerUpButton;
 class StartButton;
+class BaseTile;
+class RegeneratingDoor;
 
 class Assets
 {
@@ -126,6 +128,10 @@ public:
     static TextureRegion& getEnablePowerUpButtonTextureRegion(EnablePowerUpButton &enablePowerUpButton);
     
     static TextureRegion& getStartButtonTextureRegion(StartButton &startButton);
+    
+    static TextureRegion& getBaseTileTextureRegion(BaseTile &baseTile);
+    
+    static TextureRegion& getRegeneratingDoorTextureRegion(RegeneratingDoor &regeneratingDoor);
     
     void setMusicId(short musicId);
     

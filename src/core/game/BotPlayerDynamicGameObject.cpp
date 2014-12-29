@@ -19,6 +19,7 @@
 #include "MapSearchNode.h"
 #include "PathFinder.h"
 #include "OverlapTester.h"
+#include "RegeneratingDoor.h"
 
 // For Randomness
 #include <stdlib.h>
@@ -37,9 +38,9 @@ BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, int gr
 	m_playerTarget = nullptr;
 }
 
-void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
-	PlayerDynamicGameObject::update(deltaTime, mapBorders, spaceTiles, insideBlocks, breakableBlocks, craters, powerUps, explosions, players, bombs);
+	PlayerDynamicGameObject::update(deltaTime, mapBorders, spaceTiles, insideBlocks, breakableBlocks, doors, craters, powerUps, explosions, players, bombs);
 
     if (m_playerState == ALIVE && m_playerActionState != WINNING && m_playerActionState != CURSED)
 	{
@@ -92,7 +93,7 @@ void BotPlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique
 				else
 				{
                     // Let's randomly traverse the map
-					explore(players, bombs, breakableBlocks, powerUps);
+					explore(players, bombs, breakableBlocks, doors, powerUps);
 					m_badBombEscapeNodes.clear();
 					m_currentPathType = 2;
 				}
@@ -320,7 +321,7 @@ void BotPlayerDynamicGameObject::moveInDirection(int direction)
 	}
 }
 
-void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PowerUp >> &powerUps)
+void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor >> &doors, std::vector<std::unique_ptr<PowerUp >> &powerUps)
 {
     int gridRightX = m_gridX + 1;
 	int gridLeftX = m_gridX - 1;
@@ -353,7 +354,7 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 			shortestDistanceToPlayerTarget = distance;
 			bestDirection = DIRECTION_RIGHT;
 		}
-		else if (PathFinder::isLocationOccupiedByBreakableBlock(breakableBlocks, gridRightX, m_gridY))
+		else if (PathFinder::isLocationOccupiedByBreakableBlock(breakableBlocks, gridRightX, m_gridY) || PathFinder::isLocationOccupiedByDoor(doors, gridRightX, m_gridY))
 		{
 			shortestDistanceToPlayerTarget = distance;
 			bestDirection = -1;
@@ -370,7 +371,7 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 			shortestDistanceToPlayerTarget = distance;
 			bestDirection = DIRECTION_LEFT;
 		}
-		else if (PathFinder::isLocationOccupiedByBreakableBlock(breakableBlocks, gridLeftX, m_gridY))
+		else if (PathFinder::isLocationOccupiedByBreakableBlock(breakableBlocks, gridLeftX, m_gridY) || PathFinder::isLocationOccupiedByDoor(doors, gridLeftX, m_gridY))
 		{
 			shortestDistanceToPlayerTarget = distance;
 			bestDirection = -1;
@@ -387,7 +388,7 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 			shortestDistanceToPlayerTarget = distance;
 			bestDirection = DIRECTION_UP;
 		}
-		else if (PathFinder::isLocationOccupiedByBreakableBlock(breakableBlocks, m_gridX, gridTopY))
+		else if (PathFinder::isLocationOccupiedByBreakableBlock(breakableBlocks, m_gridX, gridTopY) || PathFinder::isLocationOccupiedByDoor(doors, m_gridX, gridTopY))
 		{
 			shortestDistanceToPlayerTarget = distance;
 			bestDirection = -1;
@@ -403,7 +404,7 @@ void BotPlayerDynamicGameObject::explore(std::vector<std::unique_ptr<PlayerDynam
 		{
 			bestDirection = DIRECTION_DOWN;
 		}
-		else if (PathFinder::isLocationOccupiedByBreakableBlock(breakableBlocks, m_gridX, gridBottomY))
+		else if (PathFinder::isLocationOccupiedByBreakableBlock(breakableBlocks, m_gridX, gridBottomY) || PathFinder::isLocationOccupiedByDoor(doors, m_gridX, gridBottomY))
 		{
 			bestDirection = -1;
 		}

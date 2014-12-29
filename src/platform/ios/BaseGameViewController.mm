@@ -31,6 +31,8 @@
 @property (strong, nonatomic) Sound *countDown3Sound;
 @property (strong, nonatomic) Sound *countDown2Sound;
 @property (strong, nonatomic) Sound *countDown1Sound;
+@property (strong, nonatomic) Sound *baseTileTriggerSound;
+@property (strong, nonatomic) Sound *miniExplosionSound;
 @property (strong, nonatomic) Sound *battleSound;
 @property (strong, nonatomic) Sound *plantBombSound;
 @property (strong, nonatomic) Sound *explosionSound;
@@ -91,6 +93,8 @@ static bool isRunningiOS8 = false;
     self.countDown3Sound = [[Sound alloc] initWithSoundNamed:@"countdown_3.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.countDown2Sound = [[Sound alloc] initWithSoundNamed:@"countdown_2.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.countDown1Sound = [[Sound alloc] initWithSoundNamed:@"countdown_1.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
+    self.baseTileTriggerSound = [[Sound alloc] initWithSoundNamed:@"base_tile_trigger.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:3];
+    self.miniExplosionSound = [[Sound alloc] initWithSoundNamed:@"mini_explosion.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
     self.battleSound = [[Sound alloc] initWithSoundNamed:@"battle.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.plantBombSound = [[Sound alloc] initWithSoundNamed:@"plant_bomb.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:3];
     self.explosionSound = [[Sound alloc] initWithSoundNamed:@"explosion.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
@@ -310,6 +314,12 @@ static bool isRunningiOS8 = false;
                 break;
             case SOUND_CRASHING_ICE_BALL:
                 [self.crashingIceBallSound play];
+                break;
+            case SOUND_MINI_EXPLOSION:
+                [self.miniExplosionSound play];
+                break;
+            case SOUND_BASE_TILE_TRIGGER:
+                [self.baseTileTriggerSound play];
                 break;
             default:
                 continue;

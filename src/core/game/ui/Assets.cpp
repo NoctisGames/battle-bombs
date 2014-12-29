@@ -43,6 +43,8 @@
 #include "EnablePowerUpButton.h"
 #include "ChosenPowerUpFlags.h"
 #include "StartButton.h"
+#include "BaseTile.h"
+#include "RegeneratingDoor.h"
 
 #include <list>
 
@@ -2055,6 +2057,102 @@ TextureRegion& Assets::getStartButtonTextureRegion(StartButton &startButton)
         case PRESSED:
         default:
             return TR_PRESSED;
+    }
+}
+
+TextureRegion& Assets::getBaseTileTextureRegion(BaseTile &baseTile)
+{
+    static std::vector<TextureRegion> baseTileTextureRegions;
+    if (baseTileTextureRegions.size() == 0)
+    {
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_1_TEXTURE_REGION_X, BASE_TILE_FRAME_1_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_2_TEXTURE_REGION_X, BASE_TILE_FRAME_2_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_3_TEXTURE_REGION_X, BASE_TILE_FRAME_3_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_4_TEXTURE_REGION_X, BASE_TILE_FRAME_4_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_5_TEXTURE_REGION_X, BASE_TILE_FRAME_5_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_6_TEXTURE_REGION_X, BASE_TILE_FRAME_6_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_7_TEXTURE_REGION_X, BASE_TILE_FRAME_7_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_8_TEXTURE_REGION_X, BASE_TILE_FRAME_8_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_9_TEXTURE_REGION_X, BASE_TILE_FRAME_9_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_10_TEXTURE_REGION_X, BASE_TILE_FRAME_10_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_11_TEXTURE_REGION_X, BASE_TILE_FRAME_11_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_12_TEXTURE_REGION_X, BASE_TILE_FRAME_12_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_13_TEXTURE_REGION_X, BASE_TILE_FRAME_13_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_14_TEXTURE_REGION_X, BASE_TILE_FRAME_14_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_15_TEXTURE_REGION_X, BASE_TILE_FRAME_15_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static float cycleTime = 1.5f;
+    static std::vector<float> frames;
+    if (frames.size() == 0)
+    {
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+    }
+    
+    if(baseTile.getState() == BT_ACTIVATED || baseTile.getState() == BT_EXPLODING)
+    {
+        return baseTileTextureRegions.at(getKeyFrameNumber(baseTile.getStateTime(), cycleTime, frames));
+    }
+    else if(baseTile.getState() == BT_DESTROYED)
+    {
+        return baseTileTextureRegions.at(baseTileTextureRegions.size() - 1);
+    }
+    else
+    {
+        return baseTileTextureRegions.at(0);
+    }
+}
+
+TextureRegion& Assets::getRegeneratingDoorTextureRegion(RegeneratingDoor &regeneratingDoor)
+{
+    static std::vector<TextureRegion> regeneratingDoorTextureRegions;
+    if (regeneratingDoorTextureRegions.size() == 0)
+    {
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_1_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_2_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_3_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_4_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_5_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_6_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_7_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_8_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static float cycleTime = 0.8f;
+    static std::vector<float> frames;
+    if (frames.size() == 0)
+    {
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+    }
+    
+    if(regeneratingDoor.isExploding())
+    {
+        return regeneratingDoorTextureRegions.at(getKeyFrameNumber(regeneratingDoor.getStateTime(), cycleTime, frames));
+    }
+    else
+    {
+        return regeneratingDoorTextureRegions.at(0);
     }
 }
 

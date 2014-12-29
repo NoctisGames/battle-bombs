@@ -54,6 +54,8 @@ class RectangleBatcher;
 class CountDownNumberGameObject;
 class DisplayXMovingGameObject;
 class DisplayGameOverGameObject;
+class BaseTile;
+class RegeneratingDoor;
 
 class Renderer
 {
@@ -82,13 +84,15 @@ public:
     
     void renderCraters(std::vector<std::unique_ptr<Crater>> &craters);
     
-    void renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
+    void renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<PowerUp>> &powerUps);
     
     void renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs);
 
     void renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions);
 
     void renderSuddenDeathMountainsIcePatches(std::vector<std::unique_ptr<IcePatch>> &icePatches);
+    
+    void renderSuddenDeathBaseTiles(std::vector<std::unique_ptr<BaseTile>> &baseTiles);
     
     void renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
     

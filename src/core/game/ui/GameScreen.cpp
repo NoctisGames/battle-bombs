@@ -57,6 +57,8 @@
 #include "StartButton.h"
 #include "EnableBotButton.h"
 #include "EnablePowerUpButton.h"
+#include "RegeneratingDoor.h"
+#include "BaseTile.h"
 
 #include <sstream>
 

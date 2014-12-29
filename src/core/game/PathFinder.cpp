@@ -16,6 +16,7 @@
 #include "GameEvent.h"
 #include "Map.h"
 #include "GameSession.h"
+#include "RegeneratingDoor.h"
 
 // For Randomness
 #include <stdlib.h>
@@ -47,11 +48,50 @@ bool PathFinder::isLocationOccupiedByBreakableBlock(std::vector<std::unique_ptr<
     return false;
 }
 
+bool PathFinder::isLocationOccupiedByDoor(std::vector<std::unique_ptr<RegeneratingDoor >> &doors, int gridX, int gridY)
+{
+    for (std::vector < std::unique_ptr < RegeneratingDoor >> ::iterator itr = doors.begin(); itr != doors.end(); itr++)
+    {
+        if (gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY())
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+bool PathFinder::isLocationOccupiedByRegeneratingDoor(std::vector<std::unique_ptr<RegeneratingDoor >> &doors, int gridX, int gridY)
+{
+    for (std::vector < std::unique_ptr < RegeneratingDoor >> ::iterator itr = doors.begin(); itr != doors.end(); itr++)
+    {
+        if (gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY())
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 bool PathFinder::isLocationOccupiedByOtherPlayer(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, PlayerDynamicGameObject *player, int gridX, int gridY)
 {
     for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = players.begin(); itr != players.end(); itr++)
     {
         if ((*itr).get() != player && gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY())
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+bool PathFinder::isLocationOccupiedByPlayer(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, int gridX, int gridY)
+{
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = players.begin(); itr != players.end(); itr++)
+    {
+        if (gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY())
         {
             return true;
         }

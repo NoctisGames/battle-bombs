@@ -39,13 +39,14 @@ SpaceTile::SpaceTile(int gridX, int gridY, int index, GameListener *gameListener
 
 void SpaceTile::update(float deltaTime, bool isSuddenDeath, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject>> &bombs, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
 {
+    m_fStateTime += deltaTime;
+    
     if(m_spaceTileState == ST_NORMAL)
     {
-        m_fStateTime += deltaTime;
         if(m_fStateTime >= m_fTimeUntilDislodging)
         {
             m_spaceTileState = ST_DISLODGING;
-            m_fStateTime = 0;
+            m_fStateTime -= m_fTimeUntilDislodging;
             
             m_gameListener->playSound(SOUND_DISLODGING_SPACE_TILE);
         }
@@ -54,67 +55,65 @@ void SpaceTile::update(float deltaTime, bool isSuddenDeath, std::vector<std::uni
     }
     else
     {
-        m_fStateTime += deltaTime;
-        
         if(m_spaceTileState == ST_DISLODGING)
         {
-            for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr2 = bombs.begin(); itr2 != bombs.end(); )
+            for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); )
             {
-                if (m_gridX == (*itr2)->getGridX() && m_gridY == (*itr2)->getGridY())
+                if (m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY())
                 {
-                    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr3 = players.begin(); itr3 != players.end(); itr3++)
+                    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr2 = players.begin(); itr2 != players.end(); itr2++)
                     {
-                        (*itr3)->handleBombErasure((*itr2).get());
+                        (*itr2)->handleBombErasure((*itr).get());
                     }
                     
-                    itr2 = bombs.erase(itr2);
+                    itr = bombs.erase(itr);
                 }
                 else
                 {
-                    itr2++;
+                    itr++;
                 }
             }
             
-            for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr2 = insideBlocks.begin(); itr2 != insideBlocks.end(); )
+            for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); )
             {
-                if (m_gridX == (*itr2)->getGridX() && m_gridY == (*itr2)->getGridY())
+                if (m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY())
                 {
-                    itr2 = insideBlocks.erase(itr2);
+                    itr = insideBlocks.erase(itr);
                 }
                 else
                 {
-                    itr2++;
+                    itr++;
                 }
             }
             
-            for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr2 = breakableBlocks.begin(); itr2 != breakableBlocks.end(); )
+            for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); )
             {
-                if (m_gridX == (*itr2)->getGridX() && m_gridY == (*itr2)->getGridY())
+                if (m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY())
                 {
-                    itr2 = breakableBlocks.erase(itr2);
+                    itr = breakableBlocks.erase(itr);
                 }
                 else
                 {
-                    itr2++;
+                    itr++;
                 }
             }
             
-            for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr2 = powerUps.begin(); itr2 != powerUps.end(); )
+            for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = powerUps.begin(); itr != powerUps.end(); )
             {
-                if (m_gridX == (*itr2)->getGridX() && m_gridY == (*itr2)->getGridY())
+                if (m_gridX == (*itr)->getGridX() && m_gridY == (*itr)->getGridY())
                 {
-                    itr2 = powerUps.erase(itr2);
+                    itr = powerUps.erase(itr);
                 }
                 else
                 {
-                    itr2++;
+                    itr++;
                 }
             }
             
             if(m_fStateTime >= 0.8f)
             {
                 m_spaceTileState = ST_FALLING;
-                m_fStateTime = 0;
+                m_fStateTime -= 0.8f;
                 
                 PathFinder::getInstance().occupyGameGridCell(m_gridX, m_gridY);
                 
@@ -160,10 +159,10 @@ void SpaceTile::handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath)
 {
     float delta = timeSinceSuddenDeath - m_fTimeUntilDislodging;
     
-    if(timeSinceSuddenDeath > (m_fTimeUntilDislodging + 0.8f))
+    if(delta > 0.8f)
     {
         m_spaceTileState = ST_FALLING;
-        m_fStateTime = 0;
+        m_fStateTime = delta - 0.8f;
         
         PathFinder::getInstance().occupyGameGridCell(m_gridX, m_gridY);
         
@@ -179,7 +178,7 @@ void SpaceTile::handleTimeSinceSuddenDeathModeBegan(float timeSinceSuddenDeath)
             m_shouldPlayerStartFalling = true;
         }
     }
-    else if(timeSinceSuddenDeath > m_fTimeUntilDislodging)
+    else if(delta > 0)
     {
         m_spaceTileState = ST_DISLODGING;
         m_fStateTime = delta;

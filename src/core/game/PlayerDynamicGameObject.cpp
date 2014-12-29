@@ -24,6 +24,8 @@
 #include "PlayerForceFieldState.h"
 #include "Crater.h"
 #include "IcePatch.h"
+#include "BaseTile.h"
+#include "RegeneratingDoor.h"
 
 #include <cstring>
 
@@ -44,7 +46,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
     reset();
 }
 
-void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
     m_fStateTime += deltaTime;
     
@@ -116,7 +118,7 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
             m_lastBombDropped = nullptr;
         }
         
-        if (isCollision(mapBorders, spaceTiles, insideBlocks, breakableBlocks, craters, players, bombs))
+        if (isCollision(mapBorders, spaceTiles, insideBlocks, breakableBlocks, doors, craters, players, bombs))
         {
             m_position->sub(deltaX, deltaY);
             updateBounds();
@@ -388,6 +390,25 @@ bool PlayerDynamicGameObject::isHitByIce(std::vector<std::unique_ptr<IcePatch >>
             if(OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
             {
                 return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+bool PlayerDynamicGameObject::isTrappedOnExplodingBaseTile(std::vector<std::unique_ptr<BaseTile>> &baseTiles)
+{
+    if(m_playerState == ALIVE)
+    {
+        for (std::vector <std::unique_ptr<BaseTile>> ::iterator itr = baseTiles.begin(); itr != baseTiles.end(); itr++)
+        {
+            if((*itr)->getState() == BT_EXPLODING || (*itr)->getState() == BT_DESTROYED)
+            {
+                if(OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+                {
+                    return true;
+                }
             }
         }
     }
@@ -786,7 +807,7 @@ void PlayerDynamicGameObject::handleBombErasure(BombGameObject *bomb)
 
 // Private
 
-bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
     {
@@ -817,6 +838,14 @@ bool PlayerDynamicGameObject::isCollision(std::vector<std::unique_ptr<MapBorder 
     for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
     {
         if (OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+        {
+            return true;
+        }
+    }
+    
+    for (std::vector < std::unique_ptr < RegeneratingDoor >> ::iterator itr = doors.begin(); itr != doors.end(); itr++)
+    {
+        if (!(*itr)->isDestroyed() && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
         {
             return true;
         }

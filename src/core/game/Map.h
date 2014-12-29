@@ -44,7 +44,7 @@ protected:
     void addCommonInsideBlocks(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks);
     
 private:
-    bool isLocationOccupiedByPlayer(GameSession *gameSession, int gridX, int gridY);
+    bool isLocationOccupiedByDynamicGridGameObject(GameSession *gameSession, int gridX, int gridY);
     
     // A utility function to swap to integers
     void swap(int *a, int *b);

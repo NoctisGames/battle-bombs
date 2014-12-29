@@ -16,6 +16,7 @@
 #include "BreakableBlock.h"
 #include "OverlapTester.h"
 #include "Fire.h"
+#include "RegeneratingDoor.h"
 
 BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
 {
@@ -35,7 +36,7 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
     m_bombOwner->onBombDropped(this);
 }
 
-void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
 {
     m_fStateTime += deltaTime;
     
@@ -65,7 +66,7 @@ void BombGameObject::update(float deltaTime, std::vector<std::unique_ptr<Explosi
         if (m_fStateTime > 0.2f)
         {
             m_isDestroyed = true;
-            explosions.push_back(std::unique_ptr<Explosion>(new Explosion(m_sPower, m_gridX, m_gridY, insideBlocks, breakableBlocks, players)));
+            explosions.push_back(std::unique_ptr<Explosion>(new Explosion(m_sPower, m_gridX, m_gridY, insideBlocks, breakableBlocks, doors, players)));
         }
     }
 }

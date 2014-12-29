@@ -86,7 +86,7 @@ void Map::update(GameSession *gameSession, float deltaTime, bool isSuddenDeath)
 {
     for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = gameSession->getBombs().begin(); itr != gameSession->getBombs().end();)
     {
-        (**itr).update(deltaTime, gameSession->getExplosions(), gameSession->getMapBorders(), gameSession->getInsideBlocks(), gameSession->getBreakableBlocks(), gameSession->getPlayers(), gameSession->getBombs());
+        (**itr).update(deltaTime, gameSession->getExplosions(), gameSession->getMapBorders(), gameSession->getInsideBlocks(), gameSession->getBreakableBlocks(), gameSession->getRegeneratingDoors(), gameSession->getPlayers(), gameSession->getBombs());
         
         if ((**itr).isDestroyed())
         {
@@ -142,7 +142,7 @@ void Map::update(GameSession *gameSession, float deltaTime, bool isSuddenDeath)
     
     for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = gameSession->getExplosions().begin(); itr != gameSession->getExplosions().end();)
     {
-        (**itr).update(deltaTime, gameSession->getInsideBlocks(), gameSession->getBreakableBlocks(), gameSession->getPlayers());
+        (**itr).update(deltaTime, gameSession->getInsideBlocks(), gameSession->getBreakableBlocks(), gameSession->getRegeneratingDoors(), gameSession->getPlayers());
         
         if ((**itr).isComplete())
         {
@@ -156,7 +156,7 @@ void Map::update(GameSession *gameSession, float deltaTime, bool isSuddenDeath)
     
     for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = gameSession->getPlayers().begin(); itr != gameSession->getPlayers().end(); itr++)
     {
-        (**itr).update(deltaTime, gameSession->getMapBorders(), gameSession->getSpaceTiles(), gameSession->getInsideBlocks(), gameSession->getBreakableBlocks(), gameSession->getCraters(), gameSession->getPowerUps(), gameSession->getExplosions(), gameSession->getPlayers(), gameSession->getBombs());
+        (**itr).update(deltaTime, gameSession->getMapBorders(), gameSession->getSpaceTiles(), gameSession->getInsideBlocks(), gameSession->getBreakableBlocks(), gameSession->getRegeneratingDoors(), gameSession->getCraters(), gameSession->getPowerUps(), gameSession->getExplosions(), gameSession->getPlayers(), gameSession->getBombs());
     }
     
     for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = gameSession->getPowerUps().begin(); itr != gameSession->getPowerUps().end();)
@@ -179,7 +179,7 @@ void Map::update(GameSession *gameSession, float deltaTime, bool isSuddenDeath)
 bool Map::isValidLocationForBreakableBlock(GameSession *gameSession, int j, int i)
 {
     // Don't place breakable blocks where inside blocks or players are
-    if (PathFinder::isLocationOccupiedByInsideBlock(gameSession->getInsideBlocks(), j, i) || isLocationOccupiedByPlayer(gameSession, j, i))
+    if (PathFinder::isLocationOccupiedByInsideBlock(gameSession->getInsideBlocks(), j, i) || isLocationOccupiedByDynamicGridGameObject(gameSession, j, i))
     {
         return false;
     }
@@ -216,72 +216,160 @@ void Map::populateMapWithPlayersAndBreakableBlocks(GameSession *gameSession, int
     {
         gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(0, playerStartingPositions[0][0], playerStartingPositions[0][1], gameSession->getGameListener(), DIRECTION_RIGHT)));
     }
-    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_1_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_1_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_1_HARD))
+    else
     {
-        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(0, playerStartingPositions[0][0], playerStartingPositions[0][1], gameSession->getGameListener(), DIRECTION_RIGHT)));
+        if(FlagUtil::isFlagSet(chosenBotFlags, BOT_1_EASY))
+        {
+            gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(0, playerStartingPositions[0][0], playerStartingPositions[0][1], gameSession->getGameListener(), DIRECTION_RIGHT)));
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_1_NORMAL))
+        {
+            // TODO
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_1_HARD))
+        {
+            // TODO
+        }
     }
     
     if(numHumanPlayers >= 2)
     {
         gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(1, playerStartingPositions[1][0], playerStartingPositions[1][1], gameSession->getGameListener(), DIRECTION_LEFT)));
     }
-    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_2_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_2_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_2_HARD))
+    else
     {
-        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(1, playerStartingPositions[1][0], playerStartingPositions[1][1], gameSession->getGameListener(), DIRECTION_LEFT)));
+        if(FlagUtil::isFlagSet(chosenBotFlags, BOT_2_EASY))
+        {
+            gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(1, playerStartingPositions[1][0], playerStartingPositions[1][1], gameSession->getGameListener(), DIRECTION_LEFT)));
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_2_NORMAL))
+        {
+            // TODO
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_2_HARD))
+        {
+            // TODO
+        }
     }
     
     if(numHumanPlayers >= 3)
     {
         gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(2, playerStartingPositions[2][0], playerStartingPositions[2][1], gameSession->getGameListener(), DIRECTION_RIGHT)));
     }
-    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_3_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_3_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_3_HARD))
+    else
     {
-        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(2, playerStartingPositions[2][0], playerStartingPositions[2][1], gameSession->getGameListener(), DIRECTION_RIGHT)));
+        if(FlagUtil::isFlagSet(chosenBotFlags, BOT_3_EASY))
+        {
+            gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(2, playerStartingPositions[2][0], playerStartingPositions[2][1], gameSession->getGameListener(), DIRECTION_RIGHT)));
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_3_NORMAL))
+        {
+            // TODO
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_2_HARD))
+        {
+            // TODO
+        }
     }
     
     if(numHumanPlayers >= 4)
     {
         gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(3, playerStartingPositions[3][0], playerStartingPositions[3][1], gameSession->getGameListener(), DIRECTION_LEFT)));
     }
-    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_4_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_4_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_4_HARD))
+    else
     {
-        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(3, playerStartingPositions[3][0], playerStartingPositions[3][1], gameSession->getGameListener(), DIRECTION_LEFT)));
+        if(FlagUtil::isFlagSet(chosenBotFlags, BOT_4_EASY))
+        {
+            gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(3, playerStartingPositions[3][0], playerStartingPositions[3][1], gameSession->getGameListener(), DIRECTION_LEFT)));
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_4_NORMAL))
+        {
+            // TODO
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_4_HARD))
+        {
+            // TODO
+        }
     }
     
     if(numHumanPlayers >= 5)
     {
         gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(4, playerStartingPositions[4][0], playerStartingPositions[4][1], gameSession->getGameListener(), DIRECTION_UP)));
     }
-    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_5_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_5_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_5_HARD))
+    else
     {
-        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(4, playerStartingPositions[4][0], playerStartingPositions[4][1], gameSession->getGameListener(), DIRECTION_UP)));
+        if(FlagUtil::isFlagSet(chosenBotFlags, BOT_5_EASY))
+        {
+            gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(4, playerStartingPositions[4][0], playerStartingPositions[4][1], gameSession->getGameListener(), DIRECTION_UP)));
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_5_NORMAL))
+        {
+            // TODO
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_5_HARD))
+        {
+            // TODO
+        }
     }
     
     if(numHumanPlayers >= 6)
     {
         gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(5, playerStartingPositions[5][0], playerStartingPositions[5][1], gameSession->getGameListener(), DIRECTION_DOWN)));
     }
-    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_6_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_6_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_6_HARD))
+    else
     {
-        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(5, playerStartingPositions[5][0], playerStartingPositions[5][1], gameSession->getGameListener(), DIRECTION_DOWN)));
+        if(FlagUtil::isFlagSet(chosenBotFlags, BOT_6_EASY))
+        {
+            gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(5, playerStartingPositions[5][0], playerStartingPositions[5][1], gameSession->getGameListener(), DIRECTION_DOWN)));
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_6_NORMAL))
+        {
+            // TODO
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_6_HARD))
+        {
+            // TODO
+        }
     }
     
     if(numHumanPlayers >= 7)
     {
         gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(6, playerStartingPositions[6][0], playerStartingPositions[6][1], gameSession->getGameListener(), DIRECTION_UP)));
     }
-    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_7_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_7_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_7_HARD))
+    else
     {
-        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(6, playerStartingPositions[6][0], playerStartingPositions[6][1], gameSession->getGameListener(), DIRECTION_UP)));
+        if(FlagUtil::isFlagSet(chosenBotFlags, BOT_7_EASY))
+        {
+            gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(6, playerStartingPositions[6][0], playerStartingPositions[6][1], gameSession->getGameListener(), DIRECTION_UP)));
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_7_NORMAL))
+        {
+            // TODO
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_7_HARD))
+        {
+            // TODO
+        }
     }
     
     if(numHumanPlayers >= 8)
     {
         gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new PlayerDynamicGameObject(7, playerStartingPositions[7][0], playerStartingPositions[7][1], gameSession->getGameListener(), DIRECTION_DOWN)));
     }
-    else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_8_EASY) || FlagUtil::isFlagSet(chosenBotFlags, BOT_8_NORMAL) || FlagUtil::isFlagSet(chosenBotFlags, BOT_8_HARD))
+    else
     {
-        gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(7, playerStartingPositions[7][0], playerStartingPositions[7][1], gameSession->getGameListener(), DIRECTION_DOWN)));
+        if(FlagUtil::isFlagSet(chosenBotFlags, BOT_8_EASY))
+        {
+            gameSession->getPlayers().push_back(std::unique_ptr<PlayerDynamicGameObject>(new BotPlayerDynamicGameObject(7, playerStartingPositions[7][0], playerStartingPositions[7][1], gameSession->getGameListener(), DIRECTION_DOWN)));
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_8_NORMAL))
+        {
+            // TODO
+        }
+        else if(FlagUtil::isFlagSet(chosenBotFlags, BOT_8_HARD))
+        {
+            // TODO
+        }
     }
     
     gameSession->getBotNames().push_back("Tyler Bot");
@@ -515,7 +603,7 @@ void Map::addCommonInsideBlocks(std::vector<std::unique_ptr<InsideBlock >> &insi
 
 #pragma mark <Private>
 
-bool Map::isLocationOccupiedByPlayer(GameSession *gameSession, int gridX, int gridY)
+bool Map::isLocationOccupiedByDynamicGridGameObject(GameSession *gameSession, int gridX, int gridY)
 {
     for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = gameSession->getPlayers().begin(); itr != gameSession->getPlayers().end(); itr++)
     {

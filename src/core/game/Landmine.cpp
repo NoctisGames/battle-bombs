@@ -7,3 +7,18 @@
 //
 
 #include "Landmine.h"
+#include "GameConstants.h"
+#include "Vector2D.h"
+#include "Rectangle.h"
+
+Landmine::Landmine(int gridX, int gridY) : GridGameObject(gridX, gridY, GRID_CELL_WIDTH * 2, GRID_CELL_HEIGHT * 2, 0)
+{
+    resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
+    
+    m_fStateTime = 0;
+}
+
+void Landmine::update(float deltaTime)
+{
+    m_fStateTime += deltaTime;
+}

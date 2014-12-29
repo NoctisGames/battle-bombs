@@ -94,8 +94,9 @@ void GameStateCountingDown::present(GameScreen *gameScreen)
     gameScreen->getRenderer()->renderSpaceTiles(gameScreen->getSpaceTiles());
     gameScreen->getRenderer()->renderExplosions(gameScreen->getExplosions());
     gameScreen->getRenderer()->renderBombs(gameScreen->getBombs());
-    gameScreen->getRenderer()->renderWorldForeground(gameScreen->getMapBorders(), gameScreen->getInsideBlocks(), gameScreen->getBreakableBlocks(), gameScreen->getPowerUps());
+    gameScreen->getRenderer()->renderWorldForeground(gameScreen->getMapBorders(), gameScreen->getInsideBlocks(), gameScreen->getBreakableBlocks(), gameScreen->getRegeneratingDoors(), gameScreen->getPowerUps());
     gameScreen->getRenderer()->renderSuddenDeathMountainsIcePatches(gameScreen->getIcePatches());
+    gameScreen->getRenderer()->renderSuddenDeathBaseTiles(gameScreen->getBaseTiles());
     gameScreen->getRenderer()->renderPlayers(gameScreen->getPlayers());
     gameScreen->getRenderer()->renderSuddenDeathGrasslandsFireBalls(gameScreen->getFireBalls());
     gameScreen->getRenderer()->renderSuddenDeathMountainsIceBalls(gameScreen->getIceBalls());

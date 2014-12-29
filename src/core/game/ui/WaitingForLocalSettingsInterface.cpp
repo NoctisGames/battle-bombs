@@ -71,14 +71,20 @@ void WaitingForLocalSettingsInterface::updateInput(GameScreen *gameScreen, std::
         switch (itr->getTouchType())
         {
             case DOWN:
-                m_startButton->setButtonState(OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_startButton->getBounds()) ? HIGHLIGHTED : ENABLED);
+                m_iChosenBotFlags = 0;
                 for (std::vector<std::unique_ptr<EnableBotButton>>::iterator itr = m_enableBotButtons.begin(); itr != m_enableBotButtons.end(); itr++)
                 {
                     if(OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), (*itr)->getBounds()))
                     {
                         (*itr)->toggle();
                     }
+                    
+                    if((*itr)->getButtonState() == ENABLED)
+                    {
+                        m_iChosenBotFlags = FlagUtil::setFlag(m_iChosenBotFlags, (*itr)->getChosenBotFlag());
+                    }
                 }
+                
                 for (std::vector<std::unique_ptr<EnablePowerUpButton>>::iterator itr = m_enablePowerUpButtons.begin(); itr != m_enablePowerUpButtons.end(); itr++)
                 {
                     if(OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), (*itr)->getBounds()))
@@ -86,12 +92,14 @@ void WaitingForLocalSettingsInterface::updateInput(GameScreen *gameScreen, std::
                         (*itr)->toggle();
                     }
                 }
+                
+                m_startButton->setButtonState(m_iChosenBotFlags > 0 ? OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_startButton->getBounds()) ? HIGHLIGHTED : ENABLED : DISABLED);
                 continue;
             case DRAGGED:
-                m_startButton->setButtonState(OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_startButton->getBounds()) ? HIGHLIGHTED : ENABLED);
+                m_startButton->setButtonState(m_iChosenBotFlags > 0 ? OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_startButton->getBounds()) ? HIGHLIGHTED : ENABLED : DISABLED);
                 continue;
             case UP:
-                m_startButton->setButtonState(OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_startButton->getBounds()) ? PRESSED : ENABLED);
+                m_startButton->setButtonState(m_iChosenBotFlags > 0 ? OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_startButton->getBounds()) ? PRESSED : ENABLED : DISABLED);
                 
                 if(OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), *m_leftArrow))
                 {
@@ -182,5 +190,8 @@ void WaitingForLocalSettingsInterface::startGame()
         }
     }
     
-    m_isStartingGame = true;
+    if(m_iChosenBotFlags > 0)
+    {
+        m_isStartingGame = true;
+    }
 }

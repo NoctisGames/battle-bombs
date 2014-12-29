@@ -28,6 +28,8 @@ class Crater;
 class FireBall;
 class IceBall;
 class IcePatch;
+class RegeneratingDoor;
+class BaseTile;
 
 class GameSession
 {
@@ -82,6 +84,10 @@ public:
     
     std::vector<std::unique_ptr<Explosion>> & getExplosions();
     
+    std::vector<std::unique_ptr<RegeneratingDoor>> & getRegeneratingDoors();
+    
+    std::vector<std::unique_ptr<BaseTile>> & getBaseTiles();
+    
     std::vector<const char *> & getBotNames();
     
     GameListener * getGameListener();
@@ -111,6 +117,8 @@ protected:
     std::vector<std::unique_ptr<FireBall >> m_fireBalls;
     std::vector<std::unique_ptr<IceBall >> m_iceBalls;
     std::vector<std::unique_ptr<IcePatch >> m_icePatches;
+    std::vector<std::unique_ptr<RegeneratingDoor >> m_regeneratingDoors;
+    std::vector<std::unique_ptr<BaseTile >> m_baseTiles;
     std::vector<const char *> m_botNames;
     std::vector<int> m_sEventIds;
     float m_fCountDownTimeLeft;
