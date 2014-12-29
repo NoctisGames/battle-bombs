@@ -32,7 +32,7 @@
 
 #include <cstring>
 
-PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
+PlayerDynamicGameObject::PlayerDynamicGameObject(GameSession &gameSession, short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
 {
     m_position->add(0, GRID_CELL_HEIGHT / 4);
     resetBounds(width * 5 / 32, height / 12);
@@ -46,7 +46,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
     m_isBot = false;
     m_fDisplayingPointerStateTime = 0;
     
-    reset();
+    reset(gameSession);
 }
 
 void PlayerDynamicGameObject::update(float deltaTime, GameSession &gameSession)
@@ -537,13 +537,13 @@ void PlayerDynamicGameObject::onForceFieldHit()
     setPlayerForceFieldState(PLAYER_FORCE_FIELD_STATE_BREAKING_DOWN);
 }
 
-void PlayerDynamicGameObject::onTrappedOnFallingSpaceTile(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles)
+void PlayerDynamicGameObject::onTrappedOnFallingSpaceTile(GameSession &gameSession)
 {
-    reset();
+    reset(gameSession);
     
     m_playerState = ABOUT_TO_FALL;
     
-    for (std::vector <std::unique_ptr<SpaceTile>> ::iterator itr = spaceTiles.begin(); itr != spaceTiles.end(); itr++)
+    for (std::vector <std::unique_ptr<SpaceTile>> ::iterator itr = gameSession.getSpaceTiles().begin(); itr != gameSession.getSpaceTiles().end(); itr++)
     {
         if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
         {
@@ -553,18 +553,18 @@ void PlayerDynamicGameObject::onTrappedOnFallingSpaceTile(std::vector<std::uniqu
     }
 }
 
-void PlayerDynamicGameObject::onHitByFireBall()
+void PlayerDynamicGameObject::onHitByFireBall(GameSession &gameSession)
 {
-    reset();
+    reset(gameSession);
     
     m_playerState = DYING;
     
     m_gameListener->playSound(SOUND_DEATH);
 }
 
-void PlayerDynamicGameObject::onFall()
+void PlayerDynamicGameObject::onFall(GameSession &gameSession)
 {
-    reset();
+    reset(gameSession);
     
     m_playerState = FALLING;
     
@@ -574,18 +574,18 @@ void PlayerDynamicGameObject::onFall()
     m_gameListener->playSound(SOUND_DEATH);
 }
 
-void PlayerDynamicGameObject::onFreeze()
+void PlayerDynamicGameObject::onFreeze(GameSession &gameSession)
 {
-    reset();
+    reset(gameSession);
     
     m_playerState = FREEZING;
     
     m_gameListener->playSound(SOUND_DEATH);
 }
 
-void PlayerDynamicGameObject::onDeath()
+void PlayerDynamicGameObject::onDeath(GameSession &gameSession)
 {
-    reset();
+    reset(gameSession);
     
     m_playerState = DYING;
 
@@ -875,8 +875,37 @@ bool PlayerDynamicGameObject::isUsingRemoteBombs()
     return m_isUsingRemoteBombs;
 }
 
-void PlayerDynamicGameObject::reset()
+void PlayerDynamicGameObject::reset(GameSession &gameSession)
 {
+    for (std::vector <RemoteBomb *> ::iterator itr2 = m_currentlyDeployedRemoteBombs.begin(); itr2 != m_currentlyDeployedRemoteBombs.end(); itr2++)
+    {
+        for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = gameSession.getBombs().begin(); itr != gameSession.getBombs().end();)
+        {
+            if ((*itr).get() == (*itr2))
+            {
+                itr = gameSession.getBombs().erase(itr);
+            }
+            else
+            {
+                itr++;
+            }
+        }
+    }
+    
+    for (std::vector < std::unique_ptr < Landmine >> ::iterator itr = gameSession.getLandmines().begin(); itr != gameSession.getLandmines().end();)
+    {
+        if ((*itr).get() == m_lastLandminePlaced)
+        {
+            itr = gameSession.getLandmines().erase(itr);
+            break;
+        }
+        else
+        {
+            itr++;
+        }
+    }
+    
+    m_currentlyDeployedRemoteBombs.clear();
     m_lastBombDropped = nullptr;
     m_lastLandminePlaced = nullptr;
     m_fStateTime = 0;

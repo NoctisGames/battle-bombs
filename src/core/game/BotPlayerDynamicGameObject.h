@@ -21,7 +21,7 @@ class RegeneratingDoor;
 class BotPlayerDynamicGameObject : public PlayerDynamicGameObject
 {
 public:
-    BotPlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction = DIRECTION_RIGHT);
+    BotPlayerDynamicGameObject(GameSession &gameSession, short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction = DIRECTION_RIGHT);
 
     virtual void update(float deltaTime, GameSession &gameSession);
     

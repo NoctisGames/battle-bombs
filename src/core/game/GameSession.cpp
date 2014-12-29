@@ -560,16 +560,16 @@ void GameSession::handlePlayerEvent(int event)
             handleDeathForPlayer(m_players.at(playerIndex).get());
             break;
         case PLAYER_HIT_BY_FIRE_BALL:
-            m_players.at(playerIndex).get()->onHitByFireBall();
+            m_players.at(playerIndex).get()->onHitByFireBall(*this);
             break;
         case PLAYER_ABOUT_TO_FALL:
-            m_players.at(playerIndex).get()->onTrappedOnFallingSpaceTile(m_spaceTiles);
+            m_players.at(playerIndex).get()->onTrappedOnFallingSpaceTile(*this);
             break;
         case PLAYER_FALL:
-            m_players.at(playerIndex).get()->onFall();
+            m_players.at(playerIndex).get()->onFall(*this);
             break;
         case PLAYER_FREEZE:
-            m_players.at(playerIndex).get()->onFreeze();
+            m_players.at(playerIndex).get()->onFreeze(*this);
             break;
         case PLAYER_DETONATE_BOMB:
             m_players.at(playerIndex).get()->detonateFirstRemoteBomb();
@@ -698,7 +698,7 @@ void GameSession::handleDeathForPlayer(PlayerDynamicGameObject *player)
         }
     }
     
-    player->onDeath();
+    player->onDeath(*this);
 }
 
 void GameSession::layBombForPlayer(PlayerDynamicGameObject *player, int firePower)

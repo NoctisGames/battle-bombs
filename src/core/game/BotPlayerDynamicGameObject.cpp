@@ -27,7 +27,7 @@
 #include <time.h>
 #include <iostream>
 
-BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction) : PlayerDynamicGameObject(playerIndex, gridX, gridY, gameListener, direction)
+BotPlayerDynamicGameObject::BotPlayerDynamicGameObject(GameSession &gameSession, short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction) : PlayerDynamicGameObject(gameSession, playerIndex, gridX, gridY, gameListener, direction)
 {
 	srand((int)time(NULL));
 

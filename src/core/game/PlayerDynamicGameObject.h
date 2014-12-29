@@ -36,7 +36,7 @@ class GameSession;
 class PlayerDynamicGameObject : public DynamicGridGameObject
 {
 public:
-    PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction = DIRECTION_RIGHT, float width = PLAYER_FRAME_WIDTH, float height = PLAYER_FRAME_HEIGHT);
+    PlayerDynamicGameObject(GameSession &gameSession, short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction = DIRECTION_RIGHT, float width = PLAYER_FRAME_WIDTH, float height = PLAYER_FRAME_HEIGHT);
 
     virtual void update(float deltaTime, GameSession &gameSession);
 
@@ -94,15 +94,15 @@ public:
     
     void onForceFieldHit();
 
-    void onTrappedOnFallingSpaceTile(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles);
+    void onTrappedOnFallingSpaceTile(GameSession &gameSession);
     
-    void onHitByFireBall();
+    void onHitByFireBall(GameSession &gameSession);
     
-    void onFall();
+    void onFall(GameSession &gameSession);
     
-    void onFreeze();
+    void onFreeze(GameSession &gameSession);
     
-    void onDeath();
+    void onDeath(GameSession &gameSession);
     
     void onWin();
 
@@ -148,7 +148,7 @@ public:
     
     bool isUsingRemoteBombs();
     
-    void reset();
+    void reset(GameSession &gameSession);
     
     void handleBombErasure(BombGameObject *bomb);
     
