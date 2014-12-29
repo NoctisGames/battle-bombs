@@ -13,6 +13,9 @@
 #include "ScreenState.h"
 #include "GameStateFactory.h"
 
+// For logging error conditions
+#include <iostream>
+
 void GameState::update(GameScreen *gameScreen, float deltaTime)
 {
 	processServerMessages(gameScreen);
@@ -26,19 +29,26 @@ void GameState::processServerMessages(GameScreen *gameScreen)
 	{
 		for (std::vector<const char *>::iterator itr = serverMessages.begin(); itr != serverMessages.end(); itr++)
 		{
-			rapidjson::Document d;
-			d.Parse<0>(*itr);
-			if (d.IsObject())
-			{
-				static const char *eventTypeKey = "eventType";
-
-				if (d.HasMember(eventTypeKey))
-				{
-					int eventType = d[eventTypeKey].GetInt();
-
-					processServerMessage(gameScreen, d, eventType);
-				}
-			}
+            try
+            {
+                rapidjson::Document d;
+                d.Parse<0>(*itr);
+                if (d.IsObject())
+                {
+                    static const char *eventTypeKey = "eventType";
+                    
+                    if (d.HasMember(eventTypeKey))
+                    {
+                        int eventType = d[eventTypeKey].GetInt();
+                        
+                        processServerMessage(gameScreen, d, eventType);
+                    }
+                }
+            }
+            catch (...)
+            {
+                std::cout << "WTF!" << std::endl;
+            }
 		}
 	}
 }

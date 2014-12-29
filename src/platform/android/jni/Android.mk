@@ -12,6 +12,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := game
 LOCAL_CFLAGS    := -Wall -Wextra -DTECHNE_GAMES_OPENGL_ES -DTECHNE_GAMES_OPENGL_ANDROID -DGL_GLEXT_PROTOTYPES=1
+LOCAL_CPPFLAGS += -fexceptions
 
 LOCAL_SRC_FILES := platform_asset_utils.c
 LOCAL_SRC_FILES += renderer_wrapper.cpp

@@ -58,7 +58,7 @@ void MapBase::suddenDeath(GameSession *gameSession)
     }
     
     y = 0;
-    for(int x = 0; x < NUM_GRID_CELLS_PER_ROW; x++)
+    for(int x = 3; x < NUM_GRID_CELLS_PER_ROW - 3; x++)
     {
         if(!PathFinder::isLocationOccupiedByInsideBlock(gameSession->getInsideBlocks(), x, y))
         {
@@ -76,7 +76,7 @@ void MapBase::suddenDeath(GameSession *gameSession)
     }
     
     y = 1;
-    for(int x = 0; x < NUM_GRID_CELLS_PER_ROW; x++)
+    for(int x = 3; x < NUM_GRID_CELLS_PER_ROW - 3; x++)
     {
         if(!PathFinder::isLocationOccupiedByInsideBlock(gameSession->getInsideBlocks(), x, y))
         {
@@ -94,7 +94,7 @@ void MapBase::suddenDeath(GameSession *gameSession)
     }
     
     y = 2;
-    for(int x = 0; x < NUM_GRID_CELLS_PER_ROW; x++)
+    for(int x = 3; x < NUM_GRID_CELLS_PER_ROW - 3; x++)
     {
         if(!PathFinder::isLocationOccupiedByInsideBlock(gameSession->getInsideBlocks(), x, y))
         {
