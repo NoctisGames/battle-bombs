@@ -22,6 +22,14 @@ Landmine::Landmine(int gridX, int gridY) : GridGameObject(gridX, gridY, GRID_CEL
 void Landmine::update(float deltaTime)
 {
     m_fStateTime += deltaTime;
+    
+    if(m_state == LM_EXPLODING)
+    {
+        if(m_fStateTime > 0.6f)
+        {
+            m_state = LM_DESTROYED;
+        }
+    }
 }
 
 void Landmine::trigger()
@@ -33,4 +41,9 @@ void Landmine::trigger()
 Landmine_State Landmine::getState()
 {
     return m_state;
+}
+
+float Landmine::getStateTime()
+{
+    return m_fStateTime;
 }

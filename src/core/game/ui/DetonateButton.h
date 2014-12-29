@@ -21,6 +21,8 @@ public:
     
     float getStateTime();
     
+    void setActivating(bool isActivating);
+    
     void setNumRemoteBombsDeployed(int numRemoteBombsDeployed);
     
     int getNumRemoteBombsDeployed();
@@ -32,7 +34,7 @@ private:
     int m_iNumRemoteBombsDeployed;
     Detonate_Button_State m_state;
     bool m_isActivating;
-    bool m_isDeactivating;
+    bool m_isActivated;
 };
 
 #endif /* defined(__battlebombs__DetonateButton__) */

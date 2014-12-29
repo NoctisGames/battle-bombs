@@ -49,6 +49,7 @@ class EnablePowerUpButton;
 class StartButton;
 class BaseTile;
 class RegeneratingDoor;
+class Landmine;
 
 class Assets
 {
@@ -138,6 +139,8 @@ public:
     static TextureRegion& getBaseTileTextureRegion(BaseTile &baseTile);
     
     static TextureRegion& getRegeneratingDoorTextureRegion(RegeneratingDoor &regeneratingDoor);
+    
+    static TextureRegion& getLandmineTextureRegion(Landmine &landmine);
     
     void setMusicId(short musicId);
     

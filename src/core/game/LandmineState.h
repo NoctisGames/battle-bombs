@@ -12,7 +12,8 @@
 typedef enum
 {
     LM_NORMAL,
-    LM_EXPLODING
+    LM_EXPLODING,
+    LM_DESTROYED
 } Landmine_State;
 
 #endif

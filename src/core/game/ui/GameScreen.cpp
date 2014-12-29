@@ -224,7 +224,7 @@ void GameScreen::updateRunning(float deltaTime)
 {
     m_player->handlePowerUps(m_powerUps);
     
-    if(m_player->isHitByExplosion(m_explosions, m_bombs) || m_player->isTriggeringLandmine(m_landmines))
+    if(m_player->isHitByExplosion(m_explosions, m_bombs) || m_player->isTriggeringLandmine(*this))
     {
         m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *m_player);
         

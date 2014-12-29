@@ -23,6 +23,8 @@ public:
     
     Landmine_State getState();
     
+    float getStateTime();
+    
 private:
     Landmine_State m_state;
     float m_fStateTime;

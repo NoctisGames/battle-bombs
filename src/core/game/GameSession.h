@@ -153,6 +153,8 @@ private:
     
     void layRemoteBombForPlayer(PlayerDynamicGameObject *player, int firePower);
     
+    void placeLandmineForPlayer(PlayerDynamicGameObject *player);
+    
     void pushBombForPlayer(PlayerDynamicGameObject *player);
 };
 

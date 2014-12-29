@@ -26,6 +26,7 @@
 #include "ChosenPowerUpFlags.h"
 #include "ChosenBotFlags.h"
 #include "RemoteBomb.h"
+#include "Landmine.h"
 
 #include <vector>
 #include <algorithm>
@@ -92,6 +93,20 @@ void Map::update(GameSession *gameSession, float deltaTime, bool isSuddenDeath)
         if ((**itr).isDestroyed())
         {
             itr = gameSession->getBombs().erase(itr);
+        }
+        else
+        {
+            itr++;
+        }
+    }
+    
+    for (std::vector < std::unique_ptr < Landmine >> ::iterator itr = gameSession->getLandmines().begin(); itr != gameSession->getLandmines().end();)
+    {
+        (**itr).update(deltaTime);
+        
+        if ((**itr).getState() == LM_DESTROYED)
+        {
+            itr = gameSession->getLandmines().erase(itr);
         }
         else
         {

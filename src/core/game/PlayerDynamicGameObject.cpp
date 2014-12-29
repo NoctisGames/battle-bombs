@@ -28,6 +28,7 @@
 #include "RegeneratingDoor.h"
 #include "Landmine.h"
 #include "RemoteBomb.h"
+#include "GameSession.h"
 
 #include <cstring>
 
@@ -83,7 +84,7 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
 
     if (m_playerState == ALIVE)
     {
-        if(m_playerActionState == PLACING_BOMB || m_playerActionState == PUSHING_BOMB)
+        if(m_playerActionState == PLACING_BOMB || m_playerActionState == PLACING_LANDMINE || m_playerActionState == PUSHING_BOMB)
         {
             if(m_fStateTime > 0.15f)
             {
@@ -241,7 +242,7 @@ void PlayerDynamicGameObject::onBombDropped(BombGameObject *bomb)
     
     if(bomb->isRemote())
     {
-        RemoteBomb *rb = dynamic_cast<RemoteBomb *>(bomb);
+        RemoteBomb *rb = static_cast<RemoteBomb *>(bomb);
         m_currentlyDeployedRemoteBombs.push_back(rb);
     }
 }
@@ -250,6 +251,20 @@ void PlayerDynamicGameObject::onBombPushed(BombGameObject *bomb)
 {
     m_playerActionState = PUSHING_BOMB;
     m_fStateTime = 0;
+}
+
+void PlayerDynamicGameObject::onLandminePlaced(Landmine *landmine)
+{
+    triggerLandmine();
+    
+    m_playerActionState = PLACING_LANDMINE;
+    
+    m_lastLandminePlaced = landmine;
+}
+
+bool PlayerDynamicGameObject::isOwnerOfLandmine(Landmine *landmine)
+{
+    return landmine == m_lastLandminePlaced;
 }
 
 void PlayerDynamicGameObject::raiseShield()
@@ -405,15 +420,21 @@ bool PlayerDynamicGameObject::isHitByIce(std::vector<std::unique_ptr<IcePatch >>
     return false;
 }
 
-bool PlayerDynamicGameObject::isTriggeringLandmine(std::vector<std::unique_ptr<Landmine >> &landmines)
+bool PlayerDynamicGameObject::isTriggeringLandmine(GameSession &gameSession)
 {
     if(m_playerState == ALIVE)
     {
-        for (std::vector <std::unique_ptr<Landmine>> ::iterator itr = landmines.begin(); itr != landmines.end(); itr++)
+        for (std::vector <std::unique_ptr<Landmine>> ::iterator itr = gameSession.getLandmines().begin(); itr != gameSession.getLandmines().end(); itr++)
         {
-            if(OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+            if((*itr).get() != m_lastLandminePlaced && OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
             {
-                (*itr)->trigger();
+                for (std::vector <std::unique_ptr<PlayerDynamicGameObject>> ::iterator itr2 = gameSession.getPlayers().begin(); itr2 != gameSession.getPlayers().end(); itr2++)
+                {
+                    if((*itr2)->isOwnerOfLandmine((*itr).get()))
+                    {
+                        m_gameListener->addLocalEventForPlayer(PLAYER_TRIGGER_LANDMINE, (**itr2));
+                    }
+                }
                 
                 return true;
             }
@@ -812,6 +833,7 @@ bool PlayerDynamicGameObject::isUsingRemoteBombs()
 void PlayerDynamicGameObject::reset()
 {
     m_lastBombDropped = nullptr;
+    m_lastLandminePlaced = nullptr;
     m_fStateTime = 0;
     m_iSpeed = 3;
     m_firePower = 1;
@@ -858,6 +880,14 @@ void PlayerDynamicGameObject::detonateFirstRemoteBomb()
     {
         m_currentlyDeployedRemoteBombs.at(0)->detonate();
         m_currentlyDeployedRemoteBombs.erase(m_currentlyDeployedRemoteBombs.begin());
+    }
+}
+
+void PlayerDynamicGameObject::triggerLandmine()
+{
+    if(m_lastLandminePlaced != nullptr)
+    {
+        m_lastLandminePlaced->trigger();
     }
 }
 

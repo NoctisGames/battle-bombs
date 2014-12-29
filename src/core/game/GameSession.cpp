@@ -414,7 +414,7 @@ void GameSession::updateBots()
         {
             (*itr)->handlePowerUps(m_powerUps);
             
-            if ((*itr)->isHitByExplosion(m_explosions, m_bombs) || (*itr)->isTriggeringLandmine(m_landmines))
+            if ((*itr)->isHitByExplosion(m_explosions, m_bombs) || (*itr)->isTriggeringLandmine(*this))
             {
                 m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
             }
@@ -574,6 +574,12 @@ void GameSession::handlePlayerEvent(int event)
         case PLAYER_DETONATE_BOMB:
             m_players.at(playerIndex).get()->detonateFirstRemoteBomb();
             break;
+        case PLAYER_TRIGGER_LANDMINE:
+            m_players.at(playerIndex).get()->triggerLandmine();
+            break;
+        case PLAYER_PLACE_LANDMINE:
+            placeLandmineForPlayer(m_players.at(playerIndex).get());
+            break;
         case PLAYER_PU_BOMB:
             m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_BOMB);
             break;
@@ -723,6 +729,14 @@ void GameSession::layRemoteBombForPlayer(PlayerDynamicGameObject *player, int fi
             (*itr)->setGridY(bomb->getGridY());
         }
     }
+}
+
+void GameSession::placeLandmineForPlayer(PlayerDynamicGameObject *player)
+{
+    Landmine *landmine = new Landmine(player->getGridX(), player->getGridY());
+    m_landmines.push_back(std::unique_ptr<Landmine>(landmine));
+    
+    player->onLandminePlaced(landmine);
 }
 
 void GameSession::pushBombForPlayer(PlayerDynamicGameObject *player)

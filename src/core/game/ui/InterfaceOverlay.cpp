@@ -201,7 +201,7 @@ void InterfaceOverlay::update(float deltaTime, GameScreen *gameScreen, int playe
             m_powerUpBarItems.at(2).get()->setLevel(gameScreen->getPlayer()->getSpeed() - 3);
         }
         
-        if(gameScreen->getPlayer()->getPlayerActionState() == PUSHING_BOMB || gameScreen->getPlayer()->getPlayerActionState() == RAISING_SHIELD || gameScreen->getPlayer()->getPlayerActionState() == SHIELD_RAISED)
+        if(gameScreen->getPlayer()->getPlayerActionState() == PUSHING_BOMB || gameScreen->getPlayer()->getPlayerActionState() == PLACING_LANDMINE || gameScreen->getPlayer()->getPlayerActionState() == RAISING_SHIELD || gameScreen->getPlayer()->getPlayerActionState() == SHIELD_RAISED)
         {
             m_activeButton->setIsPressed(true);
         }
@@ -222,7 +222,7 @@ void InterfaceOverlay::update(float deltaTime, GameScreen *gameScreen, int playe
                     }
                 }
             }
-            else if(m_activeButton->getPowerUpType() == POWER_UP_TYPE_SHIELD)
+            else if(m_activeButton->getPowerUpType() == POWER_UP_TYPE_SHIELD || m_activeButton->getPowerUpType() == POWER_UP_TYPE_LAND_MINE)
             {
                 m_activeButton->setButtonState(ENABLED);
             }
@@ -238,7 +238,9 @@ void InterfaceOverlay::update(float deltaTime, GameScreen *gameScreen, int playe
             m_bombButton->setButtonState(gameScreen->getPlayer()->isAbleToDropAdditionalBomb(gameScreen->getPlayers(), gameScreen->getBombs()) ? ENABLED : DISABLED);
         }
         
+        m_detonateButton->setActivating(gameScreen->getPlayer()->isUsingRemoteBombs());
         m_detonateButton->setNumRemoteBombsDeployed(gameScreen->getPlayer()->getNumCurrentlyDeployedRemoteBombs());
+        m_detonateButton->update(deltaTime);
     }
     else if(gameState->shouldUpdateSpectatorInterface())
     {
@@ -291,7 +293,7 @@ void InterfaceOverlay::handleTouchDownInputRunning(GameScreen *gameScreen)
             m_gameListener->addLocalEventForPlayer(gameScreen->getPlayer()->isUsingRemoteBombs() ? PLAYER_PLANT_REMOTE_BOMB : PLAYER_PLANT_BOMB, *gameScreen->getPlayer());
 		}
 	}
-    else if (OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_detonateButton->getBounds()))
+    else if (m_detonateButton->getState() == DB_ON && OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_detonateButton->getBounds()))
     {
         m_gameListener->addLocalEventForPlayer(PLAYER_DETONATE_BOMB, *gameScreen->getPlayer());
     }
@@ -310,6 +312,9 @@ void InterfaceOverlay::handleTouchDownInputRunning(GameScreen *gameScreen)
                 break;
             case POWER_UP_TYPE_SHIELD:
                 m_gameListener->addLocalEventForPlayer(PLAYER_RAISE_SHIELD, *gameScreen->getPlayer());
+                break;
+            case POWER_UP_TYPE_LAND_MINE:
+                m_gameListener->addLocalEventForPlayer(PLAYER_PLACE_LANDMINE, *gameScreen->getPlayer());
                 break;
             default:
                 break;

@@ -56,6 +56,7 @@ class DisplayXMovingGameObject;
 class DisplayGameOverGameObject;
 class BaseTile;
 class RegeneratingDoor;
+class Landmine;
 
 class Renderer
 {
@@ -86,9 +87,9 @@ public:
     
     void renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<PowerUp>> &powerUps);
     
-    void renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs);
-
     void renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions);
+    
+    void renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs, std::vector<std::unique_ptr<Landmine>> &landmines);
 
     void renderSuddenDeathMountainsIcePatches(std::vector<std::unique_ptr<IcePatch>> &icePatches);
     

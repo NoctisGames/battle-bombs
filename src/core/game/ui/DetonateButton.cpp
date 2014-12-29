@@ -16,18 +16,19 @@ DetonateButton::DetonateButton(float x, float y, float width, float height) : Ga
     m_iNumRemoteBombsDeployed = 0;
     m_state = DB_OFF;
     m_isActivating = false;
-    m_isDeactivating = false;
+    m_isActivated = false;
 }
 
 void DetonateButton::update(float deltaTime)
 {
-    if(m_isActivating)
+    if(!m_isActivated && m_isActivating)
     {
         m_fStateTime += deltaTime;
         if(m_fStateTime > 0.4f)
         {
             m_state = DB_ON;
             m_isActivating = false;
+            m_isActivated = true;
         }
         else if(m_fStateTime > 0.3f)
         {
@@ -40,27 +41,6 @@ void DetonateButton::update(float deltaTime)
         else if(m_fStateTime > 0.1f)
         {
             m_state = DB_FRAME_1;
-        }
-    }
-    else if(m_isDeactivating)
-    {
-        m_fStateTime += deltaTime;
-        if(m_fStateTime > 0.4f)
-        {
-            m_state = DB_OFF;
-            m_isDeactivating = false;
-        }
-        else if(m_fStateTime > 0.3f)
-        {
-            m_state = DB_FRAME_1;
-        }
-        else if(m_fStateTime > 0.2f)
-        {
-            m_state = DB_FRAME_2;
-        }
-        else if(m_fStateTime > 0.1f)
-        {
-            m_state = DB_FRAME_3;
         }
     }
 }
@@ -70,19 +50,18 @@ float DetonateButton::getStateTime()
     return m_fStateTime;
 }
 
-void DetonateButton::setNumRemoteBombsDeployed(int numRemoteBombsDeployed)
+void DetonateButton::setActivating(bool isActivating)
 {
-    if(m_iNumRemoteBombsDeployed == 0 && numRemoteBombsDeployed > 0)
+    if(!m_isActivating && isActivating)
     {
-        m_isActivating = true;
-        m_fStateTime = 0;
-    }
-    else if(m_iNumRemoteBombsDeployed > 0 && numRemoteBombsDeployed == 0)
-    {
-        m_isDeactivating = false;
         m_fStateTime = 0;
     }
     
+    m_isActivating = isActivating;
+}
+
+void DetonateButton::setNumRemoteBombsDeployed(int numRemoteBombsDeployed)
+{
     m_iNumRemoteBombsDeployed = numRemoteBombsDeployed;
 }
 

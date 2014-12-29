@@ -55,6 +55,7 @@
 #include "RegeneratingDoor.h"
 #include "RemoteBomb.h"
 #include "DetonateButton.h"
+#include "Landmine.h"
 
 #include <sstream>
 
@@ -299,24 +300,6 @@ void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &ma
     m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
 }
 
-void Renderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
-{
-    m_spriteBatcher->beginBatch();
-    for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
-    {
-        if((*itr)->isRemote())
-        {
-            RemoteBomb *rb = dynamic_cast<RemoteBomb *>((*itr).get());
-            renderGameObjectWithRespectToPlayer((**itr), Assets::getRemoteBombTextureRegion(*rb));
-        }
-        else
-        {
-            renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
-        }
-    }
-    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
-}
-
 void Renderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions)
 {
     m_spriteBatcher->beginBatch();
@@ -326,6 +309,28 @@ void Renderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosi
         {
             renderGameObjectWithRespectToPlayer((**itr2), Assets::getFireTextureRegion((**itr2)));
         }
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
+}
+
+void Renderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs, std::vector<std::unique_ptr<Landmine>> &landmines)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+    {
+        if((*itr)->isRemote())
+        {
+            RemoteBomb *rb = static_cast<RemoteBomb *>((*itr).get());
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getRemoteBombTextureRegion(*rb));
+        }
+        else
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
+        }
+    }
+    for (std::vector<std::unique_ptr<Landmine>>::iterator itr = landmines.begin(); itr != landmines.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getLandmineTextureRegion((**itr)));
     }
     m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
 }
@@ -556,14 +561,32 @@ void Renderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     
     renderGameObject(interfaceOverlay.getBombButton(), Assets::getBombButtonTextureRegion(interfaceOverlay.getBombButton(), interfaceOverlay.getButtonsStateTime()));
     
-    renderGameObject(interfaceOverlay.getDetonateButton(), Assets::getDetonateButtonTextureRegion(interfaceOverlay.getDetonateButton()));
+    if(interfaceOverlay.getDetonateButton().getState() != DB_OFF)
+    {
+        renderGameObject(interfaceOverlay.getDetonateButton(), Assets::getDetonateButtonTextureRegion(interfaceOverlay.getDetonateButton()));
+    }
+    
+    static Color interfaceColor = Color(1, 1, 1, 1);
+    
+    if(interfaceOverlay.getDetonateButton().getState() == DB_ON)
+    {
+        std::stringstream ssNumRemoteBombs;
+        ssNumRemoteBombs << "" << interfaceOverlay.getDetonateButton().getNumRemoteBombsDeployed();
+        std::string numRemoteBombs = ssNumRemoteBombs.str();
+        
+        static const float numRemoteBombsX = interfaceOverlay.getDetonateButton().getPosition().getX();
+        static const float numRemoteBombsY = interfaceOverlay.getDetonateButton().getPosition().getY() - interfaceOverlay.getDetonateButton().getHeight() / 9;
+        static const float numRemoteBombsWidth = interfaceOverlay.getDetonateButton().getWidth() / 2;
+        static const float numRemoteBombsHeight = numRemoteBombsWidth * 0.68421052631579f;
+        
+        m_font->renderText(*m_spriteBatcher, numRemoteBombs, numRemoteBombsX, numRemoteBombsY, numRemoteBombsWidth, numRemoteBombsHeight, interfaceColor);
+    }
     
     m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture);
     
     std::stringstream ss;
     ss << interfaceOverlay.getNumMinutesLeft() << ":" << interfaceOverlay.getNumSecondsLeftFirstColumn() << interfaceOverlay.getNumSecondsLeftSecondColumn();
     std::string timeRemaining = ss.str();
-	static Color interfaceColor = Color(1, 1, 1, 1);
     
     static const float timerX = 0.3554104477903f;
     static const float timerY = 13.0589552253125f;

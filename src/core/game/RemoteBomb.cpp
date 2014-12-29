@@ -17,10 +17,9 @@
 #include "OverlapTester.h"
 #include "Fire.h"
 
-RemoteBomb::RemoteBomb(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY) : BombGameObject(bombOwner, power, gridX, gridY)
+RemoteBomb::RemoteBomb(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY) : BombGameObject(bombOwner, power, gridX, gridY, true)
 {
     m_state = RB_ACTIVATING;
-    m_isRemote = true;
 }
 
 void RemoteBomb::update(float deltaTime, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)

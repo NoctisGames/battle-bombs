@@ -18,7 +18,7 @@
 #include "Fire.h"
 #include "RegeneratingDoor.h"
 
-BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
+BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, int gridX, int gridY, bool isRemote, float width, float height) : DynamicGridGameObject(gridX, gridY, width, height, 0)
 {
     m_bombOwner = bombOwner;
     m_fStateTime = 0;
@@ -28,7 +28,7 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
     m_isDestroyed = false;
 	m_isPushed = false;
 	m_isRebounding = false;
-    m_isRemote = false;
+    m_isRemote = isRemote;
 
 	m_gridBounds = std::unique_ptr<Rectangle>(new Rectangle(getPosition().getX() - GRID_CELL_WIDTH * 3 / 10, getPosition().getY() - GRID_CELL_HEIGHT * 3 / 10, GRID_CELL_WIDTH * 3 / 5, GRID_CELL_HEIGHT * 3 / 5));
 

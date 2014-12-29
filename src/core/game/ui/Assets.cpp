@@ -47,6 +47,7 @@
 #include "StartButton.h"
 #include "BaseTile.h"
 #include "RegeneratingDoor.h"
+#include "Landmine.h"
 
 #include <list>
 
@@ -702,7 +703,7 @@ TextureRegion& Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
             
             return playerCursedTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
         }
-        else if(player.getPlayerActionState() == PLACING_BOMB)
+        else if(player.getPlayerActionState() == PLACING_BOMB || player.getPlayerActionState() == PLACING_LANDMINE)
         {
             static std::vector<TextureRegion> playerPlacingBombRightTextureRegions;
             if (playerPlacingBombRightTextureRegions.size() == 0)
@@ -2246,6 +2247,56 @@ TextureRegion& Assets::getRegeneratingDoorTextureRegion(RegeneratingDoor &regene
     else
     {
         return regeneratingDoorTextureRegions.at(0);
+    }
+}
+
+TextureRegion& Assets::getLandmineTextureRegion(Landmine &landmine)
+{
+    static std::vector<TextureRegion> landmineNormalTextureRegions;
+    if (landmineNormalTextureRegions.size() == 0)
+    {
+        landmineNormalTextureRegions.push_back(TextureRegion(LANDMINE_NORMAL_FRAME_1_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        landmineNormalTextureRegions.push_back(TextureRegion(LANDMINE_NORMAL_FRAME_2_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static float normalCycleTime = 0.2f;
+    static std::vector<float> normalFrames;
+    if (normalFrames.size() == 0)
+    {
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+    }
+    
+    static std::vector<TextureRegion> landmineExplodingTextureRegions;
+    if (landmineExplodingTextureRegions.size() == 0)
+    {
+        landmineExplodingTextureRegions.push_back(TextureRegion(LANDMINE_EXPLODING_FRAME_1_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        landmineExplodingTextureRegions.push_back(TextureRegion(LANDMINE_EXPLODING_FRAME_2_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        landmineExplodingTextureRegions.push_back(TextureRegion(LANDMINE_EXPLODING_FRAME_3_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        landmineExplodingTextureRegions.push_back(TextureRegion(LANDMINE_EXPLODING_FRAME_4_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        landmineExplodingTextureRegions.push_back(TextureRegion(LANDMINE_EXPLODING_FRAME_5_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        landmineExplodingTextureRegions.push_back(TextureRegion(LANDMINE_EXPLODING_FRAME_6_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static float explodingCycleTime = 0.6f;
+    static std::vector<float> explodingFrames;
+    if (explodingFrames.size() == 0)
+    {
+        explodingFrames.push_back(0.1f);
+        explodingFrames.push_back(0.1f);
+        explodingFrames.push_back(0.1f);
+        explodingFrames.push_back(0.1f);
+        explodingFrames.push_back(0.1f);
+        explodingFrames.push_back(0.1f);
+    }
+    
+    if(landmine.getState() == LM_NORMAL)
+    {
+        return landmineNormalTextureRegions.at(getKeyFrameNumber(landmine.getStateTime(), normalCycleTime, normalFrames));
+    }
+    else
+    {
+        return landmineExplodingTextureRegions.at(getKeyFrameNumber(landmine.getStateTime(), explodingCycleTime, explodingFrames));
     }
 }
 
