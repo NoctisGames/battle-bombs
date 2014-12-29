@@ -33,6 +33,8 @@ class Rectangle;
 class SpectatorControls;
 class Map;
 class GameSession;
+class GameScreen;
+class DetonateButton;
 
 class InterfaceOverlay
 {
@@ -43,13 +45,13 @@ public:
     
     void initializePlayerAvatars(int numPlayers);
     
-    void update(float deltaTime, PlayerDynamicGameObject &player, GameSession *gameSession, int playerIndex, GameState *gameState);
+    void update(float deltaTime, GameScreen *gameScreen, int playerIndex, GameState *gameState);
     
-    void handleTouchDownInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
+    void handleTouchDownInputRunning(GameScreen *gameScreen);
     
-    void handleTouchDraggedInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player);
+    void handleTouchDraggedInputRunning(GameScreen *gameScreen);
     
-    void handleTouchUpInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player);
+    void handleTouchUpInputRunning(GameScreen *gameScreen);
     
     bool handleTouchDownInputSpectating(Vector2D &touchPoint);
     
@@ -66,6 +68,8 @@ public:
     ActiveButton & getActiveButton();
     
     BombButton & getBombButton();
+    
+    DetonateButton & getDetonateButton();
     
     SpectatorControls & getSpectatorControls();
     
@@ -95,6 +99,7 @@ private:
     std::vector<std::unique_ptr<PowerUpBarItem>> m_powerUpBarItems;
     std::unique_ptr<ActiveButton> m_activeButton;
     std::unique_ptr<BombButton> m_bombButton;
+    std::unique_ptr<DetonateButton> m_detonateButton;
     std::unique_ptr<SpectatorControls> m_spectatorControls;
     GameListener *m_gameListener;
     std::string m_spectatingWho;

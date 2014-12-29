@@ -52,13 +52,13 @@ void GameStateRunning::updateInput(GameScreen *gameScreen, std::vector<TouchEven
         switch (itr->getTouchType())
         {
             case DOWN:
-                gameScreen->getInterfaceOverlay()->handleTouchDownInputRunning(*gameScreen->getTouchPoint(), *gameScreen->getPlayer(), gameScreen->getPlayers(), gameScreen->getBombs());
+                gameScreen->getInterfaceOverlay()->handleTouchDownInputRunning(gameScreen);
                 continue;
             case DRAGGED:
-                gameScreen->getInterfaceOverlay()->handleTouchDraggedInputRunning(*gameScreen->getTouchPoint(), *gameScreen->getPlayer());
+                gameScreen->getInterfaceOverlay()->handleTouchDraggedInputRunning(gameScreen);
                 continue;
             case UP:
-                gameScreen->getInterfaceOverlay()->handleTouchUpInputRunning(*gameScreen->getTouchPoint(), *gameScreen->getPlayer());
+                gameScreen->getInterfaceOverlay()->handleTouchUpInputRunning(gameScreen);
                 return;
         }
     }

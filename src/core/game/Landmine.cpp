@@ -15,10 +15,22 @@ Landmine::Landmine(int gridX, int gridY) : GridGameObject(gridX, gridY, GRID_CEL
 {
     resetBounds(GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
     
+    m_state = LM_NORMAL;
     m_fStateTime = 0;
 }
 
 void Landmine::update(float deltaTime)
 {
     m_fStateTime += deltaTime;
+}
+
+void Landmine::trigger()
+{
+    m_state = LM_EXPLODING;
+    m_fStateTime = 0;
+}
+
+Landmine_State Landmine::getState()
+{
+    return m_state;
 }

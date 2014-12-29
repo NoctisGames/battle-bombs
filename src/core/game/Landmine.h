@@ -10,6 +10,7 @@
 #define __battlebombs__Landmine__
 
 #include "GridGameObject.h"
+#include "LandmineState.h"
 
 class Landmine : public GridGameObject
 {
@@ -18,7 +19,12 @@ public:
     
     void update(float deltaTime);
     
+    void trigger();
+    
+    Landmine_State getState();
+    
 private:
+    Landmine_State m_state;
     float m_fStateTime;
 };
 

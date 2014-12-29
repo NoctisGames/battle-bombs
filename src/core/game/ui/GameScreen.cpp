@@ -59,6 +59,9 @@
 #include "EnablePowerUpButton.h"
 #include "RegeneratingDoor.h"
 #include "BaseTile.h"
+#include "Landmine.h"
+#include "RemoteBomb.h"
+#include "DetonateButton.h"
 
 #include <sstream>
 
@@ -221,7 +224,7 @@ void GameScreen::updateRunning(float deltaTime)
 {
     m_player->handlePowerUps(m_powerUps);
     
-    if(m_player->isHitByExplosion(m_explosions, m_bombs))
+    if(m_player->isHitByExplosion(m_explosions, m_bombs) || m_player->isTriggeringLandmine(m_landmines))
     {
         m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, *m_player);
         
@@ -265,7 +268,7 @@ void GameScreen::updateRunning(float deltaTime)
     
     m_sEventIds.clear();
     
-    m_interfaceOverlay->update(deltaTime, *m_player, this, m_sPlayerIndex, m_gameState.get());
+    m_interfaceOverlay->update(deltaTime, this, m_sPlayerIndex, m_gameState.get());
     
     m_displayXMovingGameObject->update(deltaTime);
     
@@ -290,7 +293,7 @@ void GameScreen::updateSpectating(float deltaTime)
     
     m_sEventIds.clear();
     
-    m_interfaceOverlay->update(deltaTime, *m_player, this, m_sPlayerIndex, m_gameState.get());
+    m_interfaceOverlay->update(deltaTime, this, m_sPlayerIndex, m_gameState.get());
     
     m_displayXMovingGameObject->update(deltaTime);
     
@@ -588,7 +591,7 @@ void GameScreen::beginGame()
             (*itr)->setIsDisplayingName(true);
         }
         
-        m_interfaceOverlay->update(0, *m_player, this, m_sPlayerIndex, m_gameState.get());
+        m_interfaceOverlay->update(0, this, m_sPlayerIndex, m_gameState.get());
     }
 }
 

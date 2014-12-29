@@ -58,6 +58,9 @@
 #include "EnablePowerUpButton.h"
 #include "RegeneratingDoor.h"
 #include "BaseTile.h"
+#include "Landmine.h"
+#include "RemoteBomb.h"
+#include "DetonateButton.h"
 
 OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline, bool isRunningIOS8) : GameScreen(username, isOffline)
 {

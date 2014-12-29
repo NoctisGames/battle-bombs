@@ -53,6 +53,8 @@
 #include "EnablePowerUpButton.h"
 #include "BaseTile.h"
 #include "RegeneratingDoor.h"
+#include "RemoteBomb.h"
+#include "DetonateButton.h"
 
 #include <sstream>
 
@@ -302,7 +304,15 @@ void Renderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
     m_spriteBatcher->beginBatch();
     for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
     {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
+        if((*itr)->isRemote())
+        {
+            RemoteBomb *rb = dynamic_cast<RemoteBomb *>((*itr).get());
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getRemoteBombTextureRegion(*rb));
+        }
+        else
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
+        }
     }
     m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
 }
@@ -545,6 +555,8 @@ void Renderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     }
     
     renderGameObject(interfaceOverlay.getBombButton(), Assets::getBombButtonTextureRegion(interfaceOverlay.getBombButton(), interfaceOverlay.getButtonsStateTime()));
+    
+    renderGameObject(interfaceOverlay.getDetonateButton(), Assets::getDetonateButtonTextureRegion(interfaceOverlay.getDetonateButton()));
     
     m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture);
     

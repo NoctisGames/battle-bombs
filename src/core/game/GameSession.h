@@ -30,6 +30,8 @@ class IceBall;
 class IcePatch;
 class RegeneratingDoor;
 class BaseTile;
+class Landmine;
+class RemoteBomb;
 
 class GameSession
 {
@@ -88,6 +90,8 @@ public:
     
     std::vector<std::unique_ptr<BaseTile>> & getBaseTiles();
     
+    std::vector<std::unique_ptr<Landmine>> & getLandmines();
+    
     std::vector<const char *> & getBotNames();
     
     GameListener * getGameListener();
@@ -119,6 +123,7 @@ protected:
     std::vector<std::unique_ptr<IcePatch >> m_icePatches;
     std::vector<std::unique_ptr<RegeneratingDoor >> m_regeneratingDoors;
     std::vector<std::unique_ptr<BaseTile >> m_baseTiles;
+    std::vector<std::unique_ptr<Landmine >> m_landmines;
     std::vector<const char *> m_botNames;
     std::vector<int> m_sEventIds;
     float m_fCountDownTimeLeft;
@@ -145,6 +150,8 @@ private:
     void handleDeathForPlayer(PlayerDynamicGameObject *player);
     
     void layBombForPlayer(PlayerDynamicGameObject *player, int firePower);
+    
+    void layRemoteBombForPlayer(PlayerDynamicGameObject *player, int firePower);
     
     void pushBombForPlayer(PlayerDynamicGameObject *player);
 };

@@ -28,6 +28,7 @@ BombGameObject::BombGameObject(PlayerDynamicGameObject *bombOwner, short power, 
     m_isDestroyed = false;
 	m_isPushed = false;
 	m_isRebounding = false;
+    m_isRemote = false;
 
 	m_gridBounds = std::unique_ptr<Rectangle>(new Rectangle(getPosition().getX() - GRID_CELL_WIDTH * 3 / 10, getPosition().getY() - GRID_CELL_HEIGHT * 3 / 10, GRID_CELL_WIDTH * 3 / 5, GRID_CELL_HEIGHT * 3 / 5));
 
@@ -122,6 +123,11 @@ void BombGameObject::pushed(int direction)
 short BombGameObject::getPower()
 {
     return m_sPower;
+}
+
+bool BombGameObject::isRemote()
+{
+    return m_isRemote;
 }
 
 void BombGameObject::updateBounds()

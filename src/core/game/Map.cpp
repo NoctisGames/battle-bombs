@@ -25,6 +25,7 @@
 #include "FlagUtil.h"
 #include "ChosenPowerUpFlags.h"
 #include "ChosenBotFlags.h"
+#include "RemoteBomb.h"
 
 #include <vector>
 #include <algorithm>

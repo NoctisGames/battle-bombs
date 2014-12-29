@@ -22,6 +22,7 @@ class MapBorder;
 class BreakableBlock;
 class PlayerDynamicGameObject;
 class BombGameObject;
+class RemoteBomb;
 class Fire;
 class FallingObjectShadow;
 class FireBall;
@@ -35,6 +36,7 @@ class DPadControl;
 class PowerUpBarItem;
 class ActiveButton;
 class BombButton;
+class DetonateButton;
 class SpectatorControls;
 class PlayerRowAvatar;
 class PlayerRowPlatformAvatar;
@@ -83,6 +85,8 @@ public:
     
     static TextureRegion& getBombTextureRegion(BombGameObject &bomb);
     
+    static TextureRegion& getRemoteBombTextureRegion(RemoteBomb &bomb);
+    
     static TextureRegion& getFireTextureRegion(Fire &fire);
     
     static TextureRegion& getForceFieldTextureRegion(int forceFieldState, float forceFieldStateTime);
@@ -106,6 +110,8 @@ public:
     static TextureRegion& getActiveButtonTextureRegion(ActiveButton &activeButton, float buttonsStateTime);
     
     static TextureRegion& getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime);
+    
+    static TextureRegion& getDetonateButtonTextureRegion(DetonateButton &detonateButton);
     
     static TextureRegion& getSpectatorInterfaceOverlayTextureRegion();
     

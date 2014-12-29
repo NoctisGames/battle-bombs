@@ -32,6 +32,8 @@
 #include "FallingObjectShadow.h"
 #include "RegeneratingDoor.h"
 #include "BaseTile.h"
+#include "Landmine.h"
+#include "RemoteBomb.h"
 
 #include <iostream>
 
@@ -68,6 +70,7 @@ void GameSession::init()
     m_botNames.clear();
     m_regeneratingDoors.clear();
     m_baseTiles.clear();
+    m_landmines.clear();
 }
 
 void GameSession::handleServerUpdate(const char *message)
@@ -349,6 +352,11 @@ std::vector<std::unique_ptr<BaseTile>> & GameSession::getBaseTiles()
     return m_baseTiles;
 }
 
+std::vector<std::unique_ptr<Landmine>> & GameSession::getLandmines()
+{
+    return m_landmines;
+}
+
 std::vector<const char *> & GameSession::getBotNames()
 {
     return m_botNames;
@@ -406,7 +414,7 @@ void GameSession::updateBots()
         {
             (*itr)->handlePowerUps(m_powerUps);
             
-            if ((*itr)->isHitByExplosion(m_explosions, m_bombs))
+            if ((*itr)->isHitByExplosion(m_explosions, m_bombs) || (*itr)->isTriggeringLandmine(m_landmines))
             {
                 m_gameListener->addLocalEventForPlayer(PLAYER_DEATH, (**itr));
             }
@@ -532,6 +540,10 @@ void GameSession::handlePlayerEvent(int event)
             // eventMod reflects the number shown on the power up bar, hence the + 1 here (fire power is 1 by default)
             layBombForPlayer(m_players.at(playerIndex).get(), eventMod + 1);
             break;
+        case PLAYER_PLANT_REMOTE_BOMB:
+            // eventMod reflects the number shown on the power up bar, hence the + 1 here (fire power is 1 by default)
+            layRemoteBombForPlayer(m_players.at(playerIndex).get(), eventMod + 1);
+            break;
         case PLAYER_PUSH_BOMB:
             pushBombForPlayer(m_players.at(playerIndex).get());
             break;
@@ -558,6 +570,9 @@ void GameSession::handlePlayerEvent(int event)
             break;
         case PLAYER_FREEZE:
             m_players.at(playerIndex).get()->onFreeze();
+            break;
+        case PLAYER_DETONATE_BOMB:
+            m_players.at(playerIndex).get()->detonateFirstRemoteBomb();
             break;
         case PLAYER_PU_BOMB:
             m_players.at(playerIndex).get()->collectPowerUp(POWER_UP_TYPE_BOMB);
@@ -684,6 +699,21 @@ void GameSession::layBombForPlayer(PlayerDynamicGameObject *player, int firePowe
 {
     BombGameObject *bomb = new BombGameObject(player, firePower, player->getGridX(), player->getGridY());
     m_bombs.push_back(std::unique_ptr<BombGameObject>(bomb));
+    
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
+    {
+        if(OverlapTester::doRectanglesOverlap(bomb->getBounds(), (*itr)->getBounds()))
+        {
+            (*itr)->setGridX(bomb->getGridX());
+            (*itr)->setGridY(bomb->getGridY());
+        }
+    }
+}
+
+void GameSession::layRemoteBombForPlayer(PlayerDynamicGameObject *player, int firePower)
+{
+    RemoteBomb *bomb = new RemoteBomb(player, firePower, player->getGridX(), player->getGridY());
+    m_bombs.push_back(std::unique_ptr<RemoteBomb>(bomb));
     
     for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
     {

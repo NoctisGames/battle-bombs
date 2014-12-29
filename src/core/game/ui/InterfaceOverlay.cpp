@@ -28,7 +28,9 @@
 #include "SpectatorControls.h"
 #include "Map.h"
 #include "GameSession.h"
+#include "GameScreen.h"
 #include "MapBorder.h"
+#include "DetonateButton.h"
 
 InterfaceOverlay::InterfaceOverlay(GameListener *gameListener)
 {
@@ -41,6 +43,7 @@ InterfaceOverlay::InterfaceOverlay(GameListener *gameListener)
     
     m_activeButton = std::unique_ptr<ActiveButton>(new ActiveButton(20.3731342f, 1.40238805f, 2.3283582f, 2.3283582f));
     m_bombButton = std::unique_ptr<BombButton>(new BombButton(22.43283572f, 3.64119405f, 2.59701504f, 2.59701504f));
+    m_detonateButton = std::unique_ptr<DetonateButton>(new DetonateButton(SCREEN_WIDTH - 1.2537313432836f, GRID_CELL_HEIGHT, 1.79104477611936f, GRID_CELL_HEIGHT * 2));
     
     m_spectatorControls = std::unique_ptr<SpectatorControls>(new SpectatorControls(21.44776119402984f, 0.8932835821875f, 5.10447761194032f, 1.786567164375f));
     
@@ -155,7 +158,7 @@ void InterfaceOverlay::initializePlayerAvatars(int numPlayers)
     }
 }
 
-void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, GameSession *gameSession, int playerIndex, GameState *gameState)
+void InterfaceOverlay::update(float deltaTime, GameScreen *gameScreen, int playerIndex, GameState *gameState)
 {
     // Update Timer
     
@@ -175,44 +178,44 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
         
         for (int i = 0; i < m_playerAvatars.size(); i++)
         {
-            m_playerAvatars.at(i)->setPlayerIndex(gameSession->getPlayers().at(i)->getPlayerIndex());
-            m_playerAvatars.at(i)->setPlayerState(gameSession->getPlayers().at(i)->getPlayerState());
-            m_playerAvatars.at(i)->setIsBot(gameSession->getPlayers().at(i)->isBot());
+            m_playerAvatars.at(i)->setPlayerIndex(gameScreen->getPlayers().at(i)->getPlayerIndex());
+            m_playerAvatars.at(i)->setPlayerState(gameScreen->getPlayers().at(i)->getPlayerState());
+            m_playerAvatars.at(i)->setIsBot(gameScreen->getPlayers().at(i)->isBot());
         }
         
-        if(player.getMaxBombCount() > 1)
+        if(gameScreen->getPlayer()->getMaxBombCount() > 1)
         {
             m_powerUpBarItems.at(0).get()->setPowerUpType(POWER_UP_TYPE_BOMB);
-            m_powerUpBarItems.at(0).get()->setLevel(player.getMaxBombCount() - 1);
+            m_powerUpBarItems.at(0).get()->setLevel(gameScreen->getPlayer()->getMaxBombCount() - 1);
         }
         
-        if(player.getFirePower() > 1)
+        if(gameScreen->getPlayer()->getFirePower() > 1)
         {
             m_powerUpBarItems.at(1).get()->setPowerUpType(POWER_UP_TYPE_FIRE);
-            m_powerUpBarItems.at(1).get()->setLevel(player.getFirePower() - 1);
+            m_powerUpBarItems.at(1).get()->setLevel(gameScreen->getPlayer()->getFirePower() - 1);
         }
         
-        if(player.getSpeed() > 3)
+        if(gameScreen->getPlayer()->getSpeed() > 3)
         {
             m_powerUpBarItems.at(2).get()->setPowerUpType(POWER_UP_TYPE_SPEED);
-            m_powerUpBarItems.at(2).get()->setLevel(player.getSpeed() - 3);
+            m_powerUpBarItems.at(2).get()->setLevel(gameScreen->getPlayer()->getSpeed() - 3);
         }
         
-        if(player.getPlayerActionState() == PUSHING_BOMB || player.getPlayerActionState() == RAISING_SHIELD || player.getPlayerActionState() == SHIELD_RAISED)
+        if(gameScreen->getPlayer()->getPlayerActionState() == PUSHING_BOMB || gameScreen->getPlayer()->getPlayerActionState() == RAISING_SHIELD || gameScreen->getPlayer()->getPlayerActionState() == SHIELD_RAISED)
         {
             m_activeButton->setIsPressed(true);
         }
         else
         {
             m_activeButton->setIsPressed(false);
-            m_activeButton->setPowerUpType(player.getActivePowerUp());
+            m_activeButton->setPowerUpType(gameScreen->getPlayer()->getActivePowerUp());
             m_activeButton->setButtonState(DISABLED);
             
             if(m_activeButton->getPowerUpType() == POWER_UP_TYPE_PUSH)
             {
-                for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = gameSession->getBombs().begin(); itr != gameSession->getBombs().end(); itr++)
+                for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = gameScreen->getBombs().begin(); itr != gameScreen->getBombs().end(); itr++)
                 {
-                    if(player.isBombInFrontOfPlayer((**itr)))
+                    if(gameScreen->getPlayer()->isBombInFrontOfPlayer((**itr)))
                     {
                         m_activeButton->setButtonState(ENABLED);
                         break;
@@ -225,26 +228,28 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
             }
         }
         
-        if(player.getPlayerActionState() == PLACING_BOMB)
+        if(gameScreen->getPlayer()->getPlayerActionState() == PLACING_BOMB)
         {
             m_bombButton->setIsPressed(true);
         }
         else
         {
             m_bombButton->setIsPressed(false);
-            m_bombButton->setButtonState(player.isAbleToDropAdditionalBomb(gameSession->getPlayers(), gameSession->getBombs()) ? ENABLED : DISABLED);
+            m_bombButton->setButtonState(gameScreen->getPlayer()->isAbleToDropAdditionalBomb(gameScreen->getPlayers(), gameScreen->getBombs()) ? ENABLED : DISABLED);
         }
+        
+        m_detonateButton->setNumRemoteBombsDeployed(gameScreen->getPlayer()->getNumCurrentlyDeployedRemoteBombs());
     }
     else if(gameState->shouldUpdateSpectatorInterface())
     {
-        m_spectatingWho = std::string(gameSession->getPlayers().at(playerIndex)->getUsername());
+        m_spectatingWho = std::string(gameScreen->getPlayers().at(playerIndex)->getUsername());
     }
     
     // Update Mini Map
     
-    initializeMiniMap(gameSession);
+    initializeMiniMap(gameScreen);
     
-    for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = gameSession->getExplosions().begin(); itr != gameSession->getExplosions().end(); itr++)
+    for (std::vector < std::unique_ptr < Explosion >> ::iterator itr = gameScreen->getExplosions().begin(); itr != gameScreen->getExplosions().end(); itr++)
     {
         for (std::vector<std::unique_ptr<Fire>>::iterator itr2 = (*itr)->getFireParts().begin(); itr2 != (*itr)->getFireParts().end(); itr2++)
         {
@@ -254,53 +259,57 @@ void InterfaceOverlay::update(float deltaTime, PlayerDynamicGameObject &player, 
         }
     }
     
-    for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = gameSession->getBombs().begin(); itr != gameSession->getBombs().end(); itr++)
+    for (std::vector < std::unique_ptr < BombGameObject >> ::iterator itr = gameScreen->getBombs().begin(); itr != gameScreen->getBombs().end(); itr++)
     {
         int x = (*itr)->getGridX();
         int y = (*itr)->getGridY();
         updateMiniMap(x, y, MINI_MAP_BOMB);
     }
     
-    for (int i = 0; i < gameSession->getPlayers().size(); i++)
+    for (int i = 0; i < gameScreen->getPlayers().size(); i++)
     {
-        if(gameSession->getPlayers().at(i)->getPlayerState() == ALIVE)
+        if(gameScreen->getPlayers().at(i)->getPlayerState() == ALIVE)
         {
-            int x = gameSession->getPlayers().at(i)->getGridX();
-            int y = gameSession->getPlayers().at(i)->getGridY();
+            int x = gameScreen->getPlayers().at(i)->getGridX();
+            int y = gameScreen->getPlayers().at(i)->getGridY();
             updateMiniMap(x, y, MINI_MAP_PLAYER_ONE + i);
         }
     }
 }
 
-void InterfaceOverlay::handleTouchDownInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+void InterfaceOverlay::handleTouchDownInputRunning(GameScreen *gameScreen)
 {
-    if(player.getPlayerActionState() == CURSED)
+    if(gameScreen->getPlayer()->getPlayerActionState() == CURSED)
     {
         return;
     }
     
-	if (OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()))
+	if (OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_bombButton->getBounds()))
 	{
-		if (player.isAbleToDropAdditionalBomb(players, bombs))
+		if (gameScreen->getPlayer()->isAbleToDropAdditionalBomb(gameScreen->getPlayers(), gameScreen->getBombs()))
 		{
-			m_gameListener->addLocalEventForPlayer(PLAYER_PLANT_BOMB, player);
+            m_gameListener->addLocalEventForPlayer(gameScreen->getPlayer()->isUsingRemoteBombs() ? PLAYER_PLANT_REMOTE_BOMB : PLAYER_PLANT_BOMB, *gameScreen->getPlayer());
 		}
 	}
-	else if (OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
+    else if (OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_detonateButton->getBounds()))
+    {
+        m_gameListener->addLocalEventForPlayer(PLAYER_DETONATE_BOMB, *gameScreen->getPlayer());
+    }
+	else if (OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_activeButton->getBounds()))
 	{
-		switch (player.getActivePowerUp())
+		switch (gameScreen->getPlayer()->getActivePowerUp())
 		{
             case POWER_UP_TYPE_PUSH:
-                for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+                for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = gameScreen->getBombs().begin(); itr != gameScreen->getBombs().end(); itr++)
                 {
-                    if (player.isBombInFrontOfPlayer(**itr))
+                    if (gameScreen->getPlayer()->isBombInFrontOfPlayer(**itr))
                     {
-                        m_gameListener->addLocalEventForPlayer(PLAYER_PUSH_BOMB, player);
+                        m_gameListener->addLocalEventForPlayer(PLAYER_PUSH_BOMB, *gameScreen->getPlayer());
                     }
                 }
                 break;
             case POWER_UP_TYPE_SHIELD:
-                m_gameListener->addLocalEventForPlayer(PLAYER_RAISE_SHIELD, player);
+                m_gameListener->addLocalEventForPlayer(PLAYER_RAISE_SHIELD, *gameScreen->getPlayer());
                 break;
             default:
                 break;
@@ -308,46 +317,46 @@ void InterfaceOverlay::handleTouchDownInputRunning(Vector2D &touchPoint, PlayerD
 	}
 	else
 	{
-		int directionInput = m_dPad->getDirectionForTouchPoint(touchPoint);
+		int directionInput = m_dPad->getDirectionForTouchPoint(*gameScreen->getTouchPoint());
 
-		if (player.getDirection() != directionInput || !player.isMoving())
+		if (gameScreen->getPlayer()->getDirection() != directionInput || !gameScreen->getPlayer()->isMoving())
 		{
-			m_gameListener->addLocalEventForPlayer(directionInput + 1, player);
+			m_gameListener->addLocalEventForPlayer(directionInput + 1, *gameScreen->getPlayer());
 		}
 	}
 }
 
-void InterfaceOverlay::handleTouchDraggedInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player)
+void InterfaceOverlay::handleTouchDraggedInputRunning(GameScreen *gameScreen)
 {
-    if(player.getPlayerActionState() == CURSED)
+    if(gameScreen->getPlayer()->getPlayerActionState() == CURSED)
     {
         return;
     }
     
-	if (!OverlapTester::isPointInRectangle(touchPoint, m_bombButton->getBounds()) && !OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
+	if (!OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_bombButton->getBounds()) && !OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_activeButton->getBounds()))
 	{
-		int directionInput = m_dPad->getDirectionForTouchPoint(touchPoint);
+		int directionInput = m_dPad->getDirectionForTouchPoint(*gameScreen->getTouchPoint());
 
-		if (player.getDirection() != directionInput || !player.isMoving())
+		if (gameScreen->getPlayer()->getDirection() != directionInput || !gameScreen->getPlayer()->isMoving())
 		{
-			m_gameListener->addLocalEventForPlayer(directionInput + 1, player);
+			m_gameListener->addLocalEventForPlayer(directionInput + 1, *gameScreen->getPlayer());
 		}
 	}
 }
 
-void InterfaceOverlay::handleTouchUpInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player)
+void InterfaceOverlay::handleTouchUpInputRunning(GameScreen *gameScreen)
 {
-    if(player.getPlayerActionState() == CURSED)
+    if(gameScreen->getPlayer()->getPlayerActionState() == CURSED)
     {
         return;
     }
     
-    if (OverlapTester::isPointInRectangle(touchPoint, m_activeButton->getBounds()))
+    if (OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_activeButton->getBounds()))
     {
-        switch (player.getActivePowerUp())
+        switch (gameScreen->getPlayer()->getActivePowerUp())
         {
             case POWER_UP_TYPE_SHIELD:
-                m_gameListener->addLocalEventForPlayer(PLAYER_LOWER_SHIELD, player);
+                m_gameListener->addLocalEventForPlayer(PLAYER_LOWER_SHIELD, *gameScreen->getPlayer());
                 break;
             default:
                 break;
@@ -356,7 +365,7 @@ void InterfaceOverlay::handleTouchUpInputRunning(Vector2D &touchPoint, PlayerDyn
 	else
     {
 		m_dPad->stop();
-		m_gameListener->addLocalEventForPlayer(PLAYER_MOVE_STOP, player);
+		m_gameListener->addLocalEventForPlayer(PLAYER_MOVE_STOP, *gameScreen->getPlayer());
 	}
 }
 
@@ -398,6 +407,11 @@ ActiveButton & InterfaceOverlay::getActiveButton()
 BombButton & InterfaceOverlay::getBombButton()
 {
 	return *m_bombButton;
+}
+
+DetonateButton & InterfaceOverlay::getDetonateButton()
+{
+    return *m_detonateButton;
 }
 
 SpectatorControls & InterfaceOverlay::getSpectatorControls()

@@ -40,6 +40,8 @@ public:
 	void pushed(int direction);
     
     short getPower();
+    
+    bool isRemote();
 
 	virtual void updateBounds();
 
@@ -56,6 +58,7 @@ protected:
     bool m_isDestroyed;
 	bool m_isPushed;
 	bool m_isRebounding;
+    bool m_isRemote;
     
     void updateForPush(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
 

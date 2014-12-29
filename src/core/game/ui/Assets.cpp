@@ -15,6 +15,7 @@
 #include "InsideBlock.h"
 #include "PlayerState.h"
 #include "BombGameObject.h"
+#include "RemoteBomb.h"
 #include "Explosion.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
@@ -28,6 +29,7 @@
 #include "PowerUpBarItem.h"
 #include "ActiveButton.h"
 #include "BombButton.h"
+#include "DetonateButton.h"
 #include "PlayerAvatar.h"
 #include "SpectatorControls.h"
 #include "PlayerForceFieldState.h"
@@ -1092,6 +1094,76 @@ TextureRegion& Assets::getBombTextureRegion(BombGameObject &bomb)
     }
 }
 
+TextureRegion& Assets::getRemoteBombTextureRegion(RemoteBomb &bomb)
+{
+    static std::vector<TextureRegion> activatingBombTextureRegions;
+    if (activatingBombTextureRegions.size() == 0)
+    {
+        activatingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_ACTIVATING_FRAME_1_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        activatingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_ACTIVATING_FRAME_2_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        activatingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_ACTIVATING_FRAME_3_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static std::vector<TextureRegion> broadcastingBombTextureRegions;
+    if (broadcastingBombTextureRegions.size() == 0)
+    {
+        broadcastingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_BROADCASTING_FRAME_1_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        broadcastingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_BROADCASTING_FRAME_2_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        broadcastingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_BROADCASTING_FRAME_3_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        broadcastingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_BROADCASTING_FRAME_4_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static std::vector<TextureRegion> bombExplodingTextureRegions;
+    if (bombExplodingTextureRegions.size() == 0)
+    {
+        bombExplodingTextureRegions.push_back(TextureRegion(BOMB_EXPLOSION_FRAME_1_TEXTURE_REGION_X, BOMB_EXPLOSION_FRAME_1_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        bombExplodingTextureRegions.push_back(TextureRegion(BOMB_EXPLOSION_FRAME_2_TEXTURE_REGION_X, BOMB_EXPLOSION_FRAME_2_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static float activatingCycleTime = 0.3f;
+    static std::vector<float> activatingBombFrames;
+    if (activatingBombFrames.size() == 0)
+    {
+        activatingBombFrames.push_back(0.1f);
+        activatingBombFrames.push_back(0.1f);
+        activatingBombFrames.push_back(0.1f);
+    }
+    
+    static float broadcastingCycleTime = 0.4f;
+    static std::vector<float> broadcastingBombFrames;
+    if (broadcastingBombFrames.size() == 0)
+    {
+        broadcastingBombFrames.push_back(0.1f);
+        broadcastingBombFrames.push_back(0.1f);
+        broadcastingBombFrames.push_back(0.1f);
+        broadcastingBombFrames.push_back(0.1f);
+    }
+    
+    static float bombExplodingCycleTime = 0.2f;
+    static std::vector<float> bombExplodingFrames;
+    if (bombExplodingFrames.size() == 0)
+    {
+        bombExplodingFrames.push_back(0.1f);
+        bombExplodingFrames.push_back(0.1f);
+    }
+    
+    if(bomb.getState() == RB_BROADCASTING)
+    {
+        if(bomb.isExploding())
+        {
+            return bombExplodingTextureRegions.at(getKeyFrameNumber(bomb.getStateTime(), bombExplodingCycleTime, bombExplodingFrames));
+        }
+        else
+        {
+            return broadcastingBombTextureRegions.at(getKeyFrameNumber(bomb.getStateTime(), broadcastingCycleTime, broadcastingBombFrames));
+        }
+    }
+    else
+    {
+        return activatingBombTextureRegions.at(getKeyFrameNumber(bomb.getStateTime(), activatingCycleTime, activatingBombFrames));
+    }
+}
+
 TextureRegion& Assets::getPlayerNameBubbleTextureRegion()
 {
     static TextureRegion textureRegion = TextureRegion(PLAYER_NAME_BUBBLE_TEXTURE_REGION_X, PLAYER_NAME_BUBBLE_TEXTURE_REGION_Y, PLAYER_NAME_BUBBLE_TEXTURE_REGION_WIDTH, PLAYER_NAME_BUBBLE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
@@ -1725,6 +1797,27 @@ TextureRegion& Assets::getBombButtonTextureRegion(BombButton &bombButton, float 
     else
     {
         return TR_BUTTON_BOMB_DISABLED_TEXTURE_REGION;
+    }
+}
+
+TextureRegion& Assets::getDetonateButtonTextureRegion(DetonateButton &detonateButton)
+{
+    static TextureRegion TR_DB_FRAME_1 = TextureRegion(DETONATE_BUTTON_FRAME_1_TEXTURE_REGION_X, DETONATE_BUTTON_FRAMES_TEXTURE_REGION_Y, DETONATE_BUTTON_TEXTURE_REGION_WIDTH, DETONATE_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_DB_FRAME_2 = TextureRegion(DETONATE_BUTTON_FRAME_2_TEXTURE_REGION_X, DETONATE_BUTTON_FRAMES_TEXTURE_REGION_Y, DETONATE_BUTTON_TEXTURE_REGION_WIDTH, DETONATE_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_DB_FRAME_3 = TextureRegion(DETONATE_BUTTON_FRAME_3_TEXTURE_REGION_X, DETONATE_BUTTON_FRAMES_TEXTURE_REGION_Y, DETONATE_BUTTON_TEXTURE_REGION_WIDTH, DETONATE_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_DB_ON = TextureRegion(DETONATE_BUTTON_FRAME_4_TEXTURE_REGION_X, DETONATE_BUTTON_FRAMES_TEXTURE_REGION_Y, DETONATE_BUTTON_TEXTURE_REGION_WIDTH, DETONATE_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    
+    switch (detonateButton.getState())
+    {
+        case DB_FRAME_1:
+            return TR_DB_FRAME_1;
+        case DB_FRAME_2:
+            return TR_DB_FRAME_2;
+        case DB_FRAME_3:
+            return TR_DB_FRAME_3;
+        case DB_ON:
+        default:
+            return TR_DB_ON;
     }
 }
 

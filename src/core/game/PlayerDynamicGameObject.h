@@ -29,6 +29,8 @@ class Crater;
 class IcePatch;
 class BaseTile;
 class RegeneratingDoor;
+class Landmine;
+class RemoteBomb;
 
 class PlayerDynamicGameObject : public DynamicGridGameObject
 {
@@ -78,6 +80,8 @@ public:
     bool isHitByFireBall(std::vector<std::unique_ptr<Crater >> &craters);
     
     bool isHitByIce(std::vector<std::unique_ptr<IcePatch >> &icePatches);
+    
+    bool isTriggeringLandmine(std::vector<std::unique_ptr<Landmine >> &landmines);
     
     bool isTrappedOnExplodingBaseTile(std::vector<std::unique_ptr<BaseTile>> &baseTiles);
     
@@ -135,12 +139,19 @@ public:
     
     bool isDisplayingPointer();
     
+    bool isUsingRemoteBombs();
+    
     void reset();
     
     void handleBombErasure(BombGameObject *bomb);
+    
+    int getNumCurrentlyDeployedRemoteBombs();
+    
+    void detonateFirstRemoteBomb();
 
 protected:
     BombGameObject *m_lastBombDropped;
+    std::vector<RemoteBomb *> m_currentlyDeployedRemoteBombs;
     Player_State m_playerState;
     Player_Action_State m_playerActionState;
     float m_fStateTime;
@@ -154,6 +165,7 @@ protected:
     short m_sPlayerIndex;
     int m_iPlayerForceFieldState;
     float m_fPlayerForceFieldStateTime;
+    bool m_isUsingRemoteBombs;
     GameListener *m_gameListener;
     
 private:

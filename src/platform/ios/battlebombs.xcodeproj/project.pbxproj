@@ -206,6 +206,7 @@
 		BBDE14B9195A2D7400A91FD7 /* char_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = BBDE14B2195A2D7400A91FD7 /* char_yellow.png */; };
 		BBE3BC2A1A50AE3E00EABD6B /* base_tile_trigger.caf in Resources */ = {isa = PBXBuildFile; fileRef = BBE3BC271A50AE3E00EABD6B /* base_tile_trigger.caf */; };
 		BBE3BC2B1A50AE3E00EABD6B /* mini_explosion.caf in Resources */ = {isa = PBXBuildFile; fileRef = BBE3BC281A50AE3E00EABD6B /* mini_explosion.caf */; };
+		BBE3BC321A50F85500EABD6B /* DetonateButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBE3BC301A50F85500EABD6B /* DetonateButton.cpp */; };
 		BBF8C9E61A20FAA10016DE7C /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = BBF8C9E51A20FAA10016DE7C /* UIView+Toast.m */; };
 		BBF8C9F71A2107C50016DE7C /* CircleBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF8C9E81A2107C50016DE7C /* CircleBatcher.cpp */; };
 		BBF8C9F81A2107C50016DE7C /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF8C9EA1A2107C50016DE7C /* Font.cpp */; };
@@ -583,6 +584,10 @@
 		BBE3BC281A50AE3E00EABD6B /* mini_explosion.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = mini_explosion.caf; sourceTree = "<group>"; };
 		BBE3BC2D1A50B13100EABD6B /* BaseTileState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseTileState.h; sourceTree = "<group>"; };
 		BBE3BC2E1A50C20000EABD6B /* RemoteBombState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteBombState.h; sourceTree = "<group>"; };
+		BBE3BC2F1A50E6C100EABD6B /* LandmineState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LandmineState.h; sourceTree = "<group>"; };
+		BBE3BC301A50F85500EABD6B /* DetonateButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetonateButton.cpp; sourceTree = "<group>"; };
+		BBE3BC311A50F85500EABD6B /* DetonateButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetonateButton.h; sourceTree = "<group>"; };
+		BBE3BC331A50F93100EABD6B /* DetonateButtonState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetonateButtonState.h; sourceTree = "<group>"; };
 		BBF8C9E41A20FAA10016DE7C /* UIView+Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Toast.h"; sourceTree = "<group>"; };
 		BBF8C9E51A20FAA10016DE7C /* UIView+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Toast.m"; sourceTree = "<group>"; };
 		BBF8C9E81A2107C50016DE7C /* CircleBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleBatcher.cpp; sourceTree = "<group>"; };
@@ -1088,6 +1093,7 @@
 				BBA4C3C21A16CE7300AB3878 /* SpaceTileState.h */,
 				BBA4C3C61A16CE7300AB3878 /* stlastar.h */,
 				BBF8C9FE1A2107F70016DE7C /* ui */,
+				BBE3BC2F1A50E6C100EABD6B /* LandmineState.h */,
 			);
 			path = game;
 			sourceTree = "<group>";
@@ -1183,6 +1189,9 @@
 				BBF8CA061A2107F70016DE7C /* CountDownNumberGameObject.cpp */,
 				BBF8CA071A2107F70016DE7C /* CountDownNumberGameObject.h */,
 				BBF8CA081A2107F70016DE7C /* CountDownNumberType.h */,
+				BBE3BC301A50F85500EABD6B /* DetonateButton.cpp */,
+				BBE3BC311A50F85500EABD6B /* DetonateButton.h */,
+				BBE3BC331A50F93100EABD6B /* DetonateButtonState.h */,
 				BBF8CA091A2107F70016DE7C /* DisplayGameOverGameObject.cpp */,
 				BBF8CA0A1A2107F70016DE7C /* DisplayGameOverGameObject.h */,
 				BBF8CA0B1A2107F70016DE7C /* DisplayGameOverType.h */,
@@ -1531,6 +1540,7 @@
 				BB12EE621A1D5B2C006D385B /* OverlapTester.cpp in Sources */,
 				BBF8CA371A2107F70016DE7C /* InterfaceOverlay.cpp in Sources */,
 				0A8FBF8A179E07320039BA29 /* pngwutil.c in Sources */,
+				BBE3BC321A50F85500EABD6B /* DetonateButton.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

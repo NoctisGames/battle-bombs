@@ -26,6 +26,8 @@
 #include "IcePatch.h"
 #include "BaseTile.h"
 #include "RegeneratingDoor.h"
+#include "Landmine.h"
+#include "RemoteBomb.h"
 
 #include <cstring>
 
@@ -236,6 +238,12 @@ void PlayerDynamicGameObject::onBombDropped(BombGameObject *bomb)
     
     m_playerActionState = PLACING_BOMB;
     m_fStateTime = 0;
+    
+    if(bomb->isRemote())
+    {
+        RemoteBomb *rb = dynamic_cast<RemoteBomb *>(bomb);
+        m_currentlyDeployedRemoteBombs.push_back(rb);
+    }
 }
 
 void PlayerDynamicGameObject::onBombPushed(BombGameObject *bomb)
@@ -389,6 +397,24 @@ bool PlayerDynamicGameObject::isHitByIce(std::vector<std::unique_ptr<IcePatch >>
         {
             if(OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
             {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+bool PlayerDynamicGameObject::isTriggeringLandmine(std::vector<std::unique_ptr<Landmine >> &landmines)
+{
+    if(m_playerState == ALIVE)
+    {
+        for (std::vector <std::unique_ptr<Landmine>> ::iterator itr = landmines.begin(); itr != landmines.end(); itr++)
+        {
+            if(OverlapTester::doRectanglesOverlap(*m_bounds, (*itr)->getBounds()))
+            {
+                (*itr)->trigger();
+                
                 return true;
             }
         }
@@ -631,7 +657,7 @@ void PlayerDynamicGameObject::collectPowerUp(int powerUpFlag)
             m_firePower = 10;
             break;
         case POWER_UP_TYPE_REMOTE_BOMB:
-            // TODO, change bomb type
+            m_isUsingRemoteBombs = true;
             break;
         case POWER_UP_TYPE_LAND_MINE:
             m_activePowerUp = POWER_UP_TYPE_LAND_MINE;
@@ -778,6 +804,11 @@ bool PlayerDynamicGameObject::isDisplayingPointer()
     return m_isDisplayingPointer;
 }
 
+bool PlayerDynamicGameObject::isUsingRemoteBombs()
+{
+    return m_isUsingRemoteBombs;
+}
+
 void PlayerDynamicGameObject::reset()
 {
     m_lastBombDropped = nullptr;
@@ -795,6 +826,8 @@ void PlayerDynamicGameObject::reset()
     
     m_isDisplayingName = false;
     m_isDisplayingPointer = false;
+    
+    m_isUsingRemoteBombs = false;
 }
 
 void PlayerDynamicGameObject::handleBombErasure(BombGameObject *bomb)
@@ -802,6 +835,29 @@ void PlayerDynamicGameObject::handleBombErasure(BombGameObject *bomb)
     if(bomb == m_lastBombDropped)
     {
         m_lastBombDropped = nullptr;
+    }
+    
+    for (std::vector <RemoteBomb *> ::iterator itr = m_currentlyDeployedRemoteBombs.begin(); itr != m_currentlyDeployedRemoteBombs.end(); itr++)
+    {
+        if((*itr) == bomb)
+        {
+            itr = m_currentlyDeployedRemoteBombs.erase(itr);
+            break;
+        }
+    }
+}
+
+int PlayerDynamicGameObject::getNumCurrentlyDeployedRemoteBombs()
+{
+    return (int) m_currentlyDeployedRemoteBombs.size();
+}
+
+void PlayerDynamicGameObject::detonateFirstRemoteBomb()
+{
+    if(m_currentlyDeployedRemoteBombs.size() > 0)
+    {
+        m_currentlyDeployedRemoteBombs.at(0)->detonate();
+        m_currentlyDeployedRemoteBombs.erase(m_currentlyDeployedRemoteBombs.begin());
     }
 }
 
