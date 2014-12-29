@@ -89,8 +89,8 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	m_countDown3Sound = std::unique_ptr<GameSound>(new GameSound("assets\\countdown_3.wav"));
 	m_countDown2Sound = std::unique_ptr<GameSound>(new GameSound("assets\\countdown_2.wav"));
 	m_countDown1Sound = std::unique_ptr<GameSound>(new GameSound("assets\\countdown_1.wav"));
-	m_baseTileTriggerSound = std::unique_ptr<GameSound>(new GameSound("base_tile_trigger.wav"));
-	m_miniExplosionSound = std::unique_ptr<GameSound>(new GameSound("mini_explosion.wav"));
+	m_baseTileTriggerSound = std::unique_ptr<GameSound>(new GameSound("assets\\base_tile_trigger.wav"));
+	m_miniExplosionSound = std::unique_ptr<GameSound>(new GameSound("assets\\mini_explosion.wav"));
 	m_battleSound = std::unique_ptr<GameSound>(new GameSound("assets\\battle.wav"));
 	m_plantBombSound = std::unique_ptr<GameSound>(new GameSound("assets\\plant_bomb.wav"));
 	m_explosionSound = std::unique_ptr<GameSound>(new GameSound("assets\\explosion.wav"));
@@ -100,10 +100,10 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	m_powerUpForceFieldSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_force_field.wav"));
 	m_powerUpPushSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_push.wav"));
 	m_powerUpShieldSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_shield.wav"));
-	m_powerUpMegaFireSound = std::unique_ptr<GameSound>(new GameSound("pu_mega_fire.wav"));
-	m_powerUpRemoteBombSound = std::unique_ptr<GameSound>(new GameSound("pu_remote_bomb.wav"));
-	m_powerUpLandmineSound = std::unique_ptr<GameSound>(new GameSound("pu_landmine.wav"));
-	m_powerUpCurseSound = std::unique_ptr<GameSound>(new GameSound("pu_curse.wav"));
+	m_powerUpMegaFireSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_mega_fire.wav"));
+	m_powerUpRemoteBombSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_remote_bomb.wav"));
+	m_powerUpLandmineSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_landmine.wav"));
+	m_powerUpCurseSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_curse.wav"));
 	m_forceFieldDownSound = std::unique_ptr<GameSound>(new GameSound("assets\\force_field_down.wav"));
 	m_deathSound = std::unique_ptr<GameSound>(new GameSound("assets\\death.wav"));
 	m_hurrySound = std::unique_ptr<GameSound>(new GameSound("assets\\hurry.wav"));
