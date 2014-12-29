@@ -34,6 +34,13 @@
 #include "SpaceTile.h"
 #include "Map.h"
 #include "GameConstants.h"
+#include "RegeneratingDoor.h"
+#include "BaseTile.h"
+#include "Landmine.h"
+#include "RemoteBomb.h"
+#include "FlagUtil.h"
+#include "ChosenBotFlags.h"
+#include "ChosenPowerUpFlags.h"
 
 ServerGameSession::ServerGameSession()
 {
@@ -46,7 +53,13 @@ void ServerGameSession::initWithNumHumanPlayersAndMapType(int numHumanPlayers, i
 
     initializeMap(mapType);
     
-    m_map->populateMapWithPlayersAndBreakableBlocks(this, numHumanPlayers);
+    int chosenBotFlags = 0;
+    chosenBotFlags = FlagUtil::setFlag(chosenBotFlags, BOT_ALL_EASY);
+    
+    int chosenPowerUpFlags = 0;
+    chosenPowerUpFlags = FlagUtil::setFlag(chosenPowerUpFlags, PU_ALL);
+    
+    m_map->populateMapWithPlayersAndBreakableBlocks(this, numHumanPlayers, chosenBotFlags, chosenPowerUpFlags);
 }
 
 void ServerGameSession::init()

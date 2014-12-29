@@ -45,6 +45,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/361124323/Rectangle.o \
 	${OBJECTDIR}/_ext/361124323/Triangle.o \
 	${OBJECTDIR}/_ext/361124323/Vector2D.o \
+	${OBJECTDIR}/_ext/1528379507/BaseTile.o \
 	${OBJECTDIR}/_ext/1528379507/BombGameObject.o \
 	${OBJECTDIR}/_ext/1528379507/BotPlayerDynamicGameObject.o \
 	${OBJECTDIR}/_ext/1528379507/BreakableBlock.o \
@@ -58,6 +59,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/1528379507/IceBall.o \
 	${OBJECTDIR}/_ext/1528379507/IcePatch.o \
 	${OBJECTDIR}/_ext/1528379507/InsideBlock.o \
+	${OBJECTDIR}/_ext/1528379507/Landmine.o \
 	${OBJECTDIR}/_ext/1528379507/Map.o \
 	${OBJECTDIR}/_ext/1528379507/MapBase.o \
 	${OBJECTDIR}/_ext/1528379507/MapBorder.o \
@@ -69,6 +71,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/1528379507/PathFinder.o \
 	${OBJECTDIR}/_ext/1528379507/PlayerDynamicGameObject.o \
 	${OBJECTDIR}/_ext/1528379507/PowerUp.o \
+	${OBJECTDIR}/_ext/1528379507/RegeneratingDoor.o \
+	${OBJECTDIR}/_ext/1528379507/RemoteBomb.o \
 	${OBJECTDIR}/_ext/1528379507/SpaceTile.o \
 	${OBJECTDIR}/src/ServerGameSession.o \
 	${OBJECTDIR}/src/bb_room_adaptor.o
@@ -148,6 +152,11 @@ ${OBJECTDIR}/_ext/361124323/Vector2D.o: ../../../core/framework/Vector2D.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/Vector2D.o ../../../core/framework/Vector2D.cpp
 
+${OBJECTDIR}/_ext/1528379507/BaseTile.o: ../../../core/game/BaseTile.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/BaseTile.o ../../../core/game/BaseTile.cpp
+
 ${OBJECTDIR}/_ext/1528379507/BombGameObject.o: ../../../core/game/BombGameObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
@@ -213,6 +222,11 @@ ${OBJECTDIR}/_ext/1528379507/InsideBlock.o: ../../../core/game/InsideBlock.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/InsideBlock.o ../../../core/game/InsideBlock.cpp
 
+${OBJECTDIR}/_ext/1528379507/Landmine.o: ../../../core/game/Landmine.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/Landmine.o ../../../core/game/Landmine.cpp
+
 ${OBJECTDIR}/_ext/1528379507/Map.o: ../../../core/game/Map.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
@@ -267,6 +281,16 @@ ${OBJECTDIR}/_ext/1528379507/PowerUp.o: ../../../core/game/PowerUp.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/PowerUp.o ../../../core/game/PowerUp.cpp
+
+${OBJECTDIR}/_ext/1528379507/RegeneratingDoor.o: ../../../core/game/RegeneratingDoor.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/RegeneratingDoor.o ../../../core/game/RegeneratingDoor.cpp
+
+${OBJECTDIR}/_ext/1528379507/RemoteBomb.o: ../../../core/game/RemoteBomb.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/RemoteBomb.o ../../../core/game/RemoteBomb.cpp
 
 ${OBJECTDIR}/_ext/1528379507/SpaceTile.o: ../../../core/game/SpaceTile.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507

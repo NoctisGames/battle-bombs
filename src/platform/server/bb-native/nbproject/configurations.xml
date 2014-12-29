@@ -4,10 +4,15 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>../../../core/game/BaseTile.h</itemPath>
+      <itemPath>../../../core/game/BaseTileState.h</itemPath>
       <itemPath>../../../core/game/BombGameObject.h</itemPath>
+      <itemPath>../../../core/game/BotDifficulty.h</itemPath>
       <itemPath>../../../core/game/BotPlayerDynamicGameObject.h</itemPath>
       <itemPath>../../../core/game/BreakableBlock.h</itemPath>
       <itemPath>../../../core/game/BreakableBlockState.h</itemPath>
+      <itemPath>../../../core/game/ChosenBotFlags.h</itemPath>
+      <itemPath>../../../core/game/ChosenPowerUpFlags.h</itemPath>
       <itemPath>../../../core/framework/Circle.h</itemPath>
       <itemPath>../../../core/framework/Color.h</itemPath>
       <itemPath>../../../core/game/Crater.h</itemPath>
@@ -19,6 +24,7 @@
       <itemPath>../../../core/game/Fire.h</itemPath>
       <itemPath>../../../core/game/FireBall.h</itemPath>
       <itemPath>../../../core/game/FireType.h</itemPath>
+      <itemPath>../../../core/framework/FlagUtil.h</itemPath>
       <itemPath>../../../core/game/GameConstants.h</itemPath>
       <itemPath>../../../core/game/GameEvent.h</itemPath>
       <itemPath>../../../core/game/GameListener.h</itemPath>
@@ -29,6 +35,8 @@
       <itemPath>../../../core/game/IcePatch.h</itemPath>
       <itemPath>../../../core/game/InsideBlock.h</itemPath>
       <itemPath>../../../core/game/InsideBlockState.h</itemPath>
+      <itemPath>../../../core/game/Landmine.h</itemPath>
+      <itemPath>../../../core/game/LandmineState.h</itemPath>
       <itemPath>../../../core/framework/Line.h</itemPath>
       <itemPath>../../../core/game/Map.h</itemPath>
       <itemPath>../../../core/game/MapBase.h</itemPath>
@@ -49,6 +57,9 @@
       <itemPath>../../../core/game/PowerUp.h</itemPath>
       <itemPath>../../../core/game/PowerUpType.h</itemPath>
       <itemPath>../../../core/framework/Rectangle.h</itemPath>
+      <itemPath>../../../core/game/RegeneratingDoor.h</itemPath>
+      <itemPath>../../../core/game/RemoteBomb.h</itemPath>
+      <itemPath>../../../core/game/RemoteBombState.h</itemPath>
       <itemPath>../../../core/game/ResourceConstants.h</itemPath>
       <itemPath>src/ServerGameSession.h</itemPath>
       <itemPath>../../../core/game/SpaceTile.h</itemPath>
@@ -67,6 +78,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>../../../core/game/BaseTile.cpp</itemPath>
       <itemPath>../../../core/game/BombGameObject.cpp</itemPath>
       <itemPath>../../../core/game/BotPlayerDynamicGameObject.cpp</itemPath>
       <itemPath>../../../core/game/BreakableBlock.cpp</itemPath>
@@ -85,6 +97,7 @@
       <itemPath>../../../core/game/IceBall.cpp</itemPath>
       <itemPath>../../../core/game/IcePatch.cpp</itemPath>
       <itemPath>../../../core/game/InsideBlock.cpp</itemPath>
+      <itemPath>../../../core/game/Landmine.cpp</itemPath>
       <itemPath>../../../core/framework/Line.cpp</itemPath>
       <itemPath>../../../core/game/Map.cpp</itemPath>
       <itemPath>../../../core/game/MapBase.cpp</itemPath>
@@ -99,6 +112,8 @@
       <itemPath>../../../core/game/PlayerDynamicGameObject.cpp</itemPath>
       <itemPath>../../../core/game/PowerUp.cpp</itemPath>
       <itemPath>../../../core/framework/Rectangle.cpp</itemPath>
+      <itemPath>../../../core/game/RegeneratingDoor.cpp</itemPath>
+      <itemPath>../../../core/game/RemoteBomb.cpp</itemPath>
       <itemPath>src/ServerGameSession.cpp</itemPath>
       <itemPath>../../../core/game/SpaceTile.cpp</itemPath>
       <itemPath>../../../core/framework/Triangle.cpp</itemPath>
@@ -337,6 +352,8 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../../../core/framework/FlagUtil.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/framework/GameObject.cpp"
             ex="false"
             tool="1"
@@ -401,6 +418,12 @@
       </item>
       <item path="../../../core/framework/pch.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/game/BaseTile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/BaseTile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/BaseTileState.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/game/BombGameObject.cpp"
             ex="false"
             tool="1"
@@ -410,6 +433,8 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="../../../core/game/BotDifficulty.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/BotPlayerDynamicGameObject.cpp"
             ex="false"
@@ -432,6 +457,16 @@
             flavor2="0">
       </item>
       <item path="../../../core/game/BreakableBlockState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/ChosenBotFlags.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/ChosenPowerUpFlags.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -500,6 +535,12 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="../../../core/game/Landmine.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/Landmine.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/LandmineState.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/Map.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -575,6 +616,25 @@
       <item path="../../../core/game/PowerUp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/PowerUpType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/RegeneratingDoor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/RegeneratingDoor.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/RemoteBomb.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/RemoteBomb.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/RemoteBombState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../../../core/game/ResourceConstants.h"
             ex="false"
@@ -663,6 +723,8 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../../../core/framework/FlagUtil.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/framework/GameObject.cpp"
             ex="false"
             tool="1"
@@ -727,6 +789,12 @@
       </item>
       <item path="../../../core/framework/pch.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../../core/game/BaseTile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/BaseTile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/BaseTileState.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../../../core/game/BombGameObject.cpp"
             ex="false"
             tool="1"
@@ -736,6 +804,8 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="../../../core/game/BotDifficulty.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/BotPlayerDynamicGameObject.cpp"
             ex="false"
@@ -758,6 +828,16 @@
             flavor2="0">
       </item>
       <item path="../../../core/game/BreakableBlockState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/ChosenBotFlags.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/ChosenPowerUpFlags.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -826,6 +906,12 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="../../../core/game/Landmine.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/Landmine.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/LandmineState.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/Map.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -901,6 +987,25 @@
       <item path="../../../core/game/PowerUp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../../core/game/PowerUpType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/RegeneratingDoor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/RegeneratingDoor.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../../core/game/RemoteBomb.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../../../core/game/RemoteBomb.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../../core/game/RemoteBombState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../../../core/game/ResourceConstants.h"
             ex="false"
