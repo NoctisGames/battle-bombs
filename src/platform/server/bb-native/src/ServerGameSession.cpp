@@ -131,7 +131,7 @@ void ServerGameSession::update(float deltaTime)
 
                 for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = m_players.begin(); itr != m_players.end(); itr++)
                 {
-                    (*itr)->reset();
+                    (*itr)->reset(*this);
                 }
             }
             break;
