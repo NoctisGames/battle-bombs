@@ -358,6 +358,10 @@ void InterfaceOverlay::handleTouchUpInputRunning(GameScreen *gameScreen)
     {
         return;
     }
+    else if (OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_bombButton->getBounds()) || OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_detonateButton->getBounds()))
+    {
+        return;
+    }
     
     if (OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_activeButton->getBounds()))
     {

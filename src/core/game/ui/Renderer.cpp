@@ -198,7 +198,7 @@ void Renderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInt
         
         if((*itr)->getButtonState() == ENABLED)
         {
-            m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY() - (*itr)->getHeight() * 3 / 4, (*itr)->getWidth(), (*itr)->getHeight() / 4, (*itr)->getAngle(), Assets::getBotDifficultyTextTextureRegion((**itr)));
+//            m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY() - (*itr)->getHeight() * 3 / 4, (*itr)->getWidth(), (*itr)->getHeight() / 4, (*itr)->getAngle(), Assets::getBotDifficultyTextTextureRegion((**itr)));
         }
     }
     

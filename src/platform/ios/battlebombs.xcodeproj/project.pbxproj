@@ -1054,6 +1054,7 @@
 				BBA4C3A21A16CE7300AB3878 /* InsideBlockState.h */,
 				BB395A3B1A509E21004C0858 /* Landmine.cpp */,
 				BB395A3C1A509E21004C0858 /* Landmine.h */,
+				BBE3BC2F1A50E6C100EABD6B /* LandmineState.h */,
 				BB4790B21A473A13006A7B61 /* Map.cpp */,
 				BB4790B31A473A13006A7B61 /* Map.h */,
 				BB4790C11A4745B8006A7B61 /* MapBase.cpp */,
@@ -1093,7 +1094,6 @@
 				BBA4C3C21A16CE7300AB3878 /* SpaceTileState.h */,
 				BBA4C3C61A16CE7300AB3878 /* stlastar.h */,
 				BBF8C9FE1A2107F70016DE7C /* ui */,
-				BBE3BC2F1A50E6C100EABD6B /* LandmineState.h */,
 			);
 			path = game;
 			sourceTree = "<group>";

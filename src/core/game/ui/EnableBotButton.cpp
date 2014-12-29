@@ -20,7 +20,7 @@ EnableBotButton::EnableBotButton(Button_State buttonState, int index, bool isFur
 {
     m_buttonState = buttonState;
     m_iIndex = index;
-    m_iDifficulty = BOT_DIFFICULTY_NORMAL;
+    m_iDifficulty = BOT_DIFFICULTY_EASY;
     
     if(isFurthestRightActive)
     {
@@ -40,7 +40,7 @@ void EnableBotButton::toggle()
     else if(m_buttonState == ENABLED)
     {
         m_iDifficulty++;
-        if(m_iDifficulty > BOT_DIFFICULTY_NORMAL)
+        if(m_iDifficulty > BOT_DIFFICULTY_EASY)
         {
             m_iDifficulty = BOT_DIFFICULTY_EASY;
             
