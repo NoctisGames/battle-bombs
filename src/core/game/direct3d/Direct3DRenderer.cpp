@@ -55,6 +55,7 @@ using namespace DirectX;
 
 ID3D11ShaderResourceView *m_mapShaderResourceView;
 ID3D11ShaderResourceView *m_gameShaderResourceView;
+ID3D11ShaderResourceView *m_offlineInterfaceShaderResourceView; 
 ID3D11ShaderResourceView *m_interfaceShaderResourceView;
 ID3D11ShaderResourceView *m_interface2ShaderResourceView;
 ID3D11ShaderResourceView *m_charBlackShaderResourceView;
@@ -73,6 +74,7 @@ Direct3DRenderer::Direct3DRenderer() : Renderer()
 
 	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\map_space.dds", NULL, &m_mapShaderResourceView, NULL);
 	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\game.dds", NULL, &m_gameShaderResourceView, NULL);
+	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\offline_interface.dds", NULL, &m_offlineInterfaceShaderResourceView, NULL);
 	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL);
 	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\interface_2.dds", NULL, &m_interface2ShaderResourceView, NULL);
 
@@ -87,6 +89,7 @@ Direct3DRenderer::Direct3DRenderer() : Renderer()
 
 	m_mapTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_mapShaderResourceView));
 	m_gameTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_gameShaderResourceView));
+	m_offlineInterfaceTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_offlineInterfaceShaderResourceView));
 	m_interfaceTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_interfaceShaderResourceView));
 	m_interfaceTexture2 = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_interface2ShaderResourceView));
 

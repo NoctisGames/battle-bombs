@@ -50,6 +50,15 @@
 #include "SpaceTile.h"
 #include "ScreenState.h"
 #include "Map.h"
+#include "StartButton.h"
+#include "EnableBotButton.h"
+#include "EnablePowerUpButton.h"
+#include "RegeneratingDoor.h"
+#include "BaseTile.h"
+#include "Landmine.h"
+#include "RemoteBomb.h"
+#include "DetonateButton.h"
+
 #include <string.h>
 #include <sstream>
 

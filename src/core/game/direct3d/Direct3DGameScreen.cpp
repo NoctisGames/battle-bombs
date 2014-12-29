@@ -56,6 +56,14 @@
 #include "SpaceTile.h"
 #include "DirectXManager.h"
 #include "Map.h"
+#include "StartButton.h"
+#include "EnableBotButton.h"
+#include "EnablePowerUpButton.h"
+#include "RegeneratingDoor.h"
+#include "BaseTile.h"
+#include "Landmine.h"
+#include "RemoteBomb.h"
+#include "DetonateButton.h"
 
 Direct3DGameScreen::Direct3DGameScreen(const char *username, bool isOffline) : GameScreen(username, isOffline)
 {
@@ -81,6 +89,8 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	m_countDown3Sound = std::unique_ptr<GameSound>(new GameSound("assets\\countdown_3.wav"));
 	m_countDown2Sound = std::unique_ptr<GameSound>(new GameSound("assets\\countdown_2.wav"));
 	m_countDown1Sound = std::unique_ptr<GameSound>(new GameSound("assets\\countdown_1.wav"));
+	m_baseTileTriggerSound = std::unique_ptr<GameSound>(new GameSound("base_tile_trigger.wav"));
+	m_miniExplosionSound = std::unique_ptr<GameSound>(new GameSound("mini_explosion.wav"));
 	m_battleSound = std::unique_ptr<GameSound>(new GameSound("assets\\battle.wav"));
 	m_plantBombSound = std::unique_ptr<GameSound>(new GameSound("assets\\plant_bomb.wav"));
 	m_explosionSound = std::unique_ptr<GameSound>(new GameSound("assets\\explosion.wav"));
@@ -90,6 +100,10 @@ void Direct3DGameScreen::load(float deviceScreenWidth, float deviceScreenHeight,
 	m_powerUpForceFieldSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_force_field.wav"));
 	m_powerUpPushSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_push.wav"));
 	m_powerUpShieldSound = std::unique_ptr<GameSound>(new GameSound("assets\\pu_shield.wav"));
+	m_powerUpMegaFireSound = std::unique_ptr<GameSound>(new GameSound("pu_mega_fire.wav"));
+	m_powerUpRemoteBombSound = std::unique_ptr<GameSound>(new GameSound("pu_remote_bomb.wav"));
+	m_powerUpLandmineSound = std::unique_ptr<GameSound>(new GameSound("pu_landmine.wav"));
+	m_powerUpCurseSound = std::unique_ptr<GameSound>(new GameSound("pu_curse.wav"));
 	m_forceFieldDownSound = std::unique_ptr<GameSound>(new GameSound("assets\\force_field_down.wav"));
 	m_deathSound = std::unique_ptr<GameSound>(new GameSound("assets\\death.wav"));
 	m_hurrySound = std::unique_ptr<GameSound>(new GameSound("assets\\hurry.wav"));
@@ -162,6 +176,18 @@ void Direct3DGameScreen::handleSound()
 		case SOUND_PU_SHIELD:
 			m_powerUpShieldSound->play();
 			break;
+		case SOUND_PU_MEGA_FIRE:
+			m_powerUpMegaFireSound->play();
+			break;
+		case SOUND_PU_REMOTE_BOMB:
+			m_powerUpRemoteBombSound->play();
+			break;
+		case SOUND_PU_LAND_MINE:
+			m_powerUpLandmineSound->play();
+			break;
+		case SOUND_PU_CURSE:
+			m_powerUpCurseSound->play();
+			break;
 		case SOUND_FORCE_FIELD_DOWN:
 			m_forceFieldDownSound->play();
 			break;
@@ -194,6 +220,12 @@ void Direct3DGameScreen::handleSound()
 			break;
 		case SOUND_CRASHING_ICE_BALL:
 			m_crashingIceBallSound->play();
+			break;
+		case SOUND_MINI_EXPLOSION:
+			m_miniExplosionSound->play();
+			break;
+		case SOUND_BASE_TILE_TRIGGER:
+			m_baseTileTriggerSound->play();
 			break;
 		default:
 			continue;
