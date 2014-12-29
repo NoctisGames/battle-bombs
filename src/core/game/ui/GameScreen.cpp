@@ -99,7 +99,10 @@ void GameScreen::init()
     m_interfaceOverlay.release();
     m_interfaceOverlay = std::unique_ptr<InterfaceOverlay>(new InterfaceOverlay(m_gameListener.get()));
     
-    m_waitingForLocalSettingsInterface->reset();
+    if(m_isOffline)
+    {
+        m_waitingForLocalSettingsInterface->reset();
+    }
     
     m_player = nullptr;
     m_sPlayerIndex = -1;
