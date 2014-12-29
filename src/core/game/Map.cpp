@@ -172,7 +172,7 @@ void Map::update(GameSession *gameSession, float deltaTime, bool isSuddenDeath)
     
     for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = gameSession->getPlayers().begin(); itr != gameSession->getPlayers().end(); itr++)
     {
-        (**itr).update(deltaTime, gameSession->getMapBorders(), gameSession->getSpaceTiles(), gameSession->getInsideBlocks(), gameSession->getBreakableBlocks(), gameSession->getRegeneratingDoors(), gameSession->getCraters(), gameSession->getPowerUps(), gameSession->getExplosions(), gameSession->getPlayers(), gameSession->getBombs());
+        (**itr).update(deltaTime, *gameSession);
     }
     
     for (std::vector < std::unique_ptr < PowerUp >> ::iterator itr = gameSession->getPowerUps().begin(); itr != gameSession->getPowerUps().end();)

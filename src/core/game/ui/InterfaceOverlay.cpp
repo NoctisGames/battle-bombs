@@ -235,7 +235,7 @@ void InterfaceOverlay::update(float deltaTime, GameScreen *gameScreen, int playe
         else
         {
             m_bombButton->setIsPressed(false);
-            m_bombButton->setButtonState(gameScreen->getPlayer()->isAbleToDropAdditionalBomb(gameScreen->getPlayers(), gameScreen->getBombs()) ? ENABLED : DISABLED);
+            m_bombButton->setButtonState(gameScreen->getPlayer()->isAbleToDropAdditionalBomb(*gameScreen) ? ENABLED : DISABLED);
         }
         
         m_detonateButton->setActivating(gameScreen->getPlayer()->isUsingRemoteBombs());
@@ -288,7 +288,7 @@ void InterfaceOverlay::handleTouchDownInputRunning(GameScreen *gameScreen)
     
 	if (OverlapTester::isPointInRectangle(*gameScreen->getTouchPoint(), m_bombButton->getBounds()))
 	{
-		if (gameScreen->getPlayer()->isAbleToDropAdditionalBomb(gameScreen->getPlayers(), gameScreen->getBombs()))
+		if (gameScreen->getPlayer()->isAbleToDropAdditionalBomb(*gameScreen))
 		{
             m_gameListener->addLocalEventForPlayer(gameScreen->getPlayer()->isUsingRemoteBombs() ? PLAYER_PLANT_REMOTE_BOMB : PLAYER_PLANT_BOMB, *gameScreen->getPlayer());
 		}
@@ -314,7 +314,10 @@ void InterfaceOverlay::handleTouchDownInputRunning(GameScreen *gameScreen)
                 m_gameListener->addLocalEventForPlayer(PLAYER_RAISE_SHIELD, *gameScreen->getPlayer());
                 break;
             case POWER_UP_TYPE_LAND_MINE:
-                m_gameListener->addLocalEventForPlayer(PLAYER_PLACE_LANDMINE, *gameScreen->getPlayer());
+                if (gameScreen->getPlayer()->isAbleToPlaceLandmine(*gameScreen))
+                {
+                    m_gameListener->addLocalEventForPlayer(PLAYER_PLACE_LANDMINE, *gameScreen->getPlayer());
+                }
                 break;
             default:
                 break;

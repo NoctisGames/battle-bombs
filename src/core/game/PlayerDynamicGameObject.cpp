@@ -49,7 +49,7 @@ PlayerDynamicGameObject::PlayerDynamicGameObject(short playerIndex, int gridX, i
     reset();
 }
 
-void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+void PlayerDynamicGameObject::update(float deltaTime, GameSession &gameSession)
 {
     m_fStateTime += deltaTime;
     
@@ -121,7 +121,7 @@ void PlayerDynamicGameObject::update(float deltaTime, std::vector<std::unique_pt
             m_lastBombDropped = nullptr;
         }
         
-        if (isCollision(mapBorders, spaceTiles, insideBlocks, breakableBlocks, doors, craters, players, bombs))
+        if (isCollision(gameSession.getMapBorders(), gameSession.getSpaceTiles(), gameSession.getInsideBlocks(), gameSession.getBreakableBlocks(), gameSession.getRegeneratingDoors(), gameSession.getCraters(), gameSession.getPlayers(), gameSession.getBombs()))
         {
             m_position->sub(deltaX, deltaY);
             updateBounds();
@@ -599,11 +599,11 @@ void PlayerDynamicGameObject::onWin()
     m_fStateTime = 0;
 }
 
-bool PlayerDynamicGameObject::isAbleToDropAdditionalBomb(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs)
+bool PlayerDynamicGameObject::isAbleToDropAdditionalBomb(GameSession &gameSession)
 {
     if(m_playerState == ALIVE && m_iCurrentBombCount < m_iMaxBombCount)
     {
-        for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = players.begin(); itr != players.end(); itr++)
+        for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = gameSession.getPlayers().begin(); itr != gameSession.getPlayers().end(); itr++)
         {
             if((**itr).getPlayerState() == Player_State::ALIVE && (*itr).get() != this)
             {
@@ -614,7 +614,52 @@ bool PlayerDynamicGameObject::isAbleToDropAdditionalBomb(std::vector<std::unique
             }
         }
         
-        for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+        for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = gameSession.getBombs().begin(); itr != gameSession.getBombs().end(); itr++)
+        {
+            if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
+            {
+                return false;
+            }
+        }
+        
+        for (std::vector<std::unique_ptr<Landmine>>::iterator itr = gameSession.getLandmines().begin(); itr != gameSession.getLandmines().end(); itr++)
+        {
+            if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    return false;
+}
+
+bool PlayerDynamicGameObject::isAbleToPlaceLandmine(GameSession &gameSession)
+{
+    if(m_playerState == ALIVE)
+    {
+        for (std::vector<std::unique_ptr<PlayerDynamicGameObject>>::iterator itr = gameSession.getPlayers().begin(); itr != gameSession.getPlayers().end(); itr++)
+        {
+            if((**itr).getPlayerState() == Player_State::ALIVE && (*itr).get() != this)
+            {
+                if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
+                {
+                    return false;
+                }
+            }
+        }
+        
+        for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = gameSession.getBombs().begin(); itr != gameSession.getBombs().end(); itr++)
+        {
+            if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
+            {
+                return false;
+            }
+        }
+        
+        for (std::vector<std::unique_ptr<Landmine>>::iterator itr = gameSession.getLandmines().begin(); itr != gameSession.getLandmines().end(); itr++)
         {
             if((*itr)->getGridX() == m_gridX && (*itr)->getGridY() == m_gridY)
             {

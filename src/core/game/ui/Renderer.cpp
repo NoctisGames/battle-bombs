@@ -579,7 +579,7 @@ void Renderer::renderInterface(InterfaceOverlay &interfaceOverlay)
         static const float numRemoteBombsWidth = interfaceOverlay.getDetonateButton().getWidth() / 2;
         static const float numRemoteBombsHeight = numRemoteBombsWidth * 0.68421052631579f;
         
-        m_font->renderText(*m_spriteBatcher, numRemoteBombs, numRemoteBombsX, numRemoteBombsY, numRemoteBombsWidth, numRemoteBombsHeight, interfaceColor);
+        m_font->renderText(*m_spriteBatcher, numRemoteBombs, numRemoteBombsX, numRemoteBombsY, numRemoteBombsWidth, numRemoteBombsHeight, interfaceColor, false, true);
     }
     
     m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture);
