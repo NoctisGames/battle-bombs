@@ -47,6 +47,15 @@
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
 #include "SpaceTile.h"
+#include "Map.h"
+#include "StartButton.h"
+#include "EnableBotButton.h"
+#include "EnablePowerUpButton.h"
+#include "RegeneratingDoor.h"
+#include "BaseTile.h"
+#include "Landmine.h"
+#include "RemoteBomb.h"
+#include "DetonateButton.h"
 
 using namespace BattleBombsComp;
 

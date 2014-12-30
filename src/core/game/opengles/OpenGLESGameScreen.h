@@ -3,7 +3,7 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
 #ifndef __battle_bombs__OpenGLESGameScreen__
@@ -25,10 +25,6 @@ public:
     void setRunningIOS8(bool isRunningIOS8);
     
     virtual void touchToWorld(TouchEvent &touchEvent);
-    
-    virtual void platformResume();
-    
-    virtual void platformPause();
     
     virtual bool handleOnBackPressed();
 

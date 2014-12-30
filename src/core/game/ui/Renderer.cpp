@@ -47,6 +47,16 @@
 #include "IceBall.h"
 #include "IcePatch.h"
 #include "FallingObjectShadow.h"
+#include "WaitingForLocalSettingsInterface.h"
+#include "StartButton.h"
+#include "EnableBotButton.h"
+#include "EnablePowerUpButton.h"
+#include "BaseTile.h"
+#include "RegeneratingDoor.h"
+#include "RemoteBomb.h"
+#include "DetonateButton.h"
+#include "Landmine.h"
+
 #include <sstream>
 
 Renderer::Renderer()
@@ -81,9 +91,9 @@ void Renderer::calcScrollYForPlayer(PlayerDynamicGameObject &player)
 	}
 }
 
-void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface)
+void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface, bool renderPlayersList, bool renderMessage)
 {
-    if(waitingForServerInterface.renderPlayersList())
+    if(renderPlayersList)
     {
         m_spriteBatcher->beginBatch();
         renderGameObject(waitingForServerInterface, Assets::getWaitingForServerInterfaceTextureRegion());
@@ -116,7 +126,7 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
         m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture2);
     }
     
-    if(waitingForServerInterface.renderTimeToNextRound() || waitingForServerInterface.renderMessage())
+    if(waitingForServerInterface.renderTimeToNextRound() || renderMessage)
     {
         m_spriteBatcher->beginBatch();
         
@@ -131,7 +141,7 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
             m_font->renderText(*m_spriteBatcher, timerText, SCREEN_WIDTH - 3, SCREEN_HEIGHT - 3, 2.0f, 1.36842105263158f, timerColor, true);
         }
         
-        if(waitingForServerInterface.renderMessage())
+        if(renderMessage)
         {
             static Color interfaceColor = Color(1, 1, 1, 1);
             interfaceColor.alpha -= 0.025f;
@@ -150,10 +160,6 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
                     break;
                 case CONNECTION_ERROR:
                     ss << "There was an error connecting to Battle Bombs...";
-                    fontSize = 0.42f;
-                    break;
-                case BATTLE_BOMBS_BETA_CLOSED:
-                    ss << "Get the non-Beta Battle Bombs on the app store!";
                     fontSize = 0.42f;
                     break;
                 case FINDING_ROOM_TO_JOIN:
@@ -179,22 +185,34 @@ void Renderer::renderWaitingForServerInterface(WaitingForServerInterface &waitin
 
 void Renderer::renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
 {
-    static Color interfaceColor = Color(1, 1, 1, 1);
-    interfaceColor.alpha -= 0.025f;
-    if(interfaceColor.alpha < 0.2f)
-    {
-        interfaceColor.alpha = 1;
-    }
-    
     m_spriteBatcher->beginBatch();
     
-    std::stringstream ss;
-    ss << "Tap anywhere to play again!";
-    std::string waitingText = ss.str();
+    renderGameObject(waitingForLocalSettingsInterface, Assets::getLocalSettingsInterfaceTextureRegion(waitingForLocalSettingsInterface));
     
-    m_font->renderText(*m_spriteBatcher, waitingText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.5f, 0.5f, interfaceColor, true);
+    static Color enabledColor = Color(1, 1, 1, 1);
+    static Color disabledColor = Color(1, 1, 1, 0.25f);
     
-    m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture);
+    for (std::vector<std::unique_ptr<EnableBotButton>>::iterator itr = waitingForLocalSettingsInterface.getEnableBotButtons().begin(); itr != waitingForLocalSettingsInterface.getEnableBotButtons().end(); itr++)
+    {
+        m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY(), (*itr)->getWidth(), (*itr)->getHeight(), (*itr)->getAngle(), (*itr)->getButtonState() == ENABLED ? enabledColor : disabledColor, Assets::getEnableBotButtonTextureRegion((**itr)));
+        
+        if((*itr)->getButtonState() == ENABLED)
+        {
+//            m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY() - (*itr)->getHeight() * 3 / 4, (*itr)->getWidth(), (*itr)->getHeight() / 4, (*itr)->getAngle(), Assets::getBotDifficultyTextTextureRegion((**itr)));
+        }
+    }
+    
+    for (std::vector<std::unique_ptr<EnablePowerUpButton>>::iterator itr = waitingForLocalSettingsInterface.getEnablePowerUpButtons().begin(); itr != waitingForLocalSettingsInterface.getEnablePowerUpButtons().end(); itr++)
+    {
+        m_spriteBatcher->drawSprite((*itr)->getPosition().getX(), (*itr)->getPosition().getY(), (*itr)->getWidth(), (*itr)->getHeight(), (*itr)->getAngle(), (*itr)->getButtonState() == ENABLED ? enabledColor : disabledColor, Assets::getEnablePowerUpButtonTextureRegion((**itr)));
+    }
+    
+    if(waitingForLocalSettingsInterface.getStartButton().getButtonState() != DISABLED)
+    {
+        renderGameObject(waitingForLocalSettingsInterface.getStartButton(), Assets::getStartButtonTextureRegion(waitingForLocalSettingsInterface.getStartButton()));
+    }
+    
+    m_spriteBatcher->endBatchWithTexture(*m_offlineInterfaceTexture);
 }
 
 void Renderer::renderWorldBackground()
@@ -235,7 +253,7 @@ void Renderer::renderCraters(std::vector<std::unique_ptr<Crater>> &craters)
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
 }
 
-void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps)
+void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<PowerUp>> &powerUps)
 {
     m_spriteBatcher->beginBatch();
     for (std::vector<std::unique_ptr<MapBorder>>::iterator itr = mapBordersFar.begin(); itr != mapBordersFar.end(); itr++)
@@ -261,6 +279,14 @@ void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &ma
             renderGameObjectWithRespectToPlayer((**itr), Assets::getBreakableBlockTextureRegion((**itr)));
         }
     }
+    
+    for (std::vector<std::unique_ptr<RegeneratingDoor>>::iterator itr = doors.begin(); itr != doors.end(); itr++)
+    {
+        if(!(*itr)->isDestroyed())
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getRegeneratingDoorTextureRegion((**itr)));
+        }
+    }
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
     
     m_spriteBatcher->beginBatch();
@@ -270,16 +296,6 @@ void Renderer::renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &ma
         {
             renderGameObjectWithRespectToPlayer((**itr), Assets::getPowerUpTextureRegion((**itr)));
         }
-    }
-    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
-}
-
-void Renderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs)
-{
-    m_spriteBatcher->beginBatch();
-    for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
-    {
-        renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
     }
     m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
 }
@@ -297,12 +313,47 @@ void Renderer::renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosi
     m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
 }
 
+void Renderer::renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs, std::vector<std::unique_ptr<Landmine>> &landmines)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<BombGameObject>>::iterator itr = bombs.begin(); itr != bombs.end(); itr++)
+    {
+        if((*itr)->isRemote())
+        {
+            RemoteBomb *rb = static_cast<RemoteBomb *>((*itr).get());
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getRemoteBombTextureRegion(*rb));
+        }
+        else
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getBombTextureRegion((**itr)));
+        }
+    }
+    for (std::vector<std::unique_ptr<Landmine>>::iterator itr = landmines.begin(); itr != landmines.end(); itr++)
+    {
+        renderGameObjectWithRespectToPlayer((**itr), Assets::getLandmineTextureRegion((**itr)));
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_gameTexture);
+}
+
 void Renderer::renderSuddenDeathMountainsIcePatches(std::vector<std::unique_ptr<IcePatch>> &icePatches)
 {
     m_spriteBatcher->beginBatch();
     for (std::vector<std::unique_ptr<IcePatch>>::iterator itr = icePatches.begin(); itr != icePatches.end(); itr++)
     {
         renderGameObjectWithRespectToPlayer((**itr), Assets::getIcePatchTextureRegion((**itr)));
+    }
+    m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
+}
+
+void Renderer::renderSuddenDeathBaseTiles(std::vector<std::unique_ptr<BaseTile>> &baseTiles)
+{
+    m_spriteBatcher->beginBatch();
+    for (std::vector<std::unique_ptr<BaseTile>>::iterator itr = baseTiles.begin(); itr != baseTiles.end(); itr++)
+    {
+        if((*itr)->getState() != BT_NORMAL)
+        {
+            renderGameObjectWithRespectToPlayer((**itr), Assets::getBaseTileTextureRegion((**itr)));
+        }
     }
     m_spriteBatcher->endBatchWithTexture(*m_mapTexture);
 }
@@ -510,12 +561,32 @@ void Renderer::renderInterface(InterfaceOverlay &interfaceOverlay)
     
     renderGameObject(interfaceOverlay.getBombButton(), Assets::getBombButtonTextureRegion(interfaceOverlay.getBombButton(), interfaceOverlay.getButtonsStateTime()));
     
+    if(interfaceOverlay.getDetonateButton().getState() != DB_OFF)
+    {
+        renderGameObject(interfaceOverlay.getDetonateButton(), Assets::getDetonateButtonTextureRegion(interfaceOverlay.getDetonateButton()));
+    }
+    
+    static Color interfaceColor = Color(1, 1, 1, 1);
+    
+    if(interfaceOverlay.getDetonateButton().getState() == DB_ON)
+    {
+        std::stringstream ssNumRemoteBombs;
+        ssNumRemoteBombs << "" << interfaceOverlay.getDetonateButton().getNumRemoteBombsDeployed();
+        std::string numRemoteBombs = ssNumRemoteBombs.str();
+        
+        static const float numRemoteBombsX = interfaceOverlay.getDetonateButton().getPosition().getX();
+        static const float numRemoteBombsY = interfaceOverlay.getDetonateButton().getPosition().getY() - interfaceOverlay.getDetonateButton().getHeight() / 9;
+        static const float numRemoteBombsWidth = interfaceOverlay.getDetonateButton().getWidth() / 2;
+        static const float numRemoteBombsHeight = numRemoteBombsWidth * 0.68421052631579f;
+        
+        m_font->renderText(*m_spriteBatcher, numRemoteBombs, numRemoteBombsX, numRemoteBombsY, numRemoteBombsWidth, numRemoteBombsHeight, interfaceColor, false, true);
+    }
+    
     m_spriteBatcher->endBatchWithTexture(*m_interfaceTexture);
     
     std::stringstream ss;
     ss << interfaceOverlay.getNumMinutesLeft() << ":" << interfaceOverlay.getNumSecondsLeftFirstColumn() << interfaceOverlay.getNumSecondsLeftSecondColumn();
     std::string timeRemaining = ss.str();
-	static Color interfaceColor = Color(1, 1, 1, 1);
     
     static const float timerX = 0.3554104477903f;
     static const float timerY = 13.0589552253125f;
@@ -665,12 +736,12 @@ void Renderer::renderGameObjectWithRespectToPlayer(GameObject &go, TextureRegion
 
 void Renderer::updatePlayerSpritesLoadedArray(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players)
 {
-    player_sprites_loaded[0] = !players.at(0)->isBot();
-    player_sprites_loaded[1] = !players.at(1)->isBot();
-    player_sprites_loaded[2] = !players.at(2)->isBot();
-    player_sprites_loaded[3] = !players.at(3)->isBot();
-    player_sprites_loaded[4] = !players.at(4)->isBot();
-    player_sprites_loaded[5] = !players.at(5)->isBot();
-    player_sprites_loaded[6] = !players.at(6)->isBot();
-    player_sprites_loaded[7] = !players.at(7)->isBot();
+    player_sprites_loaded[0] = players.size() > 0 && !players.at(0)->isBot();
+    player_sprites_loaded[1] = players.size() > 1 && !players.at(1)->isBot();
+    player_sprites_loaded[2] = players.size() > 2 && !players.at(2)->isBot();
+    player_sprites_loaded[3] = players.size() > 3 && !players.at(3)->isBot();
+    player_sprites_loaded[4] = players.size() > 4 && !players.at(4)->isBot();
+    player_sprites_loaded[5] = players.size() > 5 && !players.at(5)->isBot();
+    player_sprites_loaded[6] = players.size() > 6 && !players.at(6)->isBot();
+    player_sprites_loaded[7] = players.size() > 7 && !players.at(7)->isBot();
 }

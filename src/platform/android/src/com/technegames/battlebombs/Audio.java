@@ -12,6 +12,7 @@ public final class Audio
     private final AssetManager assets;
     private SoundPool soundPool;
 
+    @SuppressWarnings("deprecation")
     public Audio(AssetManager assets)
     {
         this.assets = assets;
@@ -47,6 +48,7 @@ public final class Audio
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void reset()
     {
         this.soundPool.release();

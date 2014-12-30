@@ -32,10 +32,10 @@ public:
 	ID3D11Texture2D* getTexture();
 
 	virtual void touchToWorld(TouchEvent &touchEvent);
-
-	virtual void platformResume();
-
-	virtual void platformPause();
+    
+    virtual void onResume();
+    
+    virtual void onPause();
 
 	virtual bool handleOnBackPressed();
 
@@ -44,6 +44,12 @@ private:
 	std::unique_ptr<GameSound> m_countDown3Sound;
 	std::unique_ptr<GameSound> m_countDown2Sound;
 	std::unique_ptr<GameSound> m_countDown1Sound;
+	std::unique_ptr<GameSound> m_baseTileTriggerSound;
+	std::unique_ptr<GameSound> m_miniExplosionSound;
+	std::unique_ptr<GameSound> m_powerUpMegaFireSound;
+	std::unique_ptr<GameSound> m_powerUpRemoteBombSound;
+	std::unique_ptr<GameSound> m_powerUpLandmineSound;
+	std::unique_ptr<GameSound> m_powerUpCurseSound;
 	std::unique_ptr<GameSound> m_battleSound;
 	std::unique_ptr<GameSound> m_plantBombSound;
 	std::unique_ptr<GameSound> m_explosionSound;

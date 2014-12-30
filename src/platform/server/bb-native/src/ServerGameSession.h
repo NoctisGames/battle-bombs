@@ -20,9 +20,15 @@ public:
 
     virtual void init();
 
-    virtual void handleServerUpdate(const char *message);
-
     void update(float deltaTime);
+    
+    int getNumPlayers();
+    
+    const char * getPlayerNameAtIndex(short playerIndex);
+    
+    bool isPlayerBotAtIndex(short playerIndex);
+    
+    bool isPlayerAliveAtIndex(short playerIndex);
 
     int getNumBreakableBlocks();
 
@@ -44,11 +50,6 @@ public:
     
     int getDeletedPowerUpGridY(int powerUpIndex);
     
-    int getNumBreakableBlocksAtSpawnTime();
-    
-    int popOldestEventId();
-    
-protected:
     virtual void onBreakableBlockDestroyed(BreakableBlock &breakableBlock);
     virtual void onPowerUpPickedUp(PowerUp &powerUp);
 
@@ -57,19 +58,11 @@ private:
     std::vector<int> m_deletedBreakableBlockYValues;
     std::vector<int> m_deletedPowerUpsXValues;
     std::vector<int> m_deletedPowerUpsYValues;
-    float m_fCountDownTimeLeft;
+    int m_gameState;
     
-    virtual void updateRunning(float deltaTime);
+    void updateRunning(float deltaTime);
 
     virtual void clientUpdateForPlayerIndex(rapidjson::Document &d, const char *keyIndex, const char *keyIsBot, const char *keyX, const char *keyY, const char *keyDirection, const char *keyAlive, short playerIndex, bool isBeginGame);
-    
-    bool isLocationOccupiedByPlayer(int gridX, int gridY);
-    
-    // A utility function to swap to integers
-    void swap(int *a, int *b);
-    
-    // A function to generate a random permutation of arr[]
-    void randomize(int arr[][2], int n);
 };
 
 #endif /* SERVER_GAME_SESSION_H */

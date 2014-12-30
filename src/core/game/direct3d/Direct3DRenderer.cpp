@@ -55,6 +55,7 @@ using namespace DirectX;
 
 ID3D11ShaderResourceView *m_mapShaderResourceView;
 ID3D11ShaderResourceView *m_gameShaderResourceView;
+ID3D11ShaderResourceView *m_offlineInterfaceShaderResourceView; 
 ID3D11ShaderResourceView *m_interfaceShaderResourceView;
 ID3D11ShaderResourceView *m_interface2ShaderResourceView;
 ID3D11ShaderResourceView *m_charBlackShaderResourceView;
@@ -73,6 +74,7 @@ Direct3DRenderer::Direct3DRenderer() : Renderer()
 
 	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\map_space.dds", NULL, &m_mapShaderResourceView, NULL);
 	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\game.dds", NULL, &m_gameShaderResourceView, NULL);
+	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\offline_interface.dds", NULL, &m_offlineInterfaceShaderResourceView, NULL);
 	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\interface.dds", NULL, &m_interfaceShaderResourceView, NULL);
 	CreateDDSTextureFromFile(DXManager->m_device, L"Assets\\interface_2.dds", NULL, &m_interface2ShaderResourceView, NULL);
 
@@ -87,6 +89,7 @@ Direct3DRenderer::Direct3DRenderer() : Renderer()
 
 	m_mapTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_mapShaderResourceView));
 	m_gameTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_gameShaderResourceView));
+	m_offlineInterfaceTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_offlineInterfaceShaderResourceView));
 	m_interfaceTexture = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_interfaceShaderResourceView));
 	m_interfaceTexture2 = std::unique_ptr<TextureWrapper>(new TextureWrapper(m_interface2ShaderResourceView));
 
@@ -119,42 +122,42 @@ void Direct3DRenderer::loadMapType(int mapType, std::vector<std::unique_ptr<Play
 		break;
 	}
 
-	if ((players.at(0)->isBot() && player_sprites_loaded[0]) || (!players.at(0)->isBot() && !player_sprites_loaded[0]))
+	if (players.size() > 0 && ((players.at(0)->isBot() && player_sprites_loaded[0]) || (!players.at(0)->isBot() && !player_sprites_loaded[0])))
 	{
 		CreateDDSTextureFromFile(DXManager->m_device, players.at(0)->isBot() ? L"Assets\\bot_black.dds" : L"Assets\\char_black.dds", NULL, &m_charBlackShaderResourceView, NULL);
 	}
 
-	if ((players.at(1)->isBot() && player_sprites_loaded[1]) || (!players.at(1)->isBot() && !player_sprites_loaded[1]))
+	if (players.size() > 1 && ((players.at(1)->isBot() && player_sprites_loaded[1]) || (!players.at(1)->isBot() && !player_sprites_loaded[1])))
 	{
 		CreateDDSTextureFromFile(DXManager->m_device, players.at(1)->isBot() ? L"Assets\\bot_blue.dds" : L"Assets\\char_blue.dds", NULL, &m_charBlueShaderResourceView, NULL);
 	}
 
-	if ((players.at(2)->isBot() && player_sprites_loaded[2]) || (!players.at(2)->isBot() && !player_sprites_loaded[2]))
+	if (players.size() > 2 && ((players.at(2)->isBot() && player_sprites_loaded[2]) || (!players.at(2)->isBot() && !player_sprites_loaded[2])))
 	{
 		CreateDDSTextureFromFile(DXManager->m_device, players.at(2)->isBot() ? L"Assets\\bot_green.dds" : L"Assets\\char_green.dds", NULL, &m_charGreenShaderResourceView, NULL);
 	}
 
-	if ((players.at(3)->isBot() && player_sprites_loaded[3]) || (!players.at(3)->isBot() && !player_sprites_loaded[3]))
+	if (players.size() > 3 && ((players.at(3)->isBot() && player_sprites_loaded[3]) || (!players.at(3)->isBot() && !player_sprites_loaded[3])))
 	{
 		CreateDDSTextureFromFile(DXManager->m_device, players.at(3)->isBot() ? L"Assets\\bot_orange.dds" : L"Assets\\char_orange.dds", NULL, &m_charOrangeShaderResourceView, NULL);
 	}
 
-	if ((players.at(4)->isBot() && player_sprites_loaded[4]) || (!players.at(4)->isBot() && !player_sprites_loaded[4]))
+	if (players.size() > 4 && ((players.at(4)->isBot() && player_sprites_loaded[4]) || (!players.at(4)->isBot() && !player_sprites_loaded[4])))
 	{
 		CreateDDSTextureFromFile(DXManager->m_device, players.at(4)->isBot() ? L"Assets\\bot_pink.dds" : L"Assets\\char_pink.dds", NULL, &m_charPinkShaderResourceView, NULL);
 	}
 
-	if ((players.at(5)->isBot() && player_sprites_loaded[5]) || (!players.at(5)->isBot() && !player_sprites_loaded[5]))
+	if (players.size() > 5 && ((players.at(5)->isBot() && player_sprites_loaded[5]) || (!players.at(5)->isBot() && !player_sprites_loaded[5])))
 	{
 		CreateDDSTextureFromFile(DXManager->m_device, players.at(5)->isBot() ? L"Assets\\bot_red.dds" : L"Assets\\char_red.dds", NULL, &m_charRedShaderResourceView, NULL);
 	}
 
-	if ((players.at(6)->isBot() && player_sprites_loaded[6]) || (!players.at(6)->isBot() && !player_sprites_loaded[6]))
+	if (players.size() > 6 && ((players.at(6)->isBot() && player_sprites_loaded[6]) || (!players.at(6)->isBot() && !player_sprites_loaded[6])))
 	{
 		CreateDDSTextureFromFile(DXManager->m_device, players.at(6)->isBot() ? L"Assets\\bot_white.dds" : L"Assets\\char_white.dds", NULL, &m_charWhiteShaderResourceView, NULL);
 	}
 
-	if ((players.at(7)->isBot() && player_sprites_loaded[7]) || (!players.at(7)->isBot() && !player_sprites_loaded[7]))
+	if (players.size() > 7 && ((players.at(7)->isBot() && player_sprites_loaded[7]) || (!players.at(7)->isBot() && !player_sprites_loaded[7])))
 	{
 		CreateDDSTextureFromFile(DXManager->m_device, players.at(7)->isBot() ? L"Assets\\bot_yellow.dds" : L"Assets\\char_yellow.dds", NULL, &m_charYellowShaderResourceView, NULL);
 	}

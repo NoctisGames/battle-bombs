@@ -3,13 +3,13 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#define APPWARP_APP_KEY         @"475c20d0-07d6-46ad-a"
+#define APPWARP_APP_KEY         @"e4207af0-de78-496d-8"
 #define APPWARP_SECRET_KEY      @"139f6094-4e04-4041-9"
-#define APPWARP_HOST_ADDRESS    @"23.99.132.2"
-#define APPWARP_AUTH_DATA       @"T3chn3G4m35_1.2.0"
+#define APPWARP_HOST_ADDRESS    @"191.234.54.124"
+#define APPWARP_AUTH_DATA       @"GowenGameDev_1.3.0"
 
 #import "GameViewController.h"
 #import "MainViewController.h"
@@ -76,12 +76,6 @@ static NSString * const PHASE = @"phase";
         on_chat_received([preGameUpdate UTF8String]);
         
         [[WarpClient getInstance] joinRoomInRangeBetweenMinUsers:0 andMaxUsers:7 maxPrefered:YES];
-    }
-    else if(event.result == 2)
-    {
-        NSString *preGameUpdate = [NSString stringWithFormat:@"{\"%@\":%i,\"%@\":%i}", EVENT_TYPE, PRE_GAME, PHASE, BATTLE_BOMBS_BETA_CLOSED];
-        
-        on_chat_received([preGameUpdate UTF8String]);
     }
     else
     {

@@ -15,6 +15,7 @@
 #include "InsideBlock.h"
 #include "PlayerState.h"
 #include "BombGameObject.h"
+#include "RemoteBomb.h"
 #include "Explosion.h"
 #include "InsideBlock.h"
 #include "BreakableBlock.h"
@@ -28,6 +29,7 @@
 #include "PowerUpBarItem.h"
 #include "ActiveButton.h"
 #include "BombButton.h"
+#include "DetonateButton.h"
 #include "PlayerAvatar.h"
 #include "SpectatorControls.h"
 #include "PlayerForceFieldState.h"
@@ -37,6 +39,16 @@
 #include "DisplayGameOverGameObject.h"
 #include "DisplayXMovingGameObject.h"
 #include "GameEvent.h"
+#include "WaitingForLocalSettingsInterface.h"
+#include "EnableBotButton.h"
+#include "BotDifficulty.h"
+#include "EnablePowerUpButton.h"
+#include "ChosenPowerUpFlags.h"
+#include "StartButton.h"
+#include "BaseTile.h"
+#include "RegeneratingDoor.h"
+#include "Landmine.h"
+
 #include <list>
 
 // For logging error conditions
@@ -246,7 +258,7 @@ TextureRegion& Assets::getBreakableBlockTextureRegion(BreakableBlock &breakableB
 {
     if(breakableBlock.getBreakableBlockState() == BB_NORMAL)
     {
-        static TextureRegion textureRegion = TextureRegion(BREAKABLE_BLOCK_TEXTURE_REGION_X, BREAKABLE_BLOCK_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+        static TextureRegion textureRegion = TextureRegion(BREAKABLE_BLOCK_FRAME_1_TEXTURE_REGION_X, BREAKABLE_BLOCK_FRAME_1_TEXTURE_REGION_Y, BREAKABLE_BLOCK_TEXTURE_REGION_WIDTH, BREAKABLE_BLOCK_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
         
         return textureRegion;
     }
@@ -660,7 +672,38 @@ TextureRegion& Assets::getPlayerTextureRegion(PlayerDynamicGameObject &player)
                 }
             }
         }
-        else if(player.getPlayerActionState() == PLACING_BOMB)
+        else if(player.getPlayerActionState() == CURSED)
+        {
+            static std::vector<TextureRegion> playerCursedTextureRegions;
+            if (playerCursedTextureRegions.size() == 0)
+            {
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_1_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_2_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_3_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_4_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_5_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_6_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_7_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+                playerCursedTextureRegions.push_back(TextureRegion(PLAYER_CURSED_FRAME_8_TEXTURE_REGION_X, PLAYER_CURSED_TEXTURE_REGION_Y, PLAYER_TEXTURE_REGION_WIDTH, PLAYER_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+            }
+            
+            static float cycleTime = 0.8f;
+            static std::vector<float> playerFrames;
+            if (playerFrames.size() == 0)
+            {
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+                playerFrames.push_back(0.1f);
+            }
+            
+            return playerCursedTextureRegions.at(getKeyFrameNumber(player.getStateTime(), cycleTime, playerFrames));
+        }
+        else if(player.getPlayerActionState() == PLACING_BOMB || player.getPlayerActionState() == PLACING_LANDMINE)
         {
             static std::vector<TextureRegion> playerPlacingBombRightTextureRegions;
             if (playerPlacingBombRightTextureRegions.size() == 0)
@@ -1049,6 +1092,76 @@ TextureRegion& Assets::getBombTextureRegion(BombGameObject &bomb)
     else
     {
         return bombTextureRegions.at(getKeyFrameNumber(bomb.getStateTime(), cycleTime, bombFrames));
+    }
+}
+
+TextureRegion& Assets::getRemoteBombTextureRegion(RemoteBomb &bomb)
+{
+    static std::vector<TextureRegion> activatingBombTextureRegions;
+    if (activatingBombTextureRegions.size() == 0)
+    {
+        activatingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_ACTIVATING_FRAME_1_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        activatingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_ACTIVATING_FRAME_2_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        activatingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_ACTIVATING_FRAME_3_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static std::vector<TextureRegion> broadcastingBombTextureRegions;
+    if (broadcastingBombTextureRegions.size() == 0)
+    {
+        broadcastingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_BROADCASTING_FRAME_1_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        broadcastingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_BROADCASTING_FRAME_2_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        broadcastingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_BROADCASTING_FRAME_3_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        broadcastingBombTextureRegions.push_back(TextureRegion(REMOTE_BOMB_BROADCASTING_FRAME_4_TEXTURE_REGION_X, REMOTE_BOMB_FRAMES_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static std::vector<TextureRegion> bombExplodingTextureRegions;
+    if (bombExplodingTextureRegions.size() == 0)
+    {
+        bombExplodingTextureRegions.push_back(TextureRegion(BOMB_EXPLOSION_FRAME_1_TEXTURE_REGION_X, BOMB_EXPLOSION_FRAME_1_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        bombExplodingTextureRegions.push_back(TextureRegion(BOMB_EXPLOSION_FRAME_2_TEXTURE_REGION_X, BOMB_EXPLOSION_FRAME_2_TEXTURE_REGION_Y, BOMB_TEXTURE_REGION_WIDTH, BOMB_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static float activatingCycleTime = 0.3f;
+    static std::vector<float> activatingBombFrames;
+    if (activatingBombFrames.size() == 0)
+    {
+        activatingBombFrames.push_back(0.1f);
+        activatingBombFrames.push_back(0.1f);
+        activatingBombFrames.push_back(0.1f);
+    }
+    
+    static float broadcastingCycleTime = 0.4f;
+    static std::vector<float> broadcastingBombFrames;
+    if (broadcastingBombFrames.size() == 0)
+    {
+        broadcastingBombFrames.push_back(0.1f);
+        broadcastingBombFrames.push_back(0.1f);
+        broadcastingBombFrames.push_back(0.1f);
+        broadcastingBombFrames.push_back(0.1f);
+    }
+    
+    static float bombExplodingCycleTime = 0.2f;
+    static std::vector<float> bombExplodingFrames;
+    if (bombExplodingFrames.size() == 0)
+    {
+        bombExplodingFrames.push_back(0.1f);
+        bombExplodingFrames.push_back(0.1f);
+    }
+    
+    if(bomb.getState() == RB_BROADCASTING)
+    {
+        if(bomb.isExploding())
+        {
+            return bombExplodingTextureRegions.at(getKeyFrameNumber(bomb.getStateTime(), bombExplodingCycleTime, bombExplodingFrames));
+        }
+        else
+        {
+            return broadcastingBombTextureRegions.at(getKeyFrameNumber(bomb.getStateTime(), broadcastingCycleTime, broadcastingBombFrames));
+        }
+    }
+    else
+    {
+        return activatingBombTextureRegions.at(getKeyFrameNumber(bomb.getStateTime(), activatingCycleTime, activatingBombFrames));
     }
 }
 
@@ -1602,6 +1715,44 @@ TextureRegion& Assets::getActiveButtonTextureRegion(ActiveButton &activeButton, 
             return TR_BUTTON_SHIELD_DISABLED_TEXTURE_REGION;
         }
     }
+    else if(activeButton.getPowerUpType() == POWER_UP_TYPE_LAND_MINE)
+    {
+        static TextureRegion TR_BUTTON_LM_ENABLED_TEXTURE_REGION = TextureRegion(BUTTON_LAND_MINE_DISABLED_TEXTURE_REGION_X, BUTTON_LAND_MINE_ENABLED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+        static TextureRegion TR_BUTTON_LM_HIGHLIGHTED_TEXTURE_REGION = TextureRegion(BUTTON_LAND_MINE_HIGHLIGHTED_TEXTURE_REGION_X, BUTTON_LAND_MINE_HIGHLIGHTED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+        static TextureRegion TR_BUTTON_LM_PRESSED_TEXTURE_REGION = TextureRegion(BUTTON_LAND_MINE_PRESSED_TEXTURE_REGION_X, BUTTON_LAND_MINE_PRESSED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+        static TextureRegion TR_BUTTON_LM_DISABLED_TEXTURE_REGION = TextureRegion(BUTTON_LAND_MINE_DISABLED_TEXTURE_REGION_X, BUTTON_LAND_MINE_DISABLED_TEXTURE_REGION_Y, BUTTON_TEXTURE_REGION_WIDTH, BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+        
+        if (activeButton.getButtonState() == ENABLED)
+        {
+            if(activeButton.isPressed())
+            {
+                return TR_BUTTON_LM_PRESSED_TEXTURE_REGION;
+            }
+            else
+            {
+                static std::vector<TextureRegion> activeButtonEnabledTextureRegions;
+                if (activeButtonEnabledTextureRegions.size() == 0)
+                {
+                    activeButtonEnabledTextureRegions.push_back(TR_BUTTON_LM_ENABLED_TEXTURE_REGION);
+                    activeButtonEnabledTextureRegions.push_back(TR_BUTTON_LM_HIGHLIGHTED_TEXTURE_REGION);
+                }
+                
+                static float cycleTime = 1.00f;
+                static std::vector<float> frames;
+                if (frames.size() == 0)
+                {
+                    frames.push_back(0.7f);
+                    frames.push_back(0.3f);
+                }
+                
+                return activeButtonEnabledTextureRegions.at(getKeyFrameNumber(buttonsStateTime, cycleTime, frames));
+            }
+        }
+        else
+        {
+            return TR_BUTTON_LM_DISABLED_TEXTURE_REGION;
+        }
+    }
     
     // Default, but should never get this far...
     std::cout << "getActiveButtonTextureRegion else condition reached!" << std::endl;
@@ -1647,6 +1798,27 @@ TextureRegion& Assets::getBombButtonTextureRegion(BombButton &bombButton, float 
     else
     {
         return TR_BUTTON_BOMB_DISABLED_TEXTURE_REGION;
+    }
+}
+
+TextureRegion& Assets::getDetonateButtonTextureRegion(DetonateButton &detonateButton)
+{
+    static TextureRegion TR_DB_FRAME_1 = TextureRegion(DETONATE_BUTTON_FRAME_1_TEXTURE_REGION_X, DETONATE_BUTTON_FRAMES_TEXTURE_REGION_Y, DETONATE_BUTTON_TEXTURE_REGION_WIDTH, DETONATE_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_DB_FRAME_2 = TextureRegion(DETONATE_BUTTON_FRAME_2_TEXTURE_REGION_X, DETONATE_BUTTON_FRAMES_TEXTURE_REGION_Y, DETONATE_BUTTON_TEXTURE_REGION_WIDTH, DETONATE_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_DB_FRAME_3 = TextureRegion(DETONATE_BUTTON_FRAME_3_TEXTURE_REGION_X, DETONATE_BUTTON_FRAMES_TEXTURE_REGION_Y, DETONATE_BUTTON_TEXTURE_REGION_WIDTH, DETONATE_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_DB_ON = TextureRegion(DETONATE_BUTTON_FRAME_4_TEXTURE_REGION_X, DETONATE_BUTTON_FRAMES_TEXTURE_REGION_Y, DETONATE_BUTTON_TEXTURE_REGION_WIDTH, DETONATE_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    
+    switch (detonateButton.getState())
+    {
+        case DB_FRAME_1:
+            return TR_DB_FRAME_1;
+        case DB_FRAME_2:
+            return TR_DB_FRAME_2;
+        case DB_FRAME_3:
+            return TR_DB_FRAME_3;
+        case DB_ON:
+        default:
+            return TR_DB_ON;
     }
 }
 
@@ -1730,7 +1902,331 @@ TextureRegion& Assets::getPowerUpTextureRegion(PowerUp &powerUp)
         powerUpShieldTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_8_TEXTURE_REGION_X, POWER_UP_SHIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
     }
     
-    static float cycleTime = 0.80f;
+    static std::vector<TextureRegion> powerUpRemoteBombTextureRegions;
+    if (powerUpRemoteBombTextureRegions.size() == 0)
+    {
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_2_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_3_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_4_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_5_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_6_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_7_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpRemoteBombTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_8_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static std::vector<TextureRegion> powerUpLandMineTextureRegions;
+    if (powerUpLandMineTextureRegions.size() == 0)
+    {
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_2_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_3_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_4_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_5_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_6_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_7_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpLandMineTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_8_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static std::vector<TextureRegion> powerUpCurseTextureRegions;
+    if (powerUpCurseTextureRegions.size() == 0)
+    {
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_2_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_3_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_4_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_5_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_6_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_7_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpCurseTextureRegions.push_back(TextureRegion(POWER_UP_FRAME_8_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static float normalCycleTime = 0.80f;
+    static std::vector<float> normalFrames;
+    if (normalFrames.size() == 0)
+    {
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+    }
+    
+    static std::vector<TextureRegion> powerUpMegaFireTextureRegions;
+    if (powerUpMegaFireTextureRegions.size() == 0)
+    {
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_1_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_2_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_3_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_4_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_5_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_6_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_7_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_8_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        powerUpMegaFireTextureRegions.push_back(TextureRegion(POWER_UP_MEGA_FIRE_FRAME_9_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static float megaFireCycleTime = 0.90f;
+    static std::vector<float> megaFireFrames;
+    if (megaFireFrames.size() == 0)
+    {
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+        megaFireFrames.push_back(0.1f);
+    }
+
+    switch (powerUp.getType())
+    {
+        case POWER_UP_TYPE_BOMB:
+            return powerUpBombTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_FIRE:
+            return powerUpFireTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_FORCE_FIELD:
+            return powerUpForceFieldTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_SPEED:
+            return powerUpSpeedTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_PUSH:
+            return powerUpPushTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_SHIELD:
+            return powerUpShieldTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_REMOTE_BOMB:
+            return powerUpRemoteBombTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_LAND_MINE:
+            return powerUpLandMineTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_CURSE:
+            return powerUpCurseTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), normalCycleTime, normalFrames));
+        case POWER_UP_TYPE_MEGA_FIRE:
+            return powerUpMegaFireTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), megaFireCycleTime, megaFireFrames));
+        default:
+            break;
+    }
+    
+    // Default, but should never get this far...
+    std::cout << "getPowerUpTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    
+    return defaultTextureRegion;
+}
+
+TextureRegion& Assets::getLocalSettingsInterfaceTextureRegion(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface)
+{
+    static TextureRegion TR_LOCAL_SETTINGS_WITH_MAP_SPACE = TextureRegion(INTERFACE_OFFLINE_MENU_SPACE_TEXTURE_REGION_X, INTERFACE_OFFLINE_MENU_SPACE_TEXTURE_REGION_Y, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_WIDTH, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_LOCAL_SETTINGS_WITH_MAP_GRASSLANDS = TextureRegion(INTERFACE_OFFLINE_MENU_GRASSLANDS_TEXTURE_REGION_X, INTERFACE_OFFLINE_MENU_GRASSLANDS_TEXTURE_REGION_Y, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_WIDTH, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_LOCAL_SETTINGS_WITH_MAP_MOUNTAINS = TextureRegion(INTERFACE_OFFLINE_MENU_MOUNTAINS_TEXTURE_REGION_X, INTERFACE_OFFLINE_MENU_MOUNTAINS_TEXTURE_REGION_Y, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_WIDTH, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_LOCAL_SETTINGS_WITH_MAP_BASE = TextureRegion(INTERFACE_OFFLINE_MENU_BASE_TEXTURE_REGION_X, INTERFACE_OFFLINE_MENU_BASE_TEXTURE_REGION_Y, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_WIDTH, INTERFACE_OFFLINE_MENU_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    
+    int mapType = waitingForLocalSettingsInterface.getChosenMapType();
+    switch (mapType)
+    {
+        case MAP_SPACE:
+            return TR_LOCAL_SETTINGS_WITH_MAP_SPACE;
+        case MAP_GRASSLANDS:
+            return TR_LOCAL_SETTINGS_WITH_MAP_GRASSLANDS;
+        case MAP_MOUNTAINS:
+            return TR_LOCAL_SETTINGS_WITH_MAP_MOUNTAINS;
+        case MAP_BASE:
+            return TR_LOCAL_SETTINGS_WITH_MAP_BASE;
+        default:
+            break;
+    }
+    
+    // Default, but should never get this far...
+    std::cout << "getLocalSettingsInterfaceTextureRegion else condition reached!" << std::endl;
+    
+    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    
+    return defaultTextureRegion;
+}
+
+TextureRegion& Assets::getEnableBotButtonTextureRegion(EnableBotButton &enableBotButton)
+{
+    static TextureRegion playerRowBotAvatarBlackTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_BLACK_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_BLACK_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion playerRowBotAvatarBlueTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_BLUE_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_BLUE_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion playerRowBotAvatarGreenTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_GREEN_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_GREEN_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion playerRowBotAvatarOrangeTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_ORANGE_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_ORANGE_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion playerRowBotAvatarPinkTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_PINK_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_PINK_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion playerRowBotAvatarRedTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_RED_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_RED_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion playerRowBotAvatarWhiteTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_WHITE_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_WHITE_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion playerRowBotAvatarYellowTextureRegion = TextureRegion(INTERFACE_2_BOT_AVATAR_YELLOW_TEXTURE_REGION_X, INTERFACE_2_BOT_AVATAR_YELLOW_TEXTURE_REGION_Y, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_WIDTH, INTERFACE_2_PLAYER_AVATAR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    
+    switch (enableBotButton.getIndex())
+    {
+        case 0:
+            return playerRowBotAvatarBlackTextureRegion;
+        case 1:
+            return playerRowBotAvatarBlueTextureRegion;
+        case 2:
+            return playerRowBotAvatarGreenTextureRegion;
+        case 3:
+            return playerRowBotAvatarOrangeTextureRegion;
+        case 4:
+            return playerRowBotAvatarPinkTextureRegion;
+        case 5:
+            return playerRowBotAvatarRedTextureRegion;
+        case 6:
+            return playerRowBotAvatarWhiteTextureRegion;
+        case 7:
+        default:
+            return playerRowBotAvatarYellowTextureRegion;
+    }
+}
+
+TextureRegion& Assets::getBotDifficultyTextTextureRegion(EnableBotButton &enableBotButton)
+{
+    static TextureRegion TR_DIFFICULTY_EASY = TextureRegion(EASY_DIFFICULTY_TEXTURE_REGION_X, EASY_DIFFICULTY_TEXTURE_REGION_Y, DIFFICULTY_TEXTURE_REGION_WIDTH, DIFFICULTY_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_DIFFICULTY_NORMAL = TextureRegion(NORMAL_DIFFICULTY_TEXTURE_REGION_X, NORMAL_DIFFICULTY_TEXTURE_REGION_Y, DIFFICULTY_TEXTURE_REGION_WIDTH, DIFFICULTY_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_DIFFICULTY_HARD = TextureRegion(HARD_DIFFICULTY_TEXTURE_REGION_X, HARD_DIFFICULTY_TEXTURE_REGION_Y, DIFFICULTY_TEXTURE_REGION_WIDTH, DIFFICULTY_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    
+    switch (enableBotButton.getDifficulty())
+    {
+        case BOT_DIFFICULTY_EASY:
+            return TR_DIFFICULTY_EASY;
+        case BOT_DIFFICULTY_NORMAL:
+            return TR_DIFFICULTY_NORMAL;
+        case BOT_DIFFICULTY_HARD:
+        default:
+            return TR_DIFFICULTY_HARD;
+    }
+}
+
+TextureRegion& Assets::getEnablePowerUpButtonTextureRegion(EnablePowerUpButton &enablePowerUpButton)
+{
+    static TextureRegion TR_SPEED_CHOSEN = TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_SPEED_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_FORCE_FIELD_CHOSEN = TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_FORCE_FIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_FIRE_CHOSEN = TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_FIRE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_BOMB_CHOSEN = TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_LAND_MINE_CHOSEN = TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_LAND_MINE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_REMOTE_BOMB_CHOSEN = TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_REMOTE_BOMB_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_CURSE_CHOSEN = TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_CURSE_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_SHIELD_CHOSEN = TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_SHIELD_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_PUSH_CHOSEN = TextureRegion(POWER_UP_FRAME_1_TEXTURE_REGION_X, POWER_UP_PUSH_TEXTURE_REGION_Y, POWER_UP_TEXTURE_REGION_WIDTH, POWER_UP_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    
+    switch (enablePowerUpButton.getChosenPowerUpFlag())
+    {
+        case PU_SPEED_CHOSEN:
+            return TR_SPEED_CHOSEN;
+        case PU_FORCE_FIELD_CHOSEN:
+            return TR_FORCE_FIELD_CHOSEN;
+        case PU_FIRE_CHOSEN:
+            return TR_FIRE_CHOSEN;
+        case PU_BOMB_CHOSEN:
+            return TR_BOMB_CHOSEN;
+        case PU_LAND_MINE_CHOSEN:
+            return TR_LAND_MINE_CHOSEN;
+        case PU_REMOTE_BOMB_CHOSEN:
+            return TR_REMOTE_BOMB_CHOSEN;
+        case PU_CURSE_CHOSEN:
+            return TR_CURSE_CHOSEN;
+        case PU_SHIELD_CHOSEN:
+            return TR_SHIELD_CHOSEN;
+        case PU_PUSH_CHOSEN:
+        default:
+            return TR_PUSH_CHOSEN;
+    }
+}
+
+TextureRegion& Assets::getStartButtonTextureRegion(StartButton &startButton)
+{
+    static TextureRegion TR_ENABLED = TextureRegion(START_BUTTON_NORMAL_TEXTURE_REGION_X, START_BUTTON_NORMAL_TEXTURE_REGION_Y, START_BUTTON_TEXTURE_REGION_WIDTH, START_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_HIGHLIGHTED = TextureRegion(START_BUTTON_HIGHLIGHTED_TEXTURE_REGION_X, START_BUTTON_HIGHLIGHTED_TEXTURE_REGION_Y, START_BUTTON_TEXTURE_REGION_WIDTH, START_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static TextureRegion TR_PRESSED = TextureRegion(START_BUTTON_PRESSED_TEXTURE_REGION_X, START_BUTTON_PRESSED_TEXTURE_REGION_Y, START_BUTTON_TEXTURE_REGION_WIDTH, START_BUTTON_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    
+    Button_State buttonState = startButton.getButtonState();
+    switch (buttonState)
+    {
+        case ENABLED:
+            return TR_ENABLED;
+        case HIGHLIGHTED:
+            return TR_HIGHLIGHTED;
+        case PRESSED:
+        default:
+            return TR_PRESSED;
+    }
+}
+
+TextureRegion& Assets::getBaseTileTextureRegion(BaseTile &baseTile)
+{
+    static std::vector<TextureRegion> baseTileTextureRegions;
+    if (baseTileTextureRegions.size() == 0)
+    {
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_1_TEXTURE_REGION_X, BASE_TILE_FRAME_1_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_2_TEXTURE_REGION_X, BASE_TILE_FRAME_2_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_3_TEXTURE_REGION_X, BASE_TILE_FRAME_3_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_4_TEXTURE_REGION_X, BASE_TILE_FRAME_4_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_5_TEXTURE_REGION_X, BASE_TILE_FRAME_5_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_6_TEXTURE_REGION_X, BASE_TILE_FRAME_6_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_7_TEXTURE_REGION_X, BASE_TILE_FRAME_7_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_8_TEXTURE_REGION_X, BASE_TILE_FRAME_8_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_9_TEXTURE_REGION_X, BASE_TILE_FRAME_9_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_10_TEXTURE_REGION_X, BASE_TILE_FRAME_10_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_11_TEXTURE_REGION_X, BASE_TILE_FRAME_11_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_12_TEXTURE_REGION_X, BASE_TILE_FRAME_12_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_13_TEXTURE_REGION_X, BASE_TILE_FRAME_13_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_14_TEXTURE_REGION_X, BASE_TILE_FRAME_14_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        baseTileTextureRegions.push_back(TextureRegion(BASE_TILE_FRAME_15_TEXTURE_REGION_X, BASE_TILE_FRAME_15_TEXTURE_REGION_Y, BASE_TILE_TEXTURE_REGION_WIDTH, BASE_TILE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static float cycleTime = 1.5f;
+    static std::vector<float> frames;
+    if (frames.size() == 0)
+    {
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+        frames.push_back(0.1f);
+    }
+    
+    if(baseTile.getState() == BT_ACTIVATED || baseTile.getState() == BT_EXPLODING)
+    {
+        return baseTileTextureRegions.at(getKeyFrameNumber(baseTile.getStateTime(), cycleTime, frames));
+    }
+    else if(baseTile.getState() == BT_DESTROYED)
+    {
+        return baseTileTextureRegions.at(baseTileTextureRegions.size() - 1);
+    }
+    else
+    {
+        return baseTileTextureRegions.at(0);
+    }
+}
+
+TextureRegion& Assets::getRegeneratingDoorTextureRegion(RegeneratingDoor &regeneratingDoor)
+{
+    static std::vector<TextureRegion> regeneratingDoorTextureRegions;
+    if (regeneratingDoorTextureRegions.size() == 0)
+    {
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_1_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_2_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_3_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_4_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_5_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_6_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_7_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        regeneratingDoorTextureRegions.push_back(TextureRegion(REGENERATING_DOOR_FRAME_8_TEXTURE_REGION_X, REGENERATING_DOOR_FRAMES_TEXTURE_REGION_Y, REGENERATING_DOOR_TEXTURE_REGION_WIDTH, REGENERATING_DOOR_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
+    
+    static float cycleTime = 0.8f;
     static std::vector<float> frames;
     if (frames.size() == 0)
     {
@@ -1743,31 +2239,65 @@ TextureRegion& Assets::getPowerUpTextureRegion(PowerUp &powerUp)
         frames.push_back(0.1f);
         frames.push_back(0.1f);
     }
-
-    switch (powerUp.getType())
+    
+    if(regeneratingDoor.isExploding())
     {
-        case POWER_UP_TYPE_BOMB:
-            return powerUpBombTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
-        case POWER_UP_TYPE_FIRE:
-            return powerUpFireTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
-        case POWER_UP_TYPE_FORCE_FIELD:
-            return powerUpForceFieldTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
-        case POWER_UP_TYPE_SPEED:
-            return powerUpSpeedTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
-        case POWER_UP_TYPE_PUSH:
-            return powerUpPushTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
-        case POWER_UP_TYPE_SHIELD:
-            return powerUpShieldTextureRegions.at(getKeyFrameNumber(powerUp.getStateTime(), cycleTime, frames));
-        default:
-            break;
+        return regeneratingDoorTextureRegions.at(getKeyFrameNumber(regeneratingDoor.getStateTime(), cycleTime, frames));
+    }
+    else
+    {
+        return regeneratingDoorTextureRegions.at(0);
+    }
+}
+
+TextureRegion& Assets::getLandmineTextureRegion(Landmine &landmine)
+{
+    static std::vector<TextureRegion> landmineNormalTextureRegions;
+    if (landmineNormalTextureRegions.size() == 0)
+    {
+        landmineNormalTextureRegions.push_back(TextureRegion(LANDMINE_NORMAL_FRAME_1_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        landmineNormalTextureRegions.push_back(TextureRegion(LANDMINE_NORMAL_FRAME_2_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
     }
     
-    // Default, but should never get this far...
-    std::cout << "getPowerUpTextureRegion else condition reached!" << std::endl;
+    static float normalCycleTime = 0.2f;
+    static std::vector<float> normalFrames;
+    if (normalFrames.size() == 0)
+    {
+        normalFrames.push_back(0.1f);
+        normalFrames.push_back(0.1f);
+    }
     
-    static TextureRegion defaultTextureRegion = TextureRegion(WORLD_BACKGROUND_TEXTURE_REGION_X, WORLD_BACKGROUND_TEXTURE_REGION_Y, WORLD_BACKGROUND_TEXTURE_REGION_WIDTH, WORLD_BACKGROUND_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024);
+    static std::vector<TextureRegion> landmineExplodingTextureRegions;
+    if (landmineExplodingTextureRegions.size() == 0)
+    {
+        landmineExplodingTextureRegions.push_back(TextureRegion(LANDMINE_EXPLODING_FRAME_1_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        landmineExplodingTextureRegions.push_back(TextureRegion(LANDMINE_EXPLODING_FRAME_2_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        landmineExplodingTextureRegions.push_back(TextureRegion(LANDMINE_EXPLODING_FRAME_3_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        landmineExplodingTextureRegions.push_back(TextureRegion(LANDMINE_EXPLODING_FRAME_4_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        landmineExplodingTextureRegions.push_back(TextureRegion(LANDMINE_EXPLODING_FRAME_5_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+        landmineExplodingTextureRegions.push_back(TextureRegion(LANDMINE_EXPLODING_FRAME_6_TEXTURE_REGION_X, LANDMINE_FRAMES_TEXTURE_REGION_Y, LANDMINE_TEXTURE_REGION_WIDTH, LANDMINE_TEXTURE_REGION_HEIGHT, TEXTURE_SIZE_1024x1024, TEXTURE_SIZE_1024x1024));
+    }
     
-    return defaultTextureRegion;
+    static float explodingCycleTime = 0.6f;
+    static std::vector<float> explodingFrames;
+    if (explodingFrames.size() == 0)
+    {
+        explodingFrames.push_back(0.1f);
+        explodingFrames.push_back(0.1f);
+        explodingFrames.push_back(0.1f);
+        explodingFrames.push_back(0.1f);
+        explodingFrames.push_back(0.1f);
+        explodingFrames.push_back(0.1f);
+    }
+    
+    if(landmine.getState() == LM_NORMAL)
+    {
+        return landmineNormalTextureRegions.at(getKeyFrameNumber(landmine.getStateTime(), normalCycleTime, normalFrames));
+    }
+    else
+    {
+        return landmineExplodingTextureRegions.at(getKeyFrameNumber(landmine.getStateTime(), explodingCycleTime, explodingFrames));
+    }
 }
 
 void Assets::setMusicId(short musicId)

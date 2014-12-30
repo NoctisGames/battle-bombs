@@ -14,6 +14,9 @@
 #include "PlayerDynamicGameObject.h"
 #include "Vector2D.h"
 #include "GameEvent.h"
+#include "Map.h"
+#include "GameSession.h"
+#include "RegeneratingDoor.h"
 
 // For Randomness
 #include <stdlib.h>
@@ -45,11 +48,50 @@ bool PathFinder::isLocationOccupiedByBreakableBlock(std::vector<std::unique_ptr<
     return false;
 }
 
+bool PathFinder::isLocationOccupiedByDoor(std::vector<std::unique_ptr<RegeneratingDoor >> &doors, int gridX, int gridY)
+{
+    for (std::vector < std::unique_ptr < RegeneratingDoor >> ::iterator itr = doors.begin(); itr != doors.end(); itr++)
+    {
+        if (gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY())
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+bool PathFinder::isLocationOccupiedByRegeneratingDoor(std::vector<std::unique_ptr<RegeneratingDoor >> &doors, int gridX, int gridY)
+{
+    for (std::vector < std::unique_ptr < RegeneratingDoor >> ::iterator itr = doors.begin(); itr != doors.end(); itr++)
+    {
+        if (gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY())
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 bool PathFinder::isLocationOccupiedByOtherPlayer(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, PlayerDynamicGameObject *player, int gridX, int gridY)
 {
     for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = players.begin(); itr != players.end(); itr++)
     {
         if ((*itr).get() != player && gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY())
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+bool PathFinder::isLocationOccupiedByPlayer(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, int gridX, int gridY)
+{
+    for (std::vector < std::unique_ptr < PlayerDynamicGameObject >> ::iterator itr = players.begin(); itr != players.end(); itr++)
+    {
+        if (gridX == (*itr)->getGridX() && gridY == (*itr)->getGridY())
         {
             return true;
         }
@@ -427,50 +469,9 @@ void PathFinder::resetGameGrid()
     }
 }
 
-void PathFinder::initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType)
+void PathFinder::initializeGameGrid(GameSession *gameSession, Map *map)
 {
-    for (std::vector < std::unique_ptr < InsideBlock >> ::iterator itr = insideBlocks.begin(); itr != insideBlocks.end(); itr++)
-    {
-        int gridX = (*itr)->getGridX();
-        int gridY = (*itr)->getGridY();
-        _gameGrid[gridX][gridY] = 9;
-    }
-    
-    for (std::vector < std::unique_ptr < BreakableBlock >> ::iterator itr = breakableBlocks.begin(); itr != breakableBlocks.end(); itr++)
-    {
-        int gridX = (*itr)->getGridX();
-        int gridY = (*itr)->getGridY();
-        _gameGrid[gridX][gridY] = 9;
-    }
-    
-    // For Map Borders
-    
-    _gameGrid[0][0] = 9;
-    _gameGrid[1][0] = 9;
-    _gameGrid[2][0] = 9;
-    _gameGrid[0][1] = 9;
-    _gameGrid[1][1] = 9;
-    _gameGrid[2][1] = 9;
-    _gameGrid[0][2] = 9;
-    _gameGrid[1][2] = 9;
-    _gameGrid[2][2] = 9;
-    
-    _gameGrid[NUM_GRID_CELLS_PER_ROW - 3][0] = 9;
-    _gameGrid[NUM_GRID_CELLS_PER_ROW - 2][0] = 9;
-    _gameGrid[NUM_GRID_CELLS_PER_ROW - 1][0] = 9;
-    _gameGrid[NUM_GRID_CELLS_PER_ROW - 3][1] = 9;
-    _gameGrid[NUM_GRID_CELLS_PER_ROW - 2][1] = 9;
-    _gameGrid[NUM_GRID_CELLS_PER_ROW - 1][1] = 9;
-    _gameGrid[NUM_GRID_CELLS_PER_ROW - 3][2] = 9;
-    _gameGrid[NUM_GRID_CELLS_PER_ROW - 2][2] = 9;
-    _gameGrid[NUM_GRID_CELLS_PER_ROW - 1][2] = 9;
-    
-    if(mapType == MAP_MOUNTAINS)
-    {
-        _gameGrid[6][GRID_CELL_NUM_ROWS - 1] = 9;
-        _gameGrid[7][GRID_CELL_NUM_ROWS - 1] = 9;
-        _gameGrid[8][GRID_CELL_NUM_ROWS - 1] = 9;
-    }
+    map->initializeGameGrid(gameSession, _gameGrid);
 }
 
 void PathFinder::freeGameGridCell(int gridX, int gridY)

@@ -12,7 +12,9 @@
 typedef enum
 {
     DISABLED,
-    ENABLED
+    ENABLED,
+    HIGHLIGHTED,
+    PRESSED
 } Button_State;
 
 #endif

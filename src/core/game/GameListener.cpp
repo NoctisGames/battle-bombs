@@ -8,9 +8,12 @@
 
 #include "string.h"
 #include "GameListener.h"
-#include "Assets.h"
 #include "PlayerDynamicGameObject.h"
 #include "GameEvent.h"
+
+#if defined(TECHNE_GAMES_OPENGL_ES) || defined(TECHNE_GAMES_DIRECT_3D)
+#include "Assets.h"
+#endif
 
 #ifdef TECHNE_GAMES_DIRECT_3D
 #define strdup _strdup
@@ -23,7 +26,7 @@ GameListener::GameListener()
 
 void GameListener::addLocalEventForPlayer(int eventId, PlayerDynamicGameObject &player)
 {
-    if(eventId == PLAYER_PLANT_BOMB)
+    if(eventId == PLAYER_PLANT_BOMB || eventId == PLAYER_PLANT_REMOTE_BOMB)
     {
         eventId += PLAYER_EVENT_MOD_BASE * (player.getFirePower() - 1);
     }
@@ -76,5 +79,7 @@ std::vector<const char *> & GameListener::freeServerMessages()
 
 void GameListener::playSound(short soundId)
 {
+#if defined(TECHNE_GAMES_OPENGL_ES) || defined(TECHNE_GAMES_DIRECT_3D)
     Assets::getInstance()->addSoundIdToPlayQueue(soundId);
+#endif
 }

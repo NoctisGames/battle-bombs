@@ -27,13 +27,18 @@ class GameListener;
 class BombGameObject;
 class Crater;
 class IcePatch;
+class BaseTile;
+class RegeneratingDoor;
+class Landmine;
+class RemoteBomb;
+class GameSession;
 
 class PlayerDynamicGameObject : public DynamicGridGameObject
 {
 public:
-    PlayerDynamicGameObject(short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction = DIRECTION_RIGHT, float width = PLAYER_FRAME_WIDTH, float height = PLAYER_FRAME_HEIGHT);
+    PlayerDynamicGameObject(GameSession &gameSession, short playerIndex, int gridX, int gridY, GameListener *gameListener, int direction = DIRECTION_RIGHT, float width = PLAYER_FRAME_WIDTH, float height = PLAYER_FRAME_HEIGHT);
 
-    virtual void update(float deltaTime, std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PowerUp >> &powerUps, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
+    virtual void update(float deltaTime, GameSession &gameSession);
 
     float getStateTime();
 
@@ -61,6 +66,10 @@ public:
     
     void onBombPushed(BombGameObject *bomb);
     
+    void onLandminePlaced(Landmine *landmine);
+    
+    bool isOwnerOfLandmine(Landmine *landmine);
+    
     void raiseShield();
     
     void lowerShield();
@@ -77,21 +86,29 @@ public:
     
     bool isHitByIce(std::vector<std::unique_ptr<IcePatch >> &icePatches);
     
+    bool isTriggeringLandmine(GameSession &gameSession);
+    
+    bool isTrappedOnExplodingBaseTile(std::vector<std::unique_ptr<BaseTile>> &baseTiles);
+    
     void handlePowerUps(std::vector<std::unique_ptr<PowerUp >> &powerUps);
     
     void onForceFieldHit();
 
-    void onTrappedOnFallingSpaceTile(std::vector<std::unique_ptr<SpaceTile>> &spaceTiles);
+    void onTrappedOnFallingSpaceTile(GameSession &gameSession);
     
-    void onFall();
+    void onHitByFireBall(GameSession &gameSession);
     
-    void onFreeze();
+    void onFall(GameSession &gameSession);
     
-    void onDeath();
+    void onFreeze(GameSession &gameSession);
+    
+    void onDeath(GameSession &gameSession);
     
     void onWin();
 
-    bool isAbleToDropAdditionalBomb(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
+    bool isAbleToDropAdditionalBomb(GameSession &gameSession);
+    
+    bool isAbleToPlaceLandmine(GameSession &gameSession);
 
 	bool isBombInFrontOfPlayer(BombGameObject &bomb);
     
@@ -129,12 +146,22 @@ public:
     
     bool isDisplayingPointer();
     
-    void reset();
+    bool isUsingRemoteBombs();
+    
+    void reset(GameSession &gameSession);
     
     void handleBombErasure(BombGameObject *bomb);
+    
+    int getNumCurrentlyDeployedRemoteBombs();
+    
+    void detonateFirstRemoteBomb();
+    
+    void triggerLandmine();
 
 protected:
     BombGameObject *m_lastBombDropped;
+    Landmine *m_lastLandminePlaced;
+    std::vector<RemoteBomb *> m_currentlyDeployedRemoteBombs;
     Player_State m_playerState;
     Player_Action_State m_playerActionState;
     float m_fStateTime;
@@ -143,11 +170,11 @@ protected:
     int m_iMaxBombCount;
     int m_iCurrentBombCount;
     short m_firePower;
-    int m_activePowerUpIndex;
     int m_activePowerUp;
     short m_sPlayerIndex;
     int m_iPlayerForceFieldState;
     float m_fPlayerForceFieldStateTime;
+    bool m_isUsingRemoteBombs;
     GameListener *m_gameListener;
     
 private:
@@ -158,7 +185,7 @@ private:
     float m_fDisplayingPointerStateTime;
     bool m_isDisplayingPointer;
     
-    bool isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
+    bool isCollision(std::vector<std::unique_ptr<MapBorder >> &mapBorders, std::vector<std::unique_ptr<SpaceTile>> &spaceTiles, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<Crater >> &craters, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
     
     void setPlayerForceFieldState(int playerForceFieldState);
 };

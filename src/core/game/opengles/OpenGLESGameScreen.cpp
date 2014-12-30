@@ -3,7 +3,7 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 2/22/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
 #include "OpenGLESGameScreen.h"
@@ -52,6 +52,15 @@
 #include "FallingObjectShadow.h"
 #include "SpaceTile.h"
 #include "OpenGLESManager.h"
+#include "Map.h"
+#include "StartButton.h"
+#include "EnableBotButton.h"
+#include "EnablePowerUpButton.h"
+#include "RegeneratingDoor.h"
+#include "BaseTile.h"
+#include "Landmine.h"
+#include "RemoteBomb.h"
+#include "DetonateButton.h"
 
 OpenGLESGameScreen::OpenGLESGameScreen(const char *username, bool isOffline, bool isRunningIOS8) : GameScreen(username, isOffline)
 {
@@ -90,16 +99,6 @@ void OpenGLESGameScreen::touchToWorld(TouchEvent &touchEvent)
         m_touchPoint->set((touchEvent.getY() / (float) m_iDeviceScreenDpHeight) * SCREEN_WIDTH, (touchEvent.getX() / (float) m_iDeviceScreenDpWidth) * SCREEN_HEIGHT);
     }
 #endif
-}
-
-void OpenGLESGameScreen::platformResume()
-{
-    // Empty
-}
-
-void OpenGLESGameScreen::platformPause()
-{
-    // Empty
 }
 
 bool OpenGLESGameScreen::handleOnBackPressed()

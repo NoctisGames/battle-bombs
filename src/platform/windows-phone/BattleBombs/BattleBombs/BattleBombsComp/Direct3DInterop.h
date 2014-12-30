@@ -63,16 +63,10 @@ namespace BattleBombsComp
 		std::unique_ptr<Direct3DGameScreen> m_gameScreen;
 		BasicTimer^ m_timer;
 		Windows::Foundation::Size m_renderResolution;
-		bool m_isOffline;
-		char *m_username;
-		const char *m_gameOverMessage;
-		bool m_playersAlive[8];
-		bool _isSuddenDeath;
-		float _timeSinceOneOrLessPlayersRemaining;
-		bool _isGameOver;
 		std::vector<TouchEvent> m_touchEvents;
 		std::vector<TouchEvent> m_touchEventsPool;
 		std::vector<TouchEvent> m_touchEventsBuffer;
+		bool m_isOffline;
 
 		void pushEvents();
 

@@ -2,7 +2,7 @@
 //  ActiveButton.cpp
 //  battlebombs
 //
-//  Created by Mikel Adkins on 5/18/14.
+//  Created by Stephen Gowen on 5/18/14.
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 

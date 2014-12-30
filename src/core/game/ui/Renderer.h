@@ -54,6 +54,9 @@ class RectangleBatcher;
 class CountDownNumberGameObject;
 class DisplayXMovingGameObject;
 class DisplayGameOverGameObject;
+class BaseTile;
+class RegeneratingDoor;
+class Landmine;
 
 class Renderer
 {
@@ -72,7 +75,7 @@ public:
     
     void calcScrollYForPlayer(PlayerDynamicGameObject &player);
     
-    void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface);
+    void renderWaitingForServerInterface(WaitingForServerInterface &waitingForServerInterface, bool renderPlayersList, bool renderMessage);
     
     void renderWaitingForLocalSettingsInterface(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
     
@@ -82,13 +85,15 @@ public:
     
     void renderCraters(std::vector<std::unique_ptr<Crater>> &craters);
     
-    void renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<PowerUp>> &powerUps);
+    void renderWorldForeground(std::vector<std::unique_ptr<MapBorder>> &mapBordersFar, std::vector<std::unique_ptr<InsideBlock>> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock>> &breakableBlocks, std::vector<std::unique_ptr<RegeneratingDoor>> &doors, std::vector<std::unique_ptr<PowerUp>> &powerUps);
     
-    void renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs);
-
     void renderExplosions(std::vector<std::unique_ptr<Explosion>> &explosions);
+    
+    void renderBombs(std::vector<std::unique_ptr<BombGameObject>> &bombs, std::vector<std::unique_ptr<Landmine>> &landmines);
 
     void renderSuddenDeathMountainsIcePatches(std::vector<std::unique_ptr<IcePatch>> &icePatches);
+    
+    void renderSuddenDeathBaseTiles(std::vector<std::unique_ptr<BaseTile>> &baseTiles);
     
     void renderPlayers(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players);
     
@@ -114,6 +119,7 @@ protected:
 	std::unique_ptr<Font> m_font;
     std::unique_ptr<TextureWrapper> m_gameTexture;
     std::unique_ptr<TextureWrapper> m_mapTexture;
+    std::unique_ptr<TextureWrapper> m_offlineInterfaceTexture;
     std::unique_ptr<TextureWrapper> m_interfaceTexture;
     std::unique_ptr<TextureWrapper> m_interfaceTexture2;
     std::unique_ptr<TextureWrapper> m_charBlackTexture;

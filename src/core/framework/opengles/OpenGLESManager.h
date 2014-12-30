@@ -55,15 +55,9 @@ public:
     void finishSpriteRendering();
     void finishGeometryRendering();
     
-    void cleanUp();
-    
 private:
     void buildShaderPrograms();
     void generateIndices();
-#ifdef TECHNE_GAMES_OPENGL_ANDROID
-    void createVertexBufferForSpriteBatcher();
-    void createVertexBufferForGeometryBatcher();
-#endif
     void createMatrix();
     
     OpenGLESManager();

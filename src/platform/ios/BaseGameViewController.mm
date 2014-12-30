@@ -3,7 +3,7 @@
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/5/14.
-//  Copyright (c) 2014 Techne Games. All rights reserved.
+//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
 #import "BaseGameViewController.h"
@@ -31,6 +31,8 @@
 @property (strong, nonatomic) Sound *countDown3Sound;
 @property (strong, nonatomic) Sound *countDown2Sound;
 @property (strong, nonatomic) Sound *countDown1Sound;
+@property (strong, nonatomic) Sound *baseTileTriggerSound;
+@property (strong, nonatomic) Sound *miniExplosionSound;
 @property (strong, nonatomic) Sound *battleSound;
 @property (strong, nonatomic) Sound *plantBombSound;
 @property (strong, nonatomic) Sound *explosionSound;
@@ -40,6 +42,10 @@
 @property (strong, nonatomic) Sound *powerUpForceFieldSound;
 @property (strong, nonatomic) Sound *powerUpPushSound;
 @property (strong, nonatomic) Sound *powerUpShieldSound;
+@property (strong, nonatomic) Sound *powerUpMegaFireSound;
+@property (strong, nonatomic) Sound *powerUpRemoteBombSound;
+@property (strong, nonatomic) Sound *powerUpLandmineSound;
+@property (strong, nonatomic) Sound *powerUpCurseSound;
 @property (strong, nonatomic) Sound *forceFieldDownSound;
 @property (strong, nonatomic) Sound *deathSound;
 @property (strong, nonatomic) Sound *hurrySound;
@@ -87,6 +93,8 @@ static bool isRunningiOS8 = false;
     self.countDown3Sound = [[Sound alloc] initWithSoundNamed:@"countdown_3.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.countDown2Sound = [[Sound alloc] initWithSoundNamed:@"countdown_2.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.countDown1Sound = [[Sound alloc] initWithSoundNamed:@"countdown_1.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
+    self.baseTileTriggerSound = [[Sound alloc] initWithSoundNamed:@"base_tile_trigger.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:3];
+    self.miniExplosionSound = [[Sound alloc] initWithSoundNamed:@"mini_explosion.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
     self.battleSound = [[Sound alloc] initWithSoundNamed:@"battle.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
     self.plantBombSound = [[Sound alloc] initWithSoundNamed:@"plant_bomb.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:3];
     self.explosionSound = [[Sound alloc] initWithSoundNamed:@"explosion.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:6];
@@ -96,6 +104,10 @@ static bool isRunningiOS8 = false;
     self.powerUpForceFieldSound = [[Sound alloc] initWithSoundNamed:@"pu_force_field.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.powerUpPushSound = [[Sound alloc] initWithSoundNamed:@"pu_push.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.powerUpShieldSound = [[Sound alloc] initWithSoundNamed:@"pu_shield.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpMegaFireSound = [[Sound alloc] initWithSoundNamed:@"pu_mega_fire.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpRemoteBombSound = [[Sound alloc] initWithSoundNamed:@"pu_remote_bomb.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpLandmineSound = [[Sound alloc] initWithSoundNamed:@"pu_landmine.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
+    self.powerUpCurseSound = [[Sound alloc] initWithSoundNamed:@"pu_curse.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.forceFieldDownSound = [[Sound alloc] initWithSoundNamed:@"force_field_down.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.deathSound = [[Sound alloc] initWithSoundNamed:@"death.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:2];
     self.hurrySound = [[Sound alloc] initWithSoundNamed:@"hurry.caf" fromBundle:[NSBundle mainBundle] andMaxNumOfSimultaneousPlays:1];
@@ -258,6 +270,18 @@ static bool isRunningiOS8 = false;
             case SOUND_PU_SHIELD:
                 [self.powerUpShieldSound play];
                 break;
+            case SOUND_PU_MEGA_FIRE:
+                [self.powerUpMegaFireSound play];
+                break;
+            case SOUND_PU_REMOTE_BOMB:
+                [self.powerUpRemoteBombSound play];
+                break;
+            case SOUND_PU_LAND_MINE:
+                [self.powerUpLandmineSound play];
+                break;
+            case SOUND_PU_CURSE:
+                [self.powerUpCurseSound play];
+                break;
             case SOUND_FORCE_FIELD_DOWN:
                 [self.forceFieldDownSound play];
                 break;
@@ -290,6 +314,12 @@ static bool isRunningiOS8 = false;
                 break;
             case SOUND_CRASHING_ICE_BALL:
                 [self.crashingIceBallSound play];
+                break;
+            case SOUND_MINI_EXPLOSION:
+                [self.miniExplosionSound play];
+                break;
+            case SOUND_BASE_TILE_TRIGGER:
+                [self.baseTileTriggerSound play];
                 break;
             default:
                 continue;

@@ -22,6 +22,7 @@ class MapBorder;
 class BreakableBlock;
 class PlayerDynamicGameObject;
 class BombGameObject;
+class RemoteBomb;
 class Fire;
 class FallingObjectShadow;
 class FireBall;
@@ -35,12 +36,20 @@ class DPadControl;
 class PowerUpBarItem;
 class ActiveButton;
 class BombButton;
+class DetonateButton;
 class SpectatorControls;
 class PlayerRowAvatar;
 class PlayerRowPlatformAvatar;
 class CountDownNumberGameObject;
 class DisplayGameOverGameObject;
 class DisplayXMovingGameObject;
+class WaitingForLocalSettingsInterface;
+class EnableBotButton;
+class EnablePowerUpButton;
+class StartButton;
+class BaseTile;
+class RegeneratingDoor;
+class Landmine;
 
 class Assets
 {
@@ -77,6 +86,8 @@ public:
     
     static TextureRegion& getBombTextureRegion(BombGameObject &bomb);
     
+    static TextureRegion& getRemoteBombTextureRegion(RemoteBomb &bomb);
+    
     static TextureRegion& getFireTextureRegion(Fire &fire);
     
     static TextureRegion& getForceFieldTextureRegion(int forceFieldState, float forceFieldStateTime);
@@ -101,6 +112,8 @@ public:
     
     static TextureRegion& getBombButtonTextureRegion(BombButton &bombButton, float buttonsStateTime);
     
+    static TextureRegion& getDetonateButtonTextureRegion(DetonateButton &detonateButton);
+    
     static TextureRegion& getSpectatorInterfaceOverlayTextureRegion();
     
     static TextureRegion& getDPadControlTextureRegion(DPadControl &dpadControl);
@@ -112,6 +125,22 @@ public:
     static TextureRegion& getDisplayXMovingTextureRegion(DisplayXMovingGameObject &displayXMovingGameObject);
     
     static TextureRegion& getDisplayGameOverTextureRegion(DisplayGameOverGameObject &displayGameOverGameObject);
+    
+    static TextureRegion& getLocalSettingsInterfaceTextureRegion(WaitingForLocalSettingsInterface &waitingForLocalSettingsInterface);
+    
+    static TextureRegion& getEnableBotButtonTextureRegion(EnableBotButton &enableBotButton);
+    
+    static TextureRegion& getBotDifficultyTextTextureRegion(EnableBotButton &enableBotButton);
+    
+    static TextureRegion& getEnablePowerUpButtonTextureRegion(EnablePowerUpButton &enablePowerUpButton);
+    
+    static TextureRegion& getStartButtonTextureRegion(StartButton &startButton);
+    
+    static TextureRegion& getBaseTileTextureRegion(BaseTile &baseTile);
+    
+    static TextureRegion& getRegeneratingDoorTextureRegion(RegeneratingDoor &regeneratingDoor);
+    
+    static TextureRegion& getLandmineTextureRegion(Landmine &landmine);
     
     void setMusicId(short musicId);
     

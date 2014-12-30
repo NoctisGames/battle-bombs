@@ -19,6 +19,9 @@ class BombGameObject;
 class Explosion;
 class BreakableBlock;
 class PlayerDynamicGameObject;
+class Map;
+class GameSession;
+class RegeneratingDoor;
 
 class PathFinder
 {
@@ -33,7 +36,13 @@ public:
     
     static bool isLocationOccupiedByBreakableBlock(std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int gridX, int gridY);
     
+    static bool isLocationOccupiedByDoor(std::vector<std::unique_ptr<RegeneratingDoor >> &doors, int gridX, int gridY);
+    
+    static bool isLocationOccupiedByRegeneratingDoor(std::vector<std::unique_ptr<RegeneratingDoor >> &doors, int gridX, int gridY);
+    
     static bool isLocationOccupiedByOtherPlayer(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, PlayerDynamicGameObject *player, int gridX, int gridY);
+    
+    static bool isLocationOccupiedByPlayer(std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, int gridX, int gridY);
     
     static bool isLocationOccupiedByBombOrExplosionPath(std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, int gridX, int gridY, bool isCurrentlyTakingCover);
     
@@ -47,7 +56,7 @@ public:
     
     void resetGameGrid();
     
-    void initializeGameGrid(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType);
+    void initializeGameGrid(GameSession *gameSession, Map *map);
     
     void freeGameGridCell(int gridX, int gridY);
     

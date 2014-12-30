@@ -31,21 +31,27 @@ class InsideBlock;
 class BreakableBlock;
 class Rectangle;
 class SpectatorControls;
+class Map;
+class GameSession;
+class GameScreen;
+class DetonateButton;
 
 class InterfaceOverlay
 {
 public:
 	InterfaceOverlay(GameListener *gameListener);
     
-    void initializeMiniMap(std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType);
+    void initializeMiniMap(GameSession *gameSession);
     
-    void update(float deltaTime, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs, std::vector<std::unique_ptr<Explosion >> &explosions, std::vector<std::unique_ptr<InsideBlock >> &insideBlocks, std::vector<std::unique_ptr<BreakableBlock >> &breakableBlocks, int mapType, int playerIndex, Game_State gameState);
+    void initializePlayerAvatars(int numPlayers);
     
-    void handleTouchDownInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player, std::vector<std::unique_ptr<PlayerDynamicGameObject>> &players, std::vector<std::unique_ptr<BombGameObject >> &bombs);
+    void update(float deltaTime, GameScreen *gameScreen, int playerIndex, GameState *gameState);
     
-    void handleTouchDraggedInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player);
+    void handleTouchDownInputRunning(GameScreen *gameScreen);
     
-    void handleTouchUpInputRunning(Vector2D &touchPoint, PlayerDynamicGameObject &player);
+    void handleTouchDraggedInputRunning(GameScreen *gameScreen);
+    
+    void handleTouchUpInputRunning(GameScreen *gameScreen);
     
     bool handleTouchDownInputSpectating(Vector2D &touchPoint);
     
@@ -62,6 +68,8 @@ public:
     ActiveButton & getActiveButton();
     
     BombButton & getBombButton();
+    
+    DetonateButton & getDetonateButton();
     
     SpectatorControls & getSpectatorControls();
     
@@ -91,6 +99,7 @@ private:
     std::vector<std::unique_ptr<PowerUpBarItem>> m_powerUpBarItems;
     std::unique_ptr<ActiveButton> m_activeButton;
     std::unique_ptr<BombButton> m_bombButton;
+    std::unique_ptr<DetonateButton> m_detonateButton;
     std::unique_ptr<SpectatorControls> m_spectatorControls;
     GameListener *m_gameListener;
     std::string m_spectatingWho;

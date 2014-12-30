@@ -37,15 +37,10 @@ WaitingForServerInterface::WaitingForServerInterface(float x, float y, float wid
     m_fTimeToNextRound = 0;
     m_iPreGamePhase = DEFAULT;
     m_renderTimeToNextRound = false;
-    m_renderPlayersList = false;
-    m_renderMessage = true;
 }
 
-void WaitingForServerInterface::update(float deltaTime, Game_State gameState)
+void WaitingForServerInterface::update(float deltaTime)
 {
-    m_renderPlayersList = gameState == WAITING_FOR_SERVER;
-    m_renderMessage = gameState != WAITING_FOR_SERVER;
-    
     if(m_fTimeToNextRound > 0)
     {
         m_fTimeToNextRound -= deltaTime;
@@ -177,14 +172,4 @@ int WaitingForServerInterface::getPreGamePhase()
 bool WaitingForServerInterface::renderTimeToNextRound()
 {
     return m_renderTimeToNextRound;
-}
-
-bool WaitingForServerInterface::renderPlayersList()
-{
-    return m_renderPlayersList;
-}
-
-bool WaitingForServerInterface::renderMessage()
-{
-    return m_renderMessage;
 }

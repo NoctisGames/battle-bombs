@@ -2,7 +2,7 @@
 //  BreakableBlock.cpp
 //  battlebombs
 //
-//  Created by Mikel Adkins on 3/25/14.
+//  Created by Stephen Gowen on 3/25/14.
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 

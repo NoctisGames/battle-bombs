@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.technegames.battlebombs"
-    android:versionCode="4"
-    android:versionName="1.2.0" >
+    android:versionCode="6"
+    android:versionName="1.3.0" >
 
     <!-- Signing Key Info: T3chn3G4m35, T3chn3G4m35 -->
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="20" />
+        android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
