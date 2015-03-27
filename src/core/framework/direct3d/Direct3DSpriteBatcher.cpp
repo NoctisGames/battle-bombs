@@ -3,7 +3,7 @@
 //  gowengamedev-framework
 //
 //  Created by Stephen Gowen on 9/22/14.
-//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
+//  Copyright (c) 2015 Gowen Game Dev. All rights reserved.
 //
 
 #include "pch.h"
