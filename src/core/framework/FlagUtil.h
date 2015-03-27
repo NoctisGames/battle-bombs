@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Gowen Game Dev. All rights reserved.
 //
 
-#ifndef __tappyplane__FlagUtil__
-#define __tappyplane__FlagUtil__
+#ifndef __gowengamedev__FlagUtil__
+#define __gowengamedev__FlagUtil__
 
 class FlagUtil
 {
@@ -28,4 +28,4 @@ public:
 	}
 };
 
-#endif /* defined(__tappyplane__FlagUtil__) */
+#endif /* defined(__gowengamedev__FlagUtil__) */

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Gowen Game Dev. All rights reserved.
 //
 
-#ifndef __tappyplane__OpenGLESManager__
-#define __tappyplane__OpenGLESManager__
+#ifndef __gowengamedev__OpenGLESManager__
+#define __gowengamedev__OpenGLESManager__
 
 #define MAX_BATCH_SIZE 1024
 #define VERTICES_PER_RECTANGLE 4
@@ -63,4 +63,4 @@ private:
     OpenGLESManager();
 };
 
-#endif /* defined(__tappyplane__DirectXManager__) */
+#endif /* defined(__gowengamedev__OpenGLESManager__) */
