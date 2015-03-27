@@ -23,7 +23,7 @@ class Font
 public:
 	Font(int offsetX, int offsetY, int glyphsPerRow, int glyphWidth, int glyphHeight, int textureWidth, int textureHeight);
 	   
-	void renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, Color color, bool isCentered = false, bool isRightJustified = false);
+	void renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, Color color, bool isCentered = false, bool isRightJustified = false, int charOffset = 0);
 
 private:
     std::vector<std::unique_ptr<TextureRegion>> m_glyphs;
