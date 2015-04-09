@@ -11,7 +11,7 @@
 #include "Rectangle.h"
 #include "GameConstants.h"
 #include <math.h>
-#ifdef TECHNE_GAMES_DIRECT_3D
+#ifdef GGD_DIRECT_3D
 #define fminf(x, y) ((x) < (y) ? (x) : (y))
 #endif
 
