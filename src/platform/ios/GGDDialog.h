@@ -1,12 +1,12 @@
 //
-//  TGDialog.h
+//  GGDDialog.h
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/8/14.
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-@interface TGDialog : UIView
+@interface GGDDialog : UIView
 {
 @protected
     NSString *nibName;

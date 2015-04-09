@@ -1,14 +1,14 @@
 //
-//  TGDeviceUtil.m
+//  GGDDeviceUtil.m
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/8/14.
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#import "TGDeviceUtil.h"
+#import "GGDDeviceUtil.h"
 
-@implementation TGDeviceUtil
+@implementation GGDDeviceUtil
 
 + (bool)isIPhoneFiveScreen
 {

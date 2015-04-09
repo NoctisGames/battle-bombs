@@ -1,5 +1,5 @@
 //
-//  TGDeviceUtil.h
+//  GGDDeviceUtil.h
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/8/14.
@@ -12,7 +12,7 @@
 #define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 
-@interface TGDeviceUtil : NSObject
+@interface GGDDeviceUtil : NSObject
 {
     
 }

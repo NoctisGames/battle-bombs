@@ -139,11 +139,11 @@
 		BB7B1C2319DA2FF8009F05C6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB451A3618C30E810093E559 /* libz.dylib */; };
 		BB81B1AA19BE147400548837 /* STHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1A919BE147400548837 /* STHTTPRequest.m */; };
 		BB81B1AE19BE15B500548837 /* Progress_Dialog_Landscape.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB81B1AC19BE15B500548837 /* Progress_Dialog_Landscape.xib */; };
-		BB81B1B319BE15E700548837 /* TGApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B019BE15E700548837 /* TGApiManager.m */; };
-		BB81B1B419BE15E700548837 /* TGProgressDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B219BE15E700548837 /* TGProgressDialog.m */; };
-		BB81B1B719BE163900548837 /* TGDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B619BE163900548837 /* TGDialog.m */; };
-		BB81B1BA19BE197E00548837 /* TGJsonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B919BE197E00548837 /* TGJsonUtils.m */; };
-		BB81B1BD19BE1A1800548837 /* TGDeviceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1BC19BE1A1800548837 /* TGDeviceUtil.m */; };
+		BB81B1B319BE15E700548837 /* GGDApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B019BE15E700548837 /* GGDApiManager.m */; };
+		BB81B1B419BE15E700548837 /* GGDProgressDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B219BE15E700548837 /* GGDProgressDialog.m */; };
+		BB81B1B719BE163900548837 /* GGDDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B619BE163900548837 /* GGDDialog.m */; };
+		BB81B1BA19BE197E00548837 /* GGDJsonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1B919BE197E00548837 /* GGDJsonUtils.m */; };
+		BB81B1BD19BE1A1800548837 /* GGDDeviceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81B1BC19BE1A1800548837 /* GGDDeviceUtil.m */; };
 		BB82640B18C288F200A24A7C /* AppWarp_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		BB8B5BC41A4F110500AE25A7 /* pu_curse.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB8B5BC01A4F110500AE25A7 /* pu_curse.caf */; };
 		BB8B5BC51A4F110500AE25A7 /* pu_landmine.caf in Resources */ = {isa = PBXBuildFile; fileRef = BB8B5BC11A4F110500AE25A7 /* pu_landmine.caf */; };
@@ -465,16 +465,16 @@
 		BB81B1A819BE147400548837 /* STHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STHTTPRequest.h; sourceTree = "<group>"; };
 		BB81B1A919BE147400548837 /* STHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STHTTPRequest.m; sourceTree = "<group>"; };
 		BB81B1AD19BE15B500548837 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Progress_Dialog_Landscape.xib; sourceTree = "<group>"; };
-		BB81B1AF19BE15E700548837 /* TGApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGApiManager.h; sourceTree = "<group>"; };
-		BB81B1B019BE15E700548837 /* TGApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGApiManager.m; sourceTree = "<group>"; };
-		BB81B1B119BE15E700548837 /* TGProgressDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGProgressDialog.h; sourceTree = "<group>"; };
-		BB81B1B219BE15E700548837 /* TGProgressDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGProgressDialog.m; sourceTree = "<group>"; };
-		BB81B1B519BE163900548837 /* TGDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGDialog.h; sourceTree = "<group>"; };
-		BB81B1B619BE163900548837 /* TGDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGDialog.m; sourceTree = "<group>"; };
-		BB81B1B819BE197E00548837 /* TGJsonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGJsonUtils.h; sourceTree = "<group>"; };
-		BB81B1B919BE197E00548837 /* TGJsonUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGJsonUtils.m; sourceTree = "<group>"; };
-		BB81B1BB19BE1A1800548837 /* TGDeviceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGDeviceUtil.h; sourceTree = "<group>"; };
-		BB81B1BC19BE1A1800548837 /* TGDeviceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TGDeviceUtil.m; sourceTree = "<group>"; };
+		BB81B1AF19BE15E700548837 /* GGDApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDApiManager.h; sourceTree = "<group>"; };
+		BB81B1B019BE15E700548837 /* GGDApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDApiManager.m; sourceTree = "<group>"; };
+		BB81B1B119BE15E700548837 /* GGDProgressDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDProgressDialog.h; sourceTree = "<group>"; };
+		BB81B1B219BE15E700548837 /* GGDProgressDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDProgressDialog.m; sourceTree = "<group>"; };
+		BB81B1B519BE163900548837 /* GGDDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDDialog.h; sourceTree = "<group>"; };
+		BB81B1B619BE163900548837 /* GGDDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDDialog.m; sourceTree = "<group>"; };
+		BB81B1B819BE197E00548837 /* GGDJsonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDJsonUtils.h; sourceTree = "<group>"; };
+		BB81B1B919BE197E00548837 /* GGDJsonUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDJsonUtils.m; sourceTree = "<group>"; };
+		BB81B1BB19BE1A1800548837 /* GGDDeviceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDDeviceUtil.h; sourceTree = "<group>"; };
+		BB81B1BC19BE1A1800548837 /* GGDDeviceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDDeviceUtil.m; sourceTree = "<group>"; };
 		BB82640A18C288F200A24A7C /* AppWarp_iOS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppWarp_iOS_SDK.framework; path = ../../3rdparty/AppWarp/AppWarp_iOS_SDK.framework; sourceTree = "<group>"; };
 		BB8B5BC01A4F110500AE25A7 /* pu_curse.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = pu_curse.caf; sourceTree = "<group>"; };
 		BB8B5BC11A4F110500AE25A7 /* pu_landmine.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = pu_landmine.caf; sourceTree = "<group>"; };
@@ -792,16 +792,16 @@
 				BB81B1A819BE147400548837 /* STHTTPRequest.h */,
 				BB81B1A919BE147400548837 /* STHTTPRequest.m */,
 				0ADF1882178E2185005DA99E /* Supporting Files */,
-				BB81B1AF19BE15E700548837 /* TGApiManager.h */,
-				BB81B1B019BE15E700548837 /* TGApiManager.m */,
-				BB81B1BB19BE1A1800548837 /* TGDeviceUtil.h */,
-				BB81B1BC19BE1A1800548837 /* TGDeviceUtil.m */,
-				BB81B1B519BE163900548837 /* TGDialog.h */,
-				BB81B1B619BE163900548837 /* TGDialog.m */,
-				BB81B1B819BE197E00548837 /* TGJsonUtils.h */,
-				BB81B1B919BE197E00548837 /* TGJsonUtils.m */,
-				BB81B1B119BE15E700548837 /* TGProgressDialog.h */,
-				BB81B1B219BE15E700548837 /* TGProgressDialog.m */,
+				BB81B1AF19BE15E700548837 /* GGDApiManager.h */,
+				BB81B1B019BE15E700548837 /* GGDApiManager.m */,
+				BB81B1BB19BE1A1800548837 /* GGDDeviceUtil.h */,
+				BB81B1BC19BE1A1800548837 /* GGDDeviceUtil.m */,
+				BB81B1B519BE163900548837 /* GGDDialog.h */,
+				BB81B1B619BE163900548837 /* GGDDialog.m */,
+				BB81B1B819BE197E00548837 /* GGDJsonUtils.h */,
+				BB81B1B919BE197E00548837 /* GGDJsonUtils.m */,
+				BB81B1B119BE15E700548837 /* GGDProgressDialog.h */,
+				BB81B1B219BE15E700548837 /* GGDProgressDialog.m */,
 				BBF8C9E41A20FAA10016DE7C /* UIView+Toast.h */,
 				BBF8C9E51A20FAA10016DE7C /* UIView+Toast.m */,
 			);
@@ -1446,7 +1446,7 @@
 				0A8FBF7C179E07320039BA29 /* png.c in Sources */,
 				BBA4C3D01A16CE7300AB3878 /* BreakableBlock.cpp in Sources */,
 				BBA4C4061A16D12E00AB3878 /* OpenGLESGameScreen.cpp in Sources */,
-				BB81B1B419BE15E700548837 /* TGProgressDialog.m in Sources */,
+				BB81B1B419BE15E700548837 /* GGDProgressDialog.m in Sources */,
 				BB12EE691A1D5B2C006D385B /* Vector2D.cpp in Sources */,
 				0A8FBF7D179E07320039BA29 /* pngerror.c in Sources */,
 				0A8FBF7E179E07320039BA29 /* pngget.c in Sources */,
@@ -1457,7 +1457,7 @@
 				BB12EE581A1D5B2C006D385B /* OpenGLESLineBatcher.cpp in Sources */,
 				0A8FBF7F179E07320039BA29 /* pngmem.c in Sources */,
 				BBF8CA381A2107F70016DE7C /* PlayerAvatar.cpp in Sources */,
-				BB81B1B719BE163900548837 /* TGDialog.m in Sources */,
+				BB81B1B719BE163900548837 /* GGDDialog.m in Sources */,
 				BBA4C3E61A16CE7300AB3878 /* PlayerDynamicGameObject.cpp in Sources */,
 				BB12EE591A1D5B2C006D385B /* OpenGLESManager.cpp in Sources */,
 				BB66FF7F1A48A275002B8224 /* GameStateRunning.cpp in Sources */,
@@ -1500,7 +1500,7 @@
 				BB12EE4F1A1D5B2C006D385B /* GameObject.cpp in Sources */,
 				0A8FBF85179E07320039BA29 /* pngset.c in Sources */,
 				BB66FF6D1A48A0D5002B8224 /* GameStateWaitingForConnection.cpp in Sources */,
-				BB81B1B319BE15E700548837 /* TGApiManager.m in Sources */,
+				BB81B1B319BE15E700548837 /* GGDApiManager.m in Sources */,
 				BBF8CA361A2107F70016DE7C /* GameScreen.cpp in Sources */,
 				BB12EE5E1A1D5B2C006D385B /* shader.c in Sources */,
 				BBCDD32518BFC8E1003A4EED /* Logger.m in Sources */,
@@ -1508,7 +1508,7 @@
 				BB66FF881A48D46B002B8224 /* GameStateSpectatingOffline.cpp in Sources */,
 				BB66FF821A48A28E002B8224 /* GameStateEnding.cpp in Sources */,
 				BBA4C3DF1A16CE7300AB3878 /* IcePatch.cpp in Sources */,
-				BB81B1BA19BE197E00548837 /* TGJsonUtils.m in Sources */,
+				BB81B1BA19BE197E00548837 /* GGDJsonUtils.m in Sources */,
 				BBF8CA341A2107F70016DE7C /* DPadControl.cpp in Sources */,
 				BBF8CA331A2107F70016DE7C /* DisplayXMovingGameObject.cpp in Sources */,
 				0A8FBF86179E07320039BA29 /* pngtrans.c in Sources */,
@@ -1527,7 +1527,7 @@
 				BB4790C31A4745B8006A7B61 /* MapBase.cpp in Sources */,
 				BBA4C4071A16D12E00AB3878 /* OpenGLESRenderer.cpp in Sources */,
 				0A8FBF87179E07320039BA29 /* pngwio.c in Sources */,
-				BB81B1BD19BE1A1800548837 /* TGDeviceUtil.m in Sources */,
+				BB81B1BD19BE1A1800548837 /* GGDDeviceUtil.m in Sources */,
 				0A8FBF88179E07320039BA29 /* pngwrite.c in Sources */,
 				0A8FBF89179E07320039BA29 /* pngwtran.c in Sources */,
 				BBA4C3CE1A16CE7300AB3878 /* BombGameObject.cpp in Sources */,

@@ -1,22 +1,22 @@
 //
-//  TGProgressDialog.m
+//  GGDProgressDialog.m
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/8/14.
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#import "TGProgressDialog.h"
+#import "GGDProgressDialog.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface TGProgressDialog ()
+@interface GGDProgressDialog ()
 {
     NSString *messageLabelText;
 }
 
 @end
 
-@implementation TGProgressDialog
+@implementation GGDProgressDialog
 
 - (id)initWithMessage:(NSString *)m
 {

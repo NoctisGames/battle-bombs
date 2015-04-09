@@ -1,5 +1,5 @@
 //
-//  TGJsonUtils.h
+//  GGDJsonUtils.h
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/8/14.
@@ -10,7 +10,7 @@ typedef void (^OnSuccess)(NSDictionary *jsonResponse);
 
 typedef void (^OnError)();
 
-@interface TGJsonUtils : NSObject
+@interface GGDJsonUtils : NSObject
 
 + (NSData *)readJSONFromFile:(NSString *)fileName withBundle:(NSBundle *)bundle;
 

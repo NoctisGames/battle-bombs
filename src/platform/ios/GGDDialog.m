@@ -1,17 +1,17 @@
 //
-//  TGDialog.m
+//  GGDDialog.m
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/8/14.
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#import "TGDialog.h"
-#import "TGDeviceUtil.h"
+#import "GGDDialog.h"
+#import "GGDDeviceUtil.h"
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0f * M_PI)
 
-@implementation TGDialog
+@implementation GGDDialog
 
 - (void)show
 {
@@ -68,7 +68,7 @@
     {
         CGAffineTransform landscapeTransform = CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(90));
         
-        if([TGDeviceUtil isIPhoneFiveScreen])
+        if([GGDDeviceUtil isIPhoneFiveScreen])
         {
             landscapeTransform = CGAffineTransformTranslate (landscapeTransform, 124, 124);
         }

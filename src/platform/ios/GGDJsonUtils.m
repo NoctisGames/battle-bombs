@@ -1,21 +1,21 @@
 //
-//  TGJsonUtils.m
+//  GGDJsonUtils.m
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/8/14.
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#import "TGJsonUtils.h"
+#import "GGDJsonUtils.h"
 #import "Logger.h"
 
-@implementation TGJsonUtils
+@implementation GGDJsonUtils
 
 static Logger *logger = nil;
 
 + (void)initialize
 {
-    logger = [[Logger alloc] initWithClass:[TGJsonUtils class]];
+    logger = [[Logger alloc] initWithClass:[GGDJsonUtils class]];
 }
 
 + (NSData *)readJSONFromFile:(NSString *)fileName withBundle:(NSBundle *)bundle
@@ -52,7 +52,7 @@ static Logger *logger = nil;
 + (void)generateJsonDictionaryFromString:(NSString *)str withOnSuccessHandler:(OnSuccess)onSuccess andOnErrorHandler:(OnError)onError
 {
     NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-    [TGJsonUtils generateJsonDictionaryFromData:data withOnSuccessHandler:onSuccess andOnErrorHandler:onError];
+    [GGDJsonUtils generateJsonDictionaryFromData:data withOnSuccessHandler:onSuccess andOnErrorHandler:onError];
 }
 
 @end

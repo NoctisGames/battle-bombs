@@ -1,5 +1,5 @@
 //
-//  TGApiManager.m
+//  GGDApiManager.m
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/8/14.
@@ -8,19 +8,19 @@
 
 #define SERVER_STATUS_URL @"https://s3.amazonaws.com/battlebombs/bb_1.3.0.json"
 
-#import "TGApiManager.h"
+#import "GGDApiManager.h"
 
 #import "Logger.h"
 #import "STHTTPRequest.h"
-#import "TGProgressDialog.h"
-#import "TGJsonUtils.h"
+#import "GGDProgressDialog.h"
+#import "GGDJsonUtils.h"
 
-@interface TGApiManager ()
+@interface GGDApiManager ()
 {
     // Empty
 }
 
-@property (strong, nonatomic) TGProgressDialog *currentProgressDialog;
+@property (strong, nonatomic) GGDProgressDialog *currentProgressDialog;
 
 - (void)showProgressDialogWithMessage:(NSString *)message;
 - (void)hideProgressDialog;
@@ -28,15 +28,15 @@
 
 @end
 
-@implementation TGApiManager
+@implementation GGDApiManager
 
-static TGApiManager *instance = nil;
+static GGDApiManager *instance = nil;
 static Logger *logger = nil;
 
 + (void)initialize
 {
-    instance = [[TGApiManager alloc] init];
-    logger = [[Logger alloc] initWithClass:[TGApiManager class]];
+    instance = [[GGDApiManager alloc] init];
+    logger = [[Logger alloc] initWithClass:[GGDApiManager class]];
 }
 
 + (id)getInstance
@@ -72,7 +72,7 @@ static Logger *logger = nil;
 - (void)showProgressDialogWithMessage:(NSString *)message
 {
     [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-    self.currentProgressDialog = [[TGProgressDialog alloc] initWithMessage:message];
+    self.currentProgressDialog = [[GGDProgressDialog alloc] initWithMessage:message];
     [self.currentProgressDialog show];
 }
 
@@ -96,7 +96,7 @@ static Logger *logger = nil;
             [logger debug:[[NSString alloc] initWithFormat:@"Http Response Body:\n%@", rawResponseString]];
         }
         
-        [TGJsonUtils generateJsonDictionaryFromString:rawResponseString withOnSuccessHandler:^(NSDictionary *jsonResponse)
+        [GGDJsonUtils generateJsonDictionaryFromString:rawResponseString withOnSuccessHandler:^(NSDictionary *jsonResponse)
         {
             onSuccess(jsonResponse);
         } andOnErrorHandler:^

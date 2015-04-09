@@ -1,5 +1,5 @@
 //
-//  TGApiManager.h
+//  GGDApiManager.h
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/8/14.
@@ -17,7 +17,7 @@ typedef void (^OnComplete)(NSDictionary *jsonResponse);
 
 @class CMBaseRequest;
 
-@interface TGApiManager : NSObject
+@interface GGDApiManager : NSObject
 
 + (id)getInstance;
 

@@ -1,14 +1,14 @@
 //
-//  TGProgressDialog.h
+//  GGDProgressDialog.h
 //  battlebombs
 //
 //  Created by Stephen Gowen on 9/8/14.
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#import "TGDialog.h"
+#import "GGDDialog.h"
 
-@interface TGProgressDialog : TGDialog
+@interface GGDProgressDialog : GGDDialog
 {
     
 }
