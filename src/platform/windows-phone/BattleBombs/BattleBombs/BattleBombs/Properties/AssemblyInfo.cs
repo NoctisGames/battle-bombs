@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("BattleBombs")]
-[assembly: AssemblyCopyright("Copyright © Gowen Game Dev 2014")]
+[assembly: AssemblyCopyright("Copyright © Stephen Gowen 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
