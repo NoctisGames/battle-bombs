@@ -30,6 +30,8 @@ public final class NotifyServerAdmin
     {
         try
         {
+            System.out.println("Sending email to notify Admin of Battle Bombs server termination...");
+
             mailServerProperties = System.getProperties();
             mailServerProperties.put("mail.smtp.port", "587");
             mailServerProperties.put("mail.smtp.auth", "true");
@@ -46,6 +48,8 @@ public final class NotifyServerAdmin
             transport.connect("smtp.gmail.com", "dev.sgowen@gmail.com", "Loz-lttp90");
             transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
             transport.close();
+
+            System.out.println("Email sent!");
         }
         catch (MessagingException e)
         {
