@@ -105,207 +105,207 @@ dist/libBbNative.dll: ${OBJECTFILES}
 ${OBJECTDIR}/_ext/361124323/Circle.o: ../../../core/framework/Circle.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/361124323
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/Circle.o ../../../core/framework/Circle.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/Circle.o ../../../core/framework/Circle.cpp
 
 ${OBJECTDIR}/_ext/361124323/DynamicGameObject.o: ../../../core/framework/DynamicGameObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/361124323
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/DynamicGameObject.o ../../../core/framework/DynamicGameObject.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/DynamicGameObject.o ../../../core/framework/DynamicGameObject.cpp
 
 ${OBJECTDIR}/_ext/361124323/DynamicGridGameObject.o: ../../../core/framework/DynamicGridGameObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/361124323
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/DynamicGridGameObject.o ../../../core/framework/DynamicGridGameObject.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/DynamicGridGameObject.o ../../../core/framework/DynamicGridGameObject.cpp
 
 ${OBJECTDIR}/_ext/361124323/GameObject.o: ../../../core/framework/GameObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/361124323
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/GameObject.o ../../../core/framework/GameObject.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/GameObject.o ../../../core/framework/GameObject.cpp
 
 ${OBJECTDIR}/_ext/361124323/GridGameObject.o: ../../../core/framework/GridGameObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/361124323
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/GridGameObject.o ../../../core/framework/GridGameObject.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/GridGameObject.o ../../../core/framework/GridGameObject.cpp
 
 ${OBJECTDIR}/_ext/361124323/Line.o: ../../../core/framework/Line.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/361124323
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/Line.o ../../../core/framework/Line.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/Line.o ../../../core/framework/Line.cpp
 
 ${OBJECTDIR}/_ext/361124323/OverlapTester.o: ../../../core/framework/OverlapTester.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/361124323
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/OverlapTester.o ../../../core/framework/OverlapTester.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/OverlapTester.o ../../../core/framework/OverlapTester.cpp
 
 ${OBJECTDIR}/_ext/361124323/Rectangle.o: ../../../core/framework/Rectangle.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/361124323
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/Rectangle.o ../../../core/framework/Rectangle.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/Rectangle.o ../../../core/framework/Rectangle.cpp
 
 ${OBJECTDIR}/_ext/361124323/Triangle.o: ../../../core/framework/Triangle.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/361124323
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/Triangle.o ../../../core/framework/Triangle.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/Triangle.o ../../../core/framework/Triangle.cpp
 
 ${OBJECTDIR}/_ext/361124323/Vector2D.o: ../../../core/framework/Vector2D.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/361124323
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/Vector2D.o ../../../core/framework/Vector2D.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/361124323/Vector2D.o ../../../core/framework/Vector2D.cpp
 
 ${OBJECTDIR}/_ext/1528379507/BaseTile.o: ../../../core/game/BaseTile.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/BaseTile.o ../../../core/game/BaseTile.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/BaseTile.o ../../../core/game/BaseTile.cpp
 
 ${OBJECTDIR}/_ext/1528379507/BombGameObject.o: ../../../core/game/BombGameObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/BombGameObject.o ../../../core/game/BombGameObject.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/BombGameObject.o ../../../core/game/BombGameObject.cpp
 
 ${OBJECTDIR}/_ext/1528379507/BotPlayerDynamicGameObject.o: ../../../core/game/BotPlayerDynamicGameObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/BotPlayerDynamicGameObject.o ../../../core/game/BotPlayerDynamicGameObject.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/BotPlayerDynamicGameObject.o ../../../core/game/BotPlayerDynamicGameObject.cpp
 
 ${OBJECTDIR}/_ext/1528379507/BreakableBlock.o: ../../../core/game/BreakableBlock.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/BreakableBlock.o ../../../core/game/BreakableBlock.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/BreakableBlock.o ../../../core/game/BreakableBlock.cpp
 
 ${OBJECTDIR}/_ext/1528379507/Crater.o: ../../../core/game/Crater.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/Crater.o ../../../core/game/Crater.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/Crater.o ../../../core/game/Crater.cpp
 
 ${OBJECTDIR}/_ext/1528379507/Explosion.o: ../../../core/game/Explosion.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/Explosion.o ../../../core/game/Explosion.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/Explosion.o ../../../core/game/Explosion.cpp
 
 ${OBJECTDIR}/_ext/1528379507/FallingObjectShadow.o: ../../../core/game/FallingObjectShadow.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/FallingObjectShadow.o ../../../core/game/FallingObjectShadow.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/FallingObjectShadow.o ../../../core/game/FallingObjectShadow.cpp
 
 ${OBJECTDIR}/_ext/1528379507/Fire.o: ../../../core/game/Fire.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/Fire.o ../../../core/game/Fire.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/Fire.o ../../../core/game/Fire.cpp
 
 ${OBJECTDIR}/_ext/1528379507/FireBall.o: ../../../core/game/FireBall.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/FireBall.o ../../../core/game/FireBall.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/FireBall.o ../../../core/game/FireBall.cpp
 
 ${OBJECTDIR}/_ext/1528379507/GameListener.o: ../../../core/game/GameListener.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/GameListener.o ../../../core/game/GameListener.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/GameListener.o ../../../core/game/GameListener.cpp
 
 ${OBJECTDIR}/_ext/1528379507/GameSession.o: ../../../core/game/GameSession.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/GameSession.o ../../../core/game/GameSession.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/GameSession.o ../../../core/game/GameSession.cpp
 
 ${OBJECTDIR}/_ext/1528379507/IceBall.o: ../../../core/game/IceBall.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/IceBall.o ../../../core/game/IceBall.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/IceBall.o ../../../core/game/IceBall.cpp
 
 ${OBJECTDIR}/_ext/1528379507/IcePatch.o: ../../../core/game/IcePatch.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/IcePatch.o ../../../core/game/IcePatch.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/IcePatch.o ../../../core/game/IcePatch.cpp
 
 ${OBJECTDIR}/_ext/1528379507/InsideBlock.o: ../../../core/game/InsideBlock.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/InsideBlock.o ../../../core/game/InsideBlock.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/InsideBlock.o ../../../core/game/InsideBlock.cpp
 
 ${OBJECTDIR}/_ext/1528379507/Landmine.o: ../../../core/game/Landmine.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/Landmine.o ../../../core/game/Landmine.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/Landmine.o ../../../core/game/Landmine.cpp
 
 ${OBJECTDIR}/_ext/1528379507/Map.o: ../../../core/game/Map.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/Map.o ../../../core/game/Map.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/Map.o ../../../core/game/Map.cpp
 
 ${OBJECTDIR}/_ext/1528379507/MapBase.o: ../../../core/game/MapBase.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapBase.o ../../../core/game/MapBase.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapBase.o ../../../core/game/MapBase.cpp
 
 ${OBJECTDIR}/_ext/1528379507/MapBorder.o: ../../../core/game/MapBorder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapBorder.o ../../../core/game/MapBorder.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapBorder.o ../../../core/game/MapBorder.cpp
 
 ${OBJECTDIR}/_ext/1528379507/MapFactory.o: ../../../core/game/MapFactory.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapFactory.o ../../../core/game/MapFactory.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapFactory.o ../../../core/game/MapFactory.cpp
 
 ${OBJECTDIR}/_ext/1528379507/MapGrasslands.o: ../../../core/game/MapGrasslands.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapGrasslands.o ../../../core/game/MapGrasslands.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapGrasslands.o ../../../core/game/MapGrasslands.cpp
 
 ${OBJECTDIR}/_ext/1528379507/MapMountains.o: ../../../core/game/MapMountains.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapMountains.o ../../../core/game/MapMountains.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapMountains.o ../../../core/game/MapMountains.cpp
 
 ${OBJECTDIR}/_ext/1528379507/MapSearchNode.o: ../../../core/game/MapSearchNode.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapSearchNode.o ../../../core/game/MapSearchNode.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapSearchNode.o ../../../core/game/MapSearchNode.cpp
 
 ${OBJECTDIR}/_ext/1528379507/MapSpace.o: ../../../core/game/MapSpace.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapSpace.o ../../../core/game/MapSpace.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/MapSpace.o ../../../core/game/MapSpace.cpp
 
 ${OBJECTDIR}/_ext/1528379507/PathFinder.o: ../../../core/game/PathFinder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/PathFinder.o ../../../core/game/PathFinder.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/PathFinder.o ../../../core/game/PathFinder.cpp
 
 ${OBJECTDIR}/_ext/1528379507/PlayerDynamicGameObject.o: ../../../core/game/PlayerDynamicGameObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/PlayerDynamicGameObject.o ../../../core/game/PlayerDynamicGameObject.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/PlayerDynamicGameObject.o ../../../core/game/PlayerDynamicGameObject.cpp
 
 ${OBJECTDIR}/_ext/1528379507/PowerUp.o: ../../../core/game/PowerUp.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/PowerUp.o ../../../core/game/PowerUp.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/PowerUp.o ../../../core/game/PowerUp.cpp
 
 ${OBJECTDIR}/_ext/1528379507/RegeneratingDoor.o: ../../../core/game/RegeneratingDoor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/RegeneratingDoor.o ../../../core/game/RegeneratingDoor.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/RegeneratingDoor.o ../../../core/game/RegeneratingDoor.cpp
 
 ${OBJECTDIR}/_ext/1528379507/RemoteBomb.o: ../../../core/game/RemoteBomb.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/RemoteBomb.o ../../../core/game/RemoteBomb.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/RemoteBomb.o ../../../core/game/RemoteBomb.cpp
 
 ${OBJECTDIR}/_ext/1528379507/SpaceTile.o: ../../../core/game/SpaceTile.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1528379507
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/SpaceTile.o ../../../core/game/SpaceTile.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1528379507/SpaceTile.o ../../../core/game/SpaceTile.cpp
 
 ${OBJECTDIR}/src/ServerGameSession.o: src/ServerGameSession.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ServerGameSession.o src/ServerGameSession.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ServerGameSession.o src/ServerGameSession.cpp
 
 ${OBJECTDIR}/src/bb_room_adaptor.o: src/bb_room_adaptor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DTECHNE_GAMES_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/bb_room_adaptor.o src/bb_room_adaptor.cpp
+	$(COMPILE.cc) -g -DGGD_SERVER_WINDOWS -Ijdkinclude/ -Ijdkinclude/win32/ -I../../../core/framework/ -I../../../core/game/ -I../../../3rdparty -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/bb_room_adaptor.o src/bb_room_adaptor.cpp
 
 # Subprojects
 .build-subprojects:

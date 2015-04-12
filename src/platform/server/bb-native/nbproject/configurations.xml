@@ -319,7 +319,7 @@
           </incDir>
           <commandLine>-shared</commandLine>
           <preprocessorList>
-            <Elem>TECHNE_GAMES_SERVER_WINDOWS</Elem>
+            <Elem>GGD_SERVER_WINDOWS</Elem>
           </preprocessorList>
         </ccTool>
         <linkerTool>
