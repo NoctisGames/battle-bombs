@@ -142,8 +142,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
 
                     System.out.println(user.getName() + " joined the room");
 
-                    logRoom();
-
                     return;
                 }
             }
@@ -160,9 +158,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
     {
         if (_inRoomUserSessionDataMap.containsKey(sender))
         {
-            System.out.println(sender.getName() + " says " + message);
-
-            // Sending just a blank message serves as a keep alive
+// Sending just a blank message serves as a keep alive
             _inRoomUserSessionDataMap.get(sender)._timeSinceLastChat = 0;
 
             if (_inGameUserSessionDataMap.containsKey(sender) && message != null && message.contains("{") && message.contains(","))
@@ -250,7 +246,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                                 }
 
                                 _playerSpotsReceivedGameStateCommand[playerIndex] = true;
-                                logRoom();
                             }
                         }
                     }
@@ -446,6 +441,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                         _countdownTime = 0;
 
                         System.out.println(GAME_BEGIN_LOG);
+                        System.out.println("Number of Players: " + _inGameUserSessionDataMap.size());
                     }
                 }
             }
@@ -702,32 +698,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
         _room.removeUser(user, true);
 
         System.out.println(user.getName() + " left room (" + (onUserLeaveRequest ? "exited" : "timed out") + ")");
-
-        logRoom();
-    }
-
-    private void logRoom()
-    {
-        System.out.println("_inRoomUserSessionDataMap size: " + _inRoomUserSessionDataMap.size());
-        System.out.println("_inGameUserSessionDataMap size: " + _inGameUserSessionDataMap.size());
-        System.out.println("_playerSpotsOccupied: { "
-                + _playerSpotsOccupied[0] + ", "
-                + _playerSpotsOccupied[1] + ", "
-                + _playerSpotsOccupied[2] + ", "
-                + _playerSpotsOccupied[3] + ", "
-                + _playerSpotsOccupied[4] + ", "
-                + _playerSpotsOccupied[5] + ", "
-                + _playerSpotsOccupied[6] + ", "
-                + _playerSpotsOccupied[7] + " }");
-        System.out.println("_playerSpotsReceivedBeginGameCommand: { "
-                + _playerSpotsReceivedGameStateCommand[0] + ", "
-                + _playerSpotsReceivedGameStateCommand[1] + ", "
-                + _playerSpotsReceivedGameStateCommand[2] + ", "
-                + _playerSpotsReceivedGameStateCommand[3] + ", "
-                + _playerSpotsReceivedGameStateCommand[4] + ", "
-                + _playerSpotsReceivedGameStateCommand[5] + ", "
-                + _playerSpotsReceivedGameStateCommand[6] + ", "
-                + _playerSpotsReceivedGameStateCommand[7] + " }");
     }
 
     private final class UserSessionData
