@@ -370,7 +370,6 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
                             tobeSent.put("playerIndex" + playerIndex, user.getName());
                             tobeSent.put("playerIndex" + playerIndex + "Platform", userSessionData._platform);
                         }
-                        System.out.println(PRE_GAME_TICK_LOG);
 
                         updateRoomWithMessage(tobeSent.toString());
                     }

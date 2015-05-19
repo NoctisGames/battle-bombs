@@ -16,7 +16,7 @@ public final class Main
 
         if (started)
         {
-            System.out.println("Server started!");
+            System.out.println("Server started! Unix Timestamp: " + System.currentTimeMillis());
         }
     }
 }
