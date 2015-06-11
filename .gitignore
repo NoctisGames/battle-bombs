@@ -37,18 +37,16 @@ rapidjson/
 packages/
 Toolkit.Content/
 
-# Eclipse
-bin/
-gen/
-*.class
-*.dex
-*.apk
-*.ap_
+# Android Studio
+build/
 obj/
-armeabi/
-armeabi-v7a/
-mips/
-x86/
+.idea/
+.gradle/
+local.properties
+*.iml
+*.lock
+*.bin
+*.so
 
 # Xcode
 *.xcuserdatad/
