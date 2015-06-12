@@ -68,6 +68,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_init(JNI
 	UNUSED(cls);
 
 	const char *nativeUsername = (env)->GetStringUTFChars(username, nullptr);
+
 	init(nativeUsername, is_offline, false);
 }
 
@@ -75,6 +76,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1surf
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	on_surface_created(pixel_width, pixel_height);
 }
 
@@ -82,6 +84,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1surf
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	on_surface_changed(pixel_width, pixel_height, dp_width, dp_height);
 }
 
@@ -89,6 +92,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1resu
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	on_resume();
 }
 
@@ -96,6 +100,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1paus
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	on_pause();
 }
 
@@ -103,6 +108,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_update(J
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	update(delta_time);
 }
 
@@ -110,6 +116,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_present(
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	present();
 }
 
@@ -119,6 +126,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1chat
 	UNUSED(cls);
 
 	const char *nativeMessage = (env)->GetStringUTFChars(message, nullptr);
+
 	on_chat_received(nativeMessage);
 }
 
@@ -126,6 +134,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1touc
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	on_touch_down(raw_touch_x, raw_touch_y);
 }
 
@@ -133,6 +142,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1touc
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	on_touch_dragged(raw_touch_x, raw_touch_y);
 }
 
@@ -140,6 +150,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_on_1touc
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	on_touch_up(raw_touch_x, raw_touch_y);
 }
 
@@ -147,6 +158,7 @@ JNIEXPORT short JNICALL Java_com_technegames_battlebombs_RendererWrapper_get_1cu
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	return get_current_music_id();
 }
 
@@ -154,6 +166,7 @@ JNIEXPORT short JNICALL Java_com_technegames_battlebombs_RendererWrapper_get_1cu
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	return get_current_sound_id();
 }
 
@@ -161,6 +174,7 @@ JNIEXPORT int JNICALL Java_com_technegames_battlebombs_RendererWrapper_get_1olde
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	return get_oldest_event_id();
 }
 
@@ -168,6 +182,7 @@ JNIEXPORT bool JNICALL Java_com_technegames_battlebombs_RendererWrapper_is_1time
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	return is_time_to_send_keep_alive();
 }
 
@@ -175,6 +190,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_reset_1t
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	reset_time_since_last_client_event();
 }
 
@@ -182,6 +198,7 @@ JNIEXPORT int JNICALL Java_com_technegames_battlebombs_RendererWrapper_get_1stat
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	return get_state();
 }
 
@@ -189,6 +206,7 @@ JNIEXPORT void JNICALL Java_com_technegames_battlebombs_RendererWrapper_clear_1s
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	clear_state();
 }
 
@@ -228,6 +246,7 @@ JNIEXPORT bool JNICALL Java_com_technegames_battlebombs_RendererWrapper_handle_1
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	return handle_on_back_pressed();
 }
 
@@ -235,5 +254,6 @@ JNIEXPORT int JNICALL Java_com_technegames_battlebombs_RendererWrapper_get_1num_
 {
 	UNUSED(env);
 	UNUSED(cls);
+
 	return get_num_seconds_left();
 }
