@@ -35,7 +35,6 @@ rapidjson/
 
 # Newtonsoft.Json, Windows Phone Toolkit, Coding4Fun.Toolkit
 packages/
-Toolkit.Content/
 
 # Android Studio
 build/
