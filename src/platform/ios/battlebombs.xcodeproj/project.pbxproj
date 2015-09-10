@@ -1684,7 +1684,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "Battle Bombs";
-				PROVISIONING_PROFILE = "8efc8ec7-0fb5-43d1-b526-11336ed002f4";
+				PROVISIONING_PROFILE = "4f1836af-7713-4c0a-a087-611ec8ccb33d";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
@@ -1723,7 +1723,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "Battle Bombs";
-				PROVISIONING_PROFILE = "c1d81dfa-f5b1-4b38-8a47-2113271e5cb9";
+				PROVISIONING_PROFILE = "efd43e85-40f0-4f5e-bb4f-8680e8edab1a";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
