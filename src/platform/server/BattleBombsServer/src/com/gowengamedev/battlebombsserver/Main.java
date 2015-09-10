@@ -8,15 +8,15 @@ import com.shephertz.app42.server.AppWarpServer;
  */
 public final class Main
 {
-    public static String NATIVE_LIBRARY_LOCATION = "";
-    
+    public static String NATIVE_LIBRARY_LOCATION = ""; // Temporary solution, will need to think of something better if/when I release version 1.4.0
+
     public static void main(String[] args)
     {
         if (args != null && args.length > 0)
         {
             NATIVE_LIBRARY_LOCATION = args[0];
         }
-        
+
         String appconfigPath = System.getProperty("user.dir") + System.getProperty("file.separator") + "AppConfig.json";
 
         boolean started = AppWarpServer.start(new BbServerAdaptor(), appconfigPath);

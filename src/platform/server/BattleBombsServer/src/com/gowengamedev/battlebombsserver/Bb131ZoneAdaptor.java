@@ -10,13 +10,13 @@ import com.shephertz.app42.server.idomain.IZone;
  *
  * @author sgowen
  */
-public final class BbZoneAdaptor extends BaseZoneAdaptor
+public final class Bb131ZoneAdaptor extends BaseZoneAdaptor
 {
-    private static final String CURRENT_AUTH_DATA = "GowenGameDev_1.3.0";
+    private static final String CURRENT_AUTH_DATA = "GowenGameDev_1.3.1";
 
     private final IZone _zone;
 
-    public BbZoneAdaptor(IZone zone)
+    public Bb131ZoneAdaptor(IZone zone)
     {
         _zone = zone;
 
@@ -27,7 +27,7 @@ public final class BbZoneAdaptor extends BaseZoneAdaptor
     public void onAdminRoomAdded(IRoom room)
     {
         System.out.println("Room Created " + room.getName() + " with ID " + room.getId());
-        room.setAdaptor(new BbRoomAdaptor(room));
+        room.setAdaptor(new Bb131RoomAdaptor(room));
     }
 
     @Override
