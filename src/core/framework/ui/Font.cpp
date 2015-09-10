@@ -3,7 +3,7 @@
 //  gowengamedev-framework
 //
 //  Created by Stephen Gowen on 2/22/14.
-//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
+//  Copyright (c) 2015 Gowen Game Dev. All rights reserved.
 //
 
 #include "Font.h"
@@ -29,7 +29,7 @@ Font::Font(int offsetX, int offsetY, int glyphsPerRow, int glyphWidth, int glyph
 	}
 }
 
-void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, Color color, bool isCentered, bool isRightJustified)
+void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, Color color, bool isCentered, bool isRightJustified, int charOffset)
 {
 	if (isCentered)
 	{
@@ -45,7 +45,7 @@ void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, 
 
 	for (unsigned int i = 0; i < text.length(); i++)
 	{
-		int c = ((int)text.at(i));
+		int c = ((int)text.at(i)) - charOffset;
 
 		if (c < 0 || c > 127)
 		{

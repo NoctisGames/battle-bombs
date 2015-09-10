@@ -3,11 +3,11 @@
 //  gowengamedev-framework
 //
 //  Created by Stephen Gowen on 11/19/14.
-//  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
+//  Copyright (c) 2015 Gowen Game Dev. All rights reserved.
 //
 
-#ifndef __insectoiddefense__OpenGLESManager__
-#define __insectoiddefense__OpenGLESManager__
+#ifndef __gowengamedev__OpenGLESManager__
+#define __gowengamedev__OpenGLESManager__
 
 #define MAX_BATCH_SIZE 1024
 #define VERTICES_PER_RECTANGLE 4
@@ -63,4 +63,4 @@ private:
     OpenGLESManager();
 };
 
-#endif /* defined(__insectoiddefense__DirectXManager__) */
+#endif /* defined(__gowengamedev__OpenGLESManager__) */

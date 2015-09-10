@@ -8,7 +8,7 @@
 
 #import "MainViewController.h"
 #import "BaseGameViewController.h"
-#import "TGApiManager.h"
+#import "GGDApiManager.h"
 
 @interface MainViewController ()
 {
@@ -82,7 +82,7 @@
         [self showConnectionErrorMessage];
     };
     
-    [[TGApiManager getInstance] sendJsonRequestWithOnSuccess:onSuccess andOnFailure:onFailure];
+    [[GGDApiManager getInstance] sendJsonRequestWithOnSuccess:onSuccess andOnFailure:onFailure];
 }
 
 - (IBAction)startQuickOfflineMatch:(id)sender
