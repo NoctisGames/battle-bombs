@@ -1,18 +1,17 @@
-package battlebombsservernotifyadmin;
+package com.gowengamedev.battlebombsservernotifyadmin;
 
-import java.util.Properties;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Date;
+import javax.ws.rs.core.MediaType;
 
 /**
  *
@@ -20,12 +19,7 @@ import java.util.Date;
  */
 public final class NotifyServerAdmin
 {
-    //expressed in milliseconds
-    private final static long ONCE_PER_MINUTE = 1000 * 60;
-
-    private static Properties mailServerProperties;
-    private static Session getMailSession;
-    private static MimeMessage generateMailMessage;
+    private static final long ONCE_PER_MINUTE = 1000 * 60; // expressed in milliseconds
 
     /**
      * @param args the command line arguments
@@ -41,7 +35,7 @@ public final class NotifyServerAdmin
                 pids[i] = Integer.parseInt(arg);
             }
 
-            showAllProcessesRunningOnWindows();
+            showAllProcessesRunningOnUbuntu();
 
             TimerTask scanPidsTimerTask = new ScanPidsTimerTask(pids);
             //perform the task once a minute starting now
@@ -50,28 +44,22 @@ public final class NotifyServerAdmin
         }
     }
 
-    private static boolean isProcessIdRunningOnWindows(int pid)
+    private static boolean isProcessIdRunningOnUbuntu(int pid)
     {
         //this queries tasklist if the pid passed in is running.
         //If the pid is running it returns true, else false.
         try
         {
-            Runtime runtime = Runtime.getRuntime();
-            String cmds[] =
-            {
-                "cmd", "/c", "tasklist /FI \"PID eq " + pid + "\""
-            };
-            Process proc = runtime.exec(cmds);
-
-            InputStream inputstream = proc.getInputStream();
+            Process process = Runtime.getRuntime().exec("ps -A");
+            InputStream inputstream = process.getInputStream();
             InputStreamReader inputstreamreader = new InputStreamReader(inputstream);
             BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
             String line;
             while ((line = bufferedreader.readLine()) != null)
             {
-                //Search the PID matched lines single line for the sequence: " 1300 "
+                //Search the PID matched lines single line for the sequence: "1300"
                 //if you find it, then the PID is still running.
-                if (line.contains(" " + pid + " "))
+                if (line.contains("" + pid + ""))
                 {
                     return true;
                 }
@@ -89,18 +77,12 @@ public final class NotifyServerAdmin
         return false;
     }
 
-    private static void showAllProcessesRunningOnWindows()
+    private static void showAllProcessesRunningOnUbuntu()
     {
-        //this function prints the contents of tasklist including pid's
         try
         {
-            Runtime runtime = Runtime.getRuntime();
-            String cmds[] =
-            {
-                "cmd", "/c", "tasklist"
-            };
-            Process proc = runtime.exec(cmds);
-            InputStream inputstream = proc.getInputStream();
+            Process process = Runtime.getRuntime().exec("ps -A");
+            InputStream inputstream = process.getInputStream();
             InputStreamReader inputstreamreader = new InputStreamReader(inputstream);
             BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
             String line;
@@ -118,36 +100,23 @@ public final class NotifyServerAdmin
 
     private static void generateAndSendEmail()
     {
-        try
-        {
-            System.out.println("Sending email to notify Admin of Battle Bombs server termination...");
+        System.out.println("Sending email to notify Admin of Battle Bombs server termination...");
 
-            mailServerProperties = System.getProperties();
-            mailServerProperties.put("mail.smtp.port", "587");
-            mailServerProperties.put("mail.smtp.auth", "true");
-            mailServerProperties.put("mail.smtp.starttls.enable", "true");
+        Client client = Client.create();
+        client.addFilter(new HTTPBasicAuthFilter("api", "key-6c5956134ef684e1051c38e9d776110f"));
+        WebResource webResource = client.resource("https://api.mailgun.net/v3/sandboxf37f8766c6ba4fcf9f7cde3291da73bd.mailgun.org/messages");
+        MultivaluedMapImpl formData = new MultivaluedMapImpl();
+        formData.add("from", "Mailgun Sandbox <postmaster@sandboxf37f8766c6ba4fcf9f7cde3291da73bd.mailgun.org>");
+        formData.add("to", "Stephen Gowen <dev.sgowen+battlebombs@gmail.com>");
+        formData.add("subject", "Battle Bombs Server has Stopped!");
+        formData.add("text", "Congratulations Stephen Gowen, you just sent an email with Mailgun!  You are truly awesome!  You can see a record of this email in your logs: https://mailgun.com/cp/log .  You can send up to 300 emails/day from this sandbox server.  Next, you should add your own domain so you can send 10,000 emails/month for free.");
 
-            getMailSession = Session.getDefaultInstance(mailServerProperties, null);
-            generateMailMessage = new MimeMessage(getMailSession);
-            generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress("dev.sgowen+battlebombs@gmail.com"));
-            generateMailMessage.setSubject("Battle Bombs Server has Stopped!");
-            generateMailMessage.setContent("You should go check on that...", "text/html");
+        ClientResponse response = webResource.type(MediaType.APPLICATION_FORM_URLENCODED).post(ClientResponse.class, formData);
 
-            Transport transport = getMailSession.getTransport("smtp");
+        System.out.println("Email sent!");
 
-            transport.connect("smtp.gmail.com", "dev.sgowen@gmail.com", "Loz-lttp90");
-            transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
-            transport.close();
-
-            System.out.println("Email sent!");
-
-            // An email has been sent, so this program no longer needs to run
-            System.exit(0);
-        }
-        catch (MessagingException e)
-        {
-            System.err.println(e.toString());
-        }
+        // An email has been sent, so this program no longer needs to run
+        System.exit(0);
     }
 
     private static final class ScanPidsTimerTask extends TimerTask
@@ -166,7 +135,7 @@ public final class NotifyServerAdmin
 
             for (int pid : pids)
             {
-                boolean isPidRunning = isProcessIdRunningOnWindows(pid);
+                boolean isPidRunning = isProcessIdRunningOnUbuntu(pid);
                 System.out.println("is PID " + pid + " running? " + isPidRunning);
                 if (!isPidRunning)
                 {

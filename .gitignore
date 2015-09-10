@@ -62,15 +62,20 @@ Debug/
 Release/
 
 # NetBeans
-dist/
-build/
 private/
-jdkinclude/
+build/
+nbbuild/
+nbproject/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+.nb-gradle/
+build.xml
 Logs/
-!private/project.xml
-!private/project.properties
-*.log
-*.dll
+Makefile
+
+# Misc
 HSQLDBFile*.*
 *.mf
 *.lck

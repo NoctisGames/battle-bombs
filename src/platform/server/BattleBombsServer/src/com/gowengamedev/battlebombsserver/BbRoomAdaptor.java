@@ -18,7 +18,7 @@ public final class BbRoomAdaptor extends BaseRoomAdaptor
 {
     static
     {
-        System.load("C:\\Users\\sgowen\\Documents\\GitHub\\battle-bombs\\src\\platform\\server\\bb-native\\dist\\libBbNative.dll");
+        System.load(Main.NATIVE_LIBRARY_LOCATION);
     }
 
     private static final String PRE_GAME_TICK_LOG = "~~~~~~~~~~~~~~ PRE GAME TICK ~~~~~~~~~~~~~~~~~~";
