@@ -8,8 +8,8 @@
 
 #define APPWARP_APP_KEY         @"e4207af0-de78-496d-8"
 #define APPWARP_SECRET_KEY      @"139f6094-4e04-4041-9"
-#define APPWARP_HOST_ADDRESS    @"191.234.54.124"
-#define APPWARP_AUTH_DATA       @"GowenGameDev_1.3.0"
+#define APPWARP_HOST_ADDRESS    @"ps465472.dreamhostps.com"
+#define APPWARP_AUTH_DATA       @"GowenGameDev_1.3.1"
 
 #import "GameViewController.h"
 #import "MainViewController.h"

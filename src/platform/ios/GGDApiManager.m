@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Gowen Game Dev. All rights reserved.
 //
 
-#define SERVER_STATUS_URL @"https://s3.amazonaws.com/battlebombs/bb_1.3.0.json"
+#define SERVER_STATUS_URL @"https://s3.amazonaws.com/battlebombs/bb_1.3.1.json"
 
 #import "GGDApiManager.h"
 
